@@ -7,33 +7,27 @@
 #ifndef ZIP
 #define ZIP
 
-
-// Zips every file in the vector and saves it to the output file
-void zipFiles(std::string outFileName, std::vector<std::string> fileNames)
+/**
+ * Creates new zip file with outFileName if not exists and compresses every file
+ * in fileNames, setting the password of the first file added.
+ * @param outFileName: Relative path of zip file to write to
+ * @param fileNames: Vector of relative paths to files to compress
+ * @param password: Desired password of first file added
+ **/
+void zipFiles(std::string outFileName, std::vector<std::string> fileNames, std::string password)
 {
     int * err = nullptr;
     zip * zipFile = zip_open(outFileName.c_str(), ZIP_CREATE, nullptr);
     assert(!err);
-    for (auto fileName : fileNames) 
+    for (int i = 0; i < fileNames.size(); ++i) 
     {
-        zip_source_t * src = zip_source_file(zipFile, fileName.c_str(), 0, 0);
+        zip_source_t * src = zip_source_file(zipFile, fileNames[i].c_str(), 0, 0);
+        zip_add(zipFile, fileNames[i].c_str(), src);
 
-        zip_add(zipFile, fileName.c_str(), src); 
+        // Encrypt first file added to the zip file
+        if(i == 0)
+            zip_file_set_encryption(zipFile, 0, ZIP_EM_AES_256, password.c_str());
     }
     zip_close(zipFile);
 }
 #endif
-
-int main()
-{
-    std::string zipName;
-    std::cin >> zipName;
-
-    std::vector<std::string> fileNames;
-    std::string next;
-    while (std::cin >> next)
-    {
-        fileNames.push_back(next);
-    }
-    zipFiles(zipName, fileNames);
-}
