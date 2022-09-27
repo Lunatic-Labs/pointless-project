@@ -14,7 +14,7 @@
  * @param fileNames: Vector of relative paths to files to compress
  * @param password: Desired password of first file added
  **/
-void zipFiles(std::string outFileName, std::vector<std::string> fileNames, std::string password)
+void zipFiles(std::string outFileName, std::vector<std::string> fileNames, std::string password="")
 {
     int * err = nullptr;
     zip * zipFile = zip_open(outFileName.c_str(), ZIP_CREATE, nullptr);
@@ -25,7 +25,7 @@ void zipFiles(std::string outFileName, std::vector<std::string> fileNames, std::
         zip_add(zipFile, fileNames[i].c_str(), src);
 
         // Encrypt first file added to the zip file
-        if(i == 0)
+        if(i == 0 && password != "")
             zip_file_set_encryption(zipFile, 0, ZIP_EM_AES_256, password.c_str());
     }
     zip_close(zipFile);

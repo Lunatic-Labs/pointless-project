@@ -75,4 +75,5 @@ BOOST_AUTO_TEST_CASE(testZipperCanWriteMultipleFiles) {
     }
     for(std::string fileName : fileNames)
         remove(fileName.c_str());
+    remove("test.zip");
 }
