@@ -8,7 +8,4 @@ jobs:
       - run: sudo apt install -y gcc
       - run: sudo apt install libboost-all-dev -y
       - run: sudo apt install libzip-dev -y
-      - working-directory: tests/
-        run: echo | ls
-      - working-directory: tests/
-        run: ./test.o
+      - run: echo | ls
