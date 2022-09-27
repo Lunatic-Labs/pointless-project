@@ -1,0 +1,16 @@
+
+name: Utility Tests
+run-name: Running Utility Tests
+on: [push]
+working
+jobs:
+  Run-Util-Tests:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: tests
+    steps:
+      run: sudo apt install -y gcc
+      run: sudo apt install libboost-all-dev -y
+      run: sudo apt install libzip-dev -y
+      run: g++ UtilityTests.cpp -lboost_iostreams -lzip -lboost_unit_test_framework -o test.o
+      run: ./test.o
