@@ -26,6 +26,8 @@ $>
 If this works, then g++ has probably been installed correctly.
 
 ## Boost
+We use Boost C++ for the majority of our streams functionality and plan to use it for Regex and many other tasks in the future
+Documentation: https://www.boost.org/doc/libs/1_80_0/
 **Linux**
 *Using aptitude*
 In order to get the Boost libraries on linux, run the command `sudo apt-get install libboost-all-dev`
@@ -39,3 +41,10 @@ Unzip the library and navigate to the Boost_<version>/ folder and run the comman
 **Mac (untested)**
 *Using Brew*
 `brew install boost` should install the boost libraries needed for this project.
+
+## Libzip
+This project uses Libzip as a method for generating ZIP files
+
+Documentation https://libzip.org/documentation/ 
+**Linux**
+Run `sudo apt-get install libzip-dev`. Add `-l zip` to your compile command
