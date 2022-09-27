@@ -5,11 +5,10 @@ jobs:
   Run-Util-Tests:
     runs-on: ubuntu-latest
     steps:
-      - run: ls
-      # - run: sudo apt install -y gcc
-      # - run: sudo apt install libboost-all-dev -y
-      # - run: sudo apt install libzip-dev -y
-      # - working-directory: tests
-      #   run: g++ UtilityTests.cpp -lboost_iostreams -lzip -lboost_unit_test_framework -o test.o
-      # - working-directory: tests
-      #   run: ./test.o
+      - run: sudo apt install -y gcc
+      - run: sudo apt install libboost-all-dev -y
+      - run: sudo apt install libzip-dev -y
+      - working-directory: ${{github.workspace}}/tests
+        run: g++ UtilityTests.cpp -lboost_iostreams -lzip -lboost_unit_test_framework -o test.o
+      - working-directory: ${{github.workspace}}/tests
+        run: ./test.o
