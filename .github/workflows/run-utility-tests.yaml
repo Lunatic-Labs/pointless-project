@@ -5,4 +5,5 @@ jobs:
   Run-Util-Tests:
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt install -y gcc; sudo apt install libboost-all-dev -y; sudo apt install libzip-dev -y; g++ ${{github.workspace}}/tests/UtilityTests.cpp -lboost_iostreams -lzip -lboost_unit_test_framework -o test.o; ${{github.workspace}}/test.o  
+      - uses: actions/checkout@v2
+      - run: sudo apt install libboost-all-dev -y; sudo apt install libzip-dev -y; g++ ${{github.workspace}}/tests/UtilityTests.cpp -lboost_iostreams -lzip -lboost_unit_test_framework -o ${{github.workspace}}/tests/test.o; ${{github.workspace}}/tests/test.o  
