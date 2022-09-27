@@ -7,7 +7,7 @@ jobs:
   Run-Util-Tests:
     runs-on: ubuntu-latest
     env:
-      working-directory: tests
+      working-directory: ./tests/
     steps:
       run: sudo apt install -y gcc
       run: sudo apt install libboost-all-dev -y
