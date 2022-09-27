@@ -8,4 +8,7 @@ jobs:
       - run: sudo apt install -y gcc
       - run: sudo apt install libboost-all-dev -y
       - run: sudo apt install libzip-dev -y
-      - run: echo | ls
+      - working-directory: tests
+        run: g++ UtilityTests.cpp -lboost_iostreams -lzip -lboost_unit_test_framework -o test.o
+      - working-directory: tests
+        run: ./test.o
