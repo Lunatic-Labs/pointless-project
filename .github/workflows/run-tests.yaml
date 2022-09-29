@@ -1,0 +1,13 @@
+
+name: Utility Tests
+on: [push]
+jobs:
+  Run-Util-Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo apt install libboost-all-dev -y; sudo apt install libzip-dev -y; 
+      - run: g++ ${{github.workspace}}/tests/ZipperTests.cpp -lboost_iostreams -lzip -lboost_unit_test_framework -o ${{github.workspace}}/tests/zipperTests.o; 
+      - run: ${{github.workspace}}/tests/zipperTests.o  
+      - run: g++ ParameterizedFileGenerationTests.cpp -lboost_unit_test_framework -lzip -lboost_iostreams -o parameterizedFileGenerationTests.o
+      - run: ${{github.workspace}}/tests/parameterizedFileGenerationTests.o
