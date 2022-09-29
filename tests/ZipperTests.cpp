@@ -1,12 +1,12 @@
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE UtilityTests
+#define BOOST_TEST_MODULE ZipperTests
 #include <boost/test/unit_test.hpp>
 #include <fstream>
 #include <vector>
 #include <string>
 #include <stdio.h>
 #include <zip.h>
-#include "../util/zip/Zipper.cpp"
+#include "../util/zip/Zipper.h"
 
 struct FileStructureFixture {
     std::vector<std::string> fnames;
