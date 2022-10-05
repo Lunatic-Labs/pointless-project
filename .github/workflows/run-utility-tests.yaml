@@ -9,4 +9,4 @@ jobs:
       - run: sudo apt install libboost-all-dev -y; sudo apt install libzip-dev -y;
       - run: |
           cd tests
-          make obj/UtilityTests.out
+          make obj/UtilityTests.test
