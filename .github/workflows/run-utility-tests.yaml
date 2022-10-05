@@ -10,3 +10,4 @@ jobs:
       - run: |
           cd ${{github.workspace}}
           make obj/UtilityTests.test
+      - run: ${{github.workspace}}/obj/UtilityTests.test
