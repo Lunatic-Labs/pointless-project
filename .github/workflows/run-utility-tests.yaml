@@ -8,5 +8,4 @@ jobs:
       - uses: actions/checkout@v2
       - run: sudo apt install libboost-all-dev -y; sudo apt install libzip-dev -y;
       - run: |
-          cd tests
           make obj/UtilityTests.test
