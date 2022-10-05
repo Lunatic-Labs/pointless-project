@@ -9,8 +9,10 @@
 #include "../util/zip/Zipper.h"
 
 struct FileStructureFixture {
+
     std::vector<std::string> fnames;
     FileStructureFixture() {
+
         fnames = {"abc.txt"};
         std::ofstream writer = std::ofstream(fnames[0], std::ios::out);
         writer << "abc";
@@ -45,6 +47,7 @@ BOOST_FIXTURE_TEST_CASE(testZipperDoesWriteFileToZipFile, FileStructureFixture) 
 }
 
 BOOST_FIXTURE_TEST_CASE(testZipperDoesWriteEncryptedFileToZipFile, FileStructureFixture) {
+    
     zipFiles("test.zip", fnames, "abc");
     int * err = nullptr;
     zip_t * archive = zip_open("test.zip", 0, err);
@@ -55,8 +58,10 @@ BOOST_FIXTURE_TEST_CASE(testZipperDoesWriteEncryptedFileToZipFile, FileStructure
 }
 
 BOOST_AUTO_TEST_CASE(testZipperCanWriteMultipleFiles) {
+    
     std::vector<std::string> fileNames;
     for(int i = 0; i < 26; ++i) {
+    
         fileNames.push_back("test_file_");
         fileNames[i] += ('a' + i);
         std::ofstream writer = std::ofstream(fileNames[i], std::ios::out);
@@ -70,6 +75,7 @@ BOOST_AUTO_TEST_CASE(testZipperCanWriteMultipleFiles) {
     zip_t * archive = zip_open("test.zip", 0, &err);
     BOOST_ASSERT(archive);
     for(std::string fileName : fileNames) {
+    
         zip_file_t * file = zip_fopen(archive, fileName.c_str(), 0);
         BOOST_ASSERT(zip_fclose(file) == 0);
     }
