@@ -6,6 +6,7 @@ A website to generate and distribute puzzles to prospective Lipscomb recruits
 This project assumes the use of g++ to compile the code into an executable. On linux, the command `sudo apt install g++` will suffice to install this.
 
 After installation, copy and paste the following code into a file called `hello.cpp`:
+
 ```cpp
 #include <iostream>
 
@@ -29,6 +30,7 @@ If this works, then g++ has probably been installed correctly.
 We use Boost C++ for the majority of our streams functionality and plan to use it for Regex and many other tasks in the future
 Documentation: https://www.boost.org/doc/libs/1_80_0/
 **Linux**
+
 *Using aptitude*
 In order to get the Boost libraries on linux, run the command `sudo apt-get install libboost-all-dev`
 
@@ -39,6 +41,7 @@ First, acquire the Boost Library from https://www.boost.org/doc/libs/1_63_0/more
 Unzip the library and navigate to the Boost_<version>/ folder and run the commands `./bootstrap.sh ` and `./b2 install` to install.
 
 **Mac (untested)**
+
 *Using Brew*
 `brew install boost` should install the boost libraries needed for this project.
 
@@ -46,5 +49,6 @@ Unzip the library and navigate to the Boost_<version>/ folder and run the comman
 This project uses Libzip as a method for generating ZIP files
 
 Documentation https://libzip.org/documentation/ 
+
 **Linux**
 Run `sudo apt-get install libzip-dev`. Add `-l zip` to your compile command
