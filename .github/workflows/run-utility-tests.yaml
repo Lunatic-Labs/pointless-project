@@ -9,5 +9,6 @@ jobs:
       - run: sudo apt install libboost-all-dev -y; sudo apt install libzip-dev -y;
       - run: |
           cd ${{github.workspace}}
+          mkdir obj
           make obj/UtilityTests.test
       - run: ${{github.workspace}}/obj/UtilityTests.test
