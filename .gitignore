@@ -30,7 +30,8 @@
 *.exe
 *.out
 *.app
+*.test
 
 .vscode/
 testdata/
-secrets/
+secrets/=
