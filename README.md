@@ -53,6 +53,7 @@ Run `sudo apt-get install libzip-dev`. Add `-l zip` to your compile command
 
 ## Testing
 To build a test, run `make obj/<TestModuleName>.test` from the project root. Note, obj should exist in your project root. From this, run `./obj/<TestModuleName>.test` to run the test.
+
 ***Adding an Automated Test Module as a Github Action***: Whenever you write tests, you should automate them so the Github Project runs them whenever code is committed. To do this, edit `.github/workflows` and add `run-<test-module>.yaml` as a file. Note, these files use a different naming convention than cpp files. 
 
 `name` should be set to the name of your test module, capitalize every word and separate by spaces.
