@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 
-int main() {
+int main() 
+{
     
 }
