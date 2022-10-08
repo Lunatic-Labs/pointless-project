@@ -4,8 +4,8 @@
 #include <cassert>
 
 
-#ifndef ZIP
-#define ZIP
+#ifndef ZIP_H
+#define ZIP_H
 
 /**
  * Creates new zip file with outFileName if not exists and compresses every file
