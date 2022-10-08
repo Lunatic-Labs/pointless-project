@@ -4,7 +4,8 @@
 #include "zip/Zipper.h"
 
 // TODO: Implement rollSeed()/
-int Puzzle::rollSeed() {
+int Puzzle::rollSeed() 
+{
     return 0;
 }
 
