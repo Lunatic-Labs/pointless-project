@@ -13,7 +13,7 @@ protected:
     // Methods only should be called once in init()
     int rollSeed();
     virtual void setAnswer() { };
-    virtual std::vector<std::string> generateFiles(std::string containedZipPath) { };
+    virtual std::vector<std::string> generateFiles(std::string containedZipPath) { return {};};
 public:
     std::string init(std::string puzzleName, 
                      std::string containedZipPath,
