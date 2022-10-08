@@ -17,11 +17,11 @@ protected:
 public:
     std::string init(std::string puzzleName, 
                      std::string containedZipPath,
-                     int seed);
+                     int seed=-1);
 
     std::string getAnswer();
 
-    int getseed() { return seed; }
+    int getSeed() { return seed++; }
 };
 
 #endif

@@ -18,7 +18,7 @@ int Puzzle::rollSeed() {
  **/
 std::string Puzzle::init(std::string puzzleName, 
                          std::string containedZipPath,
-                         int seed=-1)
+                         int seed)
 {
     this->seed = (seed == -1) ? rollSeed() : seed;
     setAnswer();

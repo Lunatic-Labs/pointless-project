@@ -10,5 +10,5 @@ jobs:
       - run: |
           cd ${{github.workspace}}
           mkdir obj
-          make obj/UtilityTests.test
+          make test
       - run: ${{github.workspace}}/obj/UtilityTests.test
