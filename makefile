@@ -1,10 +1,12 @@
 CPPFLAGS := -lboost_iostreams -lzip -lboost_unit_test_framework
+DEPS := util/zip/Zipper.cpp util/Puzzle.cpp
 
 
-
-test: tests/UtilityTests.cpp tests/PuzzleTests.cpp
-	g++ tests/PuzzleTests.cpp util/zip/Zipper.cpp util/Puzzle.cpp $(CPPFLAGS) -o obj/PuzzleTests.test
-	g++ tests/UtilityTests.cpp util/zip/Zipper.cpp $(CPPFLAGS) -o obj/UtilityTests.test
-
+test: tests/*
+	for file in $^ ; do \
+		fileNameNoPath=$$(echo $$file | sed 's/tests\///') ; \
+		fileNameNoEnding=$$(echo "$$fileNameNoPath" | sed 's/.cpp//') ; \
+		g++ $$file $(DEPS) $(CPPFLAGS) -o "obj/$$fileNameNoEnding.test" ; \
+	done
 build: PuzzleGen.cpp
 	g++ PuzzleGen.cpp $(CPPFLAGS) -o PuzzleGen.out
