@@ -11,4 +11,4 @@ jobs:
           cd ${{github.workspace}}
           mkdir obj
           make test
-      - run: ${{github.workspace}}/obj/RandomNumberGeneratorTests.test
+      - run: ${{github.workspace}}/obj/RandomNumberGenTests.test
