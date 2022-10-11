@@ -1,5 +1,5 @@
 
-name: Utility Tests
+name: Puzzle Tests
 on: [push]
 jobs:
   Run-Util-Tests:
@@ -11,4 +11,4 @@ jobs:
           cd ${{github.workspace}}
           mkdir obj
           make test
-      - run: ${{github.workspace}}/obj/UtilityTests.test
+      - run: ${{github.workspace}}/obj/PuzzleTests.test
