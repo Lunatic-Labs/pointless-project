@@ -1,5 +1,5 @@
 
-name: Utility Tests
+name: Random Number Tests
 on: [push]
 jobs:
   Run-Util-Tests:
