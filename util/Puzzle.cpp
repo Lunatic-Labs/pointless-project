@@ -6,7 +6,9 @@
 // TODO: Implement rollSeed()/
 int Puzzle::rollSeed() 
 {
-    return 0;
+    long longValue = time(nullptr); 
+    unsigned int seed = static_cast<unsigned int>(longValue);
+    return seed;
 }
 
 /**
