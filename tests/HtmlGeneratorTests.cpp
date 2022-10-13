@@ -3,7 +3,7 @@
 #include <boost/test/unit_test.hpp>
 #include <stdio.h>
 #include <fstream>
-#include "../util/generatorHTML.h"
+#include "../util/HtmlGenerator.h"
 
 BOOST_AUTO_TEST_CASE(testCanGenerateBeCalled) 
 {
@@ -42,3 +42,12 @@ BOOST_AUTO_TEST_CASE(testDoesGeneratePutDescriptionInHtmlFile)
     BOOST_ASSERT(remove(filePath.c_str()) == 0);
 }
 
+BOOST_AUTO_TEST_CASE(testDoesGeneratePutSeedInHtmlFile)
+{
+    std::string filePath = generateHtml("test", "abc", 6578293);
+    std::ifstream file = std::ifstream(filePath);
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    BOOST_ASSERT(buffer.str().find("6578293") != std::string::npos);
+    BOOST_ASSERT(remove(filePath.c_str()) == 0);
+}
