@@ -17,13 +17,15 @@ BOOST_AUTO_TEST_CASE(testGeneratorWorksWithSmallNumbers)
     BOOST_ASSERT(number <= 5);
 }
 
-BOOST_AUTO_TEST_CASE(testGeneratorWorksWithLargeNumbersInversed) {
+BOOST_AUTO_TEST_CASE(testGeneratorWorksWithLargeNumbersInversed) 
+{
     int number = getNum(1000000, -1000000);
     BOOST_ASSERT(number >= -1000000);
     BOOST_ASSERT(number <= 1000000);
 }
 
-BOOST_AUTO_TEST_CASE(testGeneratorWorksWithSmallNumbersInversed) {
+BOOST_AUTO_TEST_CASE(testGeneratorWorksWithSmallNumbersInversed) 
+{
     int number = getNum(5, 0);
     BOOST_ASSERT(number >= 0);
     BOOST_ASSERT(number <= 5);
