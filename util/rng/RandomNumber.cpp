@@ -3,13 +3,12 @@
 #include <ctime>
 #include <cassert>
 
-int getNum(int min, int max){
+int getNum(int min, int max, int seed=-1){
 
     assert(min != max);
     if(min > max) {
-        return getNum(max, min);
+        return getNum(max, min, seed);
     }
-    unsigned int seed = static_cast<unsigned int>(time(nullptr));
     srand(seed);
     
     return rand() % (max - min) + min;

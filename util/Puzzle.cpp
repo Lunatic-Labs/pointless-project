@@ -8,6 +8,7 @@ int Puzzle::rollSeed()
 {
     long longValue = time(nullptr); 
     unsigned int seed = static_cast<unsigned int>(longValue);
+    srand(seed);
     return seed;
 }
 
