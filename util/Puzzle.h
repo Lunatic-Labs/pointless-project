@@ -21,7 +21,7 @@ public:
 
     std::string getAnswer();
 
-    int getSeed() { return seed++; }
+    int getSeed() { srand(seed+1); return seed++; }
 };
 
 #endif
