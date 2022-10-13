@@ -3,7 +3,7 @@
 #include <boost/test/unit_test.hpp>
 #include <stdio.h>
 #include <fstream>
-#include "../util/Generator.h"
+#include "../util/generatorHTML.h"
 
 BOOST_AUTO_TEST_CASE(testCanGenerateBeCalled) 
 {
