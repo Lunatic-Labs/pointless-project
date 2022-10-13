@@ -3,11 +3,9 @@
 #include "Puzzle.h"
 #include "zip/Zipper.h"
 
-// TODO: Implement rollSeed()/
 int Puzzle::rollSeed() 
 {
-    long longValue = time(nullptr); 
-    unsigned int seed = static_cast<unsigned int>(longValue);
+    long seed = (uint) time(nullptr); 
     srand(seed);
     return seed;
 }

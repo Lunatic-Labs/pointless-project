@@ -1,7 +1,7 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE RandomNumberGenTests
 #include <boost/test/unit_test.hpp>
-#include "../util/rng/RandomNumber.cpp"
+#include "../util/rng/RandomNumber.h"
 
 BOOST_AUTO_TEST_CASE(testGeneratorWorksWithLargeNumbers) 
 {
