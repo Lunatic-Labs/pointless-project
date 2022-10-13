@@ -1,5 +1,5 @@
 CPPFLAGS := -lboost_iostreams -lzip -lboost_unit_test_framework
-DEPS := util/zip/Zipper.cpp util/Puzzle.cpp
+DEPS := util/zip/Zipper.cpp util/Puzzle.cpp util/HtmlGenerator.cpp
 
 
 test: tests/*

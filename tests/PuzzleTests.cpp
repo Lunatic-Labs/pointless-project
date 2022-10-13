@@ -6,9 +6,7 @@
 #include <vector>
 #include <string>
 #include <stdio.h>
-#ifndef ZIP_H
 #include "../util/zip/Zipper.h"
-#endif
 
 class PuzzleFixture : public Puzzle 
 {
