@@ -9,4 +9,4 @@ test: tests/*
 		g++ $$file $(DEPS) $(CPPFLAGS) -o "obj/$$fileNameNoEnding.test" ; \
 	done
 build: PuzzleGen.cpp
-	g++ PuzzleGen.cpp $(CPPFLAGS) -o PuzzleGen.out
+	g++ Program.cpp ${DEPS} $(CPPFLAGS) -o PuzzleGen.out
