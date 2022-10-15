@@ -35,3 +35,4 @@
 .vscode/
 testdata/
 secrets/
+.DS_Store

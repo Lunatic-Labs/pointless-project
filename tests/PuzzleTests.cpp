@@ -51,6 +51,12 @@ BOOST_AUTO_TEST_CASE(testCanPuzzleBeInitializedWithNoSeed)
     BOOST_ASSERT(a.init("test3", "test2.zip") == "test3.zip");
 }
 
+BOOST_AUTO_TEST_CASE(testCanSeedBeRolled)
+{
+    PuzzleFixture a = PuzzleFixture();
+    BOOST_ASSERT(rand() != rand());
+}
+
 BOOST_AUTO_TEST_CASE(cleanup)
 {
     remove("hello.txt");
