@@ -1,15 +1,16 @@
 #include "../util/Puzzle.h"
 #include "../util/HtmlGenerator.h"
-class HelloWorld : Puzzle 
+#include <iostream>
+class HelloWorld : public Puzzle
 {
 protected:
-    void setAnswer()
+    void setAnswer() override
     {
         answer = "4";
     }
-    std::vector<std::string> generateFiles(std::string containedZipPath)
+    virtual std::vector<std::string> generateFiles(std::string containedZipPath) override
     {
-        std::string file = generateHtml("Hello, World!", "What is 2+2?", rollSeed());
+        std::string file = generateHtml(name, "What is 2+2?", getSeed());
         return {containedZipPath, file};
     }
 };

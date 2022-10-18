@@ -2,6 +2,7 @@
 #include <vector>
 #include "Puzzle.h"
 #include "zip/Zipper.h"
+#include <iostream>
 
 int Puzzle::rollSeed() 
 {
@@ -24,10 +25,15 @@ std::string Puzzle::init(std::string puzzleName,
 {
     this->seed = (seed == -1) ? rollSeed() : seed;
     setAnswer();
+
     name = puzzleName;
 
     std::vector<std::string> outFiles = generateFiles(containedZipPath);
 
+    for(auto outFile : outFiles)
+        std::cout << outFile << " ";
+    std::cout << "\n";
+    
     zipFiles(puzzleName + ".zip", outFiles, answer);
     return puzzleName + ".zip";
 }
