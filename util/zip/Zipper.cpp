@@ -15,7 +15,6 @@ void zipFiles(std::string outFileName,
     {
         zip_source_t * src = zip_source_file(zipFile, fileNames[i].c_str(), 0, 0);
         zip_add(zipFile, fileNames[i].c_str(), src);
-
         // Encrypt first file added to the zip file
         if(i == 0 && password != "")
             zip_file_set_encryption(zipFile, 0, ZIP_EM_AES_256, password.c_str());

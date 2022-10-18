@@ -1,0 +1,13 @@
+name: Example Puzzle Tests
+on: [push]
+jobs:
+  Run-Util-Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo apt install libboost-all-dev -y; sudo apt install libzip-dev -y;
+      - run: |
+          cd ${{github.workspace}}
+          mkdir obj
+          make test
+      - run: ${{github.workspace}}/obj/ExamplePuzzleTests.test
