@@ -19,9 +19,9 @@ public:
                      std::string containedZipPath,
                      int seed=-1);
 
-    std::string getAnswer();
-
-    int getSeed() { return seed++; }
+    std::string getAnswer() {return answer;}
+    std::string getName() {return name;}
+    int getSeed() { srand(seed+1); return seed++; }
 };
 
 #endif
