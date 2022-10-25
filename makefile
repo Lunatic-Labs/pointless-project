@@ -3,10 +3,10 @@ DEPS := util/zip/Zipper.cpp util/Puzzle.cpp util/HtmlGenerator.cpp
 
 
 test: tests/*
-	for file in $^ ; do \
-		fileNameNoPath=$$(echo $$file | sed 's/tests\///') ; \
-		fileNameNoEnding=$$(echo "$$fileNameNoPath" | sed 's/.cpp//') ; \
-		g++ $$file $(DEPS) $(CPPFLAGS) -o "obj/$$fileNameNoEnding.test" ; \
+	 for file in $^/Users/aldiux/Downloads/Pointless/pointless-project/; do \
+	 	fileNameNoPath=$$(echo $$file | sed 's/tests\///') ; \
+	 	fileNameNoEnding=$$(echo "$$fileNameNoPath" | sed 's/.cpp//') ; \
+		g++ -std=c++11 $$file $(DEPS) $(CPPFLAGS) -o "obj/$$fileNameNoEnding.test" ; \
 	done
 build: PuzzleGen.cpp
-	g++ PuzzleGen.cpp $(CPPFLAGS) -o PuzzleGen.out
+	g++ PuzzleGen.cpp $(CPPFLAGS) -o PuzzleGen.out 
