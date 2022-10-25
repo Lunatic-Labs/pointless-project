@@ -1,4 +1,4 @@
-CPPFLAGS := -lboost_iostreams -lzip -lboost_unit_test_framework
+CPPFLAGS := -I /Users/aldiux/Documents/Boost/boost_1_80_0 -I "/Users/aldiux/Documents/Boost/boost_1_80_0/boost/test" -I /Users/aldiux/Documents/Boost/boost_1_80_0/libs/spirit/classic/test/actor -I /Users/aldiux/Documents/Boost/boost_1_80_0/libs/iostreams -I /Users/aldiux/Documents/homebrew/Cellar/libzip/1.9.2/include -I /Users/aldiux/Documents/Boost/boost_1_80_0/stage/lib/cmake
 DEPS := util/zip/Zipper.cpp util/Puzzle.cpp util/HtmlGenerator.cpp
 
 
