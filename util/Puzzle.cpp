@@ -29,10 +29,6 @@ std::string Puzzle::init(std::string puzzleName,
     name = puzzleName;
 
     std::vector<std::string> outFiles = generateFiles(containedZipPath);
-
-    for(auto outFile : outFiles)
-        std::cout << outFile << " ";
-    std::cout << "\n";
     
     zipFiles(puzzleName + ".zip", outFiles, answer);
     return puzzleName + ".zip";

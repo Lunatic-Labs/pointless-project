@@ -1,6 +1,6 @@
 #include "PuzzleGen.cpp"
 
-int main(int argc, char ** argv)
+int main(int argc, const char ** argv)
 {
     initialize(argc, argv);
 }
