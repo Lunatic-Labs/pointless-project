@@ -1,5 +1,5 @@
-#include "../util/Puzzle.h"
-#include "../util/HtmlGenerator.h"
+#include "../../util/Puzzle.h"
+#include "../../util/HtmlGenerator.h"
 #include <iostream>
 class HelloWorld : public Puzzle
 {

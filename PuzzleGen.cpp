@@ -6,7 +6,8 @@
 #include <string>
 #include <utility>
 #include <memory>
-#include "puzzles/HelloWorld.cpp"
+#include "puzzles/HelloWorld/HelloWorld.cpp"
+#include <unistd.h>
 
 void registerPuzzles(std::stack<std::pair<std::string, Puzzle*>> & puzzles)
 {
@@ -19,6 +20,8 @@ void initialize(int argc, char const* const* argv)
     
     std::stack<std::pair<std::string, Puzzle*>> puzzles;
     registerPuzzles(puzzles);
+
+    chdir("puzzles");
     if (argc == 1)
     {
         std::string prevFile = "congrats.zip";

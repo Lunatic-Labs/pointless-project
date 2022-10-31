@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 #include <zip.h>
-#include "../puzzles/HelloWorld.cpp"
+#include "../puzzles/HelloWorld/HelloWorld.cpp"
 
 BOOST_AUTO_TEST_CASE(testDoAllAttributesOfExamplePuzzleMakeSense)
 {
