@@ -32,7 +32,15 @@ std::string Puzzle::init(std::string puzzleName,
 
     std::vector<std::string> outFiles = generateFiles(containedZipPath);
     
-    zipFiles(puzzleName + ".zip", outFiles, answer);
+    try
+    {
+        zipFiles(puzzleName + ".zip", outFiles, answer);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+
     for(int i = 0; i < outFiles.size(); ++i)
     {
         if(outFiles[i] != "congrats.zip")
