@@ -32,7 +32,6 @@ std::string generateHtml(std::string title, std::string description, long seed)
     while ( footerFile >> d ) footerContent += d;
     footerFile.close();
 
-
     std::string contentConcatenated = headerContent 
                                       + "<h3 style=\"text-align:center\">" 
                                       + title 
