@@ -10,7 +10,7 @@
 BOOST_AUTO_TEST_CASE(testDoAllAttributesOfExamplePuzzleMakeSense)
 {
     HelloWorld testPuzzle = HelloWorld();
-    std::string puzzleFile = testPuzzle.init("Example", "etc/congrats.zip");
+    std::string puzzleFile = testPuzzle.init("Example", "congrats.zip");
     BOOST_ASSERT(testPuzzle.getAnswer() == "4");
     std::unique_ptr<int> errPtr = nullptr;
     zip_t * testPuzzleZip = zip_open(puzzleFile.c_str(), 0, errPtr.get());
