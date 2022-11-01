@@ -16,8 +16,8 @@ void zipFiles(std::string outFileName,
     {
 
         struct stat buffer;
-        if (stat(fileNames[i].c_str(), &buffer) == 0) // File not exists
-            throw(std::runtime_error("Could not open file: File does not exist"));
+        if (stat(fileNames[i].c_str(), &buffer) != 0) // File not exists
+            throw(std::runtime_error("Could not open file: " + fileNames[i] + " File does not exist"));
         
         zip_source_t * src = zip_source_file(zipFile, fileNames[i].c_str(), 0, 0);
         zip_add(zipFile, fileNames[i].c_str(), src);
