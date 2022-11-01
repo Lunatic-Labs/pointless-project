@@ -10,7 +10,15 @@ protected:
     }
     virtual std::vector<std::string> generateFiles(std::string containedZipPath) override
     {
-        std::string file = generateHtml(name, "What is 2+2?", getSeed());
-        return {containedZipPath, file};
+        try 
+        {
+            std::string file = generateHtml(name, "What is 2+2?", getSeed());
+            return {containedZipPath, file};
+        }
+        catch(std::exception e)
+        {
+            std::cerr << e.what();
+            return {};
+        }
     }
 };
