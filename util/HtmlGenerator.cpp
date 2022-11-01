@@ -5,7 +5,7 @@ std::string generateHtml(std::string title, std::string description, long seed)
     // Stores the content of templateHeader into a std::string. 
     char c;
     std::string headerContent;
-    std::ifstream headerFile( "templateHeader.txt" );
+    std::ifstream headerFile( "resources/templateHeader.txt" );
     headerFile >> std::noskipws;
     while ( headerFile >> c )  headerContent += c;
 
@@ -13,7 +13,7 @@ std::string generateHtml(std::string title, std::string description, long seed)
     // Stores the content of templateFooter into a std::string. 
     char d;
     std::string footerContent;
-    std::ifstream footerFile( "templateFooter.txt" );
+    std::ifstream footerFile( "resources/templateFooter.txt" );
     footerFile >> std::noskipws;
     while ( footerFile >> d ) footerContent += d;
     footerFile.close();
