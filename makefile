@@ -1,4 +1,4 @@
-CPPFLAGS := -lboost_iostreams -lzip -lboost_unit_test_framework
+CPPFLAGS := -g -lboost_iostreams -lzip -lboost_unit_test_framework
 DEPS := util/zip/Zipper.cpp util/Puzzle.cpp util/HtmlGenerator.cpp util/rng/RandomNumber.cpp
 
 
@@ -9,4 +9,4 @@ test: tests/*
 		g++ $$file $(DEPS) $(CPPFLAGS) -o "obj/$$fileNameNoEnding.test" ; \
 	done
 build: PuzzleGen.cpp
-	g++ PuzzleGen.cpp $(CPPFLAGS) -o PuzzleGen.out
+	g++ Program.cpp ${DEPS} $(CPPFLAGS) -o PuzzleGen.out
