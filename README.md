@@ -38,7 +38,7 @@ In order to get the Boost libraries on linux, run the command `sudo apt-get inst
 First, acquire the Boost Library from https://www.boost.org/doc/libs/1_63_0/more/getting_started/unix-variants.html
 Unzip the library and navigate to the Boost_<version>/ folder and run the commands `./bootstrap.sh ` and `./b2 install` to install.
 
-**Mac Setup**
+## Mac Setup
 To run this project using a M1 Mac please follow these steps: 
 
 *Using Brew and Rosetta Intel emulator*
