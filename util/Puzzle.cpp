@@ -3,6 +3,7 @@
 #include "Puzzle.h"
 #include "zip/Zipper.h"
 #include <iostream>
+#include <unistd.h>
 
 int Puzzle::rollSeed() 
 {
@@ -23,6 +24,7 @@ std::string Puzzle::init(std::string puzzleName,
                          std::string containedZipPath,
                          int seed)
 {
+
     this->seed = (seed == -1) ? rollSeed() : seed;
     setAnswer();
 
@@ -30,6 +32,19 @@ std::string Puzzle::init(std::string puzzleName,
 
     std::vector<std::string> outFiles = generateFiles(containedZipPath);
     
-    zipFiles(puzzleName + ".zip", outFiles, answer);
+    try
+    {
+        zipFiles(puzzleName + ".zip", outFiles, answer);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+
+    for(int i = 0; i < outFiles.size(); ++i)
+    {
+        if(outFiles[i] != "congrats.zip")
+            remove(outFiles[i].c_str());
+    }
     return puzzleName + ".zip";
 }

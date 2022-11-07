@@ -29,8 +29,16 @@ BOOST_AUTO_TEST_CASE(setup)
     std::ofstream out("congrats.txt");
     out << "Woo! You completed the puzzle!";
     out.close();
+    try
+    {
+        zipFiles("congrats.zip", {"congrats.txt"});
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
     
-    zipFiles("congrats.zip", {"congrats.txt"});
+    
 }
 
 BOOST_AUTO_TEST_CASE(testCanPuzzleBeInitialized) 

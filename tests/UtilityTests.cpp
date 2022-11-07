@@ -26,19 +26,41 @@ struct FileStructureFixture
 
 BOOST_FIXTURE_TEST_CASE(testZipperDoesCreateZipFile, FileStructureFixture) 
 {
-    zipFiles("test.zip", fileNames);
-    BOOST_ASSERT(remove("test.zip") == 0);
+    try
+    {
+        zipFiles("test.zip", fileNames);
+        BOOST_ASSERT(remove("test.zip") == 0);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        BOOST_ASSERT(false);
+    }
 }
 
 BOOST_FIXTURE_TEST_CASE(testZipperDoesCreateZipFileWithPassword, FileStructureFixture) 
 {
-    zipFiles("test.zip", fileNames, "abcdef");
+    try 
+    {
+        zipFiles("test.zip", fileNames, "abcdef");
+    }
+    catch(const std::exception & err)
+    {
+        std::cerr << err.what() << "\n";
+    }
     BOOST_ASSERT(remove("test.zip") == 0);
 }
 
 BOOST_FIXTURE_TEST_CASE(testZipperDoesWriteFileToZipFile, FileStructureFixture) 
 {
-    zipFiles("test.zip", fileNames);
+    try 
+    {
+        zipFiles("test.zip", fileNames);
+    }
+    catch(const std::exception & err)
+    {
+        std::cerr << err.what() << "\n";
+    }
     int * err = nullptr;
     zip_t * archive = zip_open("test.zip", 0, err);
     
@@ -48,7 +70,15 @@ BOOST_FIXTURE_TEST_CASE(testZipperDoesWriteFileToZipFile, FileStructureFixture)
 
 BOOST_FIXTURE_TEST_CASE(testZipperDoesWriteEncryptedFileToZipFile, FileStructureFixture) 
 {
-    zipFiles("test.zip", fileNames, "abc");
+    try 
+    {
+        zipFiles("test.zip", fileNames, "abc");
+    }
+    catch(const std::exception & err)
+    {
+        std::cerr << err.what() << "\n";
+    }
+    
     int * err = nullptr;
     zip_t * archive = zip_open("test.zip", 0, err);
     
@@ -70,7 +100,14 @@ BOOST_AUTO_TEST_CASE(testZipperCanWriteMultipleFiles)
         writer.close();
     }
 
-    zipFiles("test.zip", fileNames);
+    try 
+    {
+        zipFiles("test.zip", fileNames);
+    }
+    catch(const std::exception & err)
+    {
+        std::cerr << err.what() << "\n";
+    }
     int err = 0;
     zip_t * archive = zip_open("test.zip", 0, &err);
     BOOST_ASSERT(archive);
