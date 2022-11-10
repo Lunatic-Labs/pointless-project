@@ -38,10 +38,33 @@ In order to get the Boost libraries on linux, run the command `sudo apt-get inst
 First, acquire the Boost Library from https://www.boost.org/doc/libs/1_63_0/more/getting_started/unix-variants.html
 Unzip the library and navigate to the Boost_<version>/ folder and run the commands `./bootstrap.sh ` and `./b2 install` to install.
 
-**Mac (untested)**
+## Mac Setup
+To run this project using a M1 Mac please follow these steps: 
 
-*Using Brew*
-`brew install boost` should install the boost libraries needed for this project.
+*Using Brew and Rosetta Intel emulator*
+Before installing Homebrew you will need to install Rosetta2 emulator for the new ARM silicon (M1 chip). Install Rosetta2 via terminal using:
+`/usr/sbin/softwareupdate --install-rosetta --agree-to-license`
+This will install rosetta2 with no extra button clicks.
+
+After installing Rosetta2 above you can then use the Homebrew cmd and install Homebrew for ARM M1 chip.
+`arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
+
+Once Homebrew for M1 ARM is installed use this Homebrew command to install packages: 
+
+Boost library:
+`arch -x86_64 brew install boost`
+
+Zlib: 
+`arch -x86_64 brew install zlib`
+
+Libzip: 
+`arch -x86_64 brew install libzip`
+
+To run this project make sure that `/usr/local/` contains the library installed above. 
+
+Open your text editor (VScode preferably) and open a new terminal. 
+Run `arch -x86_64 zsh` to open a Rosetta shell first. Then run make test or make build to proceed. 
+
 
 ## Libzip
 This project uses Libzip as a method for generating ZIP files
