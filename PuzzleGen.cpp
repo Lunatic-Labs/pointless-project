@@ -7,11 +7,13 @@
 #include <utility>
 #include <memory>
 #include "puzzles/HelloWorld/HelloWorld.cpp"
+#include "puzzles/Colors/ColorPuzzle.cpp"
 #include <unistd.h>
 
 void registerPuzzles(std::stack<std::pair<std::string, Puzzle*>> & puzzles)
 {
     // Puzzles will be registered here
+    puzzles.push(std::make_pair(std::string("Read.Me"), new ColorPuzzle()));
     puzzles.push(std::make_pair(std::string("Hello World"), new HelloWorld()));
 } 
 
