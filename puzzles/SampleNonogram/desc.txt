@@ -1,1 +1,3 @@
-Nonograms are grid based logic puzzles. 
+Nonograms are grid based logic puzzles. Bordering this grid are numbers representing series of cells needing to be filled in that row/column.
+Each row/column may contain multiple series. In this case, each series of filled cells must correspond to the numbers presentened respectively and each series must be separated by at least one space.
+Many common strategies for solving nonograms exist such as overlapping, spreading, and forcing. More information can be inquired about these strategies using online resources.

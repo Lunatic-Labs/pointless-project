@@ -6,7 +6,7 @@ class ColorPuzzle : public Puzzle {
 public:
     void setAnswer() override
     {
-        
+        answer = "e";
     }
     virtual std::vector<std::string> generateFiles(std::string containedZipPath) override
     {
