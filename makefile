@@ -1,5 +1,5 @@
-CPPFLAGS := -g -lboost_iostreams -lzip -lboost_unit_test_framework
-DEPS := util/zip/Zipper.cpp util/Puzzle.cpp util/HtmlGenerator.cpp util/rng/RandomNumber.cpp
+CPPFLAGS := -g -lcurl -lboost_iostreams -lzip -lboost_unit_test_framework
+DEPS := util/json/WebScraper.cpp util/zip/Zipper.cpp util/Puzzle.cpp util/HtmlGenerator.cpp util/rng/RandomNumber.cpp
 
 
 test: tests/*
