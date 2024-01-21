@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <sstream>
+#include <sys/stat.h>
 #include <iostream>
 #include <string>
 #include <vector>

@@ -10,7 +10,79 @@
 
 #include "./include/utils.h"
 
-void generate_file(std::string output_filepath, std::string output_body)
+std::string utils_generate_html(std::string title, std::string description, long seed)
+{
+  // Stores the content of template_header into a std::string.
+  char c;
+  std::string header_content;
+  std::string header_path = "./resources/template-header.txt";
+
+  struct stat buf;
+  if(stat(header_path.c_str(), &buf) != 0) {
+    std::cerr << "Can not open " + header_path + ": No such file" << std::endl;
+    throw("Can not open " + header_path + ": No such file");
+  }
+
+  std::ifstream header_file(header_path);
+
+  header_file >> std::noskipws;
+  while ( header_file >> c ) {
+    header_content += c;
+  }
+
+  header_file.close();
+
+  // Stores the content of template_footer into a std::string.
+  char d;
+  std::string footer_content;
+
+  std::string footer_path = "./resources/template-footer.txt";
+
+  if(stat(footer_path.c_str(), &buf) != 0) {
+    throw("Can not open " + footer_path + ": No such file");
+  }
+
+  std::ifstream footer_file(footer_path);
+  footer_file >> std::noskipws;
+  while (footer_file >> d) {
+    footer_content += d;
+  }
+  footer_file.close();
+
+  std::string content_concatenated = header_content
+    + "<h3 style=\"text-align:center\">"
+    + title
+    + "</h3>"
+    + "<p style=\"text-align:center\">"
+    + description
+    + "</p>"
+    + footer_content;
+
+  std::string template_seed = std::to_string(seed)
+    + "</div>\n"
+    + "</div>\n"
+    + "</div>\n"
+    + "</body>\n"
+    + "</html>\n";
+
+  return content_concatenated;
+}
+
+std::string utils_file_to_str(const std::string filepath)
+{
+  std::ifstream file(filepath);
+  if (!file.is_open()) {
+    std::cerr << "Error opening file: " << filepath << std::endl;
+    std::exit(EXIT_FAILURE);
+  }
+  std::stringstream buf;
+  buf << file.rdbuf();
+  std::string contents = buf.str();
+  file.close();
+  return contents;
+}
+
+void utils_generate_file(std::string output_filepath, std::string output_body)
 {
   std::ofstream outfp(output_filepath);
   outfp << output_body;
@@ -85,9 +157,9 @@ strvec_t utils_walkdir(const std::string &path)
   }
 
   for (const auto &entry : std::filesystem::directory_iterator(path)) {
-    if (std::filesystem::is_regular_file(entry.path())) {
+    if (std::filesystem::is_regular_file(entry.path()) && entry.path().filename().string()[0] != '.') {
       file_paths.push_back(entry.path());
-    } else if (std::filesystem::is_directory(entry.path())) {
+    } else if (std::filesystem::is_directory(entry.path()) && entry.path().filename().string()[0] != '.') {
       strvec_t sub_dir = utils_walkdir(entry.path());
       file_paths.insert(file_paths.end(), sub_dir.begin(), sub_dir.end());
     }
