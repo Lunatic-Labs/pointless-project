@@ -1,0 +1,77 @@
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE PuzzleTests
+#include <boost/test/unit_test.hpp>
+#include <fstream>
+#include "../util/Puzzle.h"
+#include <vector>
+#include <string>
+#include <stdio.h>
+#include "../util/zip/Zipper.h"
+
+class PuzzleFixture : public Puzzle 
+{
+protected:
+    void set_answer() 
+    {
+        answer = "abc123";
+    }
+    std::vector<std::string> generate_files(std::string contained_zip_path)
+    {
+        std::ofstream out("hello.txt");
+        out << "Hi! The seed to this puzzle is " << get_seed();
+        out.close();
+        return {contained_zip_path, "hello.txt"};
+    }
+};
+
+BOOST_AUTO_TEST_CASE(setup) 
+{
+    std::ofstream out("congrats.txt");
+    out << "Woo! You completed the puzzle!";
+    out.close();
+    try
+    {
+        zip_files("congrats.zip", {"congrats.txt"});
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
+    
+}
+
+BOOST_AUTO_TEST_CASE(test_can_puzzle_be_initialized) 
+{
+    PuzzleFixture a = PuzzleFixture();
+    BOOST_ASSERT(a.init("test", "congrats.zip", 0) == "test.zip");
+}
+
+BOOST_AUTO_TEST_CASE(test_can_puzzle_be_initialized_with_previous_zip_file)
+{
+    PuzzleFixture a = PuzzleFixture();
+    BOOST_ASSERT(a.init("test2", "test.zip", 0) == "test2.zip");
+}
+
+BOOST_AUTO_TEST_CASE(test_can_puzzle_be_initialized_with_no_seed) 
+{
+    PuzzleFixture a = PuzzleFixture();
+    BOOST_ASSERT(a.init("test3", "test2.zip") == "test3.zip");
+}
+
+BOOST_AUTO_TEST_CASE(test_can_seed_be_rolled)
+{
+    PuzzleFixture a = PuzzleFixture();
+    BOOST_ASSERT(rand() != rand());
+}
+
+BOOST_AUTO_TEST_CASE(cleanup)
+{
+    remove("hello.txt");
+    remove("congrats.txt");
+    remove("congrats.zip");
+    remove("test.zip");
+    remove("test2.zip");
+    remove("test3.zip");
+    remove("test4.zip");
+}
