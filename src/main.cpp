@@ -32,6 +32,7 @@ int roll_seed(void)
 
 void create_final_zipfile(const std::vector<Puzzle> &puzzles)
 {
+  const char *zipdir = "zipfiles/puzzle";
   int i = puzzles.size();
 
   // Need to go in reverse order to zip the files correctly.
@@ -40,9 +41,9 @@ void create_final_zipfile(const std::vector<Puzzle> &puzzles)
 
     // Adds the next level of zipped puzzle (technically the previous one beause reverse order)
     if(puzzle != puzzles.rbegin()) {
-      files.insert(files.begin(), "./puzzle" + std::to_string(i + 1) + ".zip");
+      files.insert(files.begin(), zipdir + std::to_string(i + 1) + ".zip");
     }
-    zip_files(std::string("puzzle" + std::to_string(i) + ".zip"), files, puzzle->password);
+    zip_files(std::string(zipdir + std::to_string(i) + ".zip"), files, puzzle->password);
   }
 }
 
@@ -54,6 +55,7 @@ int main(void)
   puzzles.push_back(construct_puzzle1(glbl_seed));
   puzzles.push_back(construct_puzzle2(glbl_seed));
   puzzles.push_back(construct_puzzle3(glbl_seed));
+  puzzles.push_back(construct_puzzle4(glbl_seed));
   create_final_zipfile(puzzles);
 
   return 0;

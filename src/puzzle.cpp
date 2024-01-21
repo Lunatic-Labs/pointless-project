@@ -19,5 +19,11 @@ Puzzle construct_puzzle2(long seed)
 Puzzle construct_puzzle3(long seed)
 {
   (void)seed;
-  return Puzzle{"puzzle3", ""};
+  return Puzzle{"puzzle3", "3"};
+}
+
+Puzzle construct_puzzle4(long seed)
+{
+  (void)seed;
+  return Puzzle{"puzzle4", ""};
 }

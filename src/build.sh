@@ -8,7 +8,7 @@ CXXDEPS="html-generator.cpp ./utils.cpp ./puzzle.cpp"
 
 if [ "$1" == "c" ];
 then
-  rm -rf main *.zip
+  rm -rf main *.zip ./zipfiles/*
 elif [ "$1" == "a" ];
 then
   ./build.sh c

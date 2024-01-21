@@ -16,7 +16,7 @@ int rng_roll(int min, int max, long seed)
 
   assert(min != max);
   if(min > max) {
-    return get_num(max, min, seed);
+    return rng_roll(max, min, seed);
   }
 
   return rand() % (max - min) + min;
@@ -47,11 +47,12 @@ void zip_files(std::string out_file_name,
       throw(std::runtime_error("Could not open file: " + file_names[i] + " File does not exist"));
     }
 
+    zip_source_t *src = zip_source_file(zip_file, file_names[i].c_str(), 0, 0);
+    
     // Strip the path from the file name (only the top most path).
     std::string::size_type pos = file_names[i].find('/');
     std::string stripped_filename = file_names[i].substr(pos + 1);
 
-    zip_source_t *src = zip_source_file(zip_file, file_names[i].c_str(), 0, 0);
     zip_add(zip_file, stripped_filename.c_str(), src);
 
     if (!i && !password.empty()) {

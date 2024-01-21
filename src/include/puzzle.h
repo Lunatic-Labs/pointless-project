@@ -12,5 +12,6 @@ struct Puzzle {
 Puzzle construct_puzzle1(long seed);
 Puzzle construct_puzzle2(long seed);
 Puzzle construct_puzzle3(long seed);
+Puzzle construct_puzzle4(long seed);
 
 #endif // PUZZLE_H

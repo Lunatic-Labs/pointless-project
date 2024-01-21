@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-int get_num(int min, int max, int seed=-1);
+int rng_roll(int min, int max, long seed);
 
 std::vector<std::string> walkdir(const std::string& path);
 
