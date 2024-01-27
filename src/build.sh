@@ -4,7 +4,7 @@ set -xe
 
 CXXFLAGS="-ggdb -pedantic -std=c++20 -Wextra -Wall -o main"
 CXXLINKS="-lboost_iostreams -lzip -lboost_unit_test_framework"
-CXXDEPS="./utils.cpp ./puzzle.cpp"
+CXXDEPS="./utils.cpp ./puzzle.cpp ./graphics.cpp"
 
 if [ "$1" == "c" ];
 then

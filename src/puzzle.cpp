@@ -4,6 +4,7 @@
 
 #include "./include/utils.h"
 #include "./include/puzzle.h"
+#include "./include/graphics.h"
 
 #define BOLD(s) "<b>" + (s) + "</b>"
 
@@ -36,6 +37,12 @@ Puzzle puzzle_create3(long seed)
   std::string description = utils_file_to_str("./puzzle3/.desc.txt");
   std::string html_content = utils_generate_html("Maze Puzzle", description, seed);
   utils_generate_file("./puzzle3/instructions.html", html_content);
+  Image img = Image {2,2};
+  img(0, 0) = Pixel {0, 0, 0};
+  img(0, 1) = Pixel {0, 0, 0};
+  img(1, 0) = Pixel {255, 255, 255};
+  img(1, 1) = Pixel {255, 255, 255};
+  graphics_create_ppm(img, "./puzzle3/maze.ppm");
   return Puzzle{"puzzle3", "uru6r3u3ld"};
 }
 
