@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include "./include/maze-puzzle.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"

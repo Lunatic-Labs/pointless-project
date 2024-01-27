@@ -98,7 +98,7 @@ int utils_rng_roll(int min, int max, long seed)
     return utils_rng_roll(max, min, seed);
   }
 
-  return rand() % (max - min) + min;
+  return rand() % (max - min + 1) + min;
 }
 
 int utils_roll_seed(void)

@@ -1,11 +1,4 @@
 Congratulations on completing the first puzzle! You have been 0 points. This is a major accomplishment! You are now ready to move on to the next puzzle.
 
-<b>What are the <a href="https://en.wikipedia.org/wiki/Web_colors">hex values</a> values for the Lipsomb Colors?</b>
-
-<ul style="display: inline-block; float: right; margin-right: 50%">
-    <li>12-character sequence,</li>
-    <li>hexadecimal color codes,</li>
-    <li>two primary colors, and</li>
-    <li>uppercase letters.</li>
-    <li>darker color first.</li>
-</ul>
+Lipscombs team colors are purple and gold,
+<p><b>what is the <a href="https://en.wikipedia.org/wiki/Web_colors">hex value</a> of lipscomb's color:</b> 

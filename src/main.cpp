@@ -34,14 +34,6 @@ void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
   }
 }
 
-void usage(const char *prog_name) 
-{
-  std::printf("Usage: %s [OPTIONS]...\n", prog_name);
-  std::printf("  -h, --help    Print this help message and exit.\n");
-  std::printf("  -c, --clean   Cleans the generated files.\n");
-  std::exit(EXIT_FAILURE);
-}
-
 int main(void)
 {
   long seed = utils_roll_seed();
