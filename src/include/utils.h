@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#define BOLD(s) "<b>" + (s) + "</b>"
+
 typedef std::vector<std::string> strvec_t;
 
 std::string utils_generate_html(std::string title, std::string description, long seed);

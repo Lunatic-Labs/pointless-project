@@ -4,7 +4,7 @@ set -xe
 
 CXXFLAGS="-ggdb -pedantic -std=c++20 -Wextra -Wall -o main"
 CXXLINKS="-lboost_iostreams -lzip -lboost_unit_test_framework"
-CXXDEPS="./utils.cpp ./puzzle.cpp ./graphics.cpp"
+CXXDEPS="./*.cpp"
 
 if [ "$1" == "c" ];
 then
@@ -12,7 +12,7 @@ then
 elif [ "$1" == "a" ];
 then
   ./build.sh c
-  g++ $CXXFLAGS $CXXDEPS main.cpp $CXXLINKS
+  g++ $CXXFLAGS $CXXDEPS $CXXLINKS
 else
-  g++ $CXXFLAGS $CXXDEPS main.cpp $CXXLINKS
+  g++ $CXXFLAGS $CXXDEPS $CXXLINKS
 fi

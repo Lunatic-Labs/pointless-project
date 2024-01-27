@@ -12,6 +12,10 @@
 #include "./include/html-generator.h"
 #include "./include/utils.h"
 #include "./include/puzzle.h"
+#include "./include/math-puzzle.h"
+#include "./include/color-puzzle.h"
+#include "./include/maze-puzzle.h"
+#include "./include/fin-puzzle.h"
 
 void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
 {
@@ -30,15 +34,23 @@ void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
   }
 }
 
+void usage(const char *prog_name) 
+{
+  std::printf("Usage: %s [OPTIONS]...\n", prog_name);
+  std::printf("  -h, --help    Print this help message and exit.\n");
+  std::printf("  -c, --clean   Cleans the generated files.\n");
+  std::exit(EXIT_FAILURE);
+}
+
 int main(void)
 {
   long seed = utils_roll_seed();
 
   std::vector<Puzzle> puzzles = {
-    puzzle_create1(seed),
-    puzzle_create2(seed),
-    puzzle_create3(seed),
-    puzzle_create4(seed),
+    math_puzzle_create(seed),
+    color_puzzle_create(seed),
+    maze_puzzle_create(seed),
+    fin_puzzle_create(seed),
   };
 
   create_nested_zipfiles(puzzles);
