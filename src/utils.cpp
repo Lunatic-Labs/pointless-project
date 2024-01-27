@@ -101,6 +101,13 @@ int utils_rng_roll(int min, int max, long seed)
   return rand() % (max - min) + min;
 }
 
+int utils_roll_seed(void)
+{
+  long seed = (uint)time(nullptr);
+  srand(seed);
+  return seed;
+}
+
 // Description:
 //   Zips a vector of files into a single zip file.
 // Parameters:

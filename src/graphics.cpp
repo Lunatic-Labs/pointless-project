@@ -1,3 +1,4 @@
+#include <cassert>
 #include <cstdlib>
 #include <stdint.h>
 #include <vector>
@@ -37,4 +38,22 @@ void graphics_create_ppm(Image &img, const char *filepath)
   }
 
   std::fclose(fp);
+}
+
+Image graphics_scale_ppm(Image &img, size_t scale)
+{
+  assert(scale != 0);
+  Image scaled_img = Image {img.height*scale, img.width*scale};
+
+  for (size_t i = 0; i < img.height; i++) {
+    for (size_t j = 0; j < img.width; j++) {
+      Pixel &color = img(i, j);
+      for (size_t k = 0; k < scale; k++) {
+        for (size_t l = 0; l < scale; l++) {
+          scaled_img(i*scale+k, j*scale+l) = color;
+        }
+      }
+    }
+  }
+  return scaled_img;
 }

@@ -16,10 +16,9 @@ struct Image {
   size_t width;
   size_t height;
   std::vector<Pixel> pixels;
-  
-  inline Image(size_t width, size_t height)
-    : width(width), height(height), pixels(width*height) {}
-  
+
+  inline Image(size_t w, size_t h) : width(w), height(h), pixels(w*h) {}
+
   inline Pixel &operator()(size_t i, size_t j)
   {
     return pixels[i*width+j];
@@ -27,6 +26,6 @@ struct Image {
 };
 
 void graphics_create_ppm(Image &img, const char *filepath);
-
+Image graphics_scale_ppm(Image &img, size_t scale);
 
 #endif // GRAPHICS_H
