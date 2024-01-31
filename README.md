@@ -27,7 +27,7 @@ arch -x86_64 brew install zlib
 arch -x86_64 brew install libzip
 ```
 
-_See how to install the bost library below_
+**See how to install the bost library below**
 
 *Using Brew and Rosetta Intel emulator*
 
@@ -73,17 +73,20 @@ then that file will be added to the final zipped version of it.
 
 ## Future Puzzle Ideas
 
+### Hex Puzzle
+- Comes after the color puzzle
+- Uses the previous color hex value
+- Hex math?
+
 ### TODO Map Puzzle
 - https://www.lipscomb.edu/sites/default/files/2021-11/UMAR-21-030%20-%20Campus%20Map%20-%20FINAL.pdf
+- Single QR code
+- Randomly mess it up and have the user fix it
 
 ### Color Puzzle
 - Change the answer so it does not have to be concatenated
 - Randomly select 1 index from each of the colors
 - Answer is the sum of the two
-
-### QR Puzzle
-- Single QR code
-- Randomly mess it up and have the user fix it
 
 ### Maze Puzzle
 - PPM Generation
@@ -96,6 +99,6 @@ then that file will be added to the final zipped version of it.
     2. The start and end must be at opposite corners.
     3. The solution must contains compression (all duplicate letters must be in compressed)
 
-### Meta Final Puzzle
+### Final Meta Puzzle
 - Hidden messages/symbols in previous instructions.
 - Must find these to complete final puzzle
