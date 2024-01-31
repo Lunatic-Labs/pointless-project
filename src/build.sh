@@ -8,7 +8,7 @@ CXXDEPS="./*.cpp"
 
 if [ "$1" == "c" ];
 then
-  echo "Cleaning up..."
+  echo "Cleaning..."
   rm -rf main *.zip ./zipfiles/*
   rm ./files*/instructions.html
 elif [ "$1" == "a" ];
@@ -22,5 +22,6 @@ then
   ./main
 else
   echo "Building..."
+  mkdir -p ./zipfiles
   g++ $CXXFLAGS $CXXDEPS $CXXLINKS
 fi

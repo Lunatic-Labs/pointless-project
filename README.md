@@ -30,6 +30,7 @@ arch -x86_64 brew install libzip
 *see how to install the bost library below*
 
 *Using Brew and Rosetta Intel emulator*
+
 Before installing Homebrew you will need to install Rosetta2 emulator for the new ARM silicon (M1 chip). Install Rosetta2 via terminal using:
 `/usr/sbin/softwareupdate --install-rosetta --agree-to-license`
 
@@ -41,8 +42,6 @@ Once Homebrew for M1 ARM is installed use this Homebrew command to install packa
 Boost library:
 `arch -x86_64 brew install boost`
 
-*MacOS*
-```arch -x86_64 brew install libzip```
 
 # Building
 ```
@@ -73,3 +72,31 @@ dotfiles/hidden directories. It will also explore any subdirectories that is ins
 of the puzzle directory that you have created. If any of the files are not prefixed with `.`,
 then that file will be added to the final zipped version of it.
 
+## Future Puzzle Ideas
+
+* TODO Map Puzzle
+- https://www.lipscomb.edu/sites/default/files/2021-11/UMAR-21-030%20-%20Campus%20Map%20-%20FINAL.pdf
+
+* Color Puzzle
+- Change the answer so it does not have to be concatenated
+- Randomly select 1 index from each of the colors
+- Answer is the sum of the two
+
+* QR Puzzle
+- Single QR code
+- Randomly mess it up and have the user fix it
+
+* Maze Puzzle
+- PPM Generation
+- Only 1 shortest path
+- Multiple paths
+- Final solution
+- Generate 8x8 (or maybe 10x10) maze
+  - Constraints:
+    1. Must have multiple paths, but only 1 shortest path.
+    2. The start and end must be at opposite corners.
+    3. The solution must contains compression (all duplicate letters must be in compressed)
+
+* Meta Final Puzzle
+- Hidden messages/symbols in previous instructions.
+- Must find these to complete final puzzle
