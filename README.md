@@ -27,7 +27,7 @@ arch -x86_64 brew install zlib
 arch -x86_64 brew install libzip
 ```
 
-*see how to install the bost library below*
+_See how to install the bost library below_
 
 *Using Brew and Rosetta Intel emulator*
 
@@ -41,7 +41,6 @@ Once Homebrew for M1 ARM is installed use this Homebrew command to install packa
 
 Boost library:
 `arch -x86_64 brew install boost`
-
 
 # Building
 ```
@@ -74,19 +73,19 @@ then that file will be added to the final zipped version of it.
 
 ## Future Puzzle Ideas
 
-* TODO Map Puzzle
+### TODO Map Puzzle
 - https://www.lipscomb.edu/sites/default/files/2021-11/UMAR-21-030%20-%20Campus%20Map%20-%20FINAL.pdf
 
-* Color Puzzle
+### Color Puzzle
 - Change the answer so it does not have to be concatenated
 - Randomly select 1 index from each of the colors
 - Answer is the sum of the two
 
-* QR Puzzle
+### QR Puzzle
 - Single QR code
 - Randomly mess it up and have the user fix it
 
-* Maze Puzzle
+### Maze Puzzle
 - PPM Generation
 - Only 1 shortest path
 - Multiple paths
@@ -97,6 +96,6 @@ then that file will be added to the final zipped version of it.
     2. The start and end must be at opposite corners.
     3. The solution must contains compression (all duplicate letters must be in compressed)
 
-* Meta Final Puzzle
+### Meta Final Puzzle
 - Hidden messages/symbols in previous instructions.
 - Must find these to complete final puzzle
