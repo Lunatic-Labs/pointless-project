@@ -1,26 +1,40 @@
+#include <array>
+
 #include "maze.h"
 
-//construct cell
-Cell::Cell(int x, int y) : walls{true,true,true,true} {
-    this->coords[0] = x; //row
-    this->coords[1] = y; //col
-    this->visited = false;
+Cell::Cell() {
+    this->x = 10;
+    this->y = 10;
+    this->walls = {true, true, true, true};
+    this->visited =  false;
+    this->neighbors = {};
 }
 
-void Cell::findNeighbors(Cell &cell, const Grid &grid) {
-    if (cell.coords[0]  > 0) {
-        cell.neighbors.push_back(grid[(cell.coords[0] - 1)]);
+Cell::Cell(int rows, int cols) {
+    this->x = rows;
+    this->y = cols;
+    this->walls = {true, true, true, true};
+    this->visited =  false;
+    this->neighbors = {};
+}
+
+int Cell::getRow() { return this->x; }
+
+int Cell::getColumn() { return this->y;}
+
+bool Cell::getVisited() { return this->visited;}
+
+void Cell::findNeighbors(const std::vector<Cell> &grid) {
+    if (this->x > 0) {
+        this->neighbors.push_back(grid[((this->x - 1) * 10 + this->y)]);
     }
-}
-
-//construct grid of cells
-Grid::Grid(int rows, int cols) {
-    this->grid = (Cell *)malloc((rows * cols) * sizeof(Cell));
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            Cell c{i,j};
-            grid = &c;
-            grid++;
-        }
+    if (this->y < 10 - 1) {
+        this->neighbors.push_back(grid[this->x * 10 + (this->y + 1)]);
+    }
+    if (this->x < 10 - 1) {
+        this->neighbors.push_back(grid[(this->x + 1) * 10 + this->y]);
+    }
+    if (this->y > 0) {
+        this->neighbors.push_back(grid[this->x * 10 + (this->y - 1)]);
     }
 }
