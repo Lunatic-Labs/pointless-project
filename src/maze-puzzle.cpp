@@ -11,8 +11,7 @@
 
 Puzzle maze_puzzle_create(long seed)
 {
-  std::string description = utils_file_to_str("./files-maze/.desc.txt");
-  std::string html_content = utils_generate_html("Maze Puzzle", description, seed);
+  std::string html_content = utils_html_printf("Maze Puzzle", "./files-maze/.desc.txt", {});
   utils_generate_file("./files-maze/instructions.html", html_content);
 
   int s = MAZE_SIZE;
