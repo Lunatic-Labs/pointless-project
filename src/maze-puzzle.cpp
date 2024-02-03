@@ -1,7 +1,10 @@
-#include "./include/maze-puzzle.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 #include "./include/graphics.h"
+
+#define MAZE_WALL ({0,0,0})
+#define MAZE_PATH ({255,255,255})
+#define MAZE_SIZE 16
 
 // void force_unique_shortest_path(Image &img)
 // {
@@ -23,8 +26,8 @@ Puzzle maze_puzzle_create(long seed)
   }
 
   for(int i = 0; i < s; i++) {
-    img(i, utils_rng_roll(0,s-1,seed+i)) = Pixel MAZE_PATH;
-    img(i, utils_rng_roll(0,s-1,seed+i*s)) = Pixel MAZE_PATH;
+    img(i, utils_rng_roll(0,s-1,seed)) = Pixel MAZE_PATH;
+    img(i, utils_rng_roll(0,s-1,seed)) = Pixel MAZE_PATH;
   }
 
   img(0, 0) = Pixel {255, 0, 255};

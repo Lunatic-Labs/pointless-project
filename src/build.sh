@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 CXXFLAGS="-ggdb -pedantic -std=c++20 -Wextra -Wall -o main"
 CXXLINKS="-lboost_iostreams -lzip -lboost_unit_test_framework"
 CXXDEPS="./*.cpp"

@@ -10,7 +10,7 @@ typedef std::vector<std::string> strvec_t;
 typedef const std::string filepath_t;
 
 void utils_generate_file(filepath_t, std::string output_body);
-int utils_rng_roll(int min, int max, long seed);
+int utils_rng_roll(int min, int max, long &seed);
 int utils_roll_seed(void);
 strvec_t utils_walkdir(filepath_t path);
 void utils_zip_files(std::string out_file_name, strvec_t file_names, std::string password="");

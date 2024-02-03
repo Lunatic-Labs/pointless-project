@@ -12,10 +12,6 @@
 #include "./include/html-generator.h"
 #include "./include/utils.h"
 #include "./include/puzzle.h"
-#include "./include/math-puzzle.h"
-#include "./include/color-puzzle.h"
-#include "./include/maze-puzzle.h"
-#include "./include/fin-puzzle.h"
 
 void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
 {
@@ -42,6 +38,7 @@ int main(void)
     math_puzzle_create(seed),
     color_puzzle_create(seed),
     maze_puzzle_create(seed),
+    encrypt_puzzle_create(seed),
     fin_puzzle_create(seed),
   };
 

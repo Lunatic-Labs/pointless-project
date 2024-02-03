@@ -1,5 +1,5 @@
 #include <iostream> // TODO: rem
-#include "./include/math-puzzle.h"
+#include "./include/puzzle.h"
 #include "./include/utils.h"
 
 Puzzle math_puzzle_create(long seed)

@@ -1,5 +1,5 @@
+#include "./include/puzzle.h"
 #include "./include/utils.h"
-#include "./include/color-puzzle.h"
 
 Puzzle color_puzzle_create(long seed)
 {
