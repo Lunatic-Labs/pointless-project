@@ -61,6 +61,10 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
   char *it = &desc_content[0];
   while (*it) {
     if (*it == '%' && (strncmp(it, delim, 6) == 0)) {
+      if (args.empty()) {
+        std::cerr << __FUNCTION__ << " Not enough arguments for description" << std::endl;
+        std::exit(EXIT_FAILURE);
+      }
       body += args.front();
       args.erase(args.begin());
       it += 5;
@@ -69,20 +73,6 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
     }
     ++it;
   }
-
-  // while (ss >> token) {
-  //   if (token == "%DELIM") {
-  //     token = args.front();
-  //     args.erase(args.begin());
-  //     body += token + " ";
-  //   } else if (token == "%DELIM_NO_SPACE") {
-  //     token = args.front();
-  //     args.erase(args.begin());
-  //     body += token;
-  //   } else {
-  //     body += token + " ";
-  //   }
-  // }
 
   std::string content_concatenated = header_content
     + "<h3 style=\"text-align:center\">"
@@ -121,11 +111,11 @@ void utils_generate_file(filepath_t output_filepath, std::string output_body)
   outfp.close();
 }
 
-int utils_rng_roll(int min, int max, long seed)
+int utils_rng_roll(int min, int max, long &seed)
 {
   srand(seed);
+  seed++;
 
-  assert(min != max);
   if(min > max) {
     return utils_rng_roll(max, min, seed);
   }

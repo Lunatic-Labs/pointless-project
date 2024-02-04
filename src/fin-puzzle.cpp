@@ -1,4 +1,4 @@
-#include "./include/fin-puzzle.h"
+#include "./include/puzzle.h"
 
 Puzzle fin_puzzle_create(long seed)
 {
