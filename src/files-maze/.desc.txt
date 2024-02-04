@@ -1,3 +1,28 @@
-So you have beaten the second puzzle, good job!
+So you have beaten the last puzzle, good job!
 
-<b>Now solve the maze that is within this directory with compression.</b>
+You are a frog and are trapped in a maze. You need to find your way out. Below is an example of a maze.
+
+<style>
+  body {
+    text-align: center;
+  }
+  .center-div {
+    display: inline-block;
+    text-align: left;
+  }
+</style>
+
+<div style="width:50%; margin:0 auto;">
+  %DELIM
+</div>
+
+The solution to this maze is `TODO`. But this answer is too long for the password system.
+Therefore, you need to compress the answer. The compressed answer is `TODO`.
+
+Here is the real maze for you to escape:
+
+<div style="width:50%; margin:0 auto;">
+  %DELIM
+</div>
+
+<p><b>Now solve the maze with compression.</b></p>

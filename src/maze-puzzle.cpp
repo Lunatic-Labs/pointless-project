@@ -124,9 +124,6 @@ void randomized_dfs(Image &maze, int x, int y, long seed)
 
 Puzzle maze_puzzle_create(long seed)
 {
-  std::string html_content = utils_html_printf("Maze Puzzle", "./files-maze/.desc.txt", {});
-  utils_generate_file("./files-maze/instructions.html", html_content);
-
   Image maze(MAZE_SIZE, MAZE_SIZE);
 
   randomized_dfs(maze, MAZE_SIZE-1, 0, seed);
@@ -140,8 +137,9 @@ Puzzle maze_puzzle_create(long seed)
   maze(0, MAZE_SIZE-1) = {255, 0, 255};
   maze(MAZE_SIZE-1, 0) = {255, 255, 0};
 
-  std::string svg = graphics_gen_svg(maze, 80);
-  utils_generate_file("./files-maze/maze.svg", svg);
+  std::string svg = graphics_gen_svg(maze, 20);
+  std::string html_body = utils_html_printf("Maze Puzzle", "./files-maze/.desc.txt", {{svg, svg}});
+  utils_generate_file("./files-maze/instructions.html", html_body);
 
   return Puzzle{"files-maze", password};
 }
