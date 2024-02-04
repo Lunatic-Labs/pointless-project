@@ -15,5 +15,5 @@ class Cell {
         int getRow();
         int getColumn();
         bool getVisited();
-        void findNeighbors(const std::vector<Cell> &grid);
+        void findNeighbors(const std::vector<Cell> &grid, int columns);
 };

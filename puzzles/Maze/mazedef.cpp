@@ -24,17 +24,18 @@ int Cell::getColumn() { return this->y;}
 
 bool Cell::getVisited() { return this->visited;}
 
-void Cell::findNeighbors(const std::vector<Cell> &grid) {
+void Cell::findNeighbors(const std::vector<Cell>& grid, int columns) {
     if (this->x > 0) {
-        this->neighbors.push_back(grid[((this->x - 1) * 10 + this->y)]);
+        this->neighbors.push_back(grid[(this->x - 1) * columns + this->y]);  // Top
     }
-    if (this->y < 10 - 1) {
-        this->neighbors.push_back(grid[this->x * 10 + (this->y + 1)]);
+    if (this->y < columns - 1) {
+        this->neighbors.push_back(grid[this->x * columns + (this->y + 1)]);  // Right
     }
-    if (this->x < 10 - 1) {
-        this->neighbors.push_back(grid[(this->x + 1) * 10 + this->y]);
+    if (this->x < grid.size() / columns - 1) {
+        this->neighbors.push_back(grid[(this->x + 1) * columns + this->y]);  // Bottom
     }
     if (this->y > 0) {
-        this->neighbors.push_back(grid[this->x * 10 + (this->y - 1)]);
+        this->neighbors.push_back(grid[this->x * columns + (this->y - 1)]);  // Left
     }
 }
+
