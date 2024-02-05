@@ -6,11 +6,11 @@
 #include "./include/utils.h"
 
 std::string words[] = {
+  "dijkstras algorithm",
   "lipscomb university",
   "computer science",
   "programming languages",
   "data structures",
-  "dijkstras algorithm",
   "depth first search",
   "breadth first search",
   "graph theory",
