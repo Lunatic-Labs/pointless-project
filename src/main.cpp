@@ -30,9 +30,14 @@ void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
   }
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
-  long seed = utils_roll_seed();
+  long seed;
+  if (argc != 1) {
+    seed = std::stol(argv[1]);
+  } else {
+    seed = utils_roll_seed();
+  }
 
   std::vector<Puzzle> puzzles = {
     math_puzzle_create(seed),
