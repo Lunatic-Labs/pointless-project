@@ -27,7 +27,7 @@ arch -x86_64 brew install zlib
 arch -x86_64 brew install libzip
 ```
 
-**See how to install the bost library below**
+**See how to install the boost library below**
 
 *Using Brew and Rosetta Intel emulator*
 
