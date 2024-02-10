@@ -1,6 +1,9 @@
 # Prerequisites
 *.d
 
+*.ppm
+*.html
+
 # Compiled Object files
 *.slo
 *.lo
