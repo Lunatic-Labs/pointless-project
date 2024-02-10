@@ -38,74 +38,50 @@ h1{font-size: 4rem;color: #331a33;}
 </div>
 </div>
 <div class="content">
-<div>
 
-
-<!--TODO: combine the answer for the first three locks into something difficult to solve-->
-<!--TODO: maybe have the locks have a text field to enter answer. show if they got it right or not with message-->
-
-<div class="puzz-title">
-    Cryptic Vault Puzzle
-</div>
-
-<div class="puzz-desc">
-    You stand before a highly encrypted virtual vault, its interface displaying intricate patterns and cryptic symbols. A message materializes on the screen:
-</div>
-
-
-</div>
-<div class="footer">
-<div><p>Dr. Towell - dtowell@lipscomb.edu</p></div>
-<div>
-
-
-<!--
-    The Enigma of the Ancient Script
-
-Deep within the labyrinthine catacombs of an ancient temple, you discover a mysterious inscription etched into a stone tablet. The script seems to defy conventional deciphering methods, demanding a keen mind and unwavering determination to unravel its secrets.
-
-Instructions:
-
-Decode the enigmatic symbols to reveal the numbers concealed within.
-Engage in the sacred ritual outlined by the tablet to unlock the hidden message.
-The Tablet:
-
-yaml
-Copy code
-🔢 Base X: ABCD
-🔢 Base Y: EFGH
-🔢 Base Z: IJKL
-Instructions:
-
-The Ritual of Conversion:
-
-Translate the numbers from their mysterious bases to a common base using the following guide:
-Base X represents the numbers 0 to 9 in hexadecimal.
-Base Y represents the numbers 0 to 7 in octal.
-Base Z represents the numbers 0 to 5 in base 6.
-The Chamber of Alignment:
-
-Arrange the decoded numbers in ascending order.
-Align the digits of each number vertically.
-The Oracle's Riddle:
-
-Solve the riddle encoded within the aligned numbers to uncover the hidden message.
-The Riddle:
-
-+---+---+---+---+
-| A | E | I | ? |
-+---+---+---+---+
-| B | F | J | ? |
-+---+---+---+---+
-| C | G | K | ? |
-+---+---+---+---+
-| D | H | L | ? |
-+---+---+---+---+
-
-Hint:
-Each number holds a piece of the puzzle. Arrange them wisely, and let the riddle guide your journey to enlightenment.
-
-In this puzzle, base conversion is still the core challenge, but the additional cryptic elements, such as the arrangement 
-of numbers and the encoded riddle, make it more difficult to solve. The solver must decipher the numbers, align them correctly, 
-and then crack the riddle to reveal the hidden message.
--->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Alien Number System</title>
+        <style>
+            .container {
+                width: 80%; /* Adjust the width as needed */
+                margin: 0 auto; /* Center the container horizontally */
+                padding: 20px;
+                border: 1px solid #ccc; /* Optional: Add a border */
+                border-radius: 8px; /* Optional: Add border radius for rounded corners */
+                text-align: center; /* Center the text in the container */
+            }
+            .container ul {
+            text-align: center; /* Align text to the left within the list */
+            list-style-position: inside; /* Place bullet points inside the list items */
+        }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>The Alien Number System</h2>
+    
+            <p>In a far-off galaxy, there exists an advanced alien civilization that uses a peculiar numbering system. This system is based on a combination of base-3, base-8, and base-16, all intertwined. Here's how it works:</p>
+    
+            <ul>
+                <li>Digits 0 through 20 are represented as usual in base-3.</li>
+                <li>Digits 21 through 42 are represented as usual in base-8.</li>
+                <li>Digits A through F are represented as usual in base-16.</li>
+            </ul>
+    
+            <h3>Now, your challenge:</h3>
+    
+            <p>An alien artifact has been discovered, and on it, there's an cipher. The cipher contains three values and then a light. Each row of values contains an instruction to either turn on the light or keep it off. Only with the correct combination of lights will the cipher be solved.</p>
+            To decipher this instruction, you need to recall your knowledge on <a href="https://en.wikipedia.org/wiki/Base_conversion">base conversion</a>. While the aliens like their numbers as a combination of base-3, base-8, and base-16, we typically like our numbers represented as base-10. Once in a representation we like, sum the values.</p>
+    
+            <p>Recall that electronics work in 1's and 0's, on or off, including the aliens lights. The instruction to turn the light on or off is found in the <a href="https://en.wikipedia.org/wiki/Bit_numbering">most significant bit</a> of the row's sum.</p>
+    
+            <p><b>Can you crack the code and unveil the hidden message within the artifact?</b></p>
+        </div>
+    </body>
+    </html>
+    
+</html>
