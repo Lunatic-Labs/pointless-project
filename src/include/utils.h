@@ -21,6 +21,7 @@ int utils_roll_seed(void);
 
 // Returns a vector of strings containing the names of all files in the given directory.
 // Recursively walks all subdirectories.
+// NOTE: Will ignore all files/dirs that start with `.`
 strvec_t utils_walkdir(filepath_t path);
 
 // Zips the given files into a single file with the given name and password.
