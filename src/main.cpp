@@ -13,13 +13,6 @@
 #include "./include/utils.h"
 #include "./include/puzzle.h"
 
-int roll_seed(void)
-{
-  long seed = (uint)time(nullptr);
-  srand(seed);
-  return seed;
-}
-
 void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
 {
   const char *zipdir = "zipfiles/puzzle";
@@ -39,13 +32,14 @@ void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
 
 int main(void)
 {
-  long seed = roll_seed();
+  long seed = utils_roll_seed();
 
   std::vector<Puzzle> puzzles = {
-    puzzle_create1(seed),
-    puzzle_create2(seed),
-    puzzle_create3(seed),
-    puzzle_create4(seed),
+    math_puzzle_create(seed),
+    color_puzzle_create(seed),
+    maze_puzzle_create(seed),
+    encrypt_puzzle_create(seed),
+    fin_puzzle_create(seed),
   };
 
   create_nested_zipfiles(puzzles);

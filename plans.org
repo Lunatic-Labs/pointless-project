@@ -11,11 +11,16 @@
 - Randomly mess it up and have the user fix it
 
 * Maze Puzzle
+- TODO [25%]
+  - [X] PPM Generation
+  - [ ] Only 1 shortest path
+  - [ ] Multiple paths
+  - [ ] Final solution
 - Generate 8x8 (or maybe 10x10) maze
   - Constraints:
-      1. Must have multiple paths, but only 1 shortest path.
-      2. The start and end must be at opposite corners.
-      3. The solution must contains compression (all duplicate letters must be in compressed)
+    1. Must have multiple paths, but only 1 shortest path.
+    2. The start and end must be at opposite corners.
+    3. The solution must contains compression (all duplicate letters must be in compressed)
 
 * Meta Final Puzzle
 - Hidden messages/symbols in previous instructions.

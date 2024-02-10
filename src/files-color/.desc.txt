@@ -1,0 +1,9 @@
+Congratulations on completing the first puzzle! You have been 0 points. This is a major accomplishment! You are now ready to move on to the next puzzle.
+
+Lipscombs team colors are purple and gold,
+<p><b>what is the <a href="https://en.wikipedia.org/wiki/Web_colors">hex value</a> of lipscomb's color:</b> <b style="background-color:#%DELIM;"> %DELIM </b> </p>
+<ul style=\"display: inline-block; float: right; margin-right: 50%\">
+<li>6-character sequence,</li>
+<li>hexadecimal color code,</li>
+<li>uppercase letters.</li>
+</ul>
