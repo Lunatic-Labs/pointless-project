@@ -4,7 +4,7 @@
         <style>
             .container {
                 width: 80%; /* Adjust the width as needed */
-                margin: 250px auto 0; /* Center the container horizontally */
+                margin: 300px auto 0; /* Center the container horizontally */
                 padding: 20px;
                 border: 1px solid #ccc; /* Optional: Add a border */
                 border-radius: 8px; /* Optional: Add border radius for rounded corners */
