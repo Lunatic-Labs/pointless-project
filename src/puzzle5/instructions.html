@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
+<title>Alien Number System</title>
 <style>
 body{font-family: Arial Rounded MT Bold;}
 .maindiv{display: flex;flex-direction: column;height: 95vh;}
@@ -14,7 +14,7 @@ h1{font-size: 4rem;color: #331a33;}
 .text{display: flex;flex-direction:column;justify-content:center;height: 100%;gap: 1rem;}
 .decoration {position: absolute;top: 35px;left: 450px;color: #f1a802;z-index: -1;}
 .logo{display: flex;align-items: center;height: 100%;}
-.college-info{position:absolute;top:25px;left:450px;}
+.college-info{position:absolute;top:25px;left:50px;}
 .imagen{height: 11rem;width: 8rem;}
 .content{height: 65%;width: 100%;display: flex; flex-direction:column; align-items: center;justify-content: center;padding-top:5%;}
 .puzzle{height: 100%;width: 30%;display: flex;align-items: center;justify-content: center;background-color: brown;}
@@ -38,17 +38,13 @@ h1{font-size: 4rem;color: #331a33;}
 </div>
 </div>
 <div class="content">
-
-    <!DOCTYPE html>
-    <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Alien Number System</title>
         <style>
             .container {
                 width: 80%; /* Adjust the width as needed */
-                margin: 0 auto; /* Center the container horizontally */
+                margin: 250px auto 0; /* Center the container horizontally */
                 padding: 20px;
                 border: 1px solid #ccc; /* Optional: Add a border */
                 border-radius: 8px; /* Optional: Add border radius for rounded corners */
@@ -57,7 +53,29 @@ h1{font-size: 4rem;color: #331a33;}
             .container ul {
             text-align: center; /* Align text to the left within the list */
             list-style-position: inside; /* Place bullet points inside the list items */
-        }
+            }
+            .container p {
+                max-width: 60%;
+                margin: 10px auto;
+            }
+            table {
+                margin: 20px auto; /* Center the table horizontally */
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add a shadow effect */
+                background-image: url('rock-texture.jpg'); /* Add a background image */
+                background-size: cover; /* Ensure the background image covers the entire table */
+                border-radius: 10px;
+            }
+
+            td {
+                width: 70px; /* Set cell width */
+                height: 70px; /* Set cell height */
+                /* border: 2px solid #696969; Remove this line */
+                text-align: center; /* Center text horizontally */
+                vertical-align: middle; /* Center text vertically */
+                color: #ffffff; /* Set text color to a light gray */
+                font-size: 20px; /* Set font size */
+                text-shadow: 2px 2px 10px #2dcf08;
+            }
         </style>
     </head>
     <body>
@@ -75,13 +93,48 @@ h1{font-size: 4rem;color: #331a33;}
             <h3>Now, your challenge:</h3>
     
             <p>An alien artifact has been discovered, and on it, there's an cipher. The cipher contains three values and then a light. Each row of values contains an instruction to either turn on the light or keep it off. Only with the correct combination of lights will the cipher be solved.</p>
-            To decipher this instruction, you need to recall your knowledge on <a href="https://en.wikipedia.org/wiki/Base_conversion">base conversion</a>. While the aliens like their numbers as a combination of base-3, base-8, and base-16, we typically like our numbers represented as base-10. Once in a representation we like, sum the values.</p>
+            
+            <p> To decipher this instruction, you need to recall your knowledge on <a href="https://en.wikipedia.org/wiki/Base_conversion">base conversion</a>. While the aliens like their numbers as a combination of base-3, base-8, and base-16, we typically like our numbers represented as base-10.</p>
+            
+            <p> <b> Once in a representation we like, sum the values. </b></p>
     
             <p>Recall that electronics work in 1's and 0's, on or off, including the aliens lights. The instruction to turn the light on or off is found in the <a href="https://en.wikipedia.org/wiki/Bit_numbering">most significant bit</a> of the row's sum.</p>
     
             <p><b>Can you crack the code and unveil the hidden message within the artifact?</b></p>
+
+            <table>
+                <tr>
+                    <td>42</td>
+                    <td>null</td>
+                    <td>null</td>
+                    <td>?</td>
+                </tr>
+                <tr>
+                    <td>null</td>
+                    <td>null</td>
+                    <td>null</td>
+                    <td>?</td>
+                </tr>
+                <tr>
+                    <td>null</td>
+                    <td>null</td>
+                    <td>null</td>
+                    <td>?</td>
+                </tr>
+                <tr>
+                    <td>null</td>
+                    <td>null</td>
+                    <td>null</td>
+                    <td>?</td>
+                </tr>
+            </table>
         </div>
     </body>
+
+    <div class="footer">
+    <div><p>Dr. Towell - dtowell@lipscomb.edu</p></div>
+    <div>
+
     </html>
     
 </html>
