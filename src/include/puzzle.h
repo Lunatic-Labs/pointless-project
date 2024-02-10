@@ -18,5 +18,6 @@ Puzzle fin_puzzle_create(long seed);
 Puzzle maze_puzzle_create(long seed);
 Puzzle math_puzzle_create(long seed);
 Puzzle encrypt_puzzle_create(long seed);
+Puzzle ast_puzzle_create(long seed);
 
 #endif // PUZZLE_H
