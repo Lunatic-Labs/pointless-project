@@ -3,13 +3,12 @@
 
 #include <iostream>
 
-#define LSB 0x1
-
-
+//gotta beef it up. not many solution permutations
 int solve(std::vector<std::string> &vals, std::vector<int> &base)
 {   
-    int decimalval, items, solution;
-    decimalval = items = 0;
+    int decimalval, items, solution, mask;
+    decimalval = items = solution = 0;
+    mask = 1;
 
     std::vector<std::string>::iterator it; 
     std::vector<int>::iterator it2;
@@ -17,13 +16,15 @@ int solve(std::vector<std::string> &vals, std::vector<int> &base)
         decimalval += std::stoi(*it, nullptr, *it2);
         ++items;
         if (items == 3) {
-            solution <<= (decimalval & LSB) ? 1 : 0;
+            if (decimalval & 1) {
+                solution |= mask;
+                mask <<= 1;
+            }
             decimalval = items = 0;
         }
     }
-
     return solution;
-    //convert values to base 10 (done)
+    //convert values to base 10 
     //sum them up for each row
     //convert the sum to base 2 (dont have to do this on a computer)
     //check if lsb is on or off
@@ -62,11 +63,7 @@ Puzzle based_puzzle_create(long seed)
 
     std::string html_content = utils_html_printf("Base Puzzle", "./files-based/.desc.txt", values);
     utils_generate_file("./files-based/instructions.html", html_content);
-    
-    std::string solution = std::to_string(solve(values, bases));
 
-    std::cout << "solution: " << solution << "\n";
-
-    return Puzzle{"files-based", solution};
+    return Puzzle{"files-based", std::to_string(solve(values, bases))};
 }
 
