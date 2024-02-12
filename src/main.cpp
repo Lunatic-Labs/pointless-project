@@ -39,8 +39,8 @@ int main(void)
     color_puzzle_create(seed),
     maze_puzzle_create(seed),
     encrypt_puzzle_create(seed),
-    fin_puzzle_create(seed),
     based_puzzle_create(seed),
+    fin_puzzle_create(seed),
   };
 
   create_nested_zipfiles(puzzles);
