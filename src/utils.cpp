@@ -11,6 +11,14 @@
 
 #include "./include/utils.h"
 
+void utils_mkdir(filepath_t filepath)
+{
+  if (std::filesystem::exists(filepath)) {
+    return;
+  }
+  std::filesystem::create_directories(filepath);
+}
+
 std::string utils_html_printf(std::string title, filepath_t desc_filepath, strvec_t args)
 {
   // Get the header content.

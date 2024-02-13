@@ -16,5 +16,6 @@ strvec_t utils_walkdir(filepath_t path);
 void utils_zip_files(std::string out_file_name, strvec_t file_names, std::string password="");
 std::string utils_file_to_str(filepath_t filepath);
 std::string utils_html_printf(std::string title, filepath_t desc_filepath, strvec_t args);
+void utils_mkdir(filepath_t filepath);
 
 #endif // UTILS_H

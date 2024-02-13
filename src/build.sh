@@ -9,6 +9,7 @@ then
   echo "Cleaning..."
   rm -rf main *.zip ./zipfiles/*
   rm ./files*/instructions.html
+  rm -rf ./files-ast/*
 elif [ "$1" == "a" ];
 then
   ./build.sh c

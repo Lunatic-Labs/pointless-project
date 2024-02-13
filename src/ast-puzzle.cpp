@@ -1,7 +1,10 @@
-#include <memory>
+#include <iostream>
 
 #include "./include/puzzle.h"
 #include "./include/utils.h"
+
+// (ID + ( (ID * ID) * ID ) - ID)
+//  a+b*c/d+e
 
 // (1) exp → exp + term
 // (2) exp → exp – term
@@ -12,84 +15,40 @@
 // (7) fact → ID
 // (8) fact → ( exp )
 
-// type id = ID of string
+std::string evaluate_expr(std::string str, int index)
+{
+  std::string path = "IFT";
 
-// type exp =
-//   | Plus of exp * term
-//   | Minus of exp * term
-//   | Term of term
+  char *it = &str[index+1];
 
-// and term =
-//   | Times of term * fact
-//   | Divide of term * fact
-//   | Fact of fact
+  while (*it && (*it == '*' || *it == '/')) {
+    path += "T";
+    it += 2;
+  }
 
-// and fact =
-//   | Identifier of id
-//   | Parentheses of exp
+  path += "E";
 
-struct Id;
-struct Exp;
-struct Term;
-struct Fact;
+  while (*it) {
+    if(*it == '+' || *it == '-')
+      path += "E";
+    it += 2;
+  }
 
-struct Node {
-  virtual ~Node() = default;
-};
-
-struct Id : Node {
-  std::string name;
-  explicit Id(const std::string &n) : name(n) {}
-};
-
-struct Exp : Node {
-  virtual ~Exp() = default;
-};
-
-struct Plus : Exp {
-  std::unique_ptr<Exp> left;
-  std::unique_ptr<Term> right;
-  Plus(std::unique_ptr<Exp> l, std::unique_ptr<Term> r) : left(std::move(l)), right(std::move(r)) {}
-};
-
-struct Minus : Exp {
-  std::unique_ptr<Exp> left;
-  std::unique_ptr<Term> right;
-  Minus(std::unique_ptr<Exp> l, std::unique_ptr<Term> r) : left(std::move(l)), right(std::move(r)) {}
-};
-
-struct Term : Node {
-  virtual ~Term() = default;
-};
-
-struct Times : Term {
-  std::unique_ptr<Term> left;
-  std::unique_ptr<Fact> right;
-  Times(std::unique_ptr<Term> l, std::unique_ptr<Fact> r) : left(std::move(l)), right(std::move(r)) {}
-};
-
-struct Divide : Term {
-  std::unique_ptr<Term> left;
-  std::unique_ptr<Fact> right;
-  Divide(std::unique_ptr<Term> l, std::unique_ptr<Fact> r) : left(std::move(l)), right(std::move(r)) {}
-};
-
-struct Fact : Node {
-  virtual ~Fact() = default;
-};
-
-struct Identifier : Fact {
-  std::unique_ptr<Id> id;
-  explicit Identifier(std::unique_ptr<Id> i) : id(std::move(i)) {}
-};
-
-struct Parens : Fact {
-  std::unique_ptr<Exp> exp;
-  explicit Parens(std::unique_ptr<Exp> e) : exp(std::move(e)) {}
-};
+  return path;
+}
 
 Puzzle ast_puzzle_create(long seed)
 {
   (void)seed;
+
+  std::string expr = "a+b*c+X/e";
+  std::string path = evaluate_expr(expr, 6);
+
+  std::cout << path << std::endl;
+
+  utils_mkdir("./files-ast/expression");
+
+  std::string html_body = utils_html_printf("AST Puzzle", "./files-ast/.desc.txt", {});
+
   return {};
 }
