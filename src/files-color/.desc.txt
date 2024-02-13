@@ -1,4 +1,4 @@
-Congratulations on completing the first puzzle! You have been 0 points. This is a major accomplishment! You are now ready to move on to the next puzzle.
+Congratulations on completing the first puzzle! You have been awarded 0 points. This is a major accomplishment! You are now ready to move on to the next puzzle.
 
 Lipscombs team colors are purple and gold,
 <p><b>what is the <a href="https://en.wikipedia.org/wiki/Web_colors">hex value</a> of lipscomb's color:</b> <b style="background-color:#%DELIM;"> %DELIM </b> </p>

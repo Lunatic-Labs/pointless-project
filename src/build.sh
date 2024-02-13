@@ -8,8 +8,8 @@ if [ "$1" == "c" ];
 then
   echo "Cleaning..."
   rm -rf main *.zip ./zipfiles/*
-  rm ./files*/instructions.html
-  rm -rf ./files-ast/*
+  rm -f ./files*/instructions.html
+  rm -rfv ./files-ast/AST/
 elif [ "$1" == "a" ];
 then
   ./build.sh c
