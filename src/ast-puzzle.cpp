@@ -101,6 +101,8 @@ std::string evaluate_expr(std::string str, size_t index)
 }
 
 static int fail_safe = 0;
+static int password;
+static long mutable_seed;
 
 void create_dirs(std::string path, int depth, const char *ans, State state)
 {
@@ -134,12 +136,11 @@ void create_dirs(std::string path, int depth, const char *ans, State state)
       break;
     }
     case State::ID: {
-      if(!*ans) {
-        utils_generate_file(path + "/ID.txt", "winner");
-        std::cout << "winner exists here: " << path << std::endl;
+      int rng = utils_rng_roll(1000000,9000000, mutable_seed);
+        utils_generate_file(path + "/ID.txt", std::to_string(rng));
+      if(!*ans) { // We have consumed the answer string, so this is the correct file.
+        password = rng;
       }
-      else
-        utils_generate_file(path + "/ID.txt", "trash");
       break;
     }
     default:
@@ -197,6 +198,7 @@ size_t find_best_guy(std::string &expr, size_t max_len)
 
 Puzzle ast_puzzle_create(long seed)
 {
+  mutable_seed = seed;
   const size_t depth = 10;
   const size_t difficulty = 10;
  
@@ -214,5 +216,7 @@ Puzzle ast_puzzle_create(long seed)
   std::string html_body = utils_html_printf("AST Puzzle", "./files-ast/.desc.txt", { expr, guy });
   utils_generate_file("./files-ast/instructions.html", html_body);
 
-  return {"files-ast", ans};
+  return {"files-ast", std::to_string(password)};
 }
+
+//(A+B)*C
