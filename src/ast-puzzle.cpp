@@ -137,7 +137,7 @@ void create_dirs(std::string path, int depth, const char *ans, State state)
     }
     case State::ID: {
       int rng = utils_rng_roll(1000000,9000000, mutable_seed);
-        utils_generate_file(path + "/ID.txt", std::to_string(rng));
+      utils_generate_file(path + "/ID.txt", std::to_string(rng));
       if(!*ans) { // We have consumed the answer string, so this is the correct file.
         password = rng;
       }
