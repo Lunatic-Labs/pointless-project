@@ -138,7 +138,7 @@ int utils_roll_seed(void)
 //   `password` - The password to encrypt the _FIRST_ file with.
 // Returns:
 //   Nothing.
-void utils_zip_files(std::string out_file_name,
+void utils_zip_files(filepath_t out_file_name,
                      strvec_t file_names,
                      std::string password)
 {
