@@ -138,7 +138,7 @@ Puzzle maze_puzzle_create(long seed)
   maze(MAZE_SIZE-1, 0) = {255, 255, 0};
 
   std::string svg = graphics_gen_svg(maze, 20);
-  std::string html_body = utils_html_printf("Maze Puzzle", "./files-maze/.desc.txt", {{svg, svg}});
+  std::string html_body = utils_html_printf("Maze Puzzle", "./files-maze/.desc.txt", {{svg}});
   utils_generate_file("./files-maze/instructions.html", html_body);
 
   return Puzzle{"files-maze", password};
