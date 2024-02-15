@@ -53,6 +53,18 @@ void change(std::string &s, int n)
   }
 }
 
+std::string num_to_english(int idx) 
+{
+  std::string numstr = std::to_string(idx);
+  if (idx%10 == 1) {
+    return numstr + "st";
+  }
+  if (idx%10 == 2) {
+    return numstr  + "nd";
+  }
+  return numstr + "th";
+}
+
 Puzzle encrypt_puzzle_create(long seed)
 {
   const int word_idx = utils_rng_roll(0, WORDS_LEN-1, seed);
@@ -75,7 +87,7 @@ Puzzle encrypt_puzzle_create(long seed)
       case 1: {
         int idx1 = utils_rng_roll(0, len, seed);
         int idx2 = utils_rng_roll(0, len, seed);
-        instructions.push_back(std::to_string(i+1) + ".) Swapped characters at positions " + std::to_string(idx1) + " and " + std::to_string(idx2) + ".\n");
+        instructions.push_back(std::to_string(i+1) + ".) Swapped the " + num_to_english(idx1+1) + " and " + num_to_english(idx2+1) + " characters.\n");
         swap(word, idx1, idx2);
       } break;
       case 2: {
