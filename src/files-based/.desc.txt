@@ -91,7 +91,3 @@
             <p>Hint: The solution will be in base-10</p>
         </div>
     </body>
-
-    <div class="footer">
-    <div><p>%DELIM</p></div>
-    <div>

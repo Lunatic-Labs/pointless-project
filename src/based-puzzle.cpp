@@ -60,8 +60,6 @@ Puzzle based_puzzle_create(long seed)
       bases.push_back(base);
     }
   }
-  std::string seed_val = "seed: " + std::to_string(seed);
-  values.insert(values.end(), seed_val);
 
   std::string html_content = utils_html_printf("Base Puzzle", "./files-based/.desc.txt", values);
   utils_generate_file("./files-based/instructions.html", html_content);
