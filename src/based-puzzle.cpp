@@ -11,7 +11,7 @@
 // Save the resulting lsb values
 // Take that base 2 number and convert it back to base 10 (already done for us)
 
-//TODO: I CAN ADD BIT OPERATIONS IN THE MIX, SUCH AS OR/XOR, AND, ETC.
+//TODO: I CAN ADD BITWISE OPERATIONS IN THE MIX
 int solve(std::vector<std::string> &vals, std::vector<int> &base)
 {
   int decimalval, items, solution, mask;
