@@ -134,6 +134,12 @@ Puzzle maze_puzzle_create(long seed)
   std::reverse(path.begin(), path.end());
   std::string password = compress_path(path);
 
+  Puzzle p{"files-maze", password};
+
+  if (FLAGS & ANS_ONLY) {
+    return p;
+  }
+
   maze(0, MAZE_SIZE-1) = {255, 0, 255};
   maze(MAZE_SIZE-1, 0) = {255, 255, 0};
 

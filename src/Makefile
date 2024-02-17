@@ -9,11 +9,11 @@ TARGET := main
 
 .PHONY: all clean cleanzip
 
-all: $(TARGET) cleanzip
-	./main
-
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(CLINKS)
+
+all: $(TARGET) cleanzip
+	./main
 
 $(OBJDIR)/%.o: %.cpp
 	mkdir -p $(OBJDIR)
