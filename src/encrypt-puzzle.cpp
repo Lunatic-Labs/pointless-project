@@ -102,8 +102,14 @@ Puzzle encrypt_puzzle_create(long seed)
   }
   instructions.insert(instructions.begin(), word);
 
+  Puzzle p{"files-encrypt", words[word_idx]};
+
+  if (FLAGS & ANS_ONLY) {
+    return p;
+  }
+
   std::string html_body = utils_html_printf("Encrypt", "./files-encrypt/.desc.txt", instructions);
   utils_generate_file("./files-encrypt/instructions.html", html_body);
 
-  return Puzzle{"files-encrypt", words[word_idx]};
+  return p;
 }
