@@ -10,11 +10,13 @@
 // Check if lsb is on or off
 // Save the resulting lsb values
 // Take that base 2 number and convert it back to base 10 (already done for us)
+
+//TODO: I CAN ADD BIT OPERATIONS IN THE MIX, SUCH AS OR/XOR, AND, ETC.
 int solve(std::vector<std::string> &vals, std::vector<int> &base)
 {
   int decimalval, items, solution, mask;
   decimalval = items = solution = 0;
-  mask = 1;
+  mask = 8;
 
   std::vector<std::string>::iterator it;
   std::vector<int>::iterator it2;
@@ -24,8 +26,8 @@ int solve(std::vector<std::string> &vals, std::vector<int> &base)
     if (items == 3) {
       if (decimalval & 1) {
         solution |= mask;
-        mask <<= 1;
       }
+      mask >>= 1;
       decimalval = items = 0;
     }
   }
