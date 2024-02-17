@@ -5,7 +5,7 @@
 Puzzle math_puzzle_create(long seed)
 {
   // TODO: Change in final version to bigger numbers.
-  int a = utils_rng_roll(1, 5, seed);
+  int a = utils_rng_roll(1, 6, seed);
   int b = utils_rng_roll(10, 19, seed);
   int s = a+b;
   

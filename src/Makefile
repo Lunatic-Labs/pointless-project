@@ -1,20 +1,28 @@
-CFLAGS= -ggdb -pedantic -std=c++20 -Wextra -Wall -o main
-CLINKS= -lboost_iostreams -lzip -lboost_unit_test_framework
-CC=g++
+CFLAGS := -ggdb -pedantic -std=c++20 -Wextra -Wall
+CLINKS := -lboost_iostreams -lzip -lboost_unit_test_framework
+CC := g++
 
 SRCS := $(wildcard *.cpp)
-OBJS := $(SRCS:.cpp=.o)
+OBJDIR := ./obj
+OBJS := $(addprefix $(OBJDIR)/,$(notdir $(SRCS:.cpp=.o)))
 TARGET := main
 
-.PHONY: all clean
+.PHONY: all clean cleanzip
+
+all: $(TARGET) cleanzip
+	./main
 
 $(TARGET): $(OBJS)
-	mkdir -p ./zipfiles
-	$(CC) $(CFLAGS) $(CLINKS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^ $(CLINKS)
 
-%.o: %.cpp
-	g++ $(CFLAGS) -c -o $@ $<
+$(OBJDIR)/%.o: %.cpp
+	mkdir -p $(OBJDIR)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-clean:
-	rm -rf main *.zip ./zipfiles/*
-	rm ./files*/instructions.html
+cleanzip:
+	rm -f ./zipfiles/*
+
+clean: cleanzip
+	rm -rf $(OBJDIR)/*
+	rm -f $(TARGET)
+	rm -f ./files*/instructions.html
