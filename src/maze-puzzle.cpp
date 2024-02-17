@@ -11,8 +11,12 @@
 
 #define MAZE_WALL {0,0,0}
 #define MAZE_PATH {255,255,255}
-#define MAZE_SIZE 13 // MAKE SURE THIS IS AN ODD NUMBER!!!
-#define PIXEL_IS_BLACK(p) (p.red == 0 && p.green == 0 && p.blue == 0)
+#define MAZE_CHECKER_PATH {200,200,255};
+#define MAZE_SIZE 13 // Must be an odd number
+#define PIXEL_IS_BLACK(p) (p.red + p.green + p.blue == 0)
+
+#define MAZE_END {255, 0, 255};   // Purple
+#define MAZE_START {255, 255, 0}; // Gold
 
 std::set<std::pair<int, int>> visited;
 
@@ -115,7 +119,7 @@ void randomized_dfs(Image &maze, int x, int y, long seed)
     }
 
     if (PIXEL_IS_BLACK(maze(fx, fy))) {
-      maze(fx, fy) = {200,200,255};
+      maze(fx, fy) = MAZE_CHECKER_PATH;
       maze(nx, ny) = MAZE_PATH;
       randomized_dfs(maze, fx, fy, seed);
     }
@@ -140,8 +144,8 @@ Puzzle maze_puzzle_create(long seed)
     return p;
   }
 
-  maze(0, MAZE_SIZE-1) = {255, 0, 255};
-  maze(MAZE_SIZE-1, 0) = {255, 255, 0};
+  maze(0, MAZE_SIZE-1) = MAZE_START;
+  maze(MAZE_SIZE-1, 0) = MAZE_END;
 
   std::string svg = graphics_gen_svg(maze, 20);
   std::string html_body = utils_html_printf("Maze Puzzle", "./files-maze/.desc.txt", {{svg}});

@@ -69,11 +69,11 @@ int main(int argc, char **argv)
     fin_puzzle_create(seed),
   };
 
-  if (FLAGS & ANS_ONLY) {
-    for (auto &puzzle : puzzles) {
-      std::printf("%-10s Password: %s\n", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
-    }
-  } else {
+  for (auto &puzzle : puzzles) {
+    std::printf("%-10s Password: %s\n", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
+  }
+
+  if (!(FLAGS & ANS_ONLY)) {
     create_nested_zipfiles(puzzles);
   }
 
