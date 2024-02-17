@@ -21,7 +21,7 @@
             table {
                 margin: 20px auto; /* Center the table horizontally */
                 box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add a shadow effect */
-                background-image: url('rock-texture.jpg'); /* Add a background image */
+                background-image: url('https://img.freepik.com/free-photo/black-concrete-wall_1194-7359.jpg?size=626&ext=jpg'); /* Add a background image */
                 background-size: cover; /* Ensure the background image covers the entire table */
                 border-radius: 10px;
             }
