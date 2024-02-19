@@ -39,5 +39,3 @@
 testdata/
 secrets/
 .DS_Store
-makefile
-Makefile
