@@ -35,6 +35,9 @@ int solve(std::vector<std::string> &vals, std::vector<int> &base)
       if (decimalval & 1) {
         solution |= mask;
       }
+      std::cout << "decimal val: " << decimalval << "\n";
+      std::cout << "mask: " << mask << "\n";
+      std::cout << "solution: " << solution << "\n\n";
       mask >>= 1;
       decimalval = items = 0;
     }
