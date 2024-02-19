@@ -6,12 +6,15 @@
 #include <sys/stat.h>
 #include <iostream>
 #include <string>
+#include <string.h>
 #include <vector>
 #include <algorithm>
 
 #include "./include/html-generator.h"
 #include "./include/utils.h"
 #include "./include/puzzle.h"
+
+uint32_t FLAGS = 0;
 
 void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
 {
@@ -30,9 +33,33 @@ void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
   }
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
-  long seed = utils_roll_seed();
+  long seed;
+  while (argc > 1) {
+    if (strcmp(argv[1], "-a") == 0) {
+      FLAGS |= ANS_ONLY;
+    } else if (strcmp(argv[1], "-s") == 0) {
+      FLAGS |= SET_SEED;
+      --argc;
+      ++argv;
+
+      if (argc < 2 || (seed = atol(argv[1])) == 0) {
+        std::cerr << "Expected <seed> (must be a number)" << std::endl;
+        return 1;
+      }
+    }
+    else {
+      std::cerr << "Unknown flag: " << argv[1] << std::endl;
+      return 1;
+    }
+    --argc;
+    ++argv;
+  }
+
+  if ((FLAGS & SET_SEED) == 0) { 
+    seed = utils_roll_seed();
+  }
 
   std::vector<Puzzle> puzzles = {
     math_puzzle_create(seed),
@@ -43,7 +70,13 @@ int main(void)
     fin_puzzle_create(seed),
   };
 
-  create_nested_zipfiles(puzzles);
+  for (auto &puzzle : puzzles) {
+    std::printf("%-10s Password: %s\n", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
+  }
+
+  if (!(FLAGS & ANS_ONLY)) {
+    create_nested_zipfiles(puzzles);
+  }
 
   return 0;
 }

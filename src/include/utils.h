@@ -6,6 +6,10 @@
 
 #define BOLD(s) "<b>" + (s) + "</b>"
 
+#define ANS_ONLY 1 << 0
+#define SET_SEED 1 << 1
+extern uint32_t FLAGS;
+
 typedef std::vector<std::string> strvec_t;
 typedef const std::string filepath_t;
 

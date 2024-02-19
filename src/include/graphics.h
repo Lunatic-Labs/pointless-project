@@ -30,6 +30,8 @@ struct Image {
   }
 };
 
+std::string graphics_gen_svg(Image &img, float pixel_size);
+
 // Creates a PPM image from `im` and saves it to `filepath`.
 void graphics_create_ppm(Image &img, const char *filepath);
 
