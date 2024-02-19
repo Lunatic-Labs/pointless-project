@@ -21,6 +21,7 @@ $(OBJDIR)/%.o: %.cpp
 
 cleanzip:
 	rm -f ./zipfiles/*
+	rm -rf ./files-ast/AST
 
 clean: cleanzip
 	rm -rf $(OBJDIR)/*

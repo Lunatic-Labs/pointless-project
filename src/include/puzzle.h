@@ -1,6 +1,7 @@
 #ifndef PUZZLE_H
 #define PUZZLE_H
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -11,6 +12,8 @@ struct Puzzle {
   std::string contents_fp;
 
   std::string password;
+
+  std::optional<std::string> extra_info;
 };
 
 Puzzle math_puzzle_create(long seed);

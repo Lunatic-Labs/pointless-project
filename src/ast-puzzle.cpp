@@ -207,16 +207,16 @@ Puzzle ast_puzzle_create(long seed)
   std::string guy;
   guy += expr[best];
 
-  std::string ans = evaluate_expr(expr, best);
-  std::reverse(ans.begin(), ans.end());
+  std::string correct_path = evaluate_expr(expr, best);
+  std::reverse(correct_path.begin(), correct_path.end());
 
   utils_mkdir("./files-ast/AST");
-  create_dirs("./files-ast/AST", depth, ans.c_str(), State::Expression);
+  create_dirs("./files-ast/AST", depth, correct_path.c_str(), State::Expression);
 
   std::string html_body = utils_html_printf("AST Puzzle", "./files-ast/.desc.txt", { expr, guy });
   utils_generate_file("./files-ast/instructions.html", html_body);
 
-  return {"files-ast", std::to_string(password)};
+  return {"files-ast", std::to_string(password), " Path: " + correct_path};
 }
 
 //(A+B)*C
