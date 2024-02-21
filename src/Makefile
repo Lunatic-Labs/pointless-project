@@ -1,4 +1,4 @@
-CFLAGS := -ggdb -pedantic -std=c++20 -Wextra -Wall
+CFLAGS := -ggdb -pedantic -std=c++17 -Wextra -Wall
 CLINKS := -lboost_iostreams -lzip -lboost_unit_test_framework
 CC := g++
 
@@ -21,6 +21,7 @@ $(OBJDIR)/%.o: %.cpp
 
 cleanzip:
 	rm -f ./zipfiles/*
+	rm -rf ./files-ast/AST
 
 clean: cleanzip
 	rm -rf $(OBJDIR)/*
