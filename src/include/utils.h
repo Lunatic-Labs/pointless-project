@@ -38,4 +38,6 @@ std::string utils_file_to_str(filepath_t filepath);
 // replaced with the given `args` in order. It is similar to `printf`.
 std::string utils_html_printf(std::string title, filepath_t desc_filepath, strvec_t args);
 
+int utils_chance(int percentage, long &seed);
+
 #endif // UTILS_H

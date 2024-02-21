@@ -11,6 +11,11 @@
 
 #include "./include/utils.h"
 
+int utils_chance(int percentage, long &seed)
+{
+  return utils_rng_roll(1, 100, seed) <= percentage; 
+}
+
 std::string utils_html_printf(std::string title, filepath_t desc_filepath, strvec_t args)
 {
   // Get the header content.
@@ -114,7 +119,7 @@ void utils_generate_file(filepath_t output_filepath, std::string output_body)
 int utils_rng_roll(int min, int max, long &seed)
 {
   srand(seed);
-  seed++;
+  seed += rand() % 1000;
 
   if(min > max) {
     return utils_rng_roll(max, min, seed);

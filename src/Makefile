@@ -2,7 +2,7 @@ CFLAGS := -ggdb -pedantic -std=c++17 -Wextra -Wall
 CLINKS := -lboost_iostreams -lzip -lboost_unit_test_framework
 CC := g++
 
-SRCS := $(wildcard *.cpp)
+SRCS := $(wildcard *.cpp) $(wildcard *./include/.h)
 OBJDIR := ./obj
 OBJS := $(addprefix $(OBJDIR)/,$(notdir $(SRCS:.cpp=.o)))
 TARGET := main
@@ -22,8 +22,8 @@ $(OBJDIR)/%.o: %.cpp
 cleanzip:
 	rm -f ./zipfiles/*
 	rm -rf ./files-ast/AST
+	rm -f ./files*/instructions.html
 
 clean: cleanzip
 	rm -rf $(OBJDIR)/*
 	rm -f $(TARGET)
-	rm -f ./files*/instructions.html

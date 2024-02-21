@@ -12,7 +12,7 @@
 #define MAZE_WALL {0,0,0}
 #define MAZE_PATH {255,255,255}
 #define MAZE_CHECKER_PATH {200,200,255};
-#define MAZE_SIZE 13 // Must be an odd number
+#define MAZE_SIZE 19 // Must be an odd number
 #define PIXEL_IS_BLACK(p) (p.red + p.green + p.blue == 0)
 
 #define MAZE_END {255, 0, 255};   // Purple
@@ -102,23 +102,26 @@ std::string compress_path(std::string &path)
   return compressed;
 }
 
-void randomized_dfs(Image &maze, int x, int y, long seed)
+void randomized_dfs(Image &maze, int x, int y, long &seed)
 {
   std::vector<std::pair<int, int>> directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-  std::shuffle(directions.begin(), directions.end(), std::default_random_engine(seed+x+(y*MAZE_SIZE)));
-
-  maze(x, y) = {200,200,255};
+  std::shuffle(directions.begin(), directions.end(), std::default_random_engine(seed));
+  ++seed;
+  
+  maze(x, y) = MAZE_CHECKER_PATH;
   for (auto &dir : directions) {
     int nx = x + dir.first;
     int ny = y + dir.second;
     int fx = x + dir.first*2;
     int fy = y + dir.second*2;
 
+    // Bounds checking
     if (fx < 0 || fy < 0 || fx >= MAZE_SIZE || fy >= MAZE_SIZE) {
       continue;
     }
 
-    if (PIXEL_IS_BLACK(maze(fx, fy))) {
+    if (PIXEL_IS_BLACK(maze(fx, fy)) || utils_rng_roll(1, 30, seed) == 1) {
+      ++seed; // idk why, but this is necessary for better randomness
       maze(fx, fy) = MAZE_CHECKER_PATH;
       maze(nx, ny) = MAZE_PATH;
       randomized_dfs(maze, fx, fy, seed);
