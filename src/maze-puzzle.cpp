@@ -1,4 +1,3 @@
-#include <cassert>
 #include <iostream>
 #include <vector>
 #include <random>
@@ -13,8 +12,11 @@
 #define MAZE_WALL {0,0,0}
 #define MAZE_PATH {255,255,255}
 #define MAZE_CHECKER_PATH {200,200,255};
-#define MAZE_SLOW_SPOT {200, 100, 0}
-#define MAZE_SIZE 109 // Must be an odd number
+
+// TODO: Implement slow spots
+// #define MAZE_SLOW_SPOT {200, 100, 0}
+
+#define MAZE_SIZE 13 // Must be an odd number
 #define PIXEL_IS_BLACK(p) (p.red + p.green + p.blue == 0)
 
 #define MAZE_END {255, 0, 255};   // Purple
@@ -84,17 +86,6 @@ int shortest_path(Image &maze, int x, int y, int steps, std::string &path, long 
   }
 
   return min+1;
-}
-
-void insert_special_spots(Image &maze, int x, int y, int steps, std::string &path, long &seed)
-{
-  (void)maze;
-  (void)x;
-  (void)y;
-  (void)steps;
-  (void)path;
-  (void)seed;
-  assert(false && "unimplemented");
 }
 
 std::string compress_path(std::string &path)

@@ -39,3 +39,5 @@
 testdata/
 secrets/
 .DS_Store
+zipfiles/*
+AST/*
