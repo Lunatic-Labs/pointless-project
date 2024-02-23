@@ -4,19 +4,20 @@ CC := g++
 
 SRCS := $(wildcard *.cpp)
 OBJDIR := ./obj
+ZIP_DIR := ./zipfiles
 OBJS := $(addprefix $(OBJDIR)/,$(notdir $(SRCS:.cpp=.o)))
 TARGET := main
 
 .PHONY: all clean cleanzip
 
 $(TARGET): $(OBJS)
+	mkdir -p $(ZIP_DIR)
 	$(CC) $(CFLAGS) -o $@ $^ $(CLINKS)
-
+	
 all: $(TARGET) cleanzip
 	./main
 
 $(OBJDIR)/%.o: %.cpp
-	mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 cleanzip:
