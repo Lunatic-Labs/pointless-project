@@ -3,17 +3,8 @@
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-////TODO: POTENTIAL PUZZLE REWORK //////////////////
-///////////// STEPS TO SOLVE ///////////////////////
-//convert each value from its base to base 2
-//randomly choose between &, |, ^
-//perform chosen operation on all values in the row
-//count the number of bits that are on in the result
-//number of on bits will be the solution for that row
-//final solution is the values from the row solution
 
-// Gotta beef it up. Not many solution permutations
-/////////////////////// STEPS TO SOLVE ///////////////////////
+////// STEPS TO SOLVE //////
 //Convert values to base 10 
 // Sum them up for each row 
 // Convert the sum to base 2 
@@ -42,9 +33,7 @@ int solve(std::vector<std::string> &vals, std::vector<int> &base)
   return solution;
 }
 
-/*TODO: INCREASE PUZZLE SIZE(add 4 rows? want seven ?'s. add 1 column for the bitwise operator)
-  -update .desc.txt(actual instructions and also the table of course)
-*/
+//TODO: Rework the puzzle
 Puzzle based_puzzle_create(long seed)
 {
   std::vector<std::string> values;
