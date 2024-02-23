@@ -3,5 +3,5 @@
 Puzzle fin_puzzle_create(long seed)
 {
   (void)seed;
-  return Puzzle{"files-fin", ""};
+  return Puzzle{"files-fin", "", {}};
 }
