@@ -16,6 +16,17 @@ int utils_chance(int percentage, long &seed)
   return utils_rng_roll(1, 100, seed) <= percentage; 
 }
 
+void utils_mkdir(filepath_t filepath)
+{
+  if (FLAGS & ANS_ONLY) {
+    return;
+  }
+  if (std::filesystem::exists(filepath)) {
+    return;
+  }
+  std::filesystem::create_directories(filepath);
+}
+
 std::string utils_html_printf(std::string title, filepath_t desc_filepath, strvec_t args)
 {
   // Get the header content.
@@ -107,6 +118,9 @@ std::string utils_file_to_str(const std::string filepath)
 
 void utils_generate_file(filepath_t output_filepath, std::string output_body)
 {
+  if (FLAGS & ANS_ONLY) {
+    return;
+  }
   std::ofstream outfp(output_filepath);
   if (!outfp.is_open()) {
     std::cerr << "Error opening file: " << output_filepath << std::endl;

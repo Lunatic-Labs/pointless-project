@@ -121,14 +121,8 @@ Puzzle encrypt_puzzle_create(long seed)
   }
   std::vector<std::string> instructions { word, encrypt_steps };
 
-  Puzzle p{"files-encrypt", words[word_idx]};
-
-  if (FLAGS & ANS_ONLY) {
-    return p;
-  }
-
   std::string html_body = utils_html_printf("Encrypt", "./files-encrypt/.desc.txt", instructions);
   utils_generate_file("./files-encrypt/instructions.html", html_body);
 
-  return p;
+  return {"files-encrypt", words[word_idx], {}};
 }

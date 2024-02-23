@@ -145,12 +145,6 @@ Puzzle maze_puzzle_create(long seed)
   std::reverse(path.begin(), path.end());
   std::string password = compress_path(path);
 
-  Puzzle p{"files-maze", password};
-
-  if (FLAGS & ANS_ONLY) {
-    return p;
-  }
-
   maze(0, MAZE_SIZE-1) = MAZE_START;
   maze(MAZE_SIZE-1, 0) = MAZE_END;
 
@@ -158,5 +152,5 @@ Puzzle maze_puzzle_create(long seed)
   std::string html_body = utils_html_printf("Maze Puzzle", "./files-maze/.desc.txt", {{svg}});
   utils_generate_file("./files-maze/instructions.html", html_body);
 
-  return Puzzle{"files-maze", password};
+  return {"files-maze", password, {}};
 }
