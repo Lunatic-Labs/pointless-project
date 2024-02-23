@@ -39,4 +39,6 @@ std::string utils_file_to_str(filepath_t filepath);
 std::string utils_html_printf(std::string title, filepath_t desc_filepath, strvec_t args);
 void utils_mkdir(filepath_t filepath);
 
+int utils_chance(int percentage, long &seed);
+
 #endif // UTILS_H

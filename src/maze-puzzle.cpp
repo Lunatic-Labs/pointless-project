@@ -12,6 +12,10 @@
 #define MAZE_WALL {0,0,0}
 #define MAZE_PATH {255,255,255}
 #define MAZE_CHECKER_PATH {200,200,255};
+
+// TODO: Implement slow spots
+// #define MAZE_SLOW_SPOT {200, 100, 0}
+
 #define MAZE_SIZE 13 // Must be an odd number
 #define PIXEL_IS_BLACK(p) (p.red + p.green + p.blue == 0)
 
@@ -20,7 +24,7 @@
 
 std::set<std::pair<int, int>> visited;
 
-int shortest_path(Image &maze, int x, int y, int steps, std::string &path)
+int shortest_path(Image &maze, int x, int y, int steps, std::string &path, long &seed)
 {
   if (x < 0 || y < 0 || x >= MAZE_SIZE || y >= MAZE_SIZE) {
     return INT_MAX;
@@ -55,7 +59,7 @@ int shortest_path(Image &maze, int x, int y, int steps, std::string &path)
       continue;
     }
 
-    int next = shortest_path(maze, nx, ny, steps+1, path);
+    int next = shortest_path(maze, nx, ny, steps+1, path, seed);
     if (next < min) {
       min = next;
       min_dir = i;
@@ -102,23 +106,26 @@ std::string compress_path(std::string &path)
   return compressed;
 }
 
-void randomized_dfs(Image &maze, int x, int y, long seed)
+void randomized_dfs(Image &maze, int x, int y, long &seed)
 {
   std::vector<std::pair<int, int>> directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-  std::shuffle(directions.begin(), directions.end(), std::default_random_engine(seed+x+(y*MAZE_SIZE)));
-
-  maze(x, y) = {200,200,255};
+  std::shuffle(directions.begin(), directions.end(), std::default_random_engine(seed));
+  ++seed;
+  
+  maze(x, y) = MAZE_CHECKER_PATH;
   for (auto &dir : directions) {
     int nx = x + dir.first;
     int ny = y + dir.second;
     int fx = x + dir.first*2;
     int fy = y + dir.second*2;
 
+    // Bounds checking
     if (fx < 0 || fy < 0 || fx >= MAZE_SIZE || fy >= MAZE_SIZE) {
       continue;
     }
 
     if (PIXEL_IS_BLACK(maze(fx, fy))) {
+      ++seed; // idk why, but this is necessary for better randomness
       maze(fx, fy) = MAZE_CHECKER_PATH;
       maze(nx, ny) = MAZE_PATH;
       randomized_dfs(maze, fx, fy, seed);
@@ -133,7 +140,7 @@ Puzzle maze_puzzle_create(long seed)
   randomized_dfs(maze, MAZE_SIZE-1, 0, seed);
 
   std::string path;
-  shortest_path(maze, MAZE_SIZE-1, 0, 0, path);
+  shortest_path(maze, MAZE_SIZE-1, 0, 0, path, seed);
 
   std::reverse(path.begin(), path.end());
   std::string password = compress_path(path);
