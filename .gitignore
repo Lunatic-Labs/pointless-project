@@ -36,8 +36,6 @@
 *.test
 
 .vscode/
-testdata/
-secrets/
 .DS_Store
 zipfiles/*
-AST/*
+AST
