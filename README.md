@@ -6,9 +6,7 @@ A website to generate and distribute puzzles to prospective Lipscomb recruits
 ## Debian/Ubuntu based distros
 
 ```
-sudo apt install g++
-sudo apt-get install libboost-all-dev
-sudo apt-get install libzip-dev
+sudo apt install g++ libboost-all-dev libzip-dev
 ```
 
 ## Arch based distros
@@ -45,12 +43,9 @@ Boost library:
 # Building
 ```
 cd ./src/
-./build <optional flag>
+make
+./main
 ```
-where
-* `c` - clean
-* `r` - run
-* `a` - clean, build, and run
 
 ## Structure of Output
 
@@ -70,35 +65,3 @@ the name of the file with `.`. The `walkdir()` function will ignore any
 dotfiles/hidden directories. It will also explore any subdirectories that is inside
 of the puzzle directory that you have created. If any of the files are not prefixed with `.`,
 then that file will be added to the final zipped version of it.
-
-## Future Puzzle Ideas
-
-### Hex Puzzle
-- Comes after the color puzzle
-- Uses the previous color hex value
-- Hex math?
-
-### TODO Map Puzzle
-- https://www.lipscomb.edu/sites/default/files/2021-11/UMAR-21-030%20-%20Campus%20Map%20-%20FINAL.pdf
-- Single QR code
-- Randomly mess it up and have the user fix it
-
-### Color Puzzle
-- Change the answer so it does not have to be concatenated
-- Randomly select 1 index from each of the colors
-- Answer is the sum of the two
-
-### Maze Puzzle
-- PPM Generation
-- Only 1 shortest path
-- Multiple paths
-- Final solution
-- Generate 8x8 (or maybe 10x10) maze
-  - Constraints:
-    1. Must have multiple paths, but only 1 shortest path.
-    2. The start and end must be at opposite corners.
-    3. The solution must contains compression (all duplicate letters must be in compressed)
-
-### Final Meta Puzzle
-- Hidden messages/symbols in previous instructions.
-- Must find these to complete final puzzle
