@@ -1,11 +1,12 @@
 #include <iostream>
 #include <bitset>
+#include <cmath>
 
 #include "./include/utils.h"
 #include "./include/puzzle.h"
 #include "./include/graphics.h"
 
-#define TAPE_WIDTH 6
+#define TAPE_WIDTH 10
 #define TAPE_HEIGHT 3
 
 #define EMPTY {255, 255, 255} // blank
@@ -17,31 +18,35 @@
 Puzzle binary_addition_puzzle_create(long seed)
 {
   // TODO: make sure not 0 and not equal
-  int top = utils_rng_roll(0, 31, seed);
-  int bottom = utils_rng_roll(0, 31, seed);
+  int top = utils_rng_roll(0, std::pow(2, TAPE_WIDTH), seed);
+  int bottom = utils_rng_roll(0, std::pow(2, TAPE_WIDTH), seed);
+  std::cout << top << " " << bottom << std::endl;
 
-  std::string top_bin = std::bitset<5>(top).to_string();
-  std::string bottom_bin = std::bitset<5>(bottom).to_string();
-  std::string sum_bin = std::bitset<6>(top + bottom).to_string();
+  std::string top_bin = std::bitset<TAPE_WIDTH>(top).to_string();
+  std::string bottom_bin = std::bitset<TAPE_WIDTH>(bottom).to_string();
+  std::string sum_bin = std::bitset<TAPE_WIDTH+1>(top + bottom).to_string();
 
-  Image graph(TAPE_WIDTH, TAPE_HEIGHT);
+  Image graph(TAPE_WIDTH+2, TAPE_HEIGHT);
 
   for (size_t i = 0; i < TAPE_HEIGHT; ++i) {
-    for (size_t j = 0; j < TAPE_WIDTH; ++j) {
+    for (size_t j = 0; j < TAPE_WIDTH+2; ++j) {
       graph(i,j) = EMPTY;
     }
   }
 
+  graph(0,0) = PURPLE;
+  graph(0,TAPE_WIDTH+1) = GOLD;
+
   for (size_t i = 0; i < TAPE_WIDTH; ++i) {
     if (top_bin[i] == '1') {
-      graph(0,i) = GREEN;
+      graph(0,i+1) = GREEN;
     } else {
-      graph(0,i) = RED;
+      graph(0,i+1) = RED;
     }
     if (bottom_bin[i] == '1') {
-      graph(1,i) = GREEN;
+      graph(1,i+1) = GREEN;
     } else {
-      graph(1,i) = RED;
+      graph(1,i+1) = RED;
     }
   }
 
