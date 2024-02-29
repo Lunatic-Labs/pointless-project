@@ -3,19 +3,47 @@ So you have beaten the last puzzle, good job!
 Your <b>golden</b> robot has been shut down. Solve this problem.
 
 <style>
+.state_purple {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-color: #FF00FF;
+}
 .state_red {
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   background-color: red;
 }
+.state_green {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-color: #00FF00;
+}
+
+ul {
+  text-align: left;
+  font-size: 32px;
+}
+
 </style>
 
-<p>
-    <span class="state_red"></span> Red
-</p>
-
-
+<!-- ↑←→↖↗↘ ↙ -->
+<ul>
+  <li><span class="state_red"></span>E:↓A</li>
+  <li><span class="state_green"></span>E:↓B</li>
+  <li><span class="state_purple"></span>E:↓↓<span class="state_red"></span>↑↑STOP</li>
+  <li><span class="state_red"></span>A:↓<span class="state_red"></span> ↑↖E</li>
+  <li><span class="state_green"></span>A:↓<span class="state_green"></span>↑↖E</li>
+  <li><span class="state_red"></span>B:↓<span class="state_green"></span>↑↖E</li>
+  <li><span class="state_green"></span>B:↓<span class="state_red"></span>↑↖C</li>
+  <li><span class="state_red"></span>C:↓B</li>
+  <li><span class="state_green"></span>C:↓D</li>
+  <li><span class="state_purple"></span>C:↓↓<span class="state_green"></span>↑↑STOP</li>
+  <li><span class="state_red"></span>D:↓<span class="state_red"></span>↑↖C</li>
+  <li><span class="state_green"></span>D:↓<span class="state_green"></span>↑↖C</li>
+</ul>
 <style>
   body {
     text-align: center;
