@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <cstdint>
 
 #define BOLD(s) "<b>" + (s) + "</b>"
 

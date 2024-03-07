@@ -1,5 +1,4 @@
 
-</div>
 <div class="footer">
 <div><p>Dr. Towell - dtowell@lipscomb.edu</p></div>
 <div>
