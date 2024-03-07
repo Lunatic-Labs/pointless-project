@@ -2,7 +2,5 @@ Congratulations on completing the previous puzzle! You have been 0 points. This 
 
 <p>We have encrypted the words <b>%DELIM</b> and your job is to decrypt it. Here are the steps that were performed:</p>
 <ul style=\"display: inline-block; float: right; margin-right: 50%\">
-<li>%DELIM</li>
-<li>%DELIM</li>
-<li>%DELIM</li>
+%DELIM
 </ul>

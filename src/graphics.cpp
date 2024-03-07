@@ -43,19 +43,16 @@ std::string graphics_gen_svg(Image &img, float pixel_size)
 void graphics_create_ppm(Image &img, const char *filepath)
 {
   FILE *fp = std::fopen(filepath, "wb");
-  if (!fp)
-  {
+  if (!fp) {
     std::fprintf(stderr, "Error: could not open file %s. Reason: %s\n",
                  filepath, std::strerror(errno));
     std::exit(EXIT_FAILURE);
   }
 
-  auto write_bytes = [&](const char *formatstr, ...) -> void
-  {
+  auto write_bytes = [&](const char *formatstr, ...) -> void {
     va_list args;
     va_start(args, formatstr);
-    if (std::vfprintf(fp, formatstr, args) < 0)
-    {
+    if (std::vfprintf(fp, formatstr, args) < 0) {
       std::fprintf(stderr, "Error: failed to write bytes to file %s. Reason: %s\n",
                    filepath, std::strerror(errno));
       std::exit(EXIT_FAILURE);
@@ -65,10 +62,8 @@ void graphics_create_ppm(Image &img, const char *filepath)
 
   write_bytes("P6 %d %d 255\n", img.height, img.width);
 
-  for (size_t i = 0; i < img.height; ++i)
-  {
-    for (size_t j = 0; j < img.width; ++j)
-    {
+  for (size_t i = 0; i < img.height; ++i) {
+    for (size_t j = 0; j < img.width; ++j) {
       Pixel &p = img(i, j);
       write_bytes("%c%c%c", p.red, p.green, p.blue);
     }
@@ -82,15 +77,11 @@ Image graphics_scale_ppm(Image &img, size_t scale)
   assert(scale != 0);
   Image scaled_img = Image{img.height * scale, img.width * scale};
 
-  for (size_t i = 0; i < img.height; i++)
-  {
-    for (size_t j = 0; j < img.width; j++)
-    {
+  for (size_t i = 0; i < img.height; i++) {
+    for (size_t j = 0; j < img.width; j++) {
       Pixel &color = img(i, j);
-      for (size_t k = 0; k < scale; k++)
-      {
-        for (size_t l = 0; l < scale; l++)
-        {
+      for (size_t k = 0; k < scale; k++) {
+        for (size_t l = 0; l < scale; l++) {
           scaled_img(i * scale + k, j * scale + l) = color;
         }
       }

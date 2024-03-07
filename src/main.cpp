@@ -67,11 +67,16 @@ int main(int argc, char **argv)
     maze_puzzle_create(seed),
     encrypt_puzzle_create(seed),
     based_puzzle_create(seed),
+    ast_puzzle_create(seed),
     fin_puzzle_create(seed),
   };
 
   for (auto &puzzle : puzzles) {
-    std::printf("%-10s Password: %s\n", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
+    std::printf("%-10s Password: %s", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
+    if (puzzle.extra_info) {
+      std::printf(" %s", puzzle.extra_info->c_str());
+    }
+    std::cout << std::endl;
   }
 
   if (!(FLAGS & ANS_ONLY)) {
