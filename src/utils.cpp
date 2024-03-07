@@ -7,12 +7,29 @@
 #include <sys/stat.h>
 #include <vector>
 #include <zip.h>
+#include <string.h>
 
 #include "./include/utils.h"
 
-std::string utils_generate_html(std::string title, std::string description, long seed)
+int utils_chance(int percentage, long &seed)
 {
-  // Stores the content of template_header into a std::string.
+  return utils_rng_roll(1, 100, seed) <= percentage; 
+}
+
+void utils_mkdir(filepath_t filepath)
+{
+  if (FLAGS & ANS_ONLY) {
+    return;
+  }
+  if (std::filesystem::exists(filepath)) {
+    return;
+  }
+  std::filesystem::create_directories(filepath);
+}
+
+std::string utils_html_printf(std::string title, filepath_t desc_filepath, strvec_t args)
+{
+  // Get the header content.
   char c;
   std::string header_content;
   std::string header_path = "./resources/template-header.txt";
@@ -32,13 +49,13 @@ std::string utils_generate_html(std::string title, std::string description, long
 
   header_file.close();
 
-  // Stores the content of template_footer into a std::string.
+  // Get the footer content.
   char d;
   std::string footer_content;
 
   std::string footer_path = "./resources/template-footer.txt";
 
-  if(stat(footer_path.c_str(), &buf) != 0) {
+  if (stat(footer_path.c_str(), &buf) != 0) {
     throw("Can not open " + footer_path + ": No such file");
   }
 
@@ -49,21 +66,38 @@ std::string utils_generate_html(std::string title, std::string description, long
   }
   footer_file.close();
 
+  // Get the description. Uses the `va_list` to get the variable arguments.
+  std::string description = utils_file_to_str(desc_filepath);
+
+  // std::stringstream ss(description);
+  std::string desc_content = utils_file_to_str(desc_filepath);
+  std::string body;
+
+  const char *delim = "%DELIM";
+  char *it = &desc_content[0];
+  while (*it) {
+    if (*it == '%' && (strncmp(it, delim, 6) == 0)) {
+      if (args.empty()) {
+        std::cerr << __FUNCTION__ << " Not enough arguments for description" << std::endl;
+        std::exit(EXIT_FAILURE);
+      }
+      body += args.front();
+      args.erase(args.begin());
+      it += 5;
+    } else {
+      body += *it;
+    }
+    ++it;
+  }
+
   std::string content_concatenated = header_content
     + "<h3 style=\"text-align:center\">"
     + title
     + "</h3>"
     + "<p style=\"text-align:center\">"
-    + description
+    + body
     + "</p>"
     + footer_content;
-
-  std::string template_seed = std::to_string(seed)
-    + "</div>\n"
-    + "</div>\n"
-    + "</div>\n"
-    + "</body>\n"
-    + "</html>\n";
 
   return content_concatenated;
 }
@@ -82,23 +116,37 @@ std::string utils_file_to_str(const std::string filepath)
   return contents;
 }
 
-void utils_generate_file(std::string output_filepath, std::string output_body)
+void utils_generate_file(filepath_t output_filepath, std::string output_body)
 {
+  if (FLAGS & ANS_ONLY) {
+    return;
+  }
   std::ofstream outfp(output_filepath);
+  if (!outfp.is_open()) {
+    std::cerr << "Error opening file: " << output_filepath << std::endl;
+    std::exit(EXIT_FAILURE);
+  }
   outfp << output_body;
   outfp.close();
 }
 
-int utils_rng_roll(int min, int max, long seed)
+int utils_rng_roll(int min, int max, long &seed)
 {
   srand(seed);
+  seed += rand() % 1000;
 
-  assert(min != max);
   if(min > max) {
     return utils_rng_roll(max, min, seed);
   }
 
-  return rand() % (max - min) + min;
+  return rand() % (max - min + 1) + min;
+}
+
+int utils_roll_seed(void)
+{
+  long seed = (uint)time(nullptr);
+  srand(seed);
+  return seed;
 }
 
 // Description:
@@ -109,7 +157,7 @@ int utils_rng_roll(int min, int max, long seed)
 //   `password` - The password to encrypt the _FIRST_ file with.
 // Returns:
 //   Nothing.
-void utils_zip_files(std::string out_file_name,
+void utils_zip_files(filepath_t out_file_name,
                      strvec_t file_names,
                      std::string password)
 {
@@ -147,7 +195,7 @@ void utils_zip_files(std::string out_file_name,
 //  path - The path to the directory to walk.
 // Returns:
 //  A vector of strings containing the paths to all the files in the directory.
-strvec_t utils_walkdir(const std::string &path)
+strvec_t utils_walkdir(filepath_t path)
 {
   strvec_t file_paths;
 

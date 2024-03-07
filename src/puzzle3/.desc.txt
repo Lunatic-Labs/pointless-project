@@ -1,3 +1,0 @@
-So you have beaten the second puzzle, good job!
-
-<b>Now solve the maze that is within this directory with compression.</b>

@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 #include <iostream>
 #include <string>
+#include <string.h>
 #include <vector>
 #include <algorithm>
 
@@ -13,12 +14,7 @@
 #include "./include/utils.h"
 #include "./include/puzzle.h"
 
-int roll_seed(void)
-{
-  long seed = (uint)time(nullptr);
-  srand(seed);
-  return seed;
-}
+uint32_t FLAGS = 0;
 
 void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
 {
@@ -37,18 +33,54 @@ void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
   }
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
-  long seed = roll_seed();
+  long seed;
+  while (argc > 1) {
+    if (strcmp(argv[1], "-a") == 0) {
+      FLAGS |= ANS_ONLY;
+    } else if (strcmp(argv[1], "-s") == 0) {
+      FLAGS |= SET_SEED;
+      --argc;
+      ++argv;
+
+      if (argc < 2 || (seed = atol(argv[1])) == 0) {
+        std::cerr << "Expected <seed> (must be a number)" << std::endl;
+        return 1;
+      }
+    }
+    else {
+      std::cerr << "Unknown flag: " << argv[1] << std::endl;
+      return 1;
+    }
+    --argc;
+    ++argv;
+  }
+
+  if ((FLAGS & SET_SEED) == 0) { 
+    seed = utils_roll_seed();
+  }
 
   std::vector<Puzzle> puzzles = {
-    puzzle_create1(seed),
-    puzzle_create2(seed),
-    puzzle_create3(seed),
-    puzzle_create4(seed),
+    math_puzzle_create(seed),
+    color_puzzle_create(seed),
+    maze_puzzle_create(seed),
+    encrypt_puzzle_create(seed),
+    ast_puzzle_create(seed),
+    fin_puzzle_create(seed),
   };
 
-  create_nested_zipfiles(puzzles);
+  for (auto &puzzle : puzzles) {
+    std::printf("%-10s Password: %s", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
+    if (puzzle.extra_info) {
+      std::printf(" %s", puzzle.extra_info->c_str());
+    }
+    std::cout << std::endl;
+  }
+
+  if (!(FLAGS & ANS_ONLY)) {
+    create_nested_zipfiles(puzzles);
+  }
 
   return 0;
 }
