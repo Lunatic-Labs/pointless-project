@@ -64,6 +64,7 @@ int main(int argc, char **argv)
   std::vector<Puzzle> puzzles = {
     math_puzzle_create(seed),
     color_puzzle_create(seed),
+    pixel_puzzle_create(seed),
     maze_puzzle_create(seed),
     encrypt_puzzle_create(seed),
     ast_puzzle_create(seed),
