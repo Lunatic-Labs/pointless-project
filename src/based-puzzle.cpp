@@ -66,6 +66,6 @@ Puzzle based_puzzle_create(long seed)
   std::string html_content = utils_html_printf("Base Puzzle", "./files-based/.desc.txt", values);
   utils_generate_file("./files-based/instructions.html", html_content);
 
-  return Puzzle{"files-based", std::to_string(solve(values, bases))};
+  return Puzzle{"files-based", std::to_string(solve(values, bases)), {}};
 }
 
