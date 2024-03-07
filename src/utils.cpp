@@ -32,7 +32,7 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
   // Get the header content.
   char c;
   std::string header_content;
-  std::string header_path = "./resources/template-header.txt";
+  std::string header_path = "./resources/header.txt";
 
   struct stat buf;
   if(stat(header_path.c_str(), &buf) != 0) {
