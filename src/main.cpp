@@ -67,6 +67,7 @@ int main(int argc, char **argv)
     maze_puzzle_create(seed),
     encrypt_puzzle_create(seed),
     based_puzzle_create(seed),
+    rematch_puzzle_create(seed),
     ast_puzzle_create(seed),
     fin_puzzle_create(seed),
   };
