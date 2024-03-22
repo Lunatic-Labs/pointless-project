@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <ctime>
+#include <errno.h>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -124,6 +125,7 @@ void utils_generate_file(filepath_t output_filepath, std::string output_body)
   std::ofstream outfp(output_filepath);
   if (!outfp.is_open()) {
     std::cerr << "Error opening file: " << output_filepath << std::endl;
+    std::cerr << "reason: " << strerror(errno) << std::endl;
     std::exit(EXIT_FAILURE);
   }
   outfp << output_body;
@@ -176,8 +178,14 @@ void utils_zip_files(filepath_t out_file_name,
 
     zip_source_t *src = zip_source_file(zip_file, file_names[i].c_str(), 0, 0);
 
-    // Strip the path from the file name (only the top most path).
-    std::string::size_type pos = file_names[i].find('/');
+    // Strip the path from the file name
+    std::string::size_type pos = file_names[i].find("/");
+
+    // Checking whether or not there is a dotfile after the first slash
+    if(file_names[i][pos + 1] == '.') {
+      // stripping that dotfile from the path
+      pos = file_names[i].substr(pos + 1).find("/") + pos + 1;
+    }
     std::string stripped_filename = file_names[i].substr(pos + 1);
 
     zip_add(zip_file, stripped_filename.c_str(), src);
