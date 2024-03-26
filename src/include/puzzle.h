@@ -4,6 +4,7 @@
 #include <optional>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 struct Puzzle {
   // The filepath to the appropriate directory
@@ -18,6 +19,7 @@ struct Puzzle {
 
 Puzzle math_puzzle_create(long seed);
 Puzzle color_puzzle_create(long seed);
+Puzzle pixel_puzzle_create(long seed);
 Puzzle maze_puzzle_create(long seed);
 Puzzle encrypt_puzzle_create(long seed);
 Puzzle based_puzzle_create(long seed);
