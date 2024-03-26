@@ -80,7 +80,10 @@ Puzzle rematch_maze_puzzle_create(long seed)
 {
   std::vector<std::vector<int>> mazes = {};
   std::vector<std::string> svgs = {};
-  std::string password = "changeme";
+
+  int password = utils_rng_roll(1000000, 9999999, seed);
+  int password_hash = utils_rng_roll(1000000, 9999999, seed);
+  int encrypted_password = password ^ password_hash;
 
   for (int i = 0; i < 3; ++i) {
     Image maze(MAZE_SIZE, MAZE_SIZE);
@@ -131,9 +134,10 @@ Puzzle rematch_maze_puzzle_create(long seed)
 
   std::string html_body = utils_html_printf("Maze Rematch Puzzle",
                                             "./files-rematch-maze/.desc.txt",
-                                            {svgs[0], svgs[1], svgs[2], binmaze_str1, binmaze_str2, binmaze_str3});
+                                            {svgs[0], svgs[1], svgs[2], binmaze_str1, binmaze_str2, binmaze_str3,
+                                            std::to_string(encrypted_password), std::to_string(password_hash)});
 
   utils_generate_file("./files-rematch-maze/instructions.html", html_body);
-
-  return {"files-maze", password, {}};
+  std::cout << "password: " << password << std::endl;
+  return {"files-maze", std::to_string(password), {}};
 }

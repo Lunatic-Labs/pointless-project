@@ -1,35 +1,61 @@
+<p> 
+You are now the robot in the maze! Use your command line tools to get to the exit.
+
+See `instructions` to view what you can do.
+</p>
 
 <div style="width:50%; margin:0 auto;">
 
-<div id="maze1" style="width:50%; margin:0 auto;">
+<div id="__maze1" style="width:50%; margin:0 auto;">
   %DELIM
 </div>
 
-<div id="maze2" style="width:50%; margin:0 auto;">
+<div id="__maze2" style="width:50%; margin:0 auto;">
   %DELIM
 </div>
 
-<div id="maze3" style="width:50%; margin:0 auto;">
+<div id="__maze3" style="width:50%; margin:0 auto;">
   %DELIM
 </div>
 
 </div>
 
 <script>
- var maze1 = [%DELIM];
 
- var maze2 = [%DELIM];
+ var __AAAAAAAAAAAAA = 543;
+ var __ABAAAAAAAAAAA = 9873;
+ var __AAAAAAAAADAAA = 28347;
+ var __AAAAAAAACAAAA = 5312341;
+ var __AAAAAABAAAAAA = 592746;
+ var __AAAAAASAAAAAA = "Lipscomb";
+ var __AAAAAAAAAXAAA = "Bison";
+ var __AAAAAAAAANAAA = "University";
+ var __AAAASAAAAAAAA = "foo bar baz";
+ var __AAAAAAZAAAAAA = "hello world";
+ var __AAAAAAAAABAAA = "USA";
+ var __AAAAAAAAAAAsA = 241;
+ var __AAAAAAAAAAAAA = 543234;
+ var __AAAAAAAAAAAeA = 902817;
+ var __AAAAAAAAAAA2A = "Turner and Zach were here.";
+ var __AAAAAAAAA4AAA = "qwerty";
 
- var maze3 = [%DELIM];
+ var __maze1 = [%DELIM];
 
- var mazes = [maze1, maze2, maze3];
+ var __maze2 = [%DELIM];
 
- var idx = 0;
- var cur_maze = mazes[idx];
- var x = 0;
- var y = maze1.length - 1;
- var has_key = false;
- var has_battery = false;
+ var __maze3 = [%DELIM];
+
+ var __mazes = [__maze1, __maze2, __maze3];
+
+ var __qwertyuiopasdfhjklzxcvbnm = %DELIM;
+ var __qwertyuiopasdfhjklzzcvbnm = %DELIM;
+
+ var __idx = 0;
+ var __cur_maze = __mazes[__idx];
+ var __x = 0;
+ var __y = __maze1.length - 1;
+ var __has_key = false;
+ var __has_battery = false;
 
  function instructions() {
     let s = `u(x), d(x), l(x) and r(x): Moves you x*2 tiles in the direction.
@@ -41,47 +67,40 @@ exit()          : Escapes the maze if you are on the yellow tile`;
     return s;
  }
 
- function inventory() {
-    let s = "Inventory:\n";
-    if (has_key) {
-        s += "  key";
-    }
-    if (has_battery) {
-        s += "  battery";
-    }
-    return s;
- }
+ var instructions = instructions();
 
  function pickup_item() {
-    if (cur_maze[y][x] === 6 && !has_key) {
-        has_key = true;
+    if (__cur_maze[__y][__x] === 6 && !__has_key) {
+        __has_key = true;
         return "you picked up a key!";
-    } else if (cur_maze[y][x] === 6 && has_key) {
+    } else if (__cur_maze[__y][__x] === 6 && __has_key) {
         return "you already have the key!";
-    } else if (cur_maze[y][x] === 7 && !has_battery) {
-        has_battery = true;
+    } else if (__cur_maze[__y][__x] === 7 && !__has_battery) {
+        __has_battery = true;
         return "you picked up a battery!";
-    } else if (cur_maze[y][x] === 7 && has_battery) {
+    } else if (__cur_maze[__y][__x] === 7 && __has_battery) {
         return "you already have the battery!";
     }
     return "you are not on an item!";
  }
 
  function exit() {
-    if (cur_maze[y][x] === 3 && has_key && has_battery) {
-        return "you win!";
+    if (__cur_maze[__y][__x] === 3 && __has_key && __has_battery) {
+        let s = "you win! Here is your password: ";
+        s += "\n" + __qwertyuiopasdfhjklzxcvbnm ^ __qwertyuiopasdfhjklzzcvbnm;
+        return s;
     }
-    else if (cur_maze[y][x] === 3 && !has_key) {
+    else if (__cur_maze[__y][__x] === 3 && !__has_key) {
         return "the door is locked! maybe search around for a key?";
     }
-    else if (cur_maze[y][x] === 3 && !has_battery) {
+    else if (__cur_maze[__y][__x] === 3 && !__has_battery) {
         return "you do not have enough power to open the door! I wonder if a battery is somewhere?";
     }
     return "you are not on the door!";
  }
 
  function ascend_stairs() {
-    if (cur_maze[y][x] === 5) {
+    if (__cur_maze[__y][__x] === 5) {
         prev_maze();
         return "you climbed the stairs!";
     }
@@ -89,7 +108,7 @@ exit()          : Escapes the maze if you are on the yellow tile`;
  }
 
  function descend_stairs() {
-    if (cur_maze[y][x] === 4) {
+    if (__cur_maze[__y][__x] === 4) {
         next_maze();
         return "you descended the stairs!";
     }
@@ -99,31 +118,31 @@ exit()          : Escapes the maze if you are on the yellow tile`;
  function check_boundary(dx, dy) {
     try {
         for (var i = 0; i < dx; i++) {
-            if (cur_maze[y][x + i] === 0) {
+            if (__cur_maze[__y][__x + i] === 0) {
                 return false;
             }
         }
         for (var i = 0; i > dx; i--) {
-            if (cur_maze[y][x + i] === 0) {
+            if (__cur_maze[__y][__x + i] === 0) {
                 return false;
             }
         }
         for (var i = 0; i < dy; i++) {
-            if (cur_maze[y + i][x] === 0) {
+            if (__cur_maze[__y + i][__x] === 0) {
                 return false;
             }
         }
         for (var i = 0; i > dy; i--) {
-            if (cur_maze[y + i][x] === 0) {
+            if (__cur_maze[__y + i][__x] === 0) {
                 return false;
             }
         }
     } catch (e) {
         return false;
     }
-     var newX = x + dx;
-     var newY = y + dy;
-     if (newX >= 0 && newX < cur_maze.length && newY >= 0 && newY < cur_maze[0].length && cur_maze[newY][newX] !== 0) {
+     var newX = __x + dx;
+     var newY = __y + dy;
+     if (newX >= 0 && newX < __cur_maze.length && newY >= 0 && newY < __cur_maze[0].length && __cur_maze[newY][newX] !== 0) {
         return true;
      } else {
         return false;
@@ -132,7 +151,7 @@ exit()          : Escapes the maze if you are on the yellow tile`;
 
  function u(stride = 1) {
      if (check_boundary(0, -stride*2)) {
-         y -= stride*2;
+         __y -= stride*2;
          return "you moved up";
      }
      return "you hit a wall!";
@@ -140,7 +159,7 @@ exit()          : Escapes the maze if you are on the yellow tile`;
 
  function d(stride = 1) {
      if (check_boundary(0, stride*2)) {
-         y += stride*2;
+         __y += stride*2;
          return "you moved down";
      }
      return "you hit a wall!";
@@ -148,7 +167,7 @@ exit()          : Escapes the maze if you are on the yellow tile`;
 
  function r(stride = 1) {
      if (check_boundary(stride*2, 0)) {
-         x += stride*2;
+         __x += stride*2;
          return "you moved right";
      }
      return "you hit a wall!";
@@ -156,47 +175,47 @@ exit()          : Escapes the maze if you are on the yellow tile`;
 
  function l(stride = 1) {
      if (check_boundary(-stride*2, 0)) {
-         x -= stride*2;
+         __x -= stride*2;
          return "you moved left";
      }
      return "you hit a wall!";
  }
 
- function hide_maze(id) {
+ function __hide_maze(id) {
     var div = document.getElementById(id);
     div.style.display = "none";
  }
 
- function show_maze(id) {
+ function __show_maze(id) {
     var div = document.getElementById(id);
     div.style.display = "block";
  }
 
- function next_maze() {
-    if (idx === mazes.length - 1) {
-        return "no more mazes!";
+ function __next_maze() {
+    if (__idx === __mazes.length - 1) {
+        return "no more __mazes!";
     }
-    idx = idx+1;
-    cur_maze = mazes[idx];
-    hide_maze("maze1");
-    hide_maze("maze2");
-    hide_maze("maze3");
-    show_maze("maze" + (idx + 1));
+    __idx = __idx+1;
+    __cur_maze = __mazes[__idx];
+    __hide_maze("__maze1");
+    __hide_maze("__maze2");
+    __hide_maze("__maze3");
+    __show_maze("maze" + (__idx + 1));
  }
 
  function prev_maze() {
-    if (idx === 0) {
-        return "no more mazes!";
+    if (__idx === 0) {
+        return "no more __mazes!";
     }
-    idx = idx-1;
-    cur_maze = mazes[idx];
-    hide_maze("maze1");
-    hide_maze("maze2");
-    hide_maze("maze3");
-    show_maze("maze" + (idx + 1));
+    __idx = __idx-1;
+    __cur_maze = __mazes[__idx];
+    __hide_maze("__maze1");
+    __hide_maze("__maze2");
+    __hide_maze("__maze3");
+    __show_maze("maze" + (__idx + 1));
  }
 
- hide_maze("maze2");
- hide_maze("maze3");
+ __hide_maze("__maze2");
+ __hide_maze("__maze3");
 
 </script>
