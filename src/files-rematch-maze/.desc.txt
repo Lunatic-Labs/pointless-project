@@ -1,4 +1,4 @@
-<p> 
+<p>
 You are now the robot in the maze! Use your command line tools to get to the exit.
 
 See `instructions` to view what you can do.
@@ -6,15 +6,15 @@ See `instructions` to view what you can do.
 
 <div style="width:50%; margin:0 auto;">
 
-<div id="__maze1" style="width:50%; margin:0 auto;">
+<div id="maze1" style="width:50%; margin:0 auto;">
   %DELIM
 </div>
 
-<div id="__maze2" style="width:50%; margin:0 auto;">
+<div id="maze2" style="width:50%; margin:0 auto;">
   %DELIM
 </div>
 
-<div id="__maze3" style="width:50%; margin:0 auto;">
+<div id="maze3" style="width:50%; margin:0 auto;">
   %DELIM
 </div>
 
@@ -101,7 +101,7 @@ exit()          : Escapes the maze if you are on the yellow tile`;
 
  function ascend_stairs() {
     if (__cur_maze[__y][__x] === 5) {
-        prev_maze();
+        __prev_maze();
         return "you climbed the stairs!";
     }
     return "you are not on stairs!";
@@ -109,7 +109,7 @@ exit()          : Escapes the maze if you are on the yellow tile`;
 
  function descend_stairs() {
     if (__cur_maze[__y][__x] === 4) {
-        next_maze();
+        __next_maze();
         return "you descended the stairs!";
     }
     return "you are not on stairs!";
@@ -193,29 +193,29 @@ exit()          : Escapes the maze if you are on the yellow tile`;
 
  function __next_maze() {
     if (__idx === __mazes.length - 1) {
-        return "no more __mazes!";
+        return "no more mazes!";
     }
     __idx = __idx+1;
     __cur_maze = __mazes[__idx];
-    __hide_maze("__maze1");
-    __hide_maze("__maze2");
-    __hide_maze("__maze3");
+    __hide_maze("maze1");
+    __hide_maze("maze2");
+    __hide_maze("maze3");
     __show_maze("maze" + (__idx + 1));
  }
 
- function prev_maze() {
+ function __prev_maze() {
     if (__idx === 0) {
-        return "no more __mazes!";
+        return "no more mazes!";
     }
     __idx = __idx-1;
     __cur_maze = __mazes[__idx];
-    __hide_maze("__maze1");
-    __hide_maze("__maze2");
-    __hide_maze("__maze3");
+    __hide_maze("maze1");
+    __hide_maze("maze2");
+    __hide_maze("maze3");
     __show_maze("maze" + (__idx + 1));
  }
 
- __hide_maze("__maze2");
- __hide_maze("__maze3");
+ __hide_maze("maze2");
+ __hide_maze("maze3");
 
 </script>

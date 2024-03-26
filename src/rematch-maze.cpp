@@ -139,5 +139,5 @@ Puzzle rematch_maze_puzzle_create(long seed)
 
   utils_generate_file("./files-rematch-maze/instructions.html", html_body);
   std::cout << "password: " << password << std::endl;
-  return {"files-maze", std::to_string(password), {}};
+  return {"files-rematch-maze", std::to_string(password), {}};
 }
