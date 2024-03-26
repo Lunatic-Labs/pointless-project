@@ -67,7 +67,6 @@ Your <b>golden</b> robot is trapped in a maze. You need to give him the instruct
   </svg>
 
 </div>
-</div>
 
 The instruction set for this maze is `uuurddruur`. However, this is too many instructions for the robot.
 
