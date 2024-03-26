@@ -1,7 +1,8 @@
 <p>
-You are now the robot in the maze! Use your command line tools to get to the exit.
-
-See `instructions` to view what you can do.
+You are now the robot in the maze! Use your robot's console get to the exit.
+</p>
+<p>
+Type <b>instructions</b> at this console to get your robot's instruction set.
 </p>
 
 <div style="width:50%; margin:0 auto;">
@@ -61,7 +62,7 @@ See `instructions` to view what you can do.
     let s = `u(x), d(x), l(x) and r(x): Moves you x*2 tiles in the direction.
 descend_stairs(): Descend to the next maze if you are on a brown tile.
 ascend_stairs() : Ascend to the last maze if you are on a green tile.
-pickup()        : Picks up an item if you are a pink tile.
+pickup_item()   : Picks up an item if you are a pink tile.
 exit()          : Escapes the maze if you are on the yellow tile`;
 
     return s;
