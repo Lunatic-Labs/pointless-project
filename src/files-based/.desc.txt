@@ -3,37 +3,37 @@
         <title>Alien Number System</title>
         <style>
             .container {
-                width: 80%; /* Adjust the width as needed */
-                margin: 300px auto 0; /* Center the container horizontally */
+                width: 80%;
+                margin: 300px auto 0;
                 padding: 20px;
-                border: 1px solid #ccc; /* Optional: Add a border */
-                border-radius: 8px; /* Optional: Add border radius for rounded corners */
-                text-align: center; /* Center the text in the container */
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                text-align: center;
             }
             .container ul {
-            text-align: center; /* Align text to the left within the list */
-            list-style-position: inside; /* Place bullet points inside the list items */
+            text-align: center;
+            list-style-position: inside;
             }
             .container p {
                 max-width: 60%;
                 margin: 10px auto;
             }
             table {
-                margin: 20px auto; /* Center the table horizontally */
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add a shadow effect */
-                background-image: url('https://img.freepik.com/free-photo/black-concrete-wall_1194-7359.jpg?size=626&ext=jpg'); /* Add a background image */
-                background-size: cover; /* Ensure the background image covers the entire table */
+                margin: 20px auto;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+                background-image: url('https://img.freepik.com/free-photo/black-concrete-wall_1194-7359.jpg?size=626&ext=jpg');
+                background-size: cover;
                 border-radius: 10px;
             }
 
             td {
-                width: 70px; /* Set cell width */
-                height: 70px; /* Set cell height */
-                /* border: 2px solid #696969; Remove this line */
-                text-align: center; /* Center text horizontally */
-                vertical-align: middle; /* Center text vertically */
-                color: #ffffff; /* Set text color to a light gray */
-                font-size: 20px; /* Set font size */
+                width: 70px;
+                height: 70px;
+
+                text-align: center;
+                vertical-align: middle;
+                color: #ffffff;
+                font-size: 20px;
                 text-shadow: 2px 2px 10px #2dcf08;
             }
         </style>
