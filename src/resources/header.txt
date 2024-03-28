@@ -37,3 +37,26 @@
             }
     </script>
 </body>
+<div class="content">
+    <head>
+        <style>
+            .container {
+                width: 80%;
+                margin: -4px auto 0; /* This makes the bison stand on the box. We were cookin bro.*/
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                text-align: center;
+            }
+            .container ul {
+            text-align: center;
+            list-style-position: inside;
+            }
+            .container p {
+                max-width: 60%;
+                margin: 10px auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
