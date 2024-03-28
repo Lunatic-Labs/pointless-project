@@ -4,47 +4,95 @@
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-
-
+//define puzzle sizes
 #define GRID_CELLS 36 //6 x 6
-
-static const std::vector<std::string> S8 = {"!", "@", "#", "$", "%", "^", "&", "*"};
-static const std::vector<std::string> G16 = {"{", "}", "[", "]", "(", ")", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h"};
-static const std::vector<std::string> M36 = {"|", "~", ",", "/", "?", "_", "+", "=", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+#define CELL_SZ 4
+//FIXME: why does changing the size to 4 break everything??
 
 
-int solve(std::vector<std::string> &vals, std::vector<int> &base);
+//define indexes into values vector based on the base
+#define S8_START 0
+#define S8_END 7
+
+#define G16_START 8
+#define G16_END 23
+
+#define M36_START 24
+#define M36_END 59
+
+
+
+static const std::vector<std::string> values = {"!", "@", "#", "$", "%", "^", "&", "*", "{", "}", "[", "]", \
+    "(", ")", "'\'", ">", "a", "b", "c", "d", "e", "f", "g", "h", "|", "~", ",", "/", "?", "_", "+", "=", "-", \
+    ":", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+
+
+//int solve(strvec_t vals, std::vector<int> base);
 
 
 //creates value that will be placed in a cell in the table
-void cell_create(const std::vector<std::string> v, std::vector<std::string, int> *grid, int base);
+void cells_create(const strvec_t values_str, const std::vector<int> bases, strvec_t *cells, long seed)
+{
+  for(auto it = bases.begin(); it != bases.end(); ++it) {
+    auto& v = *it;
+    int start, end;
+    std::string cell_val;
+    switch(v)
+    {
+      case 8:
+        start = S8_START;
+        end = S8_END;
+        break;
+      case 16:
+        start = G16_START;
+        end = G16_END;
+        break;
+      case 36:
+        start = M36_START;
+        end = M36_END;
+        break;
+    }
+    for(int i = 0; i < CELL_SZ; i++) {
+      int num = utils_rng_roll(start, end, seed);
+      cell_val += values_str[num];
+    }
+    //std::cout << "cell val = " << cell_val << "\n";
+    cells->push_back(cell_val);
+  }
+}
 
 
 Puzzle based_rematch_puzzle_create(long seed)
 {
-  std::vector<std::string, int> grid; //hold the value/its base as a pair
+  std::vector<int> bases; 
+  strvec_t grid;
   for(int i = 0; i < GRID_CELLS; i++) {
     int num = utils_rng_roll(0, 2, seed);
-    switch (num)
+    switch (num) //choose base based...nice...on random value
     {
-    case 0:
-      cell_create(S8, &grid, 8);
-      break;
-    case 1:
-      cell_create(G16, &grid, 16);
-      break;
-    case 2:
-      cell_create(M36, &grid, 36);
-      break;
+      case 0:
+        bases.push_back(8);
+        break;
+      case 1:
+        bases.push_back(16);
+        break;
+      case 2:
+        bases.push_back(36);
+        break;
     }
-    //randomly choose one of the bases(utils_rng_roll(seed))
-    //randomly choose 3 symbols from the base and concatenate them into a string(pass to cell create to keep code DRY)
-    //push those strings into a vector for use in the solver(iterate through vector solving each string)
-    //push the base into a vector for use in the solver
   }
+  cells_create(values, bases, &grid, seed);
 
-  return Puzzle{"files-based-r", "some stuff here ofc", {}};
+  std::string html_content = utils_html_printf("Base Puzzle Rematch", "./files-based-r/.desc.txt", grid);
+  utils_generate_file("./files-based-r/instructions.html", html_content);
+
+  return Puzzle{"files-based-r", "need to finish solve", {}};
 }
+
+/*TODO: maybe have the puzzle not require all of the bases to be converted. 
+* maybe have each row have a certain path you can take through the puzzle to "turn on" the spot with the question mark
+* the decoding of the cell you land on tells you which direction to go somehow
+*/
 
 
 /*
