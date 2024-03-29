@@ -53,7 +53,7 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
   char d;
   std::string footer_content;
 
-  std::string footer_path = "./resources/template-footer.txt";
+  std::string footer_path = "./resources/footer.txt";
 
   if (stat(footer_path.c_str(), &buf) != 0) {
     throw("Can not open " + footer_path + ": No such file");
@@ -91,9 +91,9 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
   }
 
   std::string content_concatenated = header_content
-    + "<h3 style=\"text-align:center\">"
+    + "<h2 style=\"text-align:center\">"
     + title
-    + "</h3>"
+    + "</h2>"
     + "<p style=\"text-align:center\">"
     + body
     + "</p>"
