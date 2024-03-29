@@ -4,7 +4,7 @@
 #include "./include/utils.h"
 
 #define CELLS 12
-#define RAND_MAX 67 //0-42, A-Z(0, 67)
+#define MAX_RAND 67 //0-42, A-Z(0, 67)
 
 /*
 * * * * STEPS TO SOLVE * * * *
@@ -44,7 +44,7 @@ Puzzle based_puzzle_create(long seed)
   std::vector<int> bases;
 
   for (int i = 0; i < CELLS; i++) {
-    short rand = utils_rng_roll(0, RAND_MAX, seed);
+    short rand = utils_rng_roll(0, MAX_RAND, seed);
     if (rand > 42) { // Keep them within hex range of values* Convert values to base 10
       if (rand > 47) {
         rand = utils_rng_roll(42, 47, seed);
