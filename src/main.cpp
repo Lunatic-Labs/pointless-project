@@ -25,7 +25,7 @@ void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
   for (auto puzzle = puzzles.rbegin(); puzzle != puzzles.rend(); ++puzzle, --i) {
     std::vector<std::string> files = utils_walkdir(puzzle->contents_fp);
 
-    // Adds the next level of zipped puzzle (technically the previous one beause reverse order).
+    // Adds the next level of zipped puzzle (technically the previous one because reverse order).
     if(puzzle != puzzles.rbegin()) {
       files.insert(files.begin(), zipdir + std::to_string(i+1) + ".zip");
     }
@@ -68,6 +68,7 @@ int main(int argc, char **argv)
     maze_puzzle_create(seed),
     encrypt_puzzle_create(seed),
     based_puzzle_create(seed),
+    rematch_puzzle_create(seed),
     ast_puzzle_create(seed),
     fin_puzzle_create(seed),
   };
