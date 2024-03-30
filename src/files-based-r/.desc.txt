@@ -69,31 +69,90 @@
   <div class="test-tube">
     <div class="liquid" id="liquid"></div>
   </div>
-  <button class="base_vals"; id="val_1" onclick="addLiquid()"; style="position:absolute; top: 50px; left: 50px;">   %DELIM </button>
-  <button class="base_vals"; id="val_2" onclick="addLiquid()"; style="position:absolute; top: 450px; left: 1400px;">%DELIM </button>
-  <button class="base_vals"; id="val_3" onclick="addLiquid()"; style="position:absolute; top: 450px; left: 100px;"> %DELIM </button>
-  <button class="base_vals"; id="val_4" onclick="addLiquid()"; style="position:absolute; top: 750px; left: 1300px;">%DELIM </button>
-  <button class="base_vals"; id="val_5" onclick="addLiquid()"; style="position:absolute; top: 750px; left: 250px;"> %DELIM </button>
-  <button class="base_vals"; id="val_6" onclick="addLiquid()"; style="position:absolute; top: 150px; left: 1350px;">%DELIM </button>
-  <button class="base_vals"; id="val_7" onclick="addLiquid()"; style="position:absolute; top: 250px; left: 400px;"> %DELIM </button>
-  <button class="base_vals"; id="val_8" onclick="addLiquid()"; style="position:absolute; top: 450px; left: 940px;"> %DELIM </button>
-  <button class="base_vals"; id="val_9" onclick="addLiquid()"; style="position:absolute; top: 650px; left: 700px;"> %DELIM </button>
-  <button class="base_vals"; id="val_10"onclick="addLiquid()";  style="position:absolute; top: 550px; left: 300px;">%DELIM </button>
-  <button class="base_vals"; id="val_11"onclick="addLiquid()";  style="position:absolute; top: 210px; left: 800px;">%DELIM </button>
+  <button class="base_vals"; id="val_1" style="position:absolute; top: 50px; left: 50px;">%DELIM</button>
+  <button class="base_vals"; id="val_2" style="position:absolute; top: 450px; left: 1400px;">%DELIM</button>
+  <button class="base_vals"; id="val_3" style="position:absolute; top: 450px; left: 100px;">%DELIM</button>
+  <button class="base_vals"; id="val_4" style="position:absolute; top: 750px; left: 1300px;">%DELIM</button>
+  <button class="base_vals"; id="val_5" style="position:absolute; top: 750px; left: 250px;">%DELIM</button>
+  <button class="base_vals"; id="val_6" style="position:absolute; top: 150px; left: 1350px;">%DELIM</button>
+  <button class="base_vals"; id="val_7" style="position:absolute; top: 250px; left: 400px;">%DELIM</button>
+  <button class="base_vals"; id="val_8" style="position:absolute; top: 450px; left: 940px;">%DELIM</button>
+  <button class="base_vals"; id="val_9" style="position:absolute; top: 650px; left: 700px;">%DELIM</button>
+  <button class="base_vals"; id="val_10  style="position:absolute; top: 550px; left: 300px;">%DELIM</button>
+  <button class="base_vals"; id="val_11  style="position:absolute; top: 210px; left: 800px;">%DELIM</button>
 
   <button class="flush"; id="flush" onclick="flush()" style="position: absolute; top: 850px; left: 868px;">FLUSH</button>
   <script>
-    let liquidHeight = 0;
 
-    //need to check if the order is right tho
+    let buttonNames = [];
+
+    let order = [];
+    order[0] = "%DELIM";
+    order[1] = "%DELIM";
+    order[2] = "%DELIM";
+    order[3] = "%DELIM";
+    order[4] = "%DELIM";
+    order[5] = "%DELIM";
+    order[6] = "%DELIM";
+    order[7] = "%DELIM";
+    order[8] = "%DELIM";
+    order[9] = "%DELIM";
+    order[10] ="%DELIM";
+
+    console.log("Order: ", order);
+
+    let key = "%DELIM";
+    
+    function checkAnswer(array1, array2) {
+      for(var i = 0; i < array1.length; i++) {
+        if (array1[i] !== array2[i]) {
+          console.log("arrays dont match...\n");
+          return false;
+        }
+      }
+    return true;
+    }
+
+    function handleButtonClick(event) {
+      var buttonText = event.target.textContent;
+      if(buttonText != "FLUSH") {
+        buttonNames.push(buttonText);
+        addLiquid();
+      }
+      else {
+        flush();
+      }
+    }
+
+    var buttons = document.querySelectorAll("button");
+    buttons.forEach(function(button) {
+      button.addEventListener("click", handleButtonClick);
+    });
+
+    let liquidHeight = 0;
     function addLiquid() {
-      if (liquidHeight < 220) { // Max height of liquid
+      if(liquidHeight < 210) { // Max height of liquid
         liquidHeight += 20; // Increase the height of the liquid by 20px
         document.getElementById('liquid').style.height = liquidHeight + 'px';
+      }
+      if(buttonNames.length == 11) {
+        if(checkAnswer(order, buttonNames)) {
+          //give them the password
+          alert("Nice. Check the console for your key")
+          console.log("Here's your key", key);
+          flush();
+        } else {
+          flush();
+          alert("Try again...")
+        }
       }
     }
     function flush() {
       liquidHeight = 0;
       document.getElementById('liquid').style.height = liquidHeight;
+      buttonNames.length = 0;
+      clicks = 0;
     }
+
+    
   </script>
