@@ -1,107 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-        <meta charset="UTF-8">
-        <title>Alien Number System</title>
-        <style>
-            .container {
-                width: 80%; /* Adjust the width as needed */
-                margin: 300px auto 0; /* Center the container horizontally */
-                padding: 20px;
-                border: 1px solid #ccc; /* Optional: Add a border */
-                border-radius: 8px; /* Optional: Add border radius for rounded corners */
-                text-align: center; /* Center the text in the container */
-            }
-            .container ul {
-            text-align: center; /* Align text to the left within the list */
-            list-style-position: inside; /* Place bullet points inside the list items */
-            }
-            .container p {
-                max-width: 60%;
-                margin: 10px auto;
-            }
-            table {
-                margin: 20px auto; /* Center the table horizontally */
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add a shadow effect */
-                background-image: url('https://t3.ftcdn.net/jpg/01/36/12/48/360_F_136124808_WWhIcVaUK0boBd4KhFsSittv9HJm7M8T.jpg'); /* Add a background image */
-                background-size: cover; /* Ensure the background image covers the entire table */
-                border-radius: 10px;
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pointless Challenge</title>
+</head>
+<body>
+  <p class="text1"; style="position: absolute; top: 50px; left: 50px;"> ##!$ </p>
+  <p class="text1"; style="position: absolute; top: 250px; left: 500px;"> >hhb </p>
+  <p class="text1"; style="position: absolute; top: 450px; left: 100px;"> *#$^ </p>
+  <p class="text1"; style="position: absolute; top: 650px; left: 800px;"> >g({ </p>
+  <p class="text1"; style="position: absolute; top: 850px; left: 250px;"> @%&* </p>
+  <p class="text1"; style="position: absolute; top: 050px; left: 150px;"> DNFT </p>
+  <p class="text1"; style="position: absolute; top: 250px; left: 400px;"> :,LL </p>
+  <p class="text1"; style="position: absolute; top: 450px; left: 1000px;"> +JCZ </p>
+  <p class="text1"; style="position: absolute; top: 650px; left: 700px;"> }a[) </p>
+  <p class="text1"; style="position: absolute; top: 550px; left: 300px;"> @@%^ </p>
+  <p class="text1"; style="position: absolute; top: 60px; left: 1100px;"> hd(} </p>
 
-            td {
-                width: 70px; /* Set cell width */
-                height: 70px; /* Set cell height */
-                /* border: 2px solid #696969; Remove this line */
-                text-align: center; /* Center text horizontally */
-                vertical-align: middle; /* Center text vertically */
-                color: #ffffff; /* Set text color to a light gray */
-                font-size: 20px; /* Set font size */
-                text-shadow: 2px 2px 10px #2dcf08;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h2>The Alien Number System</h2>
-    
-            <p>Now we're getting serious</p>
-    
-            
-
-            <table>
-                <tr>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>?</td>
-                </tr>
-                <tr>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>?</td>
-                </tr>
-                <tr>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>?</td>
-                </tr>
-                <tr>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>?</td>
-                </tr>
-                <tr>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>?</td>
-                </tr>
-                <tr>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>?</td>
-                </tr>
-            </table>
-            <p>Hint: The solution will be in base-10</p>
-        </div>
-    </body>
+</body>
+</html>

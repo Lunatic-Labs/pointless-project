@@ -5,9 +5,8 @@
 #include "./include/utils.h"
 
 //define puzzle sizes
-#define GRID_CELLS 36 //6 x 6
+#define GRID_CELLS 11
 #define CELL_SZ 4
-//FIXME: why does changing the size to 4 break everything??
 
 
 //define indexes into values vector based on the base
@@ -27,7 +26,32 @@ static const std::vector<std::string> values = {"!", "@", "#", "$", "%", "^", "&
     ":", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
 
-//int solve(strvec_t vals, std::vector<int> base);
+/*
+int solve(std::vector<std::string> &vals, std::vector<int> &base)
+{
+  int decimalval, items, solution, mask;
+  decimalval = items = solution = 0;
+  mask = 8;
+
+  std::vector<std::string>::iterator it;
+  std::vector<int>::iterator it2;
+  for (it = vals.begin(), it2 = base.begin(); it != vals.end() && it2 != base.end(); ++it, ++it2) {
+    decimalval += std::stoi(*it, nullptr, *it2);
+    ++items;
+    if (items == 3) {
+      if (decimalval & 1) {
+        solution |= mask;
+      }
+      mask >>= 1;
+      decimalval = items = 0;
+    }
+  }
+  return solution;
+}
+*/
+
+
+int cell_solve(strvec_t vals, std::vector<int> base);
 
 
 //creates value that will be placed in a cell in the table
