@@ -20,39 +20,17 @@
 #define M36_START 24
 #define M36_END 59
 
-
+/* TODO:
+* [] dry everything out
+* [] ensure sorting works correctly and places right values in vector
+* [] remove debug code once we verify it's all working correctly
+* [] add error checking
+* [] maybe get rid of global variable?
+*/
 
 static const std::vector<std::string> base_nums = {"!", "@", "#", "$", "%", "^", "&", "*", "{", "}", "[", "]", \
     "(", ")", "`", ">", "a", "b", "c", "d", "e", "f", "g", "h", "|", "~", ",", "/", "?", "_", "+", "=", "-", \
     ":", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-
-
-
-/*
-int solve(std::vector<std::string> &vals, std::vector<int> &base)
-{
-  int decimalval, items, solution, mask;
-  decimalval = items = solution = 0;
-  mask = 8;
-
-  std::vector<std::string>::iterator it;
-  std::vector<int>::iterator it2;
-  for (it = vals.begin(), it2 = base.begin(); it != vals.end() && it2 != base.end(); ++it, ++it2) {
-    decimalval += std::stoi(*it, nullptr, *it2);
-    ++items;
-    if (items == 3) {
-      if (decimalval & 1) {
-        solution |= mask;
-      }
-      mask >>= 1;
-      decimalval = items = 0;
-    }
-  }
-  return solution;
-}
-*/
-
-//void sort(strvec_t )
 
 
 //return the index of the symbol in relation to its base
@@ -191,12 +169,6 @@ Puzzle based_rematch_puzzle_create(long seed)
 
   return Puzzle{"files-based-r", values.back(), {}};
 }
-
-/*TODO: maybe have the puzzle not require all of the bases to be converted. 
-* maybe have each row have a certain path you can take through the puzzle to "turn on" the spot with the question mark
-* the decoding of the cell you land on tells you which direction to go somehow
-*/
-
 
 /*
 *  Symbolic Base-8 (S8):
