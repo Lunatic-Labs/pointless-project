@@ -99,7 +99,7 @@
     order[9] = "%DELIM";
     order[10] ="%DELIM";
 
-    console.log("Order: ", order);
+   // console.log("Order: ", order);
 
     let key = "%DELIM";
     

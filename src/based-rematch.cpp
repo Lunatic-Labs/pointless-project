@@ -21,11 +21,21 @@
 #define M36_END 59
 
 /* TODO:
+* [] write puzzle instructions(cryptically)
+* [] highlight values that have already been selected
+* [] change FLUSH to BACK ONE
 * [] dry everything out
 * [] ensure sorting works correctly and places right values in vector
 * [] remove debug code once we verify it's all working correctly
 * [] add error checking
 * [] maybe get rid of global variable?
+*/
+
+/*
+* You have found yourself in a dark dungeon. There is a mysterious glowing obelisk in the center of the room.
+* In order to leave this dungeon, the obelisk must be filled, but not in any old fashion.
+* Your challenge is quite base-ic, really. Collect the pieces strewn about the room to fill the obelisk. 
+* Only with the correct order will your key be revealed
 */
 
 static const std::vector<std::string> base_nums = {"!", "@", "#", "$", "%", "^", "&", "*", "{", "}", "[", "]", \
@@ -197,8 +207,3 @@ Puzzle based_rematch_puzzle_create(long seed)
 
 
 
-/*
-* You have found yourself in a dark dungeon. There is a mysterious glowing obelisk in the center of the room.
-* In order to leave this dungeon, the obelisk must be filled, but not in any old fashion.
-* Your challenge is quite base-ic, really. Collect the pieces strewn about the room to fill the obelisk. 
-*/
