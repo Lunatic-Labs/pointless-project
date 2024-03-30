@@ -4,19 +4,96 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pointless Challenge</title>
+    <style>
+    body{background-image: url(https://images7.alphacoders.com/621/621150.jpg); background-size: cover;}
+    .base_vals {
+      border: none; 
+      background-color: transparent;
+      padding: 10px 20px; 
+      font-size: 16px; 
+      cursor: pointer;
+      color: red;
+    }
+    .flush {
+      border: 1px solid red;
+      border-radius: 7px;
+      background-color: black;
+      padding: 10px 20px; 
+      font-size: 16px; 
+      cursor: pointer;
+      color: red;
+    }
+    .test-tube {
+    position: absolute;
+    top: 55%;
+    left: 47.5%;
+    width: 60px;
+    height: 220px;
+    margin: 50px auto;
+    background: black;
+    box-shadow: 0 0 20px 10px red;
+    border-radius: 10px;
+    overflow: hidden;
+    animation: glowAnimation 1s infinite alternate;
+    }
+    
+    .liquid {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 0;
+      background: red;
+      transition: height 0.5s ease;
+    }
+    @keyframes glowAnimation {
+    0% {
+        box-shadow: 
+            0 0 5px 5px rgba(255, 0, 0, 0.5),
+            0 0 10px 10px rgba(255, 0, 0, 0.3),
+            0 0 15px 15px rgba(255, 0, 0, 0.2),
+            0 0 20px 20px rgba(255, 0, 0, 0.1),
+            0 0 25px 25px rgba(255, 0, 0, 0.05);
+    }
+    100% {
+        box-shadow: 
+            0 0 10px 10px rgba(255, 0, 0, 0.5),
+            0 0 20px 20px rgba(255, 0, 0, 0.3),
+            0 0 30px 30px rgba(255, 0, 0, 0.2),
+            0 0 40px 40px rgba(255, 0, 0, 0.1),
+            0 0 50px 50px rgba(255, 0, 0, 0.05);
+    }
+  }
+  </style>
 </head>
 <body>
-  <p class="text1"; style="position: absolute; top: 50px; left: 50px;"> ##!$ </p>
-  <p class="text1"; style="position: absolute; top: 250px; left: 500px;"> >hhb </p>
-  <p class="text1"; style="position: absolute; top: 450px; left: 100px;"> *#$^ </p>
-  <p class="text1"; style="position: absolute; top: 650px; left: 800px;"> >g({ </p>
-  <p class="text1"; style="position: absolute; top: 850px; left: 250px;"> @%&* </p>
-  <p class="text1"; style="position: absolute; top: 050px; left: 150px;"> DNFT </p>
-  <p class="text1"; style="position: absolute; top: 250px; left: 400px;"> :,LL </p>
-  <p class="text1"; style="position: absolute; top: 450px; left: 1000px;"> +JCZ </p>
-  <p class="text1"; style="position: absolute; top: 650px; left: 700px;"> }a[) </p>
-  <p class="text1"; style="position: absolute; top: 550px; left: 300px;"> @@%^ </p>
-  <p class="text1"; style="position: absolute; top: 60px; left: 1100px;"> hd(} </p>
+  <div class="test-tube">
+    <div class="liquid" id="liquid"></div>
+  </div>
+  <button class="base_vals"; id="val_1" onclick="addLiquid()"; style="position:absolute; top: 50px; left: 50px;">   %DELIM </button>
+  <button class="base_vals"; id="val_2" onclick="addLiquid()"; style="position:absolute; top: 450px; left: 1400px;">%DELIM </button>
+  <button class="base_vals"; id="val_3" onclick="addLiquid()"; style="position:absolute; top: 450px; left: 100px;"> %DELIM </button>
+  <button class="base_vals"; id="val_4" onclick="addLiquid()"; style="position:absolute; top: 750px; left: 1300px;">%DELIM </button>
+  <button class="base_vals"; id="val_5" onclick="addLiquid()"; style="position:absolute; top: 750px; left: 250px;"> %DELIM </button>
+  <button class="base_vals"; id="val_6" onclick="addLiquid()"; style="position:absolute; top: 150px; left: 1350px;">%DELIM </button>
+  <button class="base_vals"; id="val_7" onclick="addLiquid()"; style="position:absolute; top: 250px; left: 400px;"> %DELIM </button>
+  <button class="base_vals"; id="val_8" onclick="addLiquid()"; style="position:absolute; top: 450px; left: 940px;"> %DELIM </button>
+  <button class="base_vals"; id="val_9" onclick="addLiquid()"; style="position:absolute; top: 650px; left: 700px;"> %DELIM </button>
+  <button class="base_vals"; id="val_10"onclick="addLiquid()";  style="position:absolute; top: 550px; left: 300px;">%DELIM </button>
+  <button class="base_vals"; id="val_11"onclick="addLiquid()";  style="position:absolute; top: 210px; left: 800px;">%DELIM </button>
 
-</body>
-</html>
+  <button class="flush"; id="flush" onclick="flush()" style="position: absolute; top: 850px; left: 868px;">FLUSH</button>
+  <script>
+    let liquidHeight = 0;
+
+    //need to check if the order is right tho
+    function addLiquid() {
+      if (liquidHeight < 220) { // Max height of liquid
+        liquidHeight += 20; // Increase the height of the liquid by 20px
+        document.getElementById('liquid').style.height = liquidHeight + 'px';
+      }
+    }
+    function flush() {
+      liquidHeight = 0;
+      document.getElementById('liquid').style.height = liquidHeight;
+    }
+  </script>
