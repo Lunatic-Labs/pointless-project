@@ -22,11 +22,11 @@
 
 /* TODO:
 * [] write puzzle instructions(cryptically)
-* [] highlight values that have already been selected
-* [] change FLUSH to BACK ONE
-* [] dry everything out
-* [] ensure sorting works correctly and places right values in vector
-* [] remove debug code once we verify it's all working correctly
+* [x] selected values disappear
+* [x] change FLUSH to BACK ONE(keeping flush actually)
+* [x] dry everything out..(i guess i did)
+* [x] ensure sorting works correctly and places right values in vector
+* [x] remove debug code once we verify it's all working correctly
 * [] add error checking
 * [] maybe get rid of global variable?
 */
@@ -38,30 +38,41 @@
 * Only with the correct order will your key be revealed
 */
 
+
+/*  indices 
+*  0-7 -> S8
+*  8-23 -> G16
+*  24-59 -> M38
+*/
 static const std::vector<std::string> base_nums = {"!", "@", "#", "$", "%", "^", "&", "*", "{", "}", "[", "]", \
     "(", ")", "`", ">", "a", "b", "c", "d", "e", "f", "g", "h", "|", "~", ",", "/", "?", "_", "+", "=", "-", \
     ":", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
 
-//return the index of the symbol in relation to its base
-int find_val(int base, std::string symbol)
+void set_start_end(int base, int *start, int *end)
 {
-  int start, end;
   switch(base)
   {
     case 8:
-      start = S8_START;
-      end = S8_END;
+      *start = S8_START;
+      *end = S8_END;
       break;
     case 16:
-      start = G16_START;
-      end = G16_END;
+      *start = G16_START;
+      *end = G16_END;
       break;
     case 36:
-      start = M36_START;
-      end = M36_END;
+      *start = M36_START;
+      *end = M36_END;
       break;
   }
+}
+
+//return the index of the symbol in relation to its base from base_nums
+int find_val(int base, std::string symbol)
+{
+  int start, end;
+  set_start_end(base, &start, &end);
   int i = 0;
   for(start; start <= end; start++) {
     if(base_nums[start] == symbol) {
@@ -69,10 +80,12 @@ int find_val(int base, std::string symbol)
     }
     ++i;
   }
+  //TODO: handle this condition? even though it should never reach it?
   std::cout << "didnt find value...\n\n";
   return -1;
 }
 
+//convert each value to base 10, puts it in "solved" vector
 void values_solve(strvec_t vals, std::vector<int> bases, std::vector<int> *solved)
 {
   for(int i = 0; i < NUM_VALUES; i++) {
@@ -97,21 +110,7 @@ void values_create(const std::vector<int> bases, strvec_t *values, long seed)
     auto& v = *it;
     int start, end;
     std::string cell_val;
-    switch(v)
-    {
-      case 8:
-        start = S8_START;
-        end = S8_END;
-        break;
-      case 16:
-        start = G16_START;
-        end = G16_END;
-        break;
-      case 36:
-        start = M36_START;
-        end = M36_END;
-        break;
-    }
+    set_start_end(v, &start, &end);
     for(int i = 0; i < VAL_SZ; i++) {
       int num = utils_rng_roll(start, end, seed);
       cell_val += base_nums[num];
@@ -143,13 +142,6 @@ Puzzle based_rematch_puzzle_create(long seed)
   values_create(bases, &values, seed);
   values_solve(values, bases, &solved);
 
-  int iter = 0;
-  for(std::string s: values) {
-    std::cout << s << "\n";
-  }
-  std::cout << "\n";
-
-  //TODO: VERIFY THAT THIS SORTING IS ACCURATE
   //sort values from smallest to greatest
   std::vector<std::pair<int, std::string>> paired_vec;
   for(size_t i = 0; i < solved.size(); i++) {
@@ -158,20 +150,12 @@ Puzzle based_rematch_puzzle_create(long seed)
   std::sort(paired_vec.begin(), paired_vec.end());
   for (const auto& pair : paired_vec) {
       values.push_back(pair.second);
+      //std::cout << pair.second << "\n"; //for debug purposes
   }
+  //std::cout << "\n";
 
-  int key = utils_rng_roll(10000, 150000, seed);
+  int key = utils_rng_roll(10000, 950000, seed);
   values.push_back(std::to_string(key));
-
-  //debug purposes ofc
-  iter = 0;
-  for(std::string s: values) {
-    if(iter++ <= 10)
-      continue;
-    std::cout << s << "\n";
-  }
-  std::cout << "\n";
-
 
 
   std::string html_content = utils_html_printf("Base Puzzle Rematch", "./files-based-r/.desc.txt", values);
@@ -192,7 +176,7 @@ Puzzle based_rematch_puzzle_create(long seed)
 *    Example: [a is 170 in decimal.
 *
 *  Mystic Base-36 (M36):
-*    Symbols: |, ~, , /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
+*    Symbols: |, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
 *    Example:  |+= is 1684 in decimal.
 */
 

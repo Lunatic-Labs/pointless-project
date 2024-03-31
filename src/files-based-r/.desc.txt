@@ -10,11 +10,11 @@
       border: none; 
       background-color: transparent;
       padding: 10px 20px; 
-      font-size: 16px; 
+      font-size: 20px; 
       cursor: pointer;
       color: red;
     }
-    .flush {
+    .modifier_buttons {
       border: 1px solid red;
       border-radius: 7px;
       background-color: black;
@@ -36,7 +36,6 @@
     overflow: hidden;
     animation: glowAnimation 1s infinite alternate;
     }
-    
     .liquid {
       position: absolute;
       bottom: 0;
@@ -45,6 +44,44 @@
       background: red;
       transition: height 0.5s ease;
     }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      opacity: 90%;
+      border-radius: 20px;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: black;
+      text-align: center;
+      border-radius: 10px;
+      font-size: 30px;
+      color: red;
+      margin: 15% auto;
+      padding: 20px;
+      border: none;
+      width: 20%;
+    }
+    .close {
+      color: red;
+      float: right;
+      font-size: 25px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: blue;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
     @keyframes glowAnimation {
     0% {
         box-shadow: 
@@ -81,78 +118,129 @@
   <button class="base_vals"; id="val_10  style="position:absolute; top: 550px; left: 300px;">%DELIM</button>
   <button class="base_vals"; id="val_11  style="position:absolute; top: 210px; left: 800px;">%DELIM</button>
 
-  <button class="flush"; id="flush" onclick="flush()" style="position: absolute; top: 850px; left: 868px;">FLUSH</button>
+  <button class="modifier_buttons"; id="flush" onclick="flush()" style="position: absolute; top: 850px; left: 868px;">FLUSH</button>
+  <button class="modifier_buttons"; id="goBack" onclick="goBack()" style="position: absolute; top: 900px; left: 857px;">GO BACK</button>
+
+  <div id="customAlert" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p id="alertMessage"></p>
+    </div>
+  </div>
+  
+
   <script>
 
-    let buttonNames = [];
-
-    let order = [];
-    order[0] = "%DELIM";
-    order[1] = "%DELIM";
-    order[2] = "%DELIM";
-    order[3] = "%DELIM";
-    order[4] = "%DELIM";
-    order[5] = "%DELIM";
-    order[6] = "%DELIM";
-    order[7] = "%DELIM";
-    order[8] = "%DELIM";
-    order[9] = "%DELIM";
-    order[10] ="%DELIM";
-
-   // console.log("Order: ", order);
-
-    let key = "%DELIM";
-    
-    function checkAnswer(array1, array2) {
-      for(var i = 0; i < array1.length; i++) {
-        if (array1[i] !== array2[i]) {
-          console.log("arrays dont match...\n");
-          return false;
-        }
-      }
-    return true;
-    }
-
     function handleButtonClick(event) {
-      var buttonText = event.target.textContent;
-      if(buttonText != "FLUSH") {
+      let buttonText = event.target.textContent;
+      if(buttonText != "FLUSH" && buttonText != "GO BACK") { //if not these, its a value
+        event.target.style.display = "none";
         buttonNames.push(buttonText);
         addLiquid();
       }
-      else {
-        flush();
+    }
+
+    function customAlert(message) {
+      document.getElementById('alertMessage').textContent = message;
+      var modal = document.getElementById('customAlert');
+      var closeBtn = document.getElementsByClassName('close')[0];
+
+      modal.style.display = "block";
+      closeBtn.onclick = function() {
+        modal.style.display = "none";
+      }
+    
+      window.onclick = function(event) {
+        if(event.target == modal) {
+          modal.style.display = "none";
+        }
       }
     }
 
-    var buttons = document.querySelectorAll("button");
-    buttons.forEach(function(button) {
-      button.addEventListener("click", handleButtonClick);
-    });
+    function checkAnswer(array1, array2) {
+      for(let i = 0; i < array1.length; i++) {
+        if(array1[i] !== array2[i]) {
+          return false;
+        }
+      }
+      return true;
+    }
 
-    let liquidHeight = 0;
+    //if user clicks a value button, increase liquid height
     function addLiquid() {
-      if(liquidHeight < 210) { // Max height of liquid
+      if(liquidHeight < 220) { // 220 -> Max height of liquid
         liquidHeight += 20; // Increase the height of the liquid by 20px
         document.getElementById('liquid').style.height = liquidHeight + 'px';
       }
       if(buttonNames.length == 11) {
-        if(checkAnswer(order, buttonNames)) {
+        if(checkAnswer(_VAAASDFAEADFADCAV, buttonNames)) {
           //give them the password
-          alert("Nice. Check the console for your key")
+          customAlert("Nice. Check the console for your key")
           console.log("Here's your key", key);
-          flush();
+          document.getElementById('liquid').style.height = 220 + 'px';
+          document.getElementById('flush').style.display = "none";
+          document.getElementById('goBack').style.display = "none";
+          //flush();
         } else {
           flush();
-          alert("Try again...")
+          customAlert("Try again...")
         }
       }
     }
+
+    //reset the last value clicked, lower liquid height and make value reappear
+    function goBack() {
+      liquidHeight -= 20;
+      document.getElementById('liquid').style.height = liquidHeight + 'px';
+
+      // Get the text of the last button
+      let lastButtonText = buttonNames.pop();
+      console.log("last button ", lastButtonText);
+
+      // Find the corresponding button element in the DOM
+      let buttons = document.querySelectorAll("button");
+      for(let i = buttons.length - 1; i >= 0; i--) {
+        if(buttons[i].textContent.trim() === lastButtonText) {
+          buttons[i].style.display = "block"; // Make the button reappear
+          break; // Stop the loop after making the button reappear
+        }
+      }
+    }
+
+    //flush everything, start over
     function flush() {
       liquidHeight = 0;
       document.getElementById('liquid').style.height = liquidHeight;
       buttonNames.length = 0;
-      clicks = 0;
+      let buttons = document.querySelectorAll("button");
+      buttons.forEach(function(button) {
+        button.style.display = "";
+      });
     }
+
+    let liquidHeight = 0;
+    let buttonNames = [];
+
+    let _VAAASDFAEADFADCAV = [];
+    _VAAASDFAEADFADCAV[0] = "%DELIM";
+    _VAAASDFAEADFADCAV[1] = "%DELIM";
+    _VAAASDFAEADFADCAV[2] = "%DELIM";
+    _VAAASDFAEADFADCAV[3] = "%DELIM";
+    _VAAASDFAEADFADCAV[4] = "%DELIM";
+    _VAAASDFAEADFADCAV[5] = "%DELIM";
+    _VAAASDFAEADFADCAV[6] = "%DELIM";
+    _VAAASDFAEADFADCAV[7] = "%DELIM";
+    _VAAASDFAEADFADCAV[8] = "%DELIM";
+    _VAAASDFAEADFADCAV[9] = "%DELIM";
+    _VAAASDFAEADFADCAV[10] ="%DELIM";
+
+
+    let key = "%DELIM";
+
+    let buttons = document.querySelectorAll("button");
+    buttons.forEach(function(button) {
+      button.addEventListener("click", handleButtonClick);
+    });
 
     
   </script>
