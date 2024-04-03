@@ -33,7 +33,7 @@
 #define CELL_PICKUP_KEY 6
 #define CELL_PICKUP_BATTERY 7
 
-void rematch_randomized_dfs(Image &maze, std::vector<int> &binmaze, int x, int y, long &seed)
+static void rematch_randomized_dfs(Image &maze, std::vector<int> &binmaze, int x, int y, long &seed)
 {
   std::vector<std::pair<int, int>> directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
   std::shuffle(directions.begin(), directions.end(), std::default_random_engine(seed));
@@ -62,7 +62,7 @@ void rematch_randomized_dfs(Image &maze, std::vector<int> &binmaze, int x, int y
   }
 }
 
-std::string vector_mat_to_str(std::vector<int> &v)
+static std::string vector_mat_to_str(std::vector<int> &v)
 {
   std::string res = "\n";
   for (int i = 0; i < MAZE_SIZE; i += 1) {
@@ -138,6 +138,5 @@ Puzzle rematch_maze_puzzle_create(long seed)
                                             std::to_string(encrypted_password), std::to_string(password_hash)});
 
   utils_generate_file("./files-rematch-maze/instructions.html", html_body);
-  std::cout << "password: " << password << std::endl;
   return {"files-rematch-maze", std::to_string(password), {}};
 }

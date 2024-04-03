@@ -15,7 +15,7 @@
 * Save the resulting lsb values
 * Take that base 2 number and convert it back to base 10
 */
-int solve(std::vector<std::string> &vals, std::vector<int> &base)
+static int solve(std::vector<std::string> &vals, std::vector<int> &base)
 {
   int decimalval, items, solution, mask;
   decimalval = items = solution = 0;

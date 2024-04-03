@@ -3,7 +3,7 @@
 
 #define MAX_LOOP 3// if i can modify the html somehow... 
 
-int get_pixel_count(const std::string& hexValue) {
+static int get_pixel_count(const std::string& hexValue) {
     static std::unordered_map<std::string, int> pixelCounts = {
         {"#FFFFFF", 2},
         {"#000000", 30},

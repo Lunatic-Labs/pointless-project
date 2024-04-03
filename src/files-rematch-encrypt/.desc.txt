@@ -1,0 +1,84 @@
+<input type="text" id="inputBox">
+<button onclick="printShifted()">Mash Input</button>
+<button onclick="printTableChanged()">Goopify Input</button>
+<div id="output"></div>
+
+<script>
+
+var password = "%DELIM";
+// Tg#KBcr< gR[BpW Qc[IcW<
+
+var tbl = {
+%DELIM
+};
+
+function convertStrToAscii(str) {
+  return str.split('').map(function(char) {
+    return char.charCodeAt(0);
+  }).join('');
+}
+
+function shift(str, n) {
+  let shifted = str.substring(n, str.length);
+  shifted += convertStrToAscii(str.substring(0, n));
+  return shifted;
+}
+
+function swapCase(str) {
+  return str.replace(/([a-z])|([A-Z])/g, function(match, lowerCase, upperCase) {
+      return lowerCase ? match.toUpperCase() : match.toLowerCase();
+  });
+}
+
+function everyOtherCharToBinary(s) {
+  var s1 = "";
+  for (let i = 0; i < s.length; i += 1) {
+    if (i%2 === 0) {
+      s1 += charToBin(s[i]);
+    } else {
+      s1 += s[i];
+    }
+  }
+  return s1;
+}
+
+function tableChange(s) {
+  var s1 = "";
+  for (let i = 0; i < s.length; i += 1) {
+    let c = tbl[s[i]];
+    if (c === undefined) {
+      s1 += s[i];
+    }
+    else {
+      s1 += tbl[s[i]];
+    }
+  }
+  return s1;
+}
+
+function asciiToNum(str) {
+  return str.split('').map(function(char) {
+    return char.charCodeAt(0);
+  }).join(' ');
+}
+
+function intToBinary(num) {
+  return num.toString(2);
+}
+
+function sortLetters(str) {
+  return str.split('').sort().join('');
+}
+
+function printShifted() {
+  var userInput = document.getElementById("inputBox").value;
+  userInput = shift(userInput, 2);
+  document.getElementById("output").innerText = "Output: " + userInput;
+}
+
+function printTableChanged() {
+  var userInput = document.getElementById("inputBox").value;
+  userInput = tableChange(userInput);
+  document.getElementById("output").innerText = "Output: " + userInput;
+}
+</script>

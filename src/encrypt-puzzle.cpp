@@ -39,7 +39,7 @@
 #define ENCR_CHANGE_MIN 1 // Must be 1 or greater
 #define ENCR_CHANGE_MAX 3
 
-void shift(std::string &s, int dir, int n)
+static void shift(std::string &s, int dir, int n)
 {
   if (dir) {
     std::rotate(s.rbegin(), s.rbegin() + n, s.rend());
@@ -48,12 +48,12 @@ void shift(std::string &s, int dir, int n)
   }
 }
 
-void swap(std::string &s, int a, int b)
+static void swap(std::string &s, int a, int b)
 {
   std::swap(s[a], s[b]);
 }
 
-void change(std::string &s, int n)
+static void change(std::string &s, int n)
 {
   assert(n > 0 && n < 27 && "Invalid change");
   for (size_t i = 0, c = 0; i < s.size(); ++i) {
@@ -69,7 +69,7 @@ void change(std::string &s, int n)
   }
 }
 
-std::string num_to_english(int idx) 
+static std::string num_to_english(int idx) 
 {
   std::string numstr = std::to_string(idx);
   if (idx%10 == 1) {

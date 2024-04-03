@@ -5,7 +5,7 @@
 #include <string>
 #include <cassert>
 
-void create_rematch_zipfiles(std::vector<Puzzle> &puzzles)
+static void create_rematch_zipfiles(std::vector<Puzzle> &puzzles)
 {
   std::string zipdir = "files-rematch/";
   int i = 0;
@@ -18,7 +18,7 @@ void create_rematch_zipfiles(std::vector<Puzzle> &puzzles)
   }
 }
 
-std::string create_rematch_password_files(std::vector<Puzzle> &puzzles, long seed)
+static std::string create_rematch_password_files(std::vector<Puzzle> &puzzles, long seed)
 {
   const std::string password_dir = "files-rematch/.passwords/";
   std::string password = "";
@@ -40,13 +40,22 @@ Puzzle rematch_puzzle_create(long seed)
 {
   std::vector<Puzzle> puzzles = {
     rematch_maze_puzzle_create(seed),
-    math_puzzle_create(seed),
-    math_puzzle_create(seed),
+    rematch_encrypt_puzzle_create(seed),
+    // math_puzzle_create(seed),
     math_puzzle_create(seed),
   };
 
   std::string password = create_rematch_password_files(puzzles, seed);
   create_rematch_zipfiles(puzzles);
+
+  std::cout << "Rematch:" << std::endl;
+  for (auto &puzzle : puzzles) {
+    std::printf("  %-10s Password: %s", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
+    if (puzzle.extra_info) {
+      std::printf(" %s", puzzle.extra_info->c_str());
+    }
+    std::cout << std::endl;
+  }
 
   return {"files-rematch", password, {}};
 }
