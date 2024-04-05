@@ -57,7 +57,7 @@ int main(int argc, char **argv)
     ++argv;
   }
 
-  if ((FLAGS & SET_SEED) == 0) { 
+  if ((FLAGS & SET_SEED) == 0) {
     seed = utils_roll_seed();
   }
 

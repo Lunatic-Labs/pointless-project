@@ -1,12 +1,14 @@
 <input type="text" id="inputBox">
 <button onclick="printShifted()">Mash Input</button>
 <button onclick="printTableChanged()">Goopify Input</button>
+<button onclick="printFibmix()">👽👾🤖 Input </button>
+<div id="password"></div>
 <div id="output"></div>
 
 <script>
 
-var password = "%DELIM";
-// Tg#KBcr< gR[BpW Qc[IcW<
+var abcdefghijklmnopqrstuvwxyz = %DELIM;
+var key = %DELIM;
 
 var tbl = {
 %DELIM
@@ -15,31 +17,13 @@ var tbl = {
 function convertStrToAscii(str) {
   return str.split('').map(function(char) {
     return char.charCodeAt(0);
-  }).join('');
+  }).join('.');
 }
 
 function shift(str, n) {
   let shifted = str.substring(n, str.length);
   shifted += convertStrToAscii(str.substring(0, n));
   return shifted;
-}
-
-function swapCase(str) {
-  return str.replace(/([a-z])|([A-Z])/g, function(match, lowerCase, upperCase) {
-      return lowerCase ? match.toUpperCase() : match.toLowerCase();
-  });
-}
-
-function everyOtherCharToBinary(s) {
-  var s1 = "";
-  for (let i = 0; i < s.length; i += 1) {
-    if (i%2 === 0) {
-      s1 += charToBin(s[i]);
-    } else {
-      s1 += s[i];
-    }
-  }
-  return s1;
 }
 
 function tableChange(s) {
@@ -56,29 +40,66 @@ function tableChange(s) {
   return s1;
 }
 
-function asciiToNum(str) {
-  return str.split('').map(function(char) {
-    return char.charCodeAt(0);
-  }).join(' ');
+function fib(n) {
+  let prev = [0, 1];
+  for (let i = 2; i <= n; i++) {
+    let tmp = prev[1];
+    prev[1] = prev[0] + prev[1];
+    prev[0] = tmp;
+  }
+  return prev[1];
 }
 
-function intToBinary(num) {
-  return num.toString(2);
-}
+function fibmix(s) {
+  let i = 0;
+  let j = 1;
+  let res = "";
+  while (i < s.length) {
+    let stride = fib(j);
+    if (i+stride > s.length) {
+      res = s.substring(i,s.length) + res;
+      break;
+    }
 
-function sortLetters(str) {
-  return str.split('').sort().join('');
+    res = s.substring(i,i+stride) + res;
+    j += 1;
+    i += stride;
+  }
+  return res;
 }
 
 function printShifted() {
-  var userInput = document.getElementById("inputBox").value;
-  userInput = shift(userInput, 2);
-  document.getElementById("output").innerText = "Output: " + userInput;
+  let userInput = document.getElementById("inputBox").value;
+  let output = shift(userInput, 2);
+  document.getElementById("output").innerText = userInput +" --> " + output;
 }
 
 function printTableChanged() {
-  var userInput = document.getElementById("inputBox").value;
-  userInput = tableChange(userInput);
-  document.getElementById("output").innerText = "Output: " + userInput;
+  let userInput = document.getElementById("inputBox").value;
+  let output = tableChange(userInput);
+  document.getElementById("output").innerText = userInput +" --> " + output;
 }
+
+function printFibmix() {
+  let userInput = document.getElementById("inputBox").value;
+  let output = fibmix(userInput);
+  document.getElementById("output").innerText = userInput +" --> " + output;
+}
+
+function encrypt() {
+  let password = "";
+  for (let i = 0; i < abcdefghijklmnopqrstuvwxyz.length; i += 1) {
+    let char = abcdefghijklmnopqrstuvwxyz[i];
+    console.log(char);
+    let xord = char^key;
+    password += String.fromCharCode(xord);
+    console.log(password);
+  }
+
+  password = fibmix(shift(tableChange(password), 2));
+  document.getElementById("password").innerText = "password: " + password;
+}
+
+encrypt();
+
 </script>
