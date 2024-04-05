@@ -57,7 +57,7 @@ the nested zips, just open `puzzle1.zip` and follow the instructions.
 
 # Development
 
-## New Puzzle
+*Note*:
 
 When adding a new puzzle, create a new files-`puzzle name` directory. Inside of here,
 put any files that it needs (ie configuration files, premade files) and prefix
@@ -66,7 +66,7 @@ dotfiles/hidden directories. It will also explore any subdirectories that is ins
 of the puzzle directory that you have created. If any of the files are not prefixed with `.`,
 then that file will be added to the final zipped version of it.
 
-When adding a new puzzle, a little setup is required.
+## Creating a New Puzzle
 
 ### Puzzle Requirements Directory
 
