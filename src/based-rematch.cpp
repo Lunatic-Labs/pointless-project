@@ -74,7 +74,7 @@ int find_val(int base, std::string symbol)
   int start, end;
   set_start_end(base, &start, &end);
   int i = 0;
-  for(start; start <= end; start++) {
+  for(; start <= end; start++) {
     if(base_nums[start] == symbol) {
       return i;
     }
@@ -157,6 +157,8 @@ Puzzle based_rematch_puzzle_create(long seed)
   int key = utils_rng_roll(10000, 950000, seed);
   values.push_back(std::to_string(key));
 
+  FLAGS |= (NO_HDR | NO_FTR); 
+  std::cout << FLAGS << "\n\n";
 
   std::string html_content = utils_html_printf("Base Puzzle Rematch", "./files-based-r/.desc.txt", values);
   utils_generate_file("./files-based-r/instructions.html", html_content);

@@ -35,36 +35,43 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
   std::string header_path = "./resources/header.txt";
 
   struct stat buf;
-  if(stat(header_path.c_str(), &buf) != 0) {
-    std::cerr << "Can not open " + header_path + ": No such file" << std::endl;
-    throw("Can not open " + header_path + ": No such file");
+  if(FLAGS & NO_HDR) {
+    header_content = "";
+  } else {
+    if(stat(header_path.c_str(), &buf) != 0) {
+      std::cerr << "Can not open " + header_path + ": No such file" << std::endl;
+      throw("Can not open " + header_path + ": No such file");
+    }
+
+    std::ifstream header_file(header_path);
+
+    header_file >> std::noskipws;
+    while ( header_file >> c ) {
+      header_content += c;
+    }
+
+    header_file.close();
   }
-
-  std::ifstream header_file(header_path);
-
-  header_file >> std::noskipws;
-  while ( header_file >> c ) {
-    header_content += c;
-  }
-
-  header_file.close();
 
   // Get the footer content.
   char d;
   std::string footer_content;
+  if(FLAGS & NO_FTR) {
+    footer_content = "";
+  } else {
+    std::string footer_path = "./resources/footer.txt";
 
-  std::string footer_path = "./resources/footer.txt";
+    if (stat(footer_path.c_str(), &buf) != 0) {
+      throw("Can not open " + footer_path + ": No such file");
+    }
 
-  if (stat(footer_path.c_str(), &buf) != 0) {
-    throw("Can not open " + footer_path + ": No such file");
+    std::ifstream footer_file(footer_path);
+    footer_file >> std::noskipws;
+    while (footer_file >> d) {
+      footer_content += d;
+    }
+    footer_file.close();
   }
-
-  std::ifstream footer_file(footer_path);
-  footer_file >> std::noskipws;
-  while (footer_file >> d) {
-    footer_content += d;
-  }
-  footer_file.close();
 
   // Get the description. Uses the `va_list` to get the variable arguments.
   std::string description = utils_file_to_str(desc_filepath);

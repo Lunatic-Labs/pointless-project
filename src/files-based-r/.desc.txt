@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pointless Challenge</title>
     <style>
-    body{background-image: url(https://images7.alphacoders.com/621/621150.jpg); background-size: cover;}
+    body {
+      position: relative; 
+      background-image: 
+      url(https://images7.alphacoders.com/621/621150.jpg); 
+      background-size: cover;
+    }
     .base_vals {
       border: none; 
       background-color: transparent;
@@ -25,7 +30,7 @@
     }
     .test-tube {
     position: absolute;
-    top: 55%;
+    top: 31rem;
     left: 47.5%;
     width: 60px;
     height: 220px;
@@ -106,20 +111,20 @@
   <div class="test-tube">
     <div class="liquid" id="liquid"></div>
   </div>
-  <button class="base_vals"; id="val_1" style="position:absolute; top: 50px; left: 50px;">%DELIM</button>
-  <button class="base_vals"; id="val_2" style="position:absolute; top: 450px; left: 1400px;">%DELIM</button>
-  <button class="base_vals"; id="val_3" style="position:absolute; top: 450px; left: 100px;">%DELIM</button>
-  <button class="base_vals"; id="val_4" style="position:absolute; top: 750px; left: 1300px;">%DELIM</button>
-  <button class="base_vals"; id="val_5" style="position:absolute; top: 750px; left: 250px;">%DELIM</button>
-  <button class="base_vals"; id="val_6" style="position:absolute; top: 150px; left: 1350px;">%DELIM</button>
-  <button class="base_vals"; id="val_7" style="position:absolute; top: 250px; left: 400px;">%DELIM</button>
-  <button class="base_vals"; id="val_8" style="position:absolute; top: 450px; left: 940px;">%DELIM</button>
-  <button class="base_vals"; id="val_9" style="position:absolute; top: 650px; left: 700px;">%DELIM</button>
-  <button class="base_vals"; id="val_10  style="position:absolute; top: 550px; left: 300px;">%DELIM</button>
-  <button class="base_vals"; id="val_11  style="position:absolute; top: 210px; left: 800px;">%DELIM</button>
+  <button class="modifier_buttons"; id="flush" onclick="flush()" style="position: absolute; top: 85vh; left: 46.2vw;">FLUSH</button>
+  <button class="modifier_buttons"; id="goBack" onclick="goBack()" style="position: absolute; top: 90vh; left: 45.6vw;">GO BACK</button>
 
-  <button class="modifier_buttons"; id="flush" onclick="flush()" style="position: absolute; top: 850px; left: 868px;">FLUSH</button>
-  <button class="modifier_buttons"; id="goBack" onclick="goBack()" style="position: absolute; top: 900px; left: 857px;">GO BACK</button>
+  <button class="base_vals"; id="val_1"   style="position:absolute; top: 5rem;  left: 1rem;">%DELIM</button>
+  <button class="base_vals"; id="val_2"   style="position:absolute; top: 10rem; left: 10rem;">%DELIM</button>
+  <button class="base_vals"; id="val_3"   style="position:absolute; top: 5rem;  left: 100rem;">%DELIM</button>
+  <button class="base_vals"; id="val_4"   style="position:absolute; top: 20rem; left: 60rem;">%DELIM</button>
+  <button class="base_vals"; id="val_5"   style="position:absolute; top: 45rem; left: 80rem;">%DELIM</button>
+  <button class="base_vals"; id="val_6"   style="position:absolute; top: 25rem; left: 30rem;">%DELIM</button>
+  <button class="base_vals"; id="val_7"   style="position:absolute; top: 35rem; left: 1rem;">%DELIM</button>
+  <button class="base_vals"; id="val_8"   style="position:absolute; top: 50rem; left: 35rem;">%DELIM</button>
+  <button class="base_vals"; id="val_9"   style="position:absolute; top: 20rem; left: 86rem;">%DELIM</button>
+  <button class="base_vals"; id="val_10"  style="position:absolute;top: 30rem; left: 100rem;">%DELIM</button>
+  <button class="base_vals"; id="val_11"  style="position:absolute;top: 10rem; left: 40rem;">%DELIM</button>
 
   <div id="customAlert" class="modal">
     <div class="modal-content">
