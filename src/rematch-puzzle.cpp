@@ -42,7 +42,7 @@ Puzzle rematch_puzzle_create(long seed)
     rematch_maze_puzzle_create(seed),
     rematch_encrypt_puzzle_create(seed),
     // math_puzzle_create(seed),
-    math_puzzle_create(seed),
+    // math_puzzle_create(seed),
   };
 
   std::string password = create_rematch_password_files(puzzles, seed);

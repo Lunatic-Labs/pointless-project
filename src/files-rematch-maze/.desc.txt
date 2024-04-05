@@ -219,10 +219,3 @@ exit()          : Escapes the maze if you are on the yellow tile`;
  __hide_maze("maze3");
 
 </script>
-
-<input type="email">
-<input type="file">
-<input type="password">
-<input type="submit">
-<input type="text"> (default value)
-
