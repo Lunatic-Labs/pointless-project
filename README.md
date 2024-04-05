@@ -89,8 +89,6 @@ It is then the job of C++ to "stringify" the required information to pass to `.d
 In order to make the explanation more easy to follow, I will make a new puzzle called "fib", where the point(less) of it is to
 have the user find the *n*th number in the fibonacci sequence.
 
-Once this is done, create a new file called `<puzzle name>-puzzle.cpp` in `./src/`. As an example, I will create a new puzzle called "fib".
-
 ```
 cd ./src/
 mkdir files-fib && cd files-fib
@@ -98,6 +96,9 @@ echo "What is the <b>%DELIM</b>th number in the fibonacci sequence?" > .desc.txt
 ```
 
 ### Puzzle Implementation
+
+Once the above step is done, create a new file called `<puzzle name>-puzzle.cpp` in `./src/` and put the entrypoint of the
+function that will create the puzzle.
 
 ```cpp
 Puzzle fib_puzzle_create(long seed)
@@ -179,7 +180,7 @@ For example, if I want it to be the third puzzle that the user solves, I would d
 std::vector<Puzzle> puzzles = {
   math_puzzle_create(seed),
   color_puzzle_create(seed),
-  fib_puzzle_create(seed),
+  fib_puzzle_create(seed), // Added it here
   pixel_puzzle_create(seed),
   maze_puzzle_create(seed),
   encrypt_puzzle_create(seed),
@@ -190,7 +191,7 @@ std::vector<Puzzle> puzzles = {
 ```
 
 Now run `make all` and these things will happen:
-1. The files-<puzzle name> directories will all generate a file called "instructions.html".
+1. The files-\<puzzle name\> directories will all generate a file called "instructions.html".
 2. `./src/zipfiles/` will be populated with zipfiles.
 
 The entire project will be located in `./src/zipfiles/puzzle1.zip`, as it contains the zipped files puzzle1..puzzleN.
