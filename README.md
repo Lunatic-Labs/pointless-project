@@ -147,7 +147,7 @@ Puzzle fib_puzzle_create(long seed)
   int fibnum = utils_rng_roll(3, 10, seed); // get a random number in the range 3..=10.
   int password = fib(fibnum);
 
-  std::string html_content = utils_html_printf("Fibonacci Sequence", "./files-fib/.desc.txt", {std::to_string(password)});
+  std::string html_content = utils_html_printf("Fibonacci Sequence", "./files-fib/.desc.txt", {std::to_string(fibnum)});
   utils_generate_file("./files-fib/instructions.html", html_content);
   return {"files-fib", std::to_string(password), {}};
 }
