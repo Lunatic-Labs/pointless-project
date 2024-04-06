@@ -1,3 +1,13 @@
+/*
+ * File: ast-puzzle.cpp
+ * Author: Zachary Haskins, Turner Austin
+ * Contact: zdhdev@yahoo.com, tcaustin@mail.lipscomb.edu
+ * Date: 1/19/2024
+ * Description:
+ *   The user is presented with a generated expression as well as the destination variable.
+ *   They must create and navigate the abstract syntax tree to find the correct path from the root to the destination.
+ */
+
 #include <iostream>
 #include <algorithm>
 #include <cassert>
@@ -5,14 +15,14 @@
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-// (1) exp → exp + term
-// (2) exp → exp – term
-// (3) exp → term
-// (4) term → term * fact
-// (5) term → term / fact
-// (6) term → fact
-// (7) fact → ID
-// (8) fact → ( exp )
+// (1) exp -> exp + term
+// (2) exp -> exp – term
+// (3) exp -> term
+// (4) term -> term * fact
+// (5) term -> term / fact
+// (6) term -> fact
+// (7) fact -> ID
+// (8) fact -> ( exp )
 
 enum class State {
   Expression,
@@ -201,7 +211,7 @@ Puzzle ast_puzzle_create(long seed)
   mutable_seed = seed;
   const size_t depth = 10;
   const size_t difficulty = 10;
- 
+
   std::string expr = generate_expr(seed);
   size_t best = find_best_guy(expr, difficulty);
   std::string guy;

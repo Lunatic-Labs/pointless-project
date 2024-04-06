@@ -1,3 +1,14 @@
+/*
+ * File: maze-puzzle.cpp
+ * Author: Zachary Haskins, Turner Austin
+ * Contact: zdhdev@yahoo.com, tcaustin@mail.lipscomb.edu
+ * Date: 2/4/2024
+ * Description:
+ *   The user is presented with a generated maze. The goal is to find the 
+ *   path from the yellow spot to the end purple spot. The password is the
+ *   compressed path from the start to the end ie uudlllr -> u2dl3r.
+ */
+
 #include <iostream>
 #include <vector>
 #include <random>
