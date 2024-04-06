@@ -204,3 +204,9 @@ without having to go through the entire zipfile structure.
 
 `./include/graphics.h` and `graphics.cpp` contains functions for working with graphics, namely SVG and PPM. It also has a
 struct for a pixel and an image.
+
+# Future Plans
+
+TODO
+
+
