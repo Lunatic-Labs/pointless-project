@@ -23,6 +23,8 @@ $(OBJDIR)/%.o: %.cpp
 cleanzip:
 	rm -f ./zipfiles/*
 	rm -rf ./files-ast/AST
+	rm -rf ./files-rematch/*
+	rm -rf ./files-rematch/.passwords
 	rm -f ./files*/instructions.html
 
 clean: cleanzip

@@ -9,6 +9,8 @@
 
 #define ANS_ONLY 1 << 0
 #define SET_SEED 1 << 1
+#define NO_HDR 1 << 2
+#define NO_FTR 1 << 3
 extern uint32_t FLAGS;
 
 typedef std::vector<std::string> strvec_t;
