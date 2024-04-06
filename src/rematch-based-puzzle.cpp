@@ -58,8 +58,7 @@ int find_val(int base, std::string symbol)
 {
   int start, end;
   set_start_end(base, &start, &end);
-  int i = 0;
-  for(; start <= end; start++) {
+  for(int i = 0; start <= end; start++) {
     if(base_nums[start] == symbol) {
       return i;
     }
