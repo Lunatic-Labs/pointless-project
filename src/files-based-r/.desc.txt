@@ -6,10 +6,7 @@
   <title>Pointless Challenge</title>
     <style>
     body {
-      position: relative; 
-      background-image: 
-      url(https://images7.alphacoders.com/621/621150.jpg); 
-      background-size: cover;
+      background-color: black;
     }
     .base_vals {
       border: none; 
@@ -27,6 +24,16 @@
       font-size: 16px; 
       cursor: pointer;
       color: red;
+    }
+    #flush {
+      position: absolute;
+      top: 74%;
+      left: 46.6%;
+    }
+    #goBack {
+      position: absolute;
+      top: 80%;
+      left: 46%;
     }
     .test-tube {
     position: absolute;
@@ -111,20 +118,20 @@
   <div class="test-tube">
     <div class="liquid" id="liquid"></div>
   </div>
-  <button class="modifier_buttons"; id="flush" onclick="flush()" style="position: absolute; top: 85vh; left: 46.2vw;">FLUSH</button>
-  <button class="modifier_buttons"; id="goBack" onclick="goBack()" style="position: absolute; top: 90vh; left: 45.6vw;">GO BACK</button>
+  <button class="modifier_buttons"; id="flush" onclick="flush()" style="position: absolute; top: 90vh; left: 46.5vw;">FLUSH</button>
+  <button class="modifier_buttons"; id="goBack" onclick="goBack()" style="position: absolute; top: 95vh; left: 46vw;">GO BACK</button>
 
-  <button class="base_vals"; id="val_1"   style="position:absolute; top: 5rem;  left: 1rem;">%DELIM</button>
-  <button class="base_vals"; id="val_2"   style="position:absolute; top: 10rem; left: 10rem;">%DELIM</button>
-  <button class="base_vals"; id="val_3"   style="position:absolute; top: 5rem;  left: 100rem;">%DELIM</button>
+  <button class="base_vals"; id="val_1"   style="position:absolute; top: 5rem;  left: 1rem; ">%DELIM</button>
+  <button class="base_vals"; id="val_2"   style="position:absolute; top: 15rem; left: 15rem;">%DELIM</button>
+  <button class="base_vals"; id="val_3"   style="position:absolute; top: 5rem;  left: 90rem;">%DELIM</button>
   <button class="base_vals"; id="val_4"   style="position:absolute; top: 20rem; left: 60rem;">%DELIM</button>
   <button class="base_vals"; id="val_5"   style="position:absolute; top: 45rem; left: 80rem;">%DELIM</button>
   <button class="base_vals"; id="val_6"   style="position:absolute; top: 25rem; left: 30rem;">%DELIM</button>
-  <button class="base_vals"; id="val_7"   style="position:absolute; top: 35rem; left: 1rem;">%DELIM</button>
+  <button class="base_vals"; id="val_7"   style="position:absolute; top: 35rem; left: 1rem; ">%DELIM</button>
   <button class="base_vals"; id="val_8"   style="position:absolute; top: 50rem; left: 35rem;">%DELIM</button>
   <button class="base_vals"; id="val_9"   style="position:absolute; top: 20rem; left: 86rem;">%DELIM</button>
-  <button class="base_vals"; id="val_10"  style="position:absolute;top: 30rem; left: 100rem;">%DELIM</button>
-  <button class="base_vals"; id="val_11"  style="position:absolute;top: 10rem; left: 40rem;">%DELIM</button>
+  <button class="base_vals"; id="val_10"  style="position:absolute;top: 30rem; left: 80rem; ">%DELIM</button>
+  <button class="base_vals"; id="val_11"  style="position:absolute;top: 10rem; left: 40rem; ">%DELIM</button>
 
   <div id="customAlert" class="modal">
     <div class="modal-content">
@@ -145,7 +152,8 @@
       }
     }
 
-    function customAlert(message) {
+    function customAlert(message, key) {
+      message += " " + key;
       document.getElementById('alertMessage').textContent = message;
       var modal = document.getElementById('customAlert');
       var closeBtn = document.getElementsByClassName('close')[0];
@@ -180,15 +188,14 @@
       if(buttonNames.length == 11) {
         if(checkAnswer(_VAAASDFAEADFADCAV, buttonNames)) {
           //give them the password
-          customAlert("Nice. Check the console for your key")
-          console.log("Here's your key", key);
+          customAlert("Nice. Here's your key ", key);
           document.getElementById('liquid').style.height = 220 + 'px';
           document.getElementById('flush').style.display = "none";
           document.getElementById('goBack').style.display = "none";
           //flush();
         } else {
           flush();
-          customAlert("Try again...")
+          customAlert("Try again...", "");
         }
       }
     }

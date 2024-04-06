@@ -53,7 +53,7 @@ Puzzle based_puzzle_create(long seed)
       values.push_back(std::string(1, static_cast<char>(rand + 23))); // + 23 to get correct ASCII value
       bases.push_back(16);
     } else {
-      int base;
+      int base = 0;
 
       if (rand >= 0 && rand <= 20) { //0-20 is base 20
         base = 20;

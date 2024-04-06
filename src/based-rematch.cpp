@@ -158,10 +158,9 @@ Puzzle based_rematch_puzzle_create(long seed)
   values.push_back(std::to_string(key));
 
   FLAGS |= (NO_HDR | NO_FTR); 
-  std::cout << FLAGS << "\n\n";
 
   std::string html_content = utils_html_printf("Base Puzzle Rematch", "./files-based-r/.desc.txt", values);
-  utils_generate_file("./files-based-r/instructions.html", html_content);
+  utils_generate_file("./files-based-r/____________.html", html_content);
 
   return Puzzle{"files-based-r", values.back(), {}};
 }
@@ -174,7 +173,7 @@ Puzzle based_rematch_puzzle_create(long seed)
 *
 *  Glyphic Base-16 (G16):
 *    This base utilizes sixteen ASCII symbols, representing digits from 0 to 9 and letters A to F.
-*    Symbols: {, }, [, ], (, ), <, >, a, b, c, d, e, f, g, h
+*    Symbols: {, }, [, ], (, ), `, >, a, b, c, d, e, f, g, h
 *    Example: [a is 170 in decimal.
 *
 *  Mystic Base-36 (M36):
