@@ -7,4 +7,4 @@ https://latimesblogs.latimes.com/technology/2011/08/google-vic-gundotra-steve-jo
 Computers are good at following instructions, but not at reading your mind. -- Donald Knuth
 <br /> <br />
 As you might expect, you need a Plot Coupon to unlock the next Level. For the first challenge...
-<b>What is %DELIM + %DELIM?<b>
+<b>What is %DELIM + %DELIM?</b>

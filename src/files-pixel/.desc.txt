@@ -1,0 +1,22 @@
+
+<body>
+    <h3 style="text-align:center"></h3>
+    <p style="text-align:center"></p>
+
+        <p>Excellent! You completed the second puzzle(just when we thought we had you stumped!). <br>
+            Ready for the next challenge?
+        </p>
+        <br>
+        <a href="https://uxdesign.cc/color-blindness-in-user-interfaces-66c27331b858"target="_blank">https://uxdesign.cc/color-blindness-in-user-interfaces-66c27331b858</a>
+        <br><i>Design is where science and art break even. -- Robin Matthews</i>
+
+    
+        <h3>Your challenge:</h3>
+        <p>As usual, you'll need a password. To complete this level, you must fully Grok the following:</p>
+        <br>
+        <p style="font-family:'Courier New', Courier, monospace;"> %DELIM = %DELIM <br> %DELIM X %DELIM = %DELIM <br>
+            %DELIM X %DELIM X %DELIM = ?<br>
+        </p>
+        </div>
+    </div>
+

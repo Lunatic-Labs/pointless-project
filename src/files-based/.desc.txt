@@ -67,4 +67,3 @@
             </table>
             <p>Hint: The solution will be in base-10</p>
         </div>
-    </body>
