@@ -2,9 +2,10 @@ Welcome to the Pointless Computing Challenge!
 
 This Mission Briefing contains everything you need to complete your personal challenge, however you should feel free to use additional resources, including the whole Internet.
 <br /> <br />
-Your mission, should you choose to accept it, is a classic Fetch Quest involving several Plot Coupons and ultimately the coveted MacGuffin. While It's the Journey That Counts, you may periodically claim pointless Victory Points by recording your progress at lipscomb.challenge.edu. You can even do it right now using this Free Sample Coupon "H3fisE7jkQ0W".
-https://latimesblogs.latimes.com/technology/2011/08/google-vic-gundotra-steve-jobs.html
-Computers are good at following instructions, but not at reading your mind. -- Donald Knuth
+Your mission, should you choose to accept it, is a classic Fetch Quest involving several Plot Coupons and ultimately the coveted MacGuffin. While It's the Journey That Counts, you may periodically claim 
+pointless Victory Points by recording your progress at lipscomb.challenge.edu. <br><br>
+<a href="https://latimesblogs.latimes.com/technology/2011/08/google-vic-gundotra-steve-jobs.html">https://latimesblogs.latimes.com/technology/2011/08/google-vic-gundotra-steve-jobs.html</a>
+<br><i>Computers are good at following instructions, but not at reading your mind. -- Donald Knuth</i>
 <br /> <br />
-As you might expect, you need a Plot Coupon to unlock the next Level. For the first challenge...
+For the first challenge...
 <b>What is %DELIM + %DELIM?</b>

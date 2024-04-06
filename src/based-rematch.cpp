@@ -5,12 +5,12 @@
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-//define puzzle sizes
+/*** define puzzle sizes ***/
 #define NUM_VALUES 11
 #define VAL_SZ 4
 
 
-//define indexes into values vector based on the base
+/*** define indexes into values vector based on the base ***/
 #define S8_START 0
 #define S8_END 7
 
@@ -20,26 +20,10 @@
 #define M36_START 24
 #define M36_END 59
 
-/* TODO:
-* [] write puzzle instructions(cryptically)
-* [x] selected values disappear
-* [x] change FLUSH to BACK ONE(keeping flush actually)
-* [x] dry everything out..(i guess i did)
-* [x] ensure sorting works correctly and places right values in vector
-* [x] remove debug code once we verify it's all working correctly
-* [] add error checking
-* [] maybe get rid of global variable?
-*/
-
-/*
-* You have found yourself in a dark dungeon. There is a mysterious glowing obelisk in the center of the room.
-* In order to leave this dungeon, the obelisk must be filled, but not in any old fashion.
-* Your challenge is quite base-ic, really. Collect the pieces strewn about the room to fill the obelisk. 
-* Only with the correct order will your key be revealed
-*/
 
 
-/*  indices 
+/*  
+*   indices 
 *  0-7 -> S8
 *  8-23 -> G16
 *  24-59 -> M38
@@ -49,6 +33,7 @@ static const std::vector<std::string> base_nums = {"!", "@", "#", "$", "%", "^",
     ":", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
 
+//set indices into base_nums vector
 void set_start_end(int base, int *start, int *end)
 {
   switch(base)
@@ -80,8 +65,7 @@ int find_val(int base, std::string symbol)
     }
     ++i;
   }
-  //TODO: handle this condition? even though it should never reach it?
-  std::cout << "didnt find value...\n\n";
+  std::cout << "didnt find value...\n\n"; //shouldn't ever get here ofc
   return -1;
 }
 
@@ -92,7 +76,7 @@ void values_solve(strvec_t vals, std::vector<int> bases, std::vector<int> *solve
     int sol = 0;
     std::vector<int> pos;
     for(int j = 0; j < 4; j++) {
-      pos.push_back(find_val(bases[i], std::string(1, vals[i][j]))); //values index in its list of values
+      pos.push_back(find_val(bases[i], std::string(1, vals[i][j]))); //values index in its base's list of values
     }
 
     int pow = 3;
@@ -120,7 +104,7 @@ void values_create(const std::vector<int> bases, strvec_t *values, long seed)
 }
 
 
-Puzzle based_rematch_puzzle_create(long seed)
+Puzzle rematch_based_puzzle_create(long seed)
 {
   std::vector<int> bases, solved; 
   strvec_t values;
@@ -159,10 +143,10 @@ Puzzle based_rematch_puzzle_create(long seed)
 
   FLAGS |= (NO_HDR | NO_FTR); 
 
-  std::string html_content = utils_html_printf("Base Puzzle Rematch", "./files-based-r/.desc.txt", values);
-  utils_generate_file("./files-based-r/____________.html", html_content);
+  std::string html_content = utils_html_printf("Base Puzzle Rematch", "./files-rematch-based/.desc.txt", values);
+  utils_generate_file("./files-rematch-based/____________.html", html_content);
 
-  return Puzzle{"files-based-r", values.back(), {}};
+  return Puzzle{"files-rematch-based", values.back(), {}};
 }
 
 /*
@@ -181,14 +165,6 @@ Puzzle based_rematch_puzzle_create(long seed)
 *    Example:  |+= is 1684 in decimal.
 */
 
-
-
-
-/*TODO: Make table bigger(6x6 would be good)
-*        3 symbols of same base per table box
-*        hidden elements on page that are only visible when the user hovers over it(little hints maybe?)
-*        clicking on the highlighted element will cause the hint text to appear(probably just the different bases' symbols enumerated)
-*/
 
 
 

@@ -24,7 +24,15 @@ Puzzle maze_puzzle_create(long seed);
 Puzzle encrypt_puzzle_create(long seed);
 Puzzle based_puzzle_create(long seed);
 Puzzle ast_puzzle_create(long seed);
-Puzzle based_rematch_puzzle_create(long seed);
 Puzzle fin_puzzle_create(long seed);
+
+Puzzle rematch_encrypt_puzzle_create(long seed);
+Puzzle rematch_maze_puzzle_create(long seed);
+Puzzle rematch_based_puzzle_create(long seed);
+Puzzle rematch_puzzle_create(long seed);
+
+// Puzzle rematch1_puzzle_create(long seed, std::string pass);
+// Puzzle rematch2_puzzle_create(long seed, std::string pass);
+// Puzzle rematch3_puzzle_create(long seed, std::string pass);
 
 #endif // PUZZLE_H

@@ -21,8 +21,6 @@
     }
 </style>
   <div class="container">
-  Congratulations on completing the that last puzzle!
-  
   Congratulations on completing the last puzzle! Below is an example of a mathmatical expression. Your task is to
   solve create an AST and find the path to a given variable. Here is the grammar:
   
