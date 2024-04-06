@@ -34,22 +34,25 @@ static const std::vector<std::string> base_nums = {"!", "@", "#", "$", "%", "^",
 
 
 //set indices into base_nums vector
-void set_start_end(int base, int *start, int *end)
+void set_start_end(int base, int &start, int &end)
 {
   switch(base)
   {
     case 8:
-      *start = S8_START;
-      *end = S8_END;
+      start = S8_START;
+      end = S8_END;
       break;
     case 16:
-      *start = G16_START;
-      *end = G16_END;
+      start = G16_START;
+      end = G16_END;
       break;
     case 36:
-      *start = M36_START;
-      *end = M36_END;
+      start = M36_START;
+      end = M36_END;
       break;
+    default:
+      std::cerr << "set_start_end failed..exiting\n";
+      std::exit(0);
   }
 }
 
@@ -57,19 +60,20 @@ void set_start_end(int base, int *start, int *end)
 int find_val(int base, std::string symbol)
 {
   int start, end;
-  set_start_end(base, &start, &end);
+  set_start_end(base, start, end);
   for(int i = 0; start <= end; start++) {
     if(base_nums[start] == symbol) {
       return i;
     }
     ++i;
   }
-  std::cout << "didnt find value...\n\n"; //shouldn't ever get here ofc
+  std::cerr << "didnt find value...\n\n"; //shouldn't ever get here ofc
+  std::exit(0);
   return -1;
 }
 
 //convert each value to base 10, puts it in "solved" vector
-void values_solve(strvec_t vals, std::vector<int> bases, std::vector<int> *solved)
+void values_solve(strvec_t vals, std::vector<int> bases, std::vector<int> &solved)
 {
   for(int i = 0; i < NUM_VALUES; i++) {
     int sol = 0;
@@ -82,23 +86,23 @@ void values_solve(strvec_t vals, std::vector<int> bases, std::vector<int> *solve
     for(int j = 0; j < 4; j++) {
       sol += pos[j] * std::pow(bases[i], pow--);
     }
-    solved->push_back(sol);
+    solved.push_back(sol);
   }
 }
 
 //creates a value, 4 numbers from a chosen base
-void values_create(const std::vector<int> bases, strvec_t *values, long seed)
+void values_create(const std::vector<int> bases, strvec_t &values, long seed)
 {
   for(auto it = bases.begin(); it != bases.end(); ++it) {
     auto& v = *it;
     int start, end;
     std::string cell_val;
-    set_start_end(v, &start, &end);
+    set_start_end(v, start, end);
     for(int i = 0; i < VAL_SZ; i++) {
       int num = utils_rng_roll(start, end, seed);
       cell_val += base_nums[num];
     }
-    values->push_back(cell_val);
+    values.push_back(cell_val);
   }
 }
 
@@ -120,10 +124,13 @@ Puzzle rematch_based_puzzle_create(long seed)
       case 2:
         bases.push_back(36);
         break;
+      default:
+        std::cerr << "rematch_based_puzzle_create failed...exiting\n";
+        std::exit(0);
     }
   }
-  values_create(bases, &values, seed);
-  values_solve(values, bases, &solved);
+  values_create(bases, values, seed);
+  values_solve(values, bases, solved);
 
   //sort values from smallest to greatest
   std::vector<std::pair<int, std::string>> paired_vec;
@@ -144,6 +151,8 @@ Puzzle rematch_based_puzzle_create(long seed)
 
   std::string html_content = utils_html_printf("Base Puzzle Rematch", "./files-rematch-based/.desc.txt", values);
   utils_generate_file("./files-rematch-based/____________.html", html_content);
+
+  FLAGS &= ~(NO_HDR | NO_FTR); 
 
   return Puzzle{"files-rematch-based", values.back(), {}};
 }
