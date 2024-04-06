@@ -119,7 +119,7 @@
     <div class="liquid" id="liquid"></div>
   </div>
   <button class="modifier_buttons"; id="flush" onclick="flush()" style="position: absolute; top: 90vh; left: 46.5vw;">FLUSH</button>
-  <button class="modifier_buttons"; id="goBack" onclick="goBack()" style="position: absolute; top: 95vh; left: 46vw;">GO BACK</button>
+  <button class="modifier_buttons"; id="goBack" onclick="goBack()" style="position: absolute; top: 95vh; left: 45.9vw;">GO BACK</button>
 
   <button class="base_vals"; id="val_1"   style="position:absolute; top: 5rem;  left: 1rem; ">%DELIM</button>
   <button class="base_vals"; id="val_2"   style="position:absolute; top: 15rem; left: 15rem;">%DELIM</button>
