@@ -31,7 +31,7 @@ enum class State {
   ID
 };
 
-void balance_parens(char *&it, int &balance, State &state, std::string &path)
+static void balance_parens(char *&it, int &balance, State &state, std::string &path)
 {
   while (*it) {
     if (*it == '(') {
@@ -56,7 +56,7 @@ void balance_parens(char *&it, int &balance, State &state, std::string &path)
   }
 }
 
-std::string evaluate_expr(std::string str, size_t index)
+static std::string evaluate_expr(std::string str, size_t index)
 {
   std::string path = "";
 
@@ -114,7 +114,7 @@ static int fail_safe = 0;
 static int password;
 static long mutable_seed;
 
-void create_dirs(std::string path, int depth, const char *ans, State state)
+static void create_dirs(std::string path, int depth, const char *ans, State state)
 {
   if (fail_safe++ > 9000) {
     std::cout << "HIT FAIL SAFE\n";
@@ -159,7 +159,7 @@ void create_dirs(std::string path, int depth, const char *ans, State state)
   }
 }
 
-std::string generate_expr(long seed)
+static std::string generate_expr(long seed)
 {
   std::string expr;
   std::string ops = "+-/*";
@@ -189,7 +189,7 @@ std::string generate_expr(long seed)
   return expr;
 }
 
-size_t find_best_guy(std::string &expr, size_t max_len)
+static size_t find_best_guy(std::string &expr, size_t max_len)
 {
   size_t best = 0;
   size_t best_len = 0;

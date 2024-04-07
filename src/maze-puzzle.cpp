@@ -35,7 +35,7 @@
 
 std::set<std::pair<int, int>> visited;
 
-int shortest_path(Image &maze, int x, int y, int steps, std::string &path, long &seed)
+static int shortest_path(Image &maze, int x, int y, int steps, std::string &path, long &seed)
 {
   if (x < 0 || y < 0 || x >= MAZE_SIZE || y >= MAZE_SIZE) {
     return INT_MAX;
@@ -99,7 +99,7 @@ int shortest_path(Image &maze, int x, int y, int steps, std::string &path, long 
   return min+1;
 }
 
-std::string compress_path(std::string &path)
+static std::string compress_path(std::string &path)
 {
   std::string compressed;
   for (size_t i = 0; i < path.size(); i++) {
@@ -117,12 +117,12 @@ std::string compress_path(std::string &path)
   return compressed;
 }
 
-void randomized_dfs(Image &maze, int x, int y, long &seed)
+static void randomized_dfs(Image &maze, int x, int y, long &seed)
 {
   std::vector<std::pair<int, int>> directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
   std::shuffle(directions.begin(), directions.end(), std::default_random_engine(seed));
   ++seed;
-  
+
   maze(x, y) = MAZE_CHECKER_PATH;
   for (auto &dir : directions) {
     int nx = x + dir.first;
