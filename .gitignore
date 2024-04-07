@@ -1,8 +1,7 @@
 # Prerequisites
 *.d
-
+instructions*
 *.ppm
-
 
 # Compiled Object files
 *.slo
@@ -37,5 +36,6 @@
 
 .vscode/
 .DS_Store
-zipfiles/*
 AST
+*.zip
+main
