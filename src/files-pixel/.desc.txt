@@ -1,53 +1,23 @@
-<head>
-    <meta charset="UTF-8">
-    <style>
-        .container {
-            width: 50%; /* Adjust the width as needed */
-            margin: 100px auto 0; /* Center the container horizontally */
-            padding: 150px;
-            border: 1px solid #ccc; /* Optional: Add a border */
-            border-radius: 8px; /* Optional: Add border radius for rounded corners */
-            text-align: center; /* Center the text in the container */
-        }
-        .container ul {
-            text-align: center; /* Align text to the left within the list */
-            list-style-position: inside; /* Place bullet points inside the list items */
-        }
-        .container p {
-            max-width: 150%;
-            margin: 10px auto;
-        }
-    </style>
-</head>
+
 <body>
     <h3 style="text-align:center"></h3>
     <p style="text-align:center"></p>
 
-    <div class="container">
-        <h2>The Pixel Puzzle</h2>
-    
-        <p>Excellent! You completed the second puzzle(just when we thought we had you stumped!) <br>
+        <p>Excellent! You completed the second puzzle(just when we thought we had you stumped!). <br>
             Ready for the next challenge?
         </p>
         <br>
-        <i>https://uxdesign.cc/color-blindness-in-user-interfaces-66c27331b858 <br>
-            Design is where science and art break even. -- Robin Matthews
-        </i>
+        <a href="https://uxdesign.cc/color-blindness-in-user-interfaces-66c27331b858"target="_blank">https://uxdesign.cc/color-blindness-in-user-interfaces-66c27331b858</a>
+        <br><i>Design is where science and art break even. -- Robin Matthews</i>
 
     
         <h3>Your challenge:</h3>
-        <p>As usual, you'll need a password. To complete this level and obtain
-            your next Plot Coupon, you must fully Grok the following:</p>
-
-        <div style="text-align:left; display: inline-block;">
+        <p>As usual, you'll need a password. To complete this level, you must fully Grok the following:</p>
+        <br>
         <p style="font-family:'Courier New', Courier, monospace;"> %DELIM = %DELIM <br> %DELIM X %DELIM = %DELIM <br>
             %DELIM X %DELIM X %DELIM = ?<br>
         </p>
         </div>
     </div>
-    
 
-    <div class="footer">
-        <div><p>Dr. Towell - dtowell@lipscomb.edu</p></div>
-    </div>
-</body>
+

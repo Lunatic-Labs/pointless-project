@@ -28,6 +28,7 @@ Puzzle fin_puzzle_create(long seed);
 
 Puzzle rematch_encrypt_puzzle_create(long seed);
 Puzzle rematch_maze_puzzle_create(long seed);
+Puzzle rematch_based_puzzle_create(long seed);
 Puzzle rematch_puzzle_create(long seed);
 
 // Puzzle rematch1_puzzle_create(long seed, std::string pass);

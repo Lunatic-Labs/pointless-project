@@ -90,10 +90,8 @@ function encrypt() {
   let password = "";
   for (let i = 0; i < abcdefghijklmnopqrstuvwxyz.length; i += 1) {
     let char = abcdefghijklmnopqrstuvwxyz[i];
-    console.log(char);
     let xord = char^key;
     password += String.fromCharCode(xord);
-    console.log(password);
   }
 
   password = fibmix(shift(tableChange(password), 2));

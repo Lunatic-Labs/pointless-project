@@ -41,8 +41,9 @@ Puzzle rematch_puzzle_create(long seed)
   std::vector<Puzzle> puzzles = {
     rematch_maze_puzzle_create(seed),
     rematch_encrypt_puzzle_create(seed),
+    rematch_based_puzzle_create(seed),
     // math_puzzle_create(seed),
-    math_puzzle_create(seed),
+    // math_puzzle_create(seed),
   };
 
   std::string password = create_rematch_password_files(puzzles, seed);

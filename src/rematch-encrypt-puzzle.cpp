@@ -73,8 +73,6 @@ Puzzle rematch_encrypt_puzzle_create(long seed)
   int key = utils_rng_roll(100, 250, seed);
 
   std::string encrypted_password = str_to_ascii_array(password, key);
-  std::cout << "KEY: " << key << std::endl;
-  std::cout << "ENCRYPTED_PASSWORD: " << encrypted_password << std::endl;
   std::string html_body = utils_html_printf("Encrypt puzzle", "./files-rematch-encrypt/.desc.txt", {encrypted_password, std::to_string(key), table});
 
   utils_generate_file("./files-rematch-encrypt/instructions.html", html_body);
