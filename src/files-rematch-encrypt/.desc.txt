@@ -1,8 +1,24 @@
-<input type="text" id="inputBox">
-<button onclick="printShifted()">Mash Input</button>
-<button onclick="printTableChanged()">Goopify Input</button>
-<button onclick="printFibmix()">👽👾🤖 Input </button>
+<div>
+The password to escape this room is:
 <div id="password"></div>
+
+<p>Unfortunately, Dr. Pepper <b>goopified</b>, <i>mashed</i>, and <u>👽👾🤖</u>'d our password in that order. </p>
+
+We don't know how to <span style="color: #ff0000">undo</span> it
+nor do we know how they work. All we have is the magic machine that performed them.
+
+<p><b>What is the decrypted password?</p></p>
+</div>
+
+<!-- Empty paragraph or spacing -->
+<p></p>
+<!-- -->
+
+<input type="text" id="inputBox">
+<button onclick="printShifted()">Mash</button>
+<button onclick="printFibmix()">👽👾🤖</button>
+<button onclick="printTableChanged()">Goopify</button>
+<p></p>
 <div id="output"></div>
 
 <script>
@@ -71,19 +87,19 @@ function fibmix(s) {
 function printShifted() {
   let userInput = document.getElementById("inputBox").value;
   let output = shift(userInput, 2);
-  document.getElementById("output").innerText = userInput +" --> " + output;
+  document.getElementById("output").innerText = userInput +" ➜ " + output;
 }
 
 function printTableChanged() {
   let userInput = document.getElementById("inputBox").value;
   let output = tableChange(userInput);
-  document.getElementById("output").innerText = userInput +" --> " + output;
+  document.getElementById("output").innerText = userInput +" ➜ " + output;
 }
 
 function printFibmix() {
   let userInput = document.getElementById("inputBox").value;
   let output = fibmix(userInput);
-  document.getElementById("output").innerText = userInput +" --> " + output;
+  document.getElementById("output").innerText = userInput +" ➜ " + output;
 }
 
 function encrypt() {
@@ -95,7 +111,7 @@ function encrypt() {
   }
 
   password = fibmix(shift(tableChange(password), 2));
-  document.getElementById("password").innerText = "password: " + password;
+  document.getElementById("password").innerText = password;
 }
 
 encrypt();
