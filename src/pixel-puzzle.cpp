@@ -3,6 +3,18 @@
 
 #define MAX_LOOP 3// if i can modify the html somehow... 
 
+/*
+* File: rematch-based-puzzle.cpp
+* Author: Mekeal Brown
+* Contact: brownmekeal@gmail.com
+* Date: 2/6/2024
+* Description:
+*  The user is presented with three rows. One row has one hex value,
+*  the second has two, and the third has three. The first two rows are solved.
+*  The third requires the user to solve. The user must count the number of pixels
+*  in the bison svg on the webpage and perform the arithmetic to solve.
+*/
+
 static int get_pixel_count(const std::string& hexValue) {
     static std::unordered_map<std::string, int> pixelCounts = {
         {"#FFFFFF", 2},

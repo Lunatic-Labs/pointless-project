@@ -20,14 +20,21 @@
 #define M36_START 24
 #define M36_END 59
 
-
-
-/*  
-*   indices 
-*  0-7 -> S8
-*  8-23 -> G16
-*  24-59 -> M38
+/*
+* File: rematch-based-puzzle.cpp
+* Author: Mekeal Brown
+* Contact: brownmekeal@gmail.com
+* Date: 2/6/2024
+* Description:
+*  The user is presented with an instructions page outlining the puzzle(cryptically).
+*  There is an "Enter" button to press that takes them to the actual puzzle.
+*  There are values scattered around the page and a vial. The user must fill the vial
+*  by clicking the values in order from smallest to greatest.
 */
+
+
+
+// indices  0-7 -> S8  8-23 -> G16  24-59 -> M38
 static const std::vector<std::string> base_nums = {"!", "@", "#", "$", "%", "^", "&", "*", "{", "}", "[", "]", \
     "(", ")", "`", ">", "a", "b", "c", "d", "e", "f", "g", "h", "|", "~", ",", "/", "?", "_", "+", "=", "-", \
     ":", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
