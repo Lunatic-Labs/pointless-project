@@ -105,6 +105,9 @@ Puzzle encrypt_puzzle_create(long seed)
       case 1: {
         int idx1 = utils_rng_roll(0, len, seed);
         int idx2 = utils_rng_roll(0, len, seed);
+        if (idx1 == idx2) { // In the off chance that they are the same.
+          idx2 = (idx2+1) % len;
+        }
         encrypt_steps += std::to_string(i+1) + ".) Swapped the " + num_to_english(idx1+1) + " and " + num_to_english(idx2+1) + " characters.\n";
         swap(word, idx1, idx2);
       } break;
