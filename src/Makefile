@@ -1,4 +1,4 @@
-CFLAGS := -ggdb -pedantic -std=c++17 -Wextra -Wall
+CFLAGS := -ggdb -pedantic -std=c++17 -Wextra -Wall -O3
 CLINKS := -lboost_iostreams -lzip -lboost_unit_test_framework
 CC := g++
 

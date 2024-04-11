@@ -70,8 +70,10 @@ int main(int argc, char **argv)
     based_puzzle_create(seed),
     rematch_puzzle_create(seed),
     ast_puzzle_create(seed),
+    binary_addition_puzzle_create(seed),
     fin_puzzle_create(seed),
   };
+
 
   for (auto &puzzle : puzzles) {
     std::printf("%-10s Password: %s", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
