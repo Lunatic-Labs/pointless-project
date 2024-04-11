@@ -4,6 +4,7 @@
 #include <optional>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 struct Puzzle {
   // The filepath to the appropriate directory
@@ -18,10 +19,21 @@ struct Puzzle {
 
 Puzzle math_puzzle_create(long seed);
 Puzzle color_puzzle_create(long seed);
+Puzzle pixel_puzzle_create(long seed);
 Puzzle maze_puzzle_create(long seed);
 Puzzle encrypt_puzzle_create(long seed);
+Puzzle based_puzzle_create(long seed);
 Puzzle ast_puzzle_create(long seed);
 Puzzle binary_addition_puzzle_create(long seed);
 Puzzle fin_puzzle_create(long seed);
+
+Puzzle rematch_encrypt_puzzle_create(long seed);
+Puzzle rematch_maze_puzzle_create(long seed);
+Puzzle rematch_based_puzzle_create(long seed);
+Puzzle rematch_puzzle_create(long seed);
+
+// Puzzle rematch1_puzzle_create(long seed, std::string pass);
+// Puzzle rematch2_puzzle_create(long seed, std::string pass);
+// Puzzle rematch3_puzzle_create(long seed, std::string pass);
 
 #endif // PUZZLE_H

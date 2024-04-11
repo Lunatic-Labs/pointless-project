@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pointless Challenge</title>
+    <style>
+    body {
+      background-color: black;
+    }
+    .base_vals {
+      border: none; 
+      background-color: transparent;
+      padding: 10px 20px; 
+      font-size: 20px; 
+      cursor: pointer;
+      color: red;
+    }
+    .modifier_buttons {
+      border: 1px solid red;
+      border-radius: 7px;
+      background-color: black;
+      padding: 10px 20px; 
+      font-size: 16px; 
+      cursor: pointer;
+      color: red;
+    }
+    #flush {
+      position: absolute;
+      top: 74%;
+      left: 46.6%;
+    }
+    #goBack {
+      position: absolute;
+      top: 80%;
+      left: 46%;
+    }
+    .test-tube {
+    position: absolute;
+    top: 31rem;
+    left: 47.5%;
+    width: 60px;
+    height: 220px;
+    margin: 50px auto;
+    background: black;
+    box-shadow: 0 0 20px 10px red;
+    border-radius: 10px;
+    overflow: hidden;
+    animation: glowAnimation 1s infinite alternate;
+    }
+    .liquid {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 0;
+      background: red;
+      transition: height 0.5s ease;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      opacity: 90%;
+      border-radius: 20px;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: black;
+      text-align: center;
+      border-radius: 10px;
+      font-size: 30px;
+      color: red;
+      margin: 15% auto;
+      padding: 20px;
+      border: none;
+      width: 20%;
+    }
+    .close {
+      color: red;
+      float: right;
+      font-size: 25px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: blue;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    @keyframes glowAnimation {
+    0% {
+        box-shadow: 
+            0 0 5px 5px rgba(255, 0, 0, 0.5),
+            0 0 10px 10px rgba(255, 0, 0, 0.3),
+            0 0 15px 15px rgba(255, 0, 0, 0.2),
+            0 0 20px 20px rgba(255, 0, 0, 0.1),
+            0 0 25px 25px rgba(255, 0, 0, 0.05);
+    }
+    100% {
+        box-shadow: 
+            0 0 10px 10px rgba(255, 0, 0, 0.5),
+            0 0 20px 20px rgba(255, 0, 0, 0.3),
+            0 0 30px 30px rgba(255, 0, 0, 0.2),
+            0 0 40px 40px rgba(255, 0, 0, 0.1),
+            0 0 50px 50px rgba(255, 0, 0, 0.05);
+    }
+  }
+  </style>
+</head>
+<body>
+  <div class="test-tube">
+    <div class="liquid" id="liquid"></div>
+  </div>
+  <button class="modifier_buttons"; id="flush" onclick="flush()" style="position: absolute; top: 90vh; left: 46.5vw;">FLUSH</button>
+  <button class="modifier_buttons"; id="goBack" onclick="goBack()" style="position: absolute; top: 95vh; left: 46vw;">GO BACK</button>
+
+  <button class="base_vals"; id="val_1"   style="position:absolute; top: 5rem;  left: 1rem; ">%DELIM</button>
+  <button class="base_vals"; id="val_2"   style="position:absolute; top: 15rem; left: 15rem;">%DELIM</button>
+  <button class="base_vals"; id="val_3"   style="position:absolute; top: 5rem;  left: 90rem;">%DELIM</button>
+  <button class="base_vals"; id="val_4"   style="position:absolute; top: 20rem; left: 60rem;">%DELIM</button>
+  <button class="base_vals"; id="val_5"   style="position:absolute; top: 45rem; left: 80rem;">%DELIM</button>
+  <button class="base_vals"; id="val_6"   style="position:absolute; top: 25rem; left: 30rem;">%DELIM</button>
+  <button class="base_vals"; id="val_7"   style="position:absolute; top: 35rem; left: 1rem; ">%DELIM</button>
+  <button class="base_vals"; id="val_8"   style="position:absolute; top: 50rem; left: 35rem;">%DELIM</button>
+  <button class="base_vals"; id="val_9"   style="position:absolute; top: 20rem; left: 86rem;">%DELIM</button>
+  <button class="base_vals"; id="val_10"  style="position:absolute;top: 30rem; left: 80rem; ">%DELIM</button>
+  <button class="base_vals"; id="val_11"  style="position:absolute;top: 10rem; left: 40rem; ">%DELIM</button>
+
+  <div id="customAlert" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p id="alertMessage"></p>
+    </div>
+  </div>
+  
+
+  <script>
+
+    function handleButtonClick(event) {
+      let buttonText = event.target.textContent;
+      if(buttonText != "FLUSH" && buttonText != "GO BACK") { //if not these, its a value
+        event.target.style.display = "none";
+        buttonNames.push(buttonText);
+        addLiquid();
+      }
+    }
+
+    function customAlert(message, key) {
+      message += " " + key;
+      document.getElementById('alertMessage').textContent = message;
+      var modal = document.getElementById('customAlert');
+      var closeBtn = document.getElementsByClassName('close')[0];
+
+      modal.style.display = "block";
+      closeBtn.onclick = function() {
+        modal.style.display = "none";
+      }
+    
+      window.onclick = function(event) {
+        if(event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    }
+
+    function checkAnswer(array1, array2) {
+      for(let i = 0; i < array1.length; i++) {
+        if(array1[i] !== array2[i]) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    //if user clicks a value button, increase liquid height
+    function addLiquid() {
+      if(liquidHeight < 220) { // 220 -> Max height of liquid
+        liquidHeight += 20; // Increase the height of the liquid by 20px
+        document.getElementById('liquid').style.height = liquidHeight + 'px';
+      }
+      if(buttonNames.length == 11) {
+        if(checkAnswer(_VAAASDFAEADFADCAV, buttonNames)) {
+          //give them the password
+          customAlert("Nice. Here's your key ", key);
+          document.getElementById('liquid').style.height = 220 + 'px';
+          document.getElementById('flush').style.display = "none";
+          document.getElementById('goBack').style.display = "none";
+          //flush();
+        } else {
+          flush();
+          customAlert("Try again...", "");
+        }
+      }
+    }
+
+    //reset the last value clicked, lower liquid height and make value reappear
+    function goBack() {
+      liquidHeight -= 20;
+      document.getElementById('liquid').style.height = liquidHeight + 'px';
+
+      // Get the text of the last button
+      let lastButtonText = buttonNames.pop();
+      console.log("last button ", lastButtonText);
+
+      // Find the corresponding button element in the DOM
+      let buttons = document.querySelectorAll("button");
+      for(let i = buttons.length - 1; i >= 0; i--) {
+        if(buttons[i].textContent.trim() === lastButtonText) {
+          buttons[i].style.display = "block"; // Make the button reappear
+          break; // Stop the loop after making the button reappear
+        }
+      }
+    }
+
+    //flush everything, start over
+    function flush() {
+      liquidHeight = 0;
+      document.getElementById('liquid').style.height = liquidHeight;
+      buttonNames.length = 0;
+      let buttons = document.querySelectorAll("button");
+      buttons.forEach(function(button) {
+        button.style.display = "";
+      });
+    }
+
+    let liquidHeight = 0;
+    let buttonNames = [];
+
+    let _VAAASDFAEADFADCAV = [];
+    _VAAASDFAEADFADCAV[0] = "%DELIM";
+    _VAAASDFAEADFADCAV[1] = "%DELIM";
+    _VAAASDFAEADFADCAV[2] = "%DELIM";
+    _VAAASDFAEADFADCAV[3] = "%DELIM";
+    _VAAASDFAEADFADCAV[4] = "%DELIM";
+    _VAAASDFAEADFADCAV[5] = "%DELIM";
+    _VAAASDFAEADFADCAV[6] = "%DELIM";
+    _VAAASDFAEADFADCAV[7] = "%DELIM";
+    _VAAASDFAEADFADCAV[8] = "%DELIM";
+    _VAAASDFAEADFADCAV[9] = "%DELIM";
+    _VAAASDFAEADFADCAV[10] ="%DELIM";
+
+
+    let key = "%DELIM";
+
+    let buttons = document.querySelectorAll("button");
+    buttons.forEach(function(button) {
+      button.addEventListener("click", handleButtonClick);
+    });
+
+    
+  </script>

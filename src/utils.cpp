@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <ctime>
+#include <errno.h>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -32,39 +33,46 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
   // Get the header content.
   char c;
   std::string header_content;
-  std::string header_path = "./resources/template-header.txt";
+  std::string header_path = "./resources/header.txt";
 
   struct stat buf;
-  if(stat(header_path.c_str(), &buf) != 0) {
-    std::cerr << "Can not open " + header_path + ": No such file" << std::endl;
-    throw("Can not open " + header_path + ": No such file");
+  if(FLAGS & NO_HDR) {
+    header_content = "";
+  } else {
+    if(stat(header_path.c_str(), &buf) != 0) {
+      std::cerr << "Can not open " + header_path + ": No such file" << std::endl;
+      throw("Can not open " + header_path + ": No such file");
+    }
+
+    std::ifstream header_file(header_path);
+
+    header_file >> std::noskipws;
+    while ( header_file >> c ) {
+      header_content += c;
+    }
+
+    header_file.close();
   }
-
-  std::ifstream header_file(header_path);
-
-  header_file >> std::noskipws;
-  while ( header_file >> c ) {
-    header_content += c;
-  }
-
-  header_file.close();
 
   // Get the footer content.
   char d;
   std::string footer_content;
+  if(FLAGS & NO_FTR) {
+    footer_content = "";
+  } else {
+    std::string footer_path = "./resources/footer.txt";
 
-  std::string footer_path = "./resources/template-footer.txt";
+    if (stat(footer_path.c_str(), &buf) != 0) {
+      throw("Can not open " + footer_path + ": No such file");
+    }
 
-  if (stat(footer_path.c_str(), &buf) != 0) {
-    throw("Can not open " + footer_path + ": No such file");
+    std::ifstream footer_file(footer_path);
+    footer_file >> std::noskipws;
+    while (footer_file >> d) {
+      footer_content += d;
+    }
+    footer_file.close();
   }
-
-  std::ifstream footer_file(footer_path);
-  footer_file >> std::noskipws;
-  while (footer_file >> d) {
-    footer_content += d;
-  }
-  footer_file.close();
 
   // Get the description. Uses the `va_list` to get the variable arguments.
   std::string description = utils_file_to_str(desc_filepath);
@@ -91,9 +99,9 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
   }
 
   std::string content_concatenated = header_content
-    + "<h3 style=\"text-align:center\">"
+    + "<h2 style=\"text-align:center\">"
     + title
-    + "</h3>"
+    + "</h2>"
     + "<p style=\"text-align:center\">"
     + body
     + "</p>"
@@ -124,6 +132,7 @@ void utils_generate_file(filepath_t output_filepath, std::string output_body)
   std::ofstream outfp(output_filepath);
   if (!outfp.is_open()) {
     std::cerr << "Error opening file: " << output_filepath << std::endl;
+    std::cerr << "reason: " << strerror(errno) << std::endl;
     std::exit(EXIT_FAILURE);
   }
   outfp << output_body;
@@ -176,8 +185,14 @@ void utils_zip_files(filepath_t out_file_name,
 
     zip_source_t *src = zip_source_file(zip_file, file_names[i].c_str(), 0, 0);
 
-    // Strip the path from the file name (only the top most path).
-    std::string::size_type pos = file_names[i].find('/');
+    // Strip the path from the file name
+    std::string::size_type pos = file_names[i].find("/");
+
+    // Checking whether or not there is a dotfile after the first slash
+    if(file_names[i][pos + 1] == '.') {
+      // stripping that dotfile from the path
+      pos = file_names[i].substr(pos + 1).find("/") + pos + 1;
+    }
     std::string stripped_filename = file_names[i].substr(pos + 1);
 
     zip_add(zip_file, stripped_filename.c_str(), src);

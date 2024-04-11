@@ -6,57 +6,118 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pointless Challenge</title>
-    <style>
-        body{font-family: Arial Rounded MT Bold;}
-        #theme-btn {font-size: 1.5rem;cursor: pointer;color: #596AFF;}
-        #theme-btn:hover {color: #BB86FC;}
-        .changeTheme {background: #1D1E22; color: #eee;}        .maindiv{display: flex;flex-direction: column;height: 95vh;}
-        h6 {color: #331a33;}
-        h1{font-size: 4rem;color: #331a33;}
-        .header{height: 20%;width: 100%;display: flex;flex-direction: row;justify-content: center;align-items: flex-end;margin-top: 5%;gap: 7rem;}
-        .text{display: flex;flex-direction:column;justify-content:center;height: 100%;gap: 1rem;}
-        .decoration {position: absolute;top: 60px;left: 421px;color: #f1a802;z-index: -1;}
-        .logo{display: flex;align-items: center;height: 100%;}
-        .college-info{position:absolute;top:25px;left:450px;}
-        .imagen{height: 11rem;width: 8rem;}
-        .content{height: 65%;width: 100%;display: flex; flex-direction:column; align-items: center;justify-content: center;padding-top:5%;}
-        .puzzle{height: 100%;width: 30%;display: flex;align-items: center;justify-content: center;background-color: brown;}
-        .footer{margin-top: 3rem;height: 10%;display: flex;flex-direction: row;align-items: flex-end;justify-content: space-between;}
-        @media print {@page{margin:0;size:auto;}.footer{margin: 1rem;height: 10%;display: flex;flex-direction: row;align-items: flex-end;justify-content: space-between;}.puzzle{height: 100%;width: 30%;display: flex;align-items: center;justify-content: center;background-color: brown;}.content{height: 65%;width: 100%;display: flex;align-items: center;justify-content: center;padding-top:5%;}.imagen{height: 11rem;width: 8rem;}.text{display: flex;flex-direction:column;justify-content:center;height: 100%;gap: 1rem;}.header{height: 20%;width: 100%;display: flex;flex-direction: row;justify-content: center;align-items: flex-end;margin-top: 5%;gap: 7rem;}.decoration {position: absolute;top: 30px;left: 135px;color: #f1a802;z-index: -1;}.college-info{position:absolute;top:25px;left:135px;}.logo{display: flex;align-items: center;height: 100%;}}
-    </style>
 </head>
+<style>
+    #theme-btn {font-size: 1.5rem;cursor: pointer;color: #596AFF;}
+    #theme-btn:hover {color: #BB86FC;}
+    .changeTheme {background: #1D1E22; color: #eee;}        
+    .maindiv{display: flex;flex-direction: column;height: 95vh;}
+    .title{ font-size: 72px; font-weight: bold; color: #331E54; text-shadow:4px  4px 0 #F4AA00;}
+    .imagen{height:9rem; padding-left: 28px;}
+</style>
 <body>
     <div id="theme-btn" class="far fa-moon"></div>
 
-    <div class="maindiv">
-    <div class="header">
-    <div class="text">
-        <p class="college-info">Lipscomb University | College of Computing</p>
+<div style="display:flex; align-items:center; justify-content: center;">
+    <div class="title">Pointless Challenge</div>
     <div>
-        <h1>Pointless <br>Challenge</h1>
-        <h1 class="decoration">Pointless <br>Challenge</h1>
-    </div>
-    </div>
-    <div class ="logo">
         <img class ="imagen" src="data:image/gif;base64,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">
     </div>
-    </div>
-    <div class="content">
-    <div>
+</div>
+
     <script>
         const themeBtn = document.getElementById("theme-btn");
             themeBtn.onclick = () => {
-            themeBtn.classList.toggle("fa-sun");
-            if (themeBtn.classList.contains("fa-sun")) {
-                document.body.classList.add("changeTheme");
-            } else {
-                document.body.classList.remove("changeTheme");
-            }
+                themeBtn.classList.toggle("fa-sun");
+                if (themeBtn.classList.contains("fa-sun")) {
+                    document.body.classList.add("changeTheme");
+                } else {
+                    document.body.classList.remove("changeTheme");
+                }
             }
     </script>
 </body>
+<div class="content">
+    <head>
+        <style>
+            .container {
+                width: 80%;
+                margin: -4px auto 0; /* This makes the bison stand on the box. We were cookin bro.*/
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                text-align: center;
+            }
+            .container ul {
+            text-align: center;
+            list-style-position: inside;
+            }
+            .container p {
+                max-width: 60%;
+                margin: 10px auto;
+            }
+            .button {
+              display: inline-block;
+              padding: 10px 20px;
+              background-color: #007bff;
+              color: #fff;
+              text-decoration: none;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+              transition: background-color 0.3s ease;
+            }
+
+            .button:hover {
+              background-color: black;
+              color: red;
+            }
+            .hints {
+                position: relative;
+                background-color: transparent; /* Green */
+                border: none;
+                color: black;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+          <h1>Based Rematch Puzzle</h1>
+          <p>Impressive, making it this far. You see a door. An exit maybe? You're sprinting down the hall thinking that you've finally escaped.<br><br>
+            <b>Wrong.</b><br><br> There is another puzzle in the room at the end of the corridor.<br><br><hr>
+            <br>You find yourself in a dark room. There is a mysterious glowing obelisk in the center and odd values floating about.<br>
+            In order to leave, the obelisk must be filled, but not in any old fashion.<br><br>
+            <b>YOUR CHALLENGE</b><br>
+            <br>It's quite base-ic, really. Collect the pieces strewn about the room to fill the obelisk. <br>
+                Only with the correct order will your key be revealed</p>
+          <a href="____________.html" class="button">Enter</a>
+          <br><br><br>
+
+            <button class="hints" onclick="displayText('Symbolic 8: !, @, #, $, %, ^, &, *')">S8</button>
+            <button class="hints" onclick="displayText('Glyphic 16: {, }, [, ], (, ), `, >, a, b, c, d, e, f, g, h')">G16</button>
+            <button class="hints" onclick="displayText('Mystic 36: |, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z')">M36</button>
+            <div id="display"></div>
+
+        </div>
+
+        <script>
+            function displayText(text) {
+                document.getElementById('display').innerText = text;
+            }
+        </script>
+      </body>
 
 
 
-
-
+      
+      <footer>
+      <div style="text-align:center; margin-top: 34.5px;"><p>Dr. Pepper - dpepper@lipscomb.edu</p></div>
+      <footer>
+        <!--test comment-->
