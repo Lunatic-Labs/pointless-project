@@ -8,10 +8,10 @@
 #include "./include/puzzle.h"
 #include "./include/graphics.h"
 
-#define TAPE_WIDTH 8
+#define TAPE_WIDTH 7
 #define TAPE_HEIGHT 3
 
-#define REQ_CARRIES 3
+#define REQ_CARRIES 2
 
 #define EMPTY {255, 255, 255} // blank
 #define RED {255, 0, 0}       // off

@@ -8,8 +8,8 @@
 #define BLANK {255, 255, 255} // black
 #define OFF {255, 0, 0}       // red
 #define ON {0, 255, 0}        // green
-#define START {255, 255, 0}   // gold
-#define END {255, 0, 255}     // purple
+#define AND {255, 255, 0}   // gold
+#define OR {255, 0, 255}     // purple
 
 enum class Gate {
   And,
@@ -31,6 +31,33 @@ static Image generate_image(std::vector<bool> orig_binary, std::vector<Gate> &ga
       image(height-1, i) = OFF;
     }
   }
+
+  int max_row = height;
+  int row = 0;
+  int column = 0;
+  for (size_t i = 0; i < gates.size(); i++) {
+    Pixel pixel = {0,0,0};
+    switch (gates[i]) {
+      case Gate::And:
+        pixel = AND;
+        break;
+      case Gate::Or:
+        pixel = OR;
+        break;
+      default:
+        std::cerr << "unimplemented gate: " << (int)gates[i] << std::endl;
+        exit(1);
+    }
+
+    image(height-column-2, row) = pixel;
+    row++;
+    if (row >= max_row) {
+      max_row /= 2;
+      row = 0;
+      column += 1;
+    }
+  }
+
   return image;
 }
 
@@ -70,7 +97,7 @@ Puzzle logicgate_puzzle_create(long seed)
 
   generate_logicgate(memory, answers, gates, seed);
   Image img = generate_image(memory, gates);
-  std::string svg = graphics_gen_svg(img, 20.f);
+  std::string svg = graphics_gen_svg(img, 40.f);
 
   std::string password = "";
   std::for_each(answers.begin(), answers.end(), [&](bool b) { password += std::to_string(b); });
