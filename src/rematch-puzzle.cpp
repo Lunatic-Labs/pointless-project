@@ -51,7 +51,7 @@ Puzzle rematch_puzzle_create(long seed)
 
   std::cout << "Rematch:" << std::endl;
   for (auto &puzzle : puzzles) {
-    std::printf("  %-10s Password: %s", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
+    std::printf("  %-17s Password: %s", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
     if (puzzle.extra_info) {
       std::printf(" %s", puzzle.extra_info->c_str());
     }

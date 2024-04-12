@@ -8,7 +8,7 @@
 #include "./include/puzzle.h"
 #include "./include/graphics.h"
 
-#define TAPE_WIDTH 10
+#define TAPE_WIDTH 8
 #define TAPE_HEIGHT 3
 
 #define REQ_CARRIES 3
@@ -35,7 +35,6 @@ std::string create_bin_str(long seed)
 
 Puzzle binary_addition_puzzle_create(long seed)
 {
-
   std::string top;
   std::string bottom;
 

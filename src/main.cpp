@@ -35,7 +35,7 @@ void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
 
 int main(int argc, char **argv)
 {
-  long seed;
+  long seed = 1;
   while (argc > 1) {
     if (strcmp(argv[1], "-a") == 0) {
       FLAGS |= ANS_ONLY;
@@ -71,12 +71,13 @@ int main(int argc, char **argv)
     rematch_puzzle_create(seed),
     ast_puzzle_create(seed),
     binary_addition_puzzle_create(seed),
+    logicgate_puzzle_create(seed),
     fin_puzzle_create(seed),
   };
 
 
   for (auto &puzzle : puzzles) {
-    std::printf("%-10s Password: %s", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
+    std::printf("%-15s Password: %s", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
     if (puzzle.extra_info) {
       std::printf(" %s", puzzle.extra_info->c_str());
     }
