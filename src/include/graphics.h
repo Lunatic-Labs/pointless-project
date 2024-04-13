@@ -31,18 +31,12 @@ struct Image {
   }
 };
 
-std::string graphics_gen_svg(Image &img, float pixel_size);
-
 // Creates a PPM image from `im` and saves it to `filepath`.
 void graphics_create_ppm(Image &img, const char *filepath);
 
 // Scales the image by `scale` times.
 // WARNING: This function is extremely slow.
 Image graphics_scale_ppm(Image &img, size_t scale);
-
-
-#define QUOTEF(x) ("\"" + std::to_string(x) + "\"")
-#define QUOTES(s) ("\"" + s + "\"")
 
 struct Svg {
   struct Shape {
@@ -66,15 +60,7 @@ struct Svg {
       width = _width;
     }
 
-    std::string make() const override {
-      std::string s = stroke ? "stroke=\"" + s + "\"" : "";
-      return "<rect x=" + QUOTEF(x) +
-             " y=" + QUOTEF(y) +
-             " width=" + QUOTEF(width) +
-             " height=" + QUOTEF(height) +
-             s +
-             " fill=" + QUOTES(fill) + "  />";
-    }
+    std::string make() const override;
   };
 
   struct Circle : Shape {
@@ -88,14 +74,7 @@ struct Svg {
       radius = _radius;
     }
 
-    std::string make() const override {
-      std::string s = stroke ? "stroke=\"" + s + "\"" : "";
-      return "<rect cx=" + QUOTEF(x) +
-             " cy=" + QUOTEF(y) +
-             " r=" + QUOTEF(radius) +
-             s +
-             " fill=" + QUOTES(fill) + "  />";
-    }
+    std::string make() const override;
   };
 
   std::string xmlns = "http://www.w3.org/2000/svg";
@@ -107,24 +86,13 @@ struct Svg {
 
   Svg(float w, float h) : width(w), height(h) {}
 
-  std::string build(void) {
-    std::string header = "<sv width=" + QUOTEF(width) +
-                         "height=" + QUOTEF(height) +
-                         "xmlns=" + QUOTES(xmlns) +
-                         "version=" + QUOTES(version)
-                         + "\n";
-    std::string body = "";
-    for (auto &line : lines) {
-      body += line + "\n";
-    }
-    body += "</svg>\n";
-    return header + body;
-  }
+  std::string build(void);
 
-  template <class Shape>
-  void add_shape(Shape shape) {
+  template <class Shape> void add_shape(Shape shape) {
     lines.push_back(shape.make());
   }
 };
+
+Svg graphics_gen_svg_from_image(Image &img, float pixel_size);
 
 #endif // GRAPHICS_H
