@@ -39,4 +39,58 @@ void graphics_create_ppm(Image &img, const char *filepath);
 // WARNING: This function is extremely slow.
 Image graphics_scale_ppm(Image &img, size_t scale);
 
+class Svg {
+public:
+  struct Shape {
+    float x;
+    float y;
+    std::string fill;
+    std::string stroke;
+
+    virtual std::string make() const = 0;
+  };
+
+  struct Rec : Shape {
+    float width;
+    float height;
+    Rec(float _x, float _y, std::string _fill, std::string _stroke, float _width, float _height)
+      : width(_width), height(_height) {
+      x = _x;
+      y = _y;
+      stroke = _stroke;
+      width = _width;
+    }
+
+    std::string make() const override {
+      return "";
+    }
+  };
+
+  struct Circle : Shape {
+    float radius;
+    Circle(float _x, float _y, std::string _fill, std::string _stroke, float _radius)
+      : radius(_radius) {
+      x = _x;
+      y = _y;
+      stroke = _stroke;
+      width = _width;
+    }
+
+    std::string make() const override {
+      return "";
+    }
+  };
+
+  std::string xmlns = "http://www.w3.org/2000/svg";
+  std::string version = "1.1";
+
+  float width;
+  float height;
+  std::vector<Shape> shapes;
+
+  void add_shape(Shape shape) {
+    (void)shape;
+  }
+};
+
 #endif // GRAPHICS_H
