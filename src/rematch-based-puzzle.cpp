@@ -157,7 +157,7 @@ Puzzle rematch_based_puzzle_create(long seed)
   FLAGS |= (NO_HDR | NO_FTR); 
 
   std::string html_content = utils_html_printf("Base Puzzle Rematch", "./files-rematch-based/.desc.txt", values);
-  utils_generate_file("./files-rematch-based/____________.html", html_content);
+  utils_generate_file("./files-rematch-based/instructions.html", html_content);
 
   FLAGS &= ~(NO_HDR | NO_FTR); 
 
