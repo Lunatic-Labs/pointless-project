@@ -18,7 +18,7 @@ See `instructions` to view what you can do.
   %DELIM
 </div>
 
-</div>
+<h1 id="ending" />
 
 <script>
 
@@ -50,12 +50,24 @@ See `instructions` to view what you can do.
  var __qwertyuiopasdfhjklzxcvbnm = %DELIM;
  var __qwertyuiopasdfhjklzzcvbnm = %DELIM;
 
+ var pixel_size = 40;
+
  var __idx = 0;
  var __cur_maze = __mazes[__idx];
  var __x = 0;
  var __y = __maze1.length - 1;
  var __has_key = false;
  var __has_battery = false;
+
+ update_player_positions()
+
+ function update_player_positions() {
+    let players = document.getElementsByClassName("player");
+    for (let i = 0; i < players.length; i += 1) {
+        players[i].cx.baseVal.value = __x*pixel_size+(pixel_size/2);
+        players[i].cy.baseVal.value = __y*pixel_size+(pixel_size/2);
+    }
+ }
 
  function instructions() {
     let s = `u(x), d(x), l(x) and r(x): Moves you x*2 tiles in the direction.
@@ -72,10 +84,12 @@ exit()          : Escapes the maze if you are on the yellow tile`;
  function pickup_item() {
     if (__cur_maze[__y][__x] === 6 && !__has_key) {
         __has_key = true;
+        document.getElementsByClassName(__y + "." + __x)[__idx].setAttribute("fill", "#C8C8FF");
         return "you picked up a key!";
     } else if (__cur_maze[__y][__x] === 6 && __has_key) {
         return "you already have the key!";
     } else if (__cur_maze[__y][__x] === 7 && !__has_battery) {
+        document.getElementsByClassName(__y + "." + __x)[__idx].setAttribute("fill", "#C8C8FF");
         __has_battery = true;
         return "you picked up a battery!";
     } else if (__cur_maze[__y][__x] === 7 && __has_battery) {
@@ -86,8 +100,10 @@ exit()          : Escapes the maze if you are on the yellow tile`;
 
  function exit() {
     if (__cur_maze[__y][__x] === 3 && __has_key && __has_battery) {
+        __hide_maze("maze1");
         let s = "you win! Here is your password: ";
         s += "\n" + __qwertyuiopasdfhjklzxcvbnm ^ __qwertyuiopasdfhjklzzcvbnm;
+        document.getElementById("ending").textContent = s;
         return s;
     }
     else if (__cur_maze[__y][__x] === 3 && !__has_key) {
@@ -152,6 +168,7 @@ exit()          : Escapes the maze if you are on the yellow tile`;
  function u(stride = 1) {
      if (check_boundary(0, -stride*2)) {
          __y -= stride*2;
+         update_player_positions()
          return "you moved up";
      }
      return "you hit a wall!";
@@ -160,6 +177,7 @@ exit()          : Escapes the maze if you are on the yellow tile`;
  function d(stride = 1) {
      if (check_boundary(0, stride*2)) {
          __y += stride*2;
+         update_player_positions()
          return "you moved down";
      }
      return "you hit a wall!";
@@ -168,6 +186,7 @@ exit()          : Escapes the maze if you are on the yellow tile`;
  function r(stride = 1) {
      if (check_boundary(stride*2, 0)) {
          __x += stride*2;
+         update_player_positions()
          return "you moved right";
      }
      return "you hit a wall!";
@@ -176,6 +195,7 @@ exit()          : Escapes the maze if you are on the yellow tile`;
  function l(stride = 1) {
      if (check_boundary(-stride*2, 0)) {
          __x -= stride*2;
+         update_player_positions()
          return "you moved left";
      }
      return "you hit a wall!";
