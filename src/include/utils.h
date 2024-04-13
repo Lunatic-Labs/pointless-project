@@ -11,6 +11,7 @@
 #define SET_SEED 1 << 1
 #define NO_HDR 1 << 2
 #define NO_FTR 1 << 3
+#define BISON_GRID 1 << 4
 extern uint32_t FLAGS;
 
 typedef std::vector<std::string> strvec_t;

@@ -122,9 +122,10 @@ Puzzle rematch_maze_puzzle_create(long seed)
       } break;
     }
 
-    std::string svg = graphics_gen_svg(maze, 40);
+    Svg svg = graphics_gen_svg_from_image(maze, 40.f);
+    std::string svg_html = svg.build();
 
-    svgs.push_back(svg);
+    svgs.push_back(svg_html);
     mazes.push_back(binmaze);
   }
 
