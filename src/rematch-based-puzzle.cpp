@@ -147,12 +147,12 @@ Puzzle rematch_based_puzzle_create(long seed)
   int key = utils_rng_roll(10000, 950000, seed);
   values.push_back(std::to_string(key));
 
-  FLAGS |= (NO_HDR | NO_FTR); 
+  FLAGS |= (NO_HDR | NO_FTR);
 
   std::string html_content = utils_html_printf("Base Puzzle Rematch", "./files-rematch-based/.desc.txt", values);
   utils_generate_file("./files-rematch-based/____________.html", html_content);
 
-  FLAGS &= ~(NO_HDR | NO_FTR); 
+  FLAGS &= ~(NO_HDR | NO_FTR);
 
   return Puzzle{"files-rematch-based", values.back(), {}};
 }
