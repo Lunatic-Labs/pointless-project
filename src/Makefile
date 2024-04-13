@@ -8,17 +8,21 @@ ZIP_DIR := ./zipfiles
 OBJS := $(addprefix $(OBJDIR)/,$(notdir $(SRCS:.cpp=.o)))
 TARGET := main
 
-.PHONY: all clean cleanzip
+.PHONY: all clean cleanzip make-main
+
+make-main: $(OBJDIR) $(TARGET)
 
 $(TARGET): $(OBJS)
-	mkdir -p $(ZIP_DIR)
 	$(CC) $(CFLAGS) -o $@ $^ $(CLINKS)
 	
-all: $(TARGET) cleanzip
+all: make-main cleanzip
 	./main
 
 $(OBJDIR)/%.o: %.cpp
 	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 
 cleanzip:
 	rm -f ./zipfiles/*
