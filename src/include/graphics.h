@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <string>
 #include <vector>
+#include <optional>
 
 struct Pixel {
   uint8_t red;
@@ -12,7 +13,7 @@ struct Pixel {
   uint8_t blue;
 };
 
-// `Image` is a simple DA that represents a 2D array of pixels.
+// `Image` is a simple DS that represents a 2D array of pixels.
 struct Image {
   size_t width;
   size_t height;
@@ -39,45 +40,61 @@ void graphics_create_ppm(Image &img, const char *filepath);
 // WARNING: This function is extremely slow.
 Image graphics_scale_ppm(Image &img, size_t scale);
 
-class Svg {
-public:
+
+#define QUOTEF(x) ("\"" + std::to_string(x) + "\"")
+#define QUOTES(s) ("\"" + s + "\"")
+
+struct Svg {
   struct Shape {
     float x;
     float y;
     std::string fill;
-    std::string stroke;
+    std::optional<std::string> stroke;
 
     virtual std::string make() const = 0;
   };
 
-  struct Rec : Shape {
+  struct Rect : Shape {
     float width;
     float height;
-    Rec(float _x, float _y, std::string _fill, std::string _stroke, float _width, float _height)
+    Rect(float _x, float _y, std::string _fill, std::optional<std::string> _stroke, float _width, float _height)
       : width(_width), height(_height) {
       x = _x;
       y = _y;
+      fill = _fill;
       stroke = _stroke;
       width = _width;
     }
 
     std::string make() const override {
-      return "";
+      std::string s = stroke ? "stroke=\"" + s + "\"" : "";
+      return "<rect x=" + QUOTEF(x) +
+             " y=" + QUOTEF(y) +
+             " width=" + QUOTEF(width) +
+             " height=" + QUOTEF(height) +
+             s +
+             " fill=" + QUOTES(fill) + "  />";
     }
   };
 
   struct Circle : Shape {
     float radius;
-    Circle(float _x, float _y, std::string _fill, std::string _stroke, float _radius)
+    Circle(float _x, float _y, std::string _fill, std::optional<std::string> _stroke, float _radius)
       : radius(_radius) {
       x = _x;
       y = _y;
+      fill = _fill;
       stroke = _stroke;
-      width = _width;
+      radius = _radius;
     }
 
     std::string make() const override {
-      return "";
+      std::string s = stroke ? "stroke=\"" + s + "\"" : "";
+      return "<rect cx=" + QUOTEF(x) +
+             " cy=" + QUOTEF(y) +
+             " r=" + QUOTEF(radius) +
+             s +
+             " fill=" + QUOTES(fill) + "  />";
     }
   };
 
@@ -86,10 +103,27 @@ public:
 
   float width;
   float height;
-  std::vector<Shape> shapes;
+  std::vector<std::string> lines;
 
+  Svg(float w, float h) : width(w), height(h) {}
+
+  std::string build(void) {
+    std::string header = "<sv width=" + QUOTEF(width) +
+                         "height=" + QUOTEF(height) +
+                         "xmlns=" + QUOTES(xmlns) +
+                         "version=" + QUOTES(version)
+                         + "\n";
+    std::string body = "";
+    for (auto &line : lines) {
+      body += line + "\n";
+    }
+    body += "</svg>\n";
+    return header + body;
+  }
+
+  template <class Shape>
   void add_shape(Shape shape) {
-    (void)shape;
+    lines.push_back(shape.make());
   }
 };
 
