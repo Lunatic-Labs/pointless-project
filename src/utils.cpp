@@ -51,6 +51,10 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
       header_content += c;
     }
 
+    if (FLAGS & BISON_GRID) {
+      header_content += "<style> svg{stroke:#000000;} </style>";
+    }
+
     header_file.close();
   }
 

@@ -3,6 +3,7 @@
 
 *.ppm
 
+files-rematch-based/____________.html
 
 # Compiled Object files
 *.slo
