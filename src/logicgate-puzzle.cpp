@@ -8,8 +8,8 @@
 #define BLANK {255, 255, 255} // black
 #define OFF {255, 0, 0}       // red
 #define ON {0, 255, 0}        // green
-#define AND {255, 255, 0}   // gold
-#define OR {255, 0, 255}     // purple
+#define AND {255, 255, 0}     // gold
+#define OR {255, 0, 255}      // purple
 
 enum class Gate {
   And,
@@ -18,8 +18,6 @@ enum class Gate {
 
 static Image generate_image(std::vector<bool> orig_binary, std::vector<Gate> &gates)
 {
-  (void)gates;
-
   int height = std::log2(orig_binary.size())+1;
   Image image(orig_binary.size(), height);
 
