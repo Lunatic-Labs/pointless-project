@@ -14,23 +14,15 @@
 enum class Gate {
   And,
   Or,
+  NumberOfGates,
 };
 
 static Image generate_image(std::vector<bool> orig_binary, std::vector<Gate> &gates)
 {
-  int height = std::log2(orig_binary.size())+1;
-  Image image(orig_binary.size(), height);
+  int height = std::log2(orig_binary.size());
+  Image image(orig_binary.size()/2, height);
 
-  for (size_t i = 0; i < orig_binary.size(); i++) {
-    if (orig_binary[i]) {
-      image(height-1, i) = ON;
-    }
-    else {
-      image(height-1, i) = OFF;
-    }
-  }
-
-  int max_row = height;
+  int max_row = orig_binary.size()/2;
   int row = 0;
   int column = 0;
   for (size_t i = 0; i < gates.size(); i++) {
@@ -47,7 +39,7 @@ static Image generate_image(std::vector<bool> orig_binary, std::vector<Gate> &ga
         exit(1);
     }
 
-    image(height-column-2, row) = pixel;
+    image(height-column-1, row) = pixel;
     row++;
     if (row >= max_row) {
       max_row /= 2;
@@ -62,14 +54,12 @@ static Image generate_image(std::vector<bool> orig_binary, std::vector<Gate> &ga
 static void generate_logicgate(std::vector<bool> memory, std::vector<bool> &answers, std::vector<Gate> &gates, long seed)
 {
   while (memory.size() > 1) {
-    for (auto m : memory) std::cout << m << ' ';
-    std::cout << std::endl;
     bool bit1 = memory.at(0);
     bool bit2 = memory.at(1);
     memory.erase(memory.begin());
     memory.erase(memory.begin());
 
-    Gate gate = (Gate)utils_rng_roll(0, 1, seed);
+    Gate gate = (Gate)utils_rng_roll(0, (int)Gate::NumberOfGates-1, seed);
     gates.push_back(gate);
     if(gate == Gate::And) {
       memory.push_back(bit1&bit2);
@@ -82,11 +72,24 @@ static void generate_logicgate(std::vector<bool> memory, std::vector<bool> &answ
   }
 }
 
+void generate_memory_img(std::vector<bool> &orig_binary)
+{
+  Svg svg()
+  for (size_t i = 0; i < orig_binary.size(); i++) {
+    if (orig_binary[i]) {
+      image(height-1, i) = ON;
+    }
+    else {
+      image(height-1, i) = OFF;
+    }
+  }
+}
+
 Puzzle logicgate_puzzle_create(long seed)
 {
   uint32_t old_flags = FLAGS;
   FLAGS &= ANS_ONLY;
-  std::string binary = binary_addition_puzzle_create(seed).password;
+  std::string binary = "0110011010111001";
   FLAGS = old_flags;
   std::vector<bool> memory;
   std::vector<bool> answers;
@@ -94,6 +97,7 @@ Puzzle logicgate_puzzle_create(long seed)
   for (char c : binary) memory.push_back(c == '1');
 
   generate_logicgate(memory, answers, gates, seed);
+
   Image img = generate_image(memory, gates);
   std::string svg = graphics_gen_svg(img, 40.f);
 
