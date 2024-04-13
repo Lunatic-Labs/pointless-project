@@ -11,16 +11,14 @@
 
 std::string rgb_to_hex(Pixel &p)
 {
-  char hex[7];
-  std::sprintf(hex, "%02X%02X%02X", p.red, p.green, p.blue);
+  char hex[8];
+  std::sprintf(hex, "#%02X%02X%02X", p.red, p.green, p.blue);
   return std::string(hex);
 }
 
-std::string graphics_gen_svg(Image &img, float pixel_size)
+Svg graphics_gen_svg_from_image(Image &img, float pixel_size)
 {
-  std::string svg;
-  svg += "<svg width=\"" + std::to_string(img.width * pixel_size) + "\" height=\"" +
-         std::to_string(img.height * pixel_size) + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n";
+  Svg svg(img.width*pixel_size, img.height*pixel_size);
 
   for (size_t i = 0; i < img.height; i++) {
     for (size_t j = 0; j < img.width; ++j) {
@@ -28,14 +26,10 @@ std::string graphics_gen_svg(Image &img, float pixel_size)
       float x = j * pixel_size;
       float y = i * pixel_size;
       std::string hex = rgb_to_hex(p);
-      svg += "<rect x=\"" + std::to_string(x) + "\" y=\"" + std::to_string(y) +
-           "\" width=\"" + std::to_string(pixel_size) + "\" height=\"" + std::to_string(pixel_size) +
-           "\" fill=\"#" + hex + "\" stroke=\"#" + hex + "\" />\n";
+      Svg::Rect rect(x, y, hex, {}, pixel_size, pixel_size);
+      svg.add_shape(rect);
     }
   }
-
-  // Write the SVG footer
-  svg += "</svg>\n";
 
   return svg;
 }
@@ -88,4 +82,42 @@ Image graphics_scale_ppm(Image &img, size_t scale)
     }
   }
   return scaled_img;
+}
+
+#define QUOTEF(x) ("\"" + std::to_string(x) + "\"")
+#define QUOTES(s) ("\"" + s + "\"")
+
+std::string Svg::Rect::make() const
+{
+  std::string s = stroke ? "stroke=\"" + s + "\"" : "";
+  return "<rect x=" + QUOTEF(x) +
+          " y=" + QUOTEF(y) +
+          " width=" + QUOTEF(width) +
+          " height=" + QUOTEF(height) +
+          s +
+          " fill=" + QUOTES(fill) + "  />";
+}
+
+std::string Svg::Circle::make() const
+{
+  std::string s = stroke ? "stroke=\"" + s + "\"" : "";
+  return "<rect cx=" + QUOTEF(x) +
+          " cy=" + QUOTEF(y) +
+          " r=" + QUOTEF(radius) +
+          s +
+          " fill=" + QUOTES(fill) + "  />";
+}
+
+std::string Svg::build(void) {
+  std::string header = "<svg width=" + QUOTEF(width) +
+                        "height=" + QUOTEF(height) +
+                        "xmlns=" + QUOTES(xmlns) +
+                        "version=" + QUOTES(version)
+                        + ">\n";
+  std::string body = "";
+  for (auto &line : lines) {
+    body += line + "\n";
+  }
+  body += "</svg>\n";
+  return header + body;
 }
