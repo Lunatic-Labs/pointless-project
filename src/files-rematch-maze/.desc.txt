@@ -99,17 +99,28 @@ exit()          : Escapes the maze if you are on the yellow tile`;
  }
 
  function exit() {
-    if (__cur_maze[__y][__x] === 3 && __has_key && __has_battery) {
+    let on_exit = __cur_maze[__y][__x] === 3;
+    let no_key = !__has_key;
+    let no_battery = !__has_battery;
+    let has_key_and_battery = __has_key && __has_battery;
+
+    if (!on_exit) {
+        return "you are not on the door!";
+    }
+    if (has_key_and_battery) {
         __hide_maze("maze1");
         let s = "you win! Here is your password: ";
         s += "\n" + __qwertyuiopasdfhjklzxcvbnm ^ __qwertyuiopasdfhjklzzcvbnm;
         document.getElementById("ending").textContent = s;
         return s;
     }
-    else if (__cur_maze[__y][__x] === 3 && !__has_key) {
+    if (no_key && no_battery) {
+        return "you do not have enough power to open the door and the door seems locked! Maybe search around for a key and a source of power";
+    }
+    if (no_key) {
         return "the door is locked! maybe search around for a key?";
     }
-    else if (__cur_maze[__y][__x] === 3 && !__has_battery) {
+    if (no_battery) {
         return "you do not have enough power to open the door! I wonder if a battery is somewhere?";
     }
     return "you are not on the door!";
