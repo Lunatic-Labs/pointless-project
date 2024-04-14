@@ -1,9 +1,8 @@
 # Prerequisites
 *.d
-
+instructions*
 *.ppm
 
-files-rematch-based/____________.html
 
 # Compiled Object files
 *.slo
@@ -38,5 +37,6 @@ files-rematch-based/____________.html
 
 .vscode/
 .DS_Store
-zipfiles/*
 AST
+*.zip
+main

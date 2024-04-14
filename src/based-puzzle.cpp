@@ -7,14 +7,23 @@
 #define MAX_RAND 67 //0-42, A-Z(0, 67)
 
 /*
-* * * * STEPS TO SOLVE * * * *
-* Convert values to base 10
-* Sum them up for each row
-* Convert the sum to base 2
-* Check if lsb is on or off
-* Save the resulting lsb values
-* Take that base 2 number and convert it back to base 10
+* File: rematch-based-puzzle.cpp
+* Author: Mekeal Brown
+* Contact: brownmekeal@gmail.com
+* Date: 2/6/2024
+* Description:
+*  The user is presented told the mappings of three unique bases.
+*  There is a table with values presented in one of the three bases.
+*  They must perform the following steps to solve:
+*   -Convert values to base 10
+*   - Sum them up for each row
+*   -Convert the sum to base 2
+*   -Check if lsb is on or off
+*   -Save the resulting lsb values
+*   -Take that base 2 number and convert it back to base 10
 */
+
+
 static int solve(std::vector<std::string> &vals, std::vector<int> &base)
 {
   int decimalval, items, solution, mask;
