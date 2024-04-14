@@ -1,3 +1,14 @@
+/*
+ * File: color-puzzle.cpp
+ * Author: Zachary Haskins, Turner Austin
+ * Contact: zdhdev@yahoo.com, tcaustin@mail.lipscomb.edu
+ * Date: 1/27/2024
+ * Description:
+ *   The user is presented with either the color purple or gold (Lipscomb's colors).
+ *   They are expected to find Lipscomb's hex color code for the color that is chosen.
+ *   The password is the hex color code.
+ */
+
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 

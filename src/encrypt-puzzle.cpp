@@ -1,3 +1,14 @@
+/*
+ * File: encrypt-puzzle.cpp
+ * Author: Zachary Haskins, Turner Austin
+ * Contact: zdhdev@yahoo.com, tcaustin@mail.lipscomb.edu
+ * Date: 2/14/2024
+ * Description:
+ *   The user is presented with a word that has been encrypted using a series of operations.
+ *   We provide them with the steps that were taken to encrypt the word and they must decrypt it
+ *   by reversing the operations. The password is the original word.
+ */
+
 #include <algorithm>
 #include <iostream>
 #include <cassert>
