@@ -11,7 +11,7 @@
 
 #define MAZE_WALL {0,0,0}
 #define MAZE_PATH {255,255,255}
-#define MAZE_CHECKER_PATH {200,200,255};
+#define MAZE_CHECKER_PATH {200,200,255}; // This color is hard coded into JS as hex
 
 #define MAZE_SIZE 9 // Must be an odd number
 #define PIXEL_IS_BLACK(p) (p.red + p.green + p.blue == 0)
@@ -122,9 +122,12 @@ Puzzle rematch_maze_puzzle_create(long seed)
       } break;
     }
 
-    std::string svg = graphics_gen_svg(maze, 40);
+    Svg svg = graphics_gen_svg_from_image(maze, 40.f);
+    Svg::Circle player(-200.f, -200.f, 15.f, "#F4AA00", "#000000", "player");
+    svg.add_shape(player);
+    std::string svg_html = svg.build();
 
-    svgs.push_back(svg);
+    svgs.push_back(svg_html);
     mazes.push_back(binmaze);
   }
 

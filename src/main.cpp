@@ -33,6 +33,8 @@ void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
   }
 }
 
+#include "include/graphics.h"
+
 int main(int argc, char **argv)
 {
   long seed = 0;
