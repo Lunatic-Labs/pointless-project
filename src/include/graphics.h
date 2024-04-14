@@ -44,6 +44,7 @@ struct Svg {
     float y;
     std::string fill;
     std::optional<std::string> stroke;
+    std::optional<std::string> html_classname;
 
     virtual std::string make() const = 0;
   };
@@ -51,12 +52,17 @@ struct Svg {
   struct Rect : Shape {
     float width;
     float height;
-    Rect(float _x, float _y, std::string _fill, std::optional<std::string> _stroke, float _width, float _height)
+    Rect(float _x, float _y,
+        float _width, float _height,
+        std::string _fill,
+        std::optional<std::string> _stroke = {},
+        std::optional<std::string> _html_classname = {})
       : width(_width), height(_height) {
       x = _x;
       y = _y;
       fill = _fill;
       stroke = _stroke;
+      html_classname = _html_classname;
       width = _width;
     }
 
@@ -65,13 +71,15 @@ struct Svg {
 
   struct Circle : Shape {
     float radius;
-    Circle(float _x, float _y, std::string _fill, std::optional<std::string> _stroke, float _radius)
+    Circle(float _x, float _y, float _radius, std::string _fill,
+          std::optional<std::string> _stroke = {},
+          std::optional<std::string> _html_classname = {})
       : radius(_radius) {
       x = _x;
       y = _y;
       fill = _fill;
       stroke = _stroke;
-      radius = _radius;
+      html_classname = _html_classname;
     }
 
     std::string make() const override;
