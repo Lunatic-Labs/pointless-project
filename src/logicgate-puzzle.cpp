@@ -5,7 +5,7 @@
 #include "./include/graphics.h"
 #include "./include/utils.h"
 
-#define BLANK {255, 255, 255}// black
+#define BLANK {0, 0, 0, 0}   // nothing
 #define OFF {255, 0, 0}      // red
 #define ON {0, 255, 0}       // green
 #define AND {200, 205, 0}    // gold

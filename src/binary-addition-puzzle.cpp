@@ -13,7 +13,7 @@
 
 #define REQ_CARRIES 2
 
-#define EMPTY {255, 255, 255} // blank
+#define EMPTY {255, 255, 255, 0} // blank
 #define RED {255, 0, 0}       // off
 #define GREEN {0, 255, 0}     // on
 #define GOLD {255, 255, 0}    // start

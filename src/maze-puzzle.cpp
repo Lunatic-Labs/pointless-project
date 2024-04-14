@@ -13,9 +13,6 @@
 #define MAZE_PATH {255,255,255}
 #define MAZE_CHECKER_PATH {200,200,255};
 
-// TODO: Implement slow spots
-// #define MAZE_SLOW_SPOT {200, 100, 0}
-
 #define MAZE_SIZE 13 // Must be an odd number
 #define PIXEL_IS_BLACK(p) (p.red + p.green + p.blue == 0)
 
@@ -136,6 +133,11 @@ static void randomized_dfs(Image &maze, int x, int y, long &seed)
 Puzzle maze_puzzle_create(long seed)
 {
   Image maze(MAZE_SIZE, MAZE_SIZE);
+  for (size_t i = 0; i < MAZE_SIZE; i++) {
+    for (size_t j = 0; j < MAZE_SIZE; j++) {
+      maze(i,j) = MAZE_WALL;
+    }
+  }
 
   randomized_dfs(maze, MAZE_SIZE-1, 0, seed);
 

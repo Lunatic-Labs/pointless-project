@@ -27,7 +27,8 @@ Svg graphics_gen_svg_from_image(Image &img, float pixel_size, std::optional<std:
       float y = i * pixel_size;
       std::string hex = graphics_pixel_to_hex(p);
       std::string classname = std::to_string(i) + "." +  std::to_string(j);
-      Svg::Rect rect(x, y, pixel_size, pixel_size, hex, outline, classname);
+      Svg::Rect rect(x, y, pixel_size, pixel_size, hex, outline, p.alpha, classname);
+      // Svg::Rect rect(x, y, pixel_size, pixel_size, hex, outline, {}, classname);
       svg.add_shape(rect);
     }
   }
@@ -91,12 +92,14 @@ Image graphics_scale_ppm(Image &img, size_t scale)
 std::string Svg::Rect::make() const
 {
   std::string s = stroke.has_value() ? "stroke=\"" + stroke.value() + "\"" : "";
+  std::string o = opacity.has_value() ? " opacity=\"" + std::to_string(opacity.value()) + "\"" : "";
   std::string classname = html_classname.has_value() ? " class=\"" + html_classname.value() + "\"" : "";
   return "<rect x=" + QUOTEF(x) +
           " y=" + QUOTEF(y) +
           " width=" + QUOTEF(width) +
           " height=" + QUOTEF(height) +
           s +
+          o +
           classname +
           " fill=" + QUOTES(fill) + "  />";
 }
@@ -104,11 +107,13 @@ std::string Svg::Rect::make() const
 std::string Svg::Circle::make() const
 {
   std::string s = stroke.has_value() ? " stroke=\"" + stroke.value() + "\"" : "";
+  std::string o = opacity.has_value() ? " opacity=\"" + std::to_string(opacity.value()) + "\"" : "";
   std::string classname = html_classname.has_value() ? " class=\"" + html_classname.value() + "\"" : "";
   return "<circle cx=" + QUOTEF(x) +
           " cy=" + QUOTEF(y) +
           " r=" + QUOTEF(radius) +
           s +
+          o +
           classname +
           " fill=" + QUOTES(fill) + "  />";
 }
