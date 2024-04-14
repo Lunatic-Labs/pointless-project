@@ -9,14 +9,14 @@
 
 #include "./include/graphics.h"
 
-std::string rgb_to_hex(Pixel &p)
+std::string graphics_pixel_to_hex(Pixel p)
 {
   char hex[8];
   std::sprintf(hex, "#%02X%02X%02X", p.red, p.green, p.blue);
   return std::string(hex);
 }
 
-Svg graphics_gen_svg_from_image(Image &img, float pixel_size)
+Svg graphics_gen_svg_from_image(Image &img, float pixel_size, std::optional<std::string> outline)
 {
   Svg svg(img.width*pixel_size, img.height*pixel_size);
 
@@ -25,9 +25,9 @@ Svg graphics_gen_svg_from_image(Image &img, float pixel_size)
       Pixel &p = img(i, j);
       float x = j * pixel_size;
       float y = i * pixel_size;
-      std::string hex = rgb_to_hex(p);
+      std::string hex = graphics_pixel_to_hex(p);
       std::string classname = std::to_string(i) + "." +  std::to_string(j);
-      Svg::Rect rect(x, y, pixel_size, pixel_size, hex, {}, classname);
+      Svg::Rect rect(x, y, pixel_size, pixel_size, hex, outline, classname);
       svg.add_shape(rect);
     }
   }

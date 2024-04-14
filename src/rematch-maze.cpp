@@ -122,7 +122,7 @@ Puzzle rematch_maze_puzzle_create(long seed)
       } break;
     }
 
-    Svg svg = graphics_gen_svg_from_image(maze, 40.f);
+    Svg svg = graphics_gen_svg_from_image(maze, 40.f, {});
     Svg::Circle player(-200.f, -200.f, 15.f, "#F4AA00", "#000000", "player");
     svg.add_shape(player);
     std::string svg_html = svg.build();

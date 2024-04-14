@@ -13,6 +13,8 @@ struct Pixel {
   uint8_t blue;
 };
 
+std::string graphics_pixel_to_hex(Pixel p);
+
 // `Image` is a simple DS that represents a 2D array of pixels.
 struct Image {
   size_t width;
@@ -101,6 +103,6 @@ struct Svg {
   }
 };
 
-Svg graphics_gen_svg_from_image(Image &img, float pixel_size);
+Svg graphics_gen_svg_from_image(Image &img, float pixel_size, std::optional<std::string> outline);
 
 #endif // GRAPHICS_H

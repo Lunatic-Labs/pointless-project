@@ -5,16 +5,22 @@
 #include "./include/graphics.h"
 #include "./include/utils.h"
 
-#define BLANK {255, 255, 255} // black
-#define OFF {255, 0, 0}       // red
-#define ON {0, 255, 0}        // green
-#define AND {255, 255, 0}     // gold
-#define OR {255, 0, 255}      // purple
+#define BLANK {255, 255, 255}// black
+#define OFF {255, 0, 0}      // red
+#define ON {0, 255, 0}       // green
+#define AND {200, 205, 0}    // gold
+#define XOR {0, 100, 200}    // bluish
+#define NAND {200, 100, 0}   // orange
+#define NOR {180, 230, 180}  // odd green
+#define OR {210, 0, 200}     // purple
 
 enum class Gate {
   And,
   Or,
-  NumberOfGates,
+  Xor,
+  Nand,
+  Nor,
+  NumberOfGates, // UNUSED -- only get the number of items
 };
 
 static Image generate_image(std::vector<bool> orig_binary, std::vector<Gate> &gates)
@@ -26,13 +32,22 @@ static Image generate_image(std::vector<bool> orig_binary, std::vector<Gate> &ga
   int row = 0;
   int column = 0;
   for (size_t i = 0; i < gates.size(); i++) {
-    Pixel pixel = {0,0,0};
+    Pixel pixel{0,0,0};
     switch (gates[i]) {
       case Gate::And:
         pixel = AND;
         break;
       case Gate::Or:
         pixel = OR;
+        break;
+      case Gate::Xor:
+        pixel = XOR;
+        break;
+      case Gate::Nand:
+        pixel = NAND;
+        break;
+      case Gate::Nor:
+        pixel = NOR;
         break;
       default:
         std::cerr << "unimplemented gate: " << (int)gates[i] << std::endl;
@@ -65,6 +80,18 @@ static void generate_logicgate(std::vector<bool> memory, std::vector<bool> &answ
       memory.push_back(bit1&bit2);
       answers.push_back(bit1&bit2);
     }
+    else if(gate == Gate::Xor) {
+      memory.push_back(bit1^bit2);
+      answers.push_back(bit1^bit2);
+    }
+    else if(gate == Gate::Nand) {
+      memory.push_back(!(bit1&bit2));
+      answers.push_back(!(bit1&bit2));
+    }
+    else if(gate == Gate::Nor) {
+      memory.push_back(!(bit1|bit2));
+      answers.push_back(!(bit1|bit2));
+    }
     else {
       memory.push_back(bit1|bit2);
       answers.push_back(bit1|bit2);
@@ -72,24 +99,31 @@ static void generate_logicgate(std::vector<bool> memory, std::vector<bool> &answ
   }
 }
 
-void generate_memory_img(std::vector<bool> &orig_binary)
+Svg generate_memory_image(std::vector<bool> &orig_binary)
 {
-  Svg svg()
+  Svg svg(orig_binary.size()*40, 40);
   for (size_t i = 0; i < orig_binary.size(); i++) {
+    std::string color = "";
     if (orig_binary[i]) {
-      image(height-1, i) = ON;
+      color = graphics_pixel_to_hex(Pixel ON);
     }
     else {
-      image(height-1, i) = OFF;
+      color = graphics_pixel_to_hex(Pixel OFF);
     }
+    // Svg::Circle circle(20.f, (float)(orig_binary.size()-i-0.5f)*40, 20.f, color, {}, {});
+    Svg::Circle circle((float)(orig_binary.size()-i-0.5f)*40, 20.f, 20.f, color, {"#000000"}, {});
+    svg.add_shape(circle);
   }
+
+  return svg;
 }
 
 Puzzle logicgate_puzzle_create(long seed)
 {
   uint32_t old_flags = FLAGS;
   FLAGS &= ANS_ONLY;
-  std::string binary = "0110011010111001";
+  // std::string binary = binary_addition_puzzle_create(seed).password;
+  std::string binary = "0011011000101110";
   FLAGS = old_flags;
   std::vector<bool> memory;
   std::vector<bool> answers;
@@ -98,13 +132,14 @@ Puzzle logicgate_puzzle_create(long seed)
 
   generate_logicgate(memory, answers, gates, seed);
 
-  Image img = generate_image(memory, gates);
-  std::string svg = graphics_gen_svg(img, 40.f);
+  Image gates_img = generate_image(memory, gates);
+  Svg svg = graphics_gen_svg_from_image(gates_img, 60, "#000000");
+  Svg mem_svg = generate_memory_image(memory);
 
   std::string password = "";
   std::for_each(answers.begin(), answers.end(), [&](bool b) { password += std::to_string(b); });
 
-  std::string html_content = utils_html_printf("Graph Paper Robot PT II", "./files-logicgate/.desc.txt", {svg});
+  std::string html_content = utils_html_printf("Graph Paper Robot PT II", "./files-logicgate/.desc.txt", {svg.build(), mem_svg.build()});
   utils_generate_file("./files-logicgate/instructions.html", html_content);
 
   return {"files-logicgate", password, {}};
