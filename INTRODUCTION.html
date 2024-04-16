@@ -3,308 +3,596 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-04-16 Tue 12:51 -->
+<!-- 2024-04-16 Tue 15:33 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pointless Project</title>
 <meta name="author" content="Zachary Haskins" />
 <meta name="description" content="Introduction to the Pointless Project" />
 <meta name="generator" content="Org Mode" />
-<style>
-  #content { max-width: 60em; margin: auto; }
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: auto;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
-  }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
-</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Pointless Project
-<br />
-<span class="subtitle">Introduction</span>
-</h1>
+<h1 class="title">Pointless Project</h1>
 <div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org191aeca">1. Introduction</a></li>
-<li><a href="#org1c3825e">2. Current Puzzles</a>
+<li><a href="#orgb7fbf85">Introduction</a></li>
+<li><a href="#orgd98251a">Project Setup</a>
 <ul>
-<li><a href="#orgc44f5cd">2.1. Math</a></li>
-<li><a href="#orge7a0514">2.2. Color</a></li>
-<li><a href="#org9d4d92f">2.3. Pixel</a></li>
-<li><a href="#orge56b6e4">2.4. Maze</a></li>
-<li><a href="#org915e4e0">2.5. Encrypt</a></li>
-<li><a href="#org0e620cb">2.6. Based</a></li>
-<li><a href="#org040ee40">2.7. Rematches</a>
+<li><a href="#orgd6d1e1b">Installation</a>
 <ul>
-<li><a href="#org8fcfc97">2.7.1. Maze II</a></li>
-<li><a href="#orgda84e25">2.7.2. Encrypt II</a></li>
-<li><a href="#orga08af8e">2.7.3. Based II</a></li>
+<li><a href="#org91a23c9">Linux (<i>recommened</i>)</a></li>
+<li><a href="#org4cfdad5">Windows</a></li>
+<li><a href="#org5849daa">Mac</a></li>
 </ul>
 </li>
-<li><a href="#org4781411">2.8. Ast</a></li>
-<li><a href="#org486c4f3">2.9. Binary Addition (Graph Paper Robot I)</a></li>
-<li><a href="#orgc1876e3">2.10. Logic Gate (Graph Paper Robot II)</a></li>
-<li><a href="#org06f9da5">2.11. <span class="todo TODO">TODO</span> (Graph Paper Robot III)</a></li>
+<li><a href="#org0b0675f">Building</a></li>
 </ul>
 </li>
-<li><a href="#org37a2c5a">3. Issues</a></li>
-<li><a href="#orgd31a440">4. Future Plans</a></li>
-<li><a href="#org587f19a">5. Contact</a></li>
+<li><a href="#org17525ee">Puzzle Creation Framework</a></li>
+<li><a href="#org1ab7b12">Implementing a New Puzzle</a>
+<ul>
+<li><a href="#orgd4e7923">Puzzle Resources Directory</a></li>
+<li><a href="#org345c1f1">Puzzle Implementation</a></li>
+<li><a href="#orgdbb03ac">Using the Puzzle</a></li>
+</ul>
+</li>
+<li><a href="#orgb6887cb">Current Puzzles</a>
+<ul>
+<li><a href="#orgae56de5">Math</a></li>
+<li><a href="#orgdcccd2e"><span class="todo TODO">TODO</span> Color</a></li>
+<li><a href="#orgd6e6f82"><span class="todo TODO">TODO</span> Pixel</a></li>
+<li><a href="#org9f9fc35"><span class="todo TODO">TODO</span> Maze</a></li>
+<li><a href="#orgcff3450"><span class="todo TODO">TODO</span> Encrypt</a></li>
+<li><a href="#org832e684"><span class="todo TODO">TODO</span> Based</a></li>
+<li><a href="#org4c52073">Rematches</a>
+<ul>
+<li><a href="#org71dc6a7"><span class="todo TODO">TODO</span> Maze Rematch</a></li>
+<li><a href="#orgbc3d5a0"><span class="todo TODO">TODO</span> Encrypt Rematch</a></li>
+<li><a href="#orgcf74a2d"><span class="todo TODO">TODO</span> Based Rematch</a></li>
+</ul>
+</li>
+<li><a href="#org96dae97"><span class="todo TODO">TODO</span> Ast</a></li>
+<li><a href="#org504a8a4"><span class="todo TODO">TODO</span> Binary Addition (Graph Paper Robot I)</a></li>
+<li><a href="#orge5f4ecc"><span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</a></li>
+<li><a href="#orgadbfa17"><span class="todo TODO">TODO</span> (Graph Paper Robot III)</a></li>
+</ul>
+</li>
+<li><a href="#org6a8c5e7">Creating a New Puzzle</a></li>
+<li><a href="#org2cc81c6"><span class="todo TODO">TODO</span> Tools that We Have Made</a></li>
+<li><a href="#orgf232d0d"><span class="todo TODO">TODO</span> Issues</a></li>
+<li><a href="#org6f4a069"><span class="todo TODO">TODO</span> Future Plans</a></li>
+<li><a href="#org7a61684">Previous Maintainers</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org191aeca" class="outline-2">
-<h2 id="org191aeca"><span class="section-number-2">1.</span> Introduction</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-orgb7fbf85" class="outline-2">
+<h2 id="orgb7fbf85">Introduction</h2>
+<div class="outline-text-2" id="text-orgb7fbf85">
 <p>
-The point(less) of the <i>Pointless Project</i> is to provide fun puzzles to future potential students while
-teaching them about computer science topics without them realizing it. The project started when the School of Computing
-found that it was hard to keep in touch with the hopefully-to-be-students in Computer Science/Software Engineering.
+The point(less) of the <i>Pointless Project</i> is to create a compelling, puzzle-filled
+challenge inspired by the <a href="https://challenge.synacor.com">Synacor Challenge</a>, but targeted at a pre-college audience.
+The goal is to allow the School of Computing (SoC) to engage potential
+students during the time they are selecting a college by providing opportunities to remain in
+contact, encourage curiosity, and engage in creative problem solving while learning about
+computing and the SoC.
+</p>
+
+<p>
+Playing through the Synacor Challenge will provide the clearest understanding, however reading
+someone else's "<a href="https://github.com/KanegaeGabriel/synacor-challenge/blob/master/writeup.md">travel log</a>" is also insightful. The key components to success include:
+</p>
+<ol class="org-ol">
+<li>a personalized download containing the complete game</li>
+<li>the ability to play completely offline</li>
+<li>a series of different but related logic puzzles and riddles</li>
+<li>multiple opportunities "along the way" to be recognized for their problem solving skills.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgd98251a" class="outline-2">
+<h2 id="orgd98251a">Project Setup</h2>
+<div class="outline-text-2" id="text-orgd98251a">
+</div>
+<div id="outline-container-orgd6d1e1b" class="outline-3">
+<h3 id="orgd6d1e1b">Installation</h3>
+<div class="outline-text-3" id="text-orgd6d1e1b">
+</div>
+<div id="outline-container-org91a23c9" class="outline-4">
+<h4 id="org91a23c9">Linux (<i>recommened</i>)</h4>
+<div class="outline-text-4" id="text-org91a23c9">
+<p>
+For Debian based distributions, run:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">sudo apt update
+sudo apt install g++ libboost-all-dev libzip-dev
+</pre>
+</div>
+
+<p>
+You will also need a way to open the zipfiles. We have found the best programs to use
+is <code>file-roller</code> and <code>pcmanfm</code> (or some other file manager such as <code>nautilus</code>). But use whatever you see fit.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">sudo apt update
+sudo apt install file-roller pcmanfm
+</pre>
+</div>
+
+<p>
+For Arch based distributions, run:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">sudo pacman -S gcc
+sudo pacman -S boost
+sudo pacman -S libzip
+sudo pacman -S pcmanfm
+sudo pacman -S file-roller
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4cfdad5" class="outline-4">
+<h4 id="org4cfdad5">Windows</h4>
+<div class="outline-text-4" id="text-org4cfdad5">
+<p>
+For windows, we recommend developing with <a href="https://learn.microsoft.com/en-us/windows/wsl/about">WSL</a> (Windows Subsystem for Linux).
+Please install it if you do not already have it using this <a href="https://learn.microsoft.com/en-us/windows/wsl/install">guide</a>. After that,
+launch WSL and follow the steps to installing on Linux.
+</p>
+
+<p>
+For viewing the zipfiles, we have found that <a href="https://www.7-zip.org/download.html">7-zip</a> works best.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org1c3825e" class="outline-2">
-<h2 id="org1c3825e"><span class="section-number-2">2.</span> Current Puzzles</h2>
-<div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-orgc44f5cd" class="outline-3">
-<h3 id="orgc44f5cd"><span class="section-number-3">2.1.</span> Math</h3>
-</div>
+<div id="outline-container-org5849daa" class="outline-4">
+<h4 id="org5849daa">Mac</h4>
+<div class="outline-text-4" id="text-org5849daa">
+<p>
+Unfortunately, we have not been able to get the project built on MacOS. We have
+decided the the best option for Mac users is to choose a virtual machine to run
+some Linux distribution.
+</p>
 
-<div id="outline-container-orge7a0514" class="outline-3">
-<h3 id="orge7a0514"><span class="section-number-3">2.2.</span> Color</h3>
-</div>
+<p>
+Here are some popular VM's:
+</p>
+<ul class="org-ul">
+<li><a href="https://www.qemu.org/">QEMU</a> (my favorite but harder to set up)</li>
+<li><a href="https://www.virtualbox.org/">Virtualbox</a> (easiest but slowest)</li>
+<li><a href="https://www.vmware.com/">VMware</a> (high quality but paid)</li>
+</ul>
 
-<div id="outline-container-org9d4d92f" class="outline-3">
-<h3 id="org9d4d92f"><span class="section-number-3">2.3.</span> Pixel</h3>
-</div>
+<p>
+There are many more out there, so choose whichever one suits you best.
+</p>
 
-<div id="outline-container-orge56b6e4" class="outline-3">
-<h3 id="orge56b6e4"><span class="section-number-3">2.4.</span> Maze</h3>
+<p>
+Once a VM has been chosen, choose your favorite flavor of Linux and download its ISO
+and have the VM use it, then follow the installation on Linux.
+</p>
 </div>
-
-<div id="outline-container-org915e4e0" class="outline-3">
-<h3 id="org915e4e0"><span class="section-number-3">2.5.</span> Encrypt</h3>
-</div>
-
-<div id="outline-container-org0e620cb" class="outline-3">
-<h3 id="org0e620cb"><span class="section-number-3">2.6.</span> Based</h3>
-</div>
-
-<div id="outline-container-org040ee40" class="outline-3">
-<h3 id="org040ee40"><span class="section-number-3">2.7.</span> Rematches</h3>
-<div class="outline-text-3" id="text-2-7">
-</div>
-<div id="outline-container-org8fcfc97" class="outline-4">
-<h4 id="org8fcfc97"><span class="section-number-4">2.7.1.</span> Maze II</h4>
-</div>
-
-<div id="outline-container-orgda84e25" class="outline-4">
-<h4 id="orgda84e25"><span class="section-number-4">2.7.2.</span> Encrypt II</h4>
-</div>
-
-<div id="outline-container-orga08af8e" class="outline-4">
-<h4 id="orga08af8e"><span class="section-number-4">2.7.3.</span> Based II</h4>
 </div>
 </div>
 
-<div id="outline-container-org4781411" class="outline-3">
-<h3 id="org4781411"><span class="section-number-3">2.8.</span> Ast</h3>
+<div id="outline-container-org0b0675f" class="outline-3">
+<h3 id="org0b0675f">Building</h3>
+<div class="outline-text-3" id="text-org0b0675f">
+<p>
+First, clone the repository if not done already:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">git clone https://www.github.com/Lunatic-Labs/pointless-project.git/
+</pre>
 </div>
 
-<div id="outline-container-org486c4f3" class="outline-3">
-<h3 id="org486c4f3"><span class="section-number-3">2.9.</span> Binary Addition (Graph Paper Robot I)</h3>
+<p>
+Go into the <code>src/</code> directory:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">cd ./src/
+</pre>
 </div>
 
-<div id="outline-container-orgc1876e3" class="outline-3">
-<h3 id="orgc1876e3"><span class="section-number-3">2.10.</span> Logic Gate (Graph Paper Robot II)</h3>
+<p>
+Then use the <code>Makefile</code> to build the project:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">make all &lt;opt&gt;
+</pre>
+</div>
+<blockquote>
+<p>
+where <code>opt</code> is one of:
+</p>
+<ul class="org-ul">
+<li><code>all</code> &rarr; perform all <code>Makefile</code> flags</li>
+<li><code>clean</code> &rarr; removes all object files and all generated zipfiles</li>
+<li><code>cleanzip</code> &rarr; removes all generated zipfiles</li>
+</ul>
+</blockquote>
+
+<p>
+Building the project will create a directory called <code>obj</code> where all object files
+are located as well as create a <code>zipfiles</code> directory where all puzzle zipfiles are
+generated. You can now inspect and solve the puzzle(s) by choosing the appropriate zipfile.
+</p>
+</div>
+</div>
 </div>
 
-<div id="outline-container-org06f9da5" class="outline-3">
-<h3 id="org06f9da5"><span class="section-number-3">2.11.</span> <span class="todo TODO">TODO</span> (Graph Paper Robot III)</h3>
-<div class="outline-text-3" id="text-2-11">
+<div id="outline-container-org17525ee" class="outline-2">
+<h2 id="org17525ee">Puzzle Creation Framework</h2>
+<div class="outline-text-2" id="text-org17525ee">
+<p>
+It is obvious to see that there are a lot of directories in this project, and not all
+of them contain code. In fact, most of these directories contains the necessary resources
+for their respective puzzle.
+</p>
+
+<p>
+Any directory that starts with <code>files-</code> are resource directories. They contain (at least) the <code>.desc.txt</code>
+for each puzzle as well as any supporting files that the puzzle needs (other HTML files, images, etc).
+</p>
+
+<blockquote>
+<p>
+<b>Any support files that are prefixed with `.` will not be included in the zipped-up
+puzzle. Files that do not have this prefix will be included in the zipfile.</b>
+</p>
+</blockquote>
+
+<p>
+Each puzzle's generated HTML page (<code>instructions.html</code>) has a specific structure:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Instructions.html</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Header (generated)</td>
+</tr>
+
+<tr>
+<td class="org-left">Body (.desc.txt)</td>
+</tr>
+
+<tr>
+<td class="org-left">Footer (generated)</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+The HTML <i>Header</i> and <i>Footer</i> are located in <code>src/resources/</code> and do
+not need to be touched (unless changes are needed).
+</p>
+
+<p>
+Below is a UML diagram of how a puzzle gets created.
+</p>
+
+
+<div id="org44ad8fb" class="figure">
+<p><img src="./puzzle-uml.svg" alt="puzzle-uml.svg" class="org-svg" />
+</p>
+<p><span class="figure-number">Figure 1: </span>Puzzle Creation UML</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1ab7b12" class="outline-2">
+<h2 id="org1ab7b12">Implementing a New Puzzle</h2>
+<div class="outline-text-2" id="text-org1ab7b12">
+<p>
+Implementing a new puzzle is increadibly easy with how we implemented it. Here are the steps
+to take when doing so.
+</p>
+</div>
+
+<div id="outline-container-orgd4e7923" class="outline-3">
+<h3 id="orgd4e7923">Puzzle Resources Directory</h3>
+<div class="outline-text-3" id="text-orgd4e7923">
+<p>
+Start by creating a new directory in <code>src/</code> and name it <code>files-&lt;new puzzle name&gt;</code>.
+Then inside of there, create a new file called <code>.desc.txt</code>. This is where the instructions,
+hints, and other info about the puzzle is stored. Everything in this file will be put into an HTML file,
+so make sure that it follows the HTML rules.
+</p>
+
+<p>
+In order to transfer information easily from C++ to HTML/Javascript, we use a special delimiter in this file,
+namely <code>%DELIM</code>. For example, if I need to pass a password and an array that is generated in C++
+into this <code>.desc.txt</code> file, I would do something like:
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 1: </span><code>.desc.txt</code> example</label><pre class="src src-javascript">&lt;script&gt;
+  let password = %DELIM;
+  let array = [%DELIM];
+&lt;/script&gt;
+</pre>
+</div>
+
+<p>
+It is then the job of C++ to "stringify" the required information to pass to <code>.desc.txt</code>.
+In order to make the explanation more easy to follow, I will make a new puzzle called "fib",
+where the point(less) of it is to have the user find the <i>n<sup>th</sup></i> number of the fibonacci sequence.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 2: </span>Creating <code>src/files-fib/.desc.txt</code></label><pre class="src src-bash">cd ./src/
+mkdir files-fib &amp;&amp; cd files-fib
+echo "What is the &lt;b&gt;%DELIM&lt;/b&gt;th number in the fibonacci sequence?" &gt; .desc.txt
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org345c1f1" class="outline-3">
+<h3 id="org345c1f1">Puzzle Implementation</h3>
+<div class="outline-text-3" id="text-org345c1f1">
+<p>
+Once the above step is done, create a new file called <code>&lt;puzzle name&gt;-puzzle.cpp</code>
+in <code>src/</code> and put the entrypoint of the function that will create the puzzle.
+We will also need to include <code>./include/puzzle.h</code> to have access to the <code>Puzzle</code> object.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 3: </span><code>src/fib-puzzle.cpp</code></label><pre class="src src-c++">#include "./include/puzzle.h"
+
+Puzzle fib_puzzle_create(long seed)
+{
+  return {"files-fib", "changeme", {}}; // NOTE: "files-fib" is the puzzle requirements directory from the previous step.
+}
+</pre>
+</div>
+
+<p>
+The return value of this function is a <code>Puzzle</code> object. It is defined as:
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 4: </span><code>src/include/puzzle.h</code></label><pre class="src src-c++">struct Puzzle {
+  // The filepath to the appropriate directory
+  // that contains all of the information needed
+  // for the puzzle.
+  std::string contents_fp;
+
+  std::string password;
+
+  std::optional&lt;std::string&gt; extra_info;
+};
+</pre>
+</div>
+
+<blockquote>
+<p>
+So we are returning a new puzzle where
+</p>
+
+<ul class="org-ul">
+<li>requirements = "files-fib"</li>
+<li>password = "changeme"</li>
+<li>extra info = None</li>
+</ul>
+</blockquote>
+
+<p>
+The <code>password</code> field is what will set the password for the next zipfile layer.
+The <code>extra_info</code> field is purely for debugging and is strictly used for the side
+effect of printing when running the application. Nothing that gets put into it will
+be displayed/used in the final puzzle in the zipfiles.
+</p>
+
+<p>
+Now it's time to actually create the solver for the puzzle. I will create a fib function that will find the number.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 5: </span>Complete source of <code>src/fib-puzzle.cpp</code></label><pre class="src src-c++">#include "./include/puzzle.h"
+#include "./include/utils.h" // utils_rng_roll, utils_html_printf, utils_generate_file
+
+static int fib(int n)
+{
+  if (n &lt; 2) return n;
+  return fib(n-1) + fib(n-2);
+}
+
+Puzzle fib_puzzle_create(long seed)
+{
+  // Get a random number in the range 3..=10.
+  int fibnum = utils_rng_roll(3, 10, seed);
+
+  // Get the solution to the puzzle.
+  int password = fib(fibnum);
+
+  // Generate the HTML content to be displayed to the user
+  std::string html_content = utils_html_printf("Fibonacci Sequence",
+                                               "./files-fib/.desc.txt",
+                                               {std::to_string(fibnum)});
+
+  // Create the instructions.html
+  utils_generate_file("./files-fib/instructions.html", html_content);
+
+  // Finally return the Puzzle object.
+  return {"files-fib", std::to_string(password), {}};
+}
+</pre>
+</div>
+
+<p>
+Now that the implementation is done, add the signature of <code>fib_puzzle_create</code> to <code>./src/include/puzzle.h</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdbb03ac" class="outline-3">
+<h3 id="orgdbb03ac">Using the Puzzle</h3>
+<div class="outline-text-3" id="text-orgdbb03ac">
+<p>
+In the <code>main</code> function in <code>main.cpp</code>, there is some code that looks like:
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 6: </span>src/main.cpp</label><pre class="src src-c++">std::vector&lt;Puzzle&gt; puzzles = {
+  math_puzzle_create(seed),
+  color_puzzle_create(seed),
+  pixel_puzzle_create(seed),
+  maze_puzzle_create(seed),
+  encrypt_puzzle_create(seed),
+  based_puzzle_create(seed),
+  ast_puzzle_create(seed),
+  fin_puzzle_create(seed),
+};
+</pre>
+</div>
+
+<p>
+Put the new puzzle that was created in the spot that you want it to
+appear in the nested zipfiles. For example, if I want it to be the
+third puzzle that the user solves, I would do:
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 7: </span>src/main.cpp</label><pre class="src src-c++">std::vector&lt;Puzzle&gt; puzzles = {
+  math_puzzle_create(seed),
+  color_puzzle_create(seed),
+  fib_puzzle_create(seed), // Added it here
+  pixel_puzzle_create(seed),
+  maze_puzzle_create(seed),
+  encrypt_puzzle_create(seed),
+  based_puzzle_create(seed),
+  ast_puzzle_create(seed),
+  fin_puzzle_create(seed),
+};
+</pre>
+</div>
+
+<p>
+Now run <code>make all</code> and these things will happen:
+</p>
+
+<blockquote>
+<ul class="org-ul">
+<li>The <code>files-&lt;puzzle name&gt;</code> directories will all generate a file called <code>instructions.html</code>.</li>
+<li><code>./src/zipfiles/</code> will be populated with zipfiles.</li>
+</ul>
+</blockquote>
+
+<p>
+The entire project will be located in <code>./src/zipfiles/puzzle1.zip</code>, as it contains
+the zipped files <i>puzzle1..puzzleN</i>. The reason why we also generate the other puzzles
+outside of <code>puzzle1.zip</code>, is because it allows for easy testing without having to go through the entire zipfile structure.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb6887cb" class="outline-2">
+<h2 id="orgb6887cb">Current Puzzles</h2>
+<div class="outline-text-2" id="text-orgb6887cb">
+</div>
+<div id="outline-container-orgae56de5" class="outline-3">
+<h3 id="orgae56de5">Math</h3>
+<div class="outline-text-3" id="text-orgae56de5">
+<p>
+This puzzle serves as the <i>Hello, World!</i> puzzle. It introduces the user
+to reading the description, solving the puzzle, and inputing the password.
+</p>
+
+<p>
+We prompt the user to solve a very simple math question and that solution is the password.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdcccd2e" class="outline-3">
+<h3 id="orgdcccd2e"><span class="todo TODO">TODO</span> Color</h3>
+</div>
+
+<div id="outline-container-orgd6e6f82" class="outline-3">
+<h3 id="orgd6e6f82"><span class="todo TODO">TODO</span> Pixel</h3>
+</div>
+
+<div id="outline-container-org9f9fc35" class="outline-3">
+<h3 id="org9f9fc35"><span class="todo TODO">TODO</span> Maze</h3>
+</div>
+
+<div id="outline-container-orgcff3450" class="outline-3">
+<h3 id="orgcff3450"><span class="todo TODO">TODO</span> Encrypt</h3>
+</div>
+
+<div id="outline-container-org832e684" class="outline-3">
+<h3 id="org832e684"><span class="todo TODO">TODO</span> Based</h3>
+</div>
+
+<div id="outline-container-org4c52073" class="outline-3">
+<h3 id="org4c52073">Rematches</h3>
+<div class="outline-text-3" id="text-org4c52073">
+<p>
+The "rematch" puzzles serve as the point in the project where there is a
+noticable difficulty spike. It interrupts the linear nested puzzle format
+by having the user solve three harder versions of previous puzzles. Each one
+of these rematch puzzles gives a piece of the password to advance past this
+rematch section.
+</p>
+</div>
+
+<div id="outline-container-org71dc6a7" class="outline-4">
+<h4 id="org71dc6a7"><span class="todo TODO">TODO</span> Maze Rematch</h4>
+</div>
+
+<div id="outline-container-orgbc3d5a0" class="outline-4">
+<h4 id="orgbc3d5a0"><span class="todo TODO">TODO</span> Encrypt Rematch</h4>
+</div>
+
+<div id="outline-container-orgcf74a2d" class="outline-4">
+<h4 id="orgcf74a2d"><span class="todo TODO">TODO</span> Based Rematch</h4>
+</div>
+</div>
+
+<div id="outline-container-org96dae97" class="outline-3">
+<h3 id="org96dae97"><span class="todo TODO">TODO</span> Ast</h3>
+</div>
+
+<div id="outline-container-org504a8a4" class="outline-3">
+<h3 id="org504a8a4"><span class="todo TODO">TODO</span> Binary Addition (Graph Paper Robot I)</h3>
+</div>
+
+<div id="outline-container-orge5f4ecc" class="outline-3">
+<h3 id="orge5f4ecc"><span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</h3>
+</div>
+
+<div id="outline-container-orgadbfa17" class="outline-3">
+<h3 id="orgadbfa17"><span class="todo TODO">TODO</span> (Graph Paper Robot III)</h3>
+<div class="outline-text-3" id="text-orgadbfa17">
 <p>
 Currently unimplemented
 </p>
@@ -312,23 +600,45 @@ Currently unimplemented
 </div>
 </div>
 
-<div id="outline-container-org37a2c5a" class="outline-2">
-<h2 id="org37a2c5a"><span class="section-number-2">3.</span> Issues</h2>
+<div id="outline-container-org6a8c5e7" class="outline-2">
+<h2 id="org6a8c5e7">Creating a New Puzzle</h2>
 </div>
 
-<div id="outline-container-orgd31a440" class="outline-2">
-<h2 id="orgd31a440"><span class="section-number-2">4.</span> Future Plans</h2>
+<div id="outline-container-org2cc81c6" class="outline-2">
+<h2 id="org2cc81c6"><span class="todo TODO">TODO</span> Tools that We Have Made</h2>
+<div class="outline-text-2" id="text-org2cc81c6">
+<p>
+svg, graphics&#x2026;
+</p>
+</div>
 </div>
 
-<div id="outline-container-org587f19a" class="outline-2">
-<h2 id="org587f19a"><span class="section-number-2">5.</span> Contact</h2>
-<div class="outline-text-2" id="text-5">
+<div id="outline-container-orgf232d0d" class="outline-2">
+<h2 id="orgf232d0d"><span class="todo TODO">TODO</span> Issues</h2>
+</div>
+
+<div id="outline-container-org6f4a069" class="outline-2">
+<h2 id="org6f4a069"><span class="todo TODO">TODO</span> Future Plans</h2>
+</div>
+
+<div id="outline-container-org7a61684" class="outline-2">
+<h2 id="org7a61684">Previous Maintainers</h2>
+<div class="outline-text-2" id="text-org7a61684">
 <blockquote>
 <p>
-Zachary Haskins - <i>zdhdev@yahoo.com</i> <a href="https://github.com/malloc-nbytes/">Github</a> <br />
-Turner Austin - <i>tcaustin@mail.lipscomb.edu</i> Github <br />
-Mekeal Brown - <i>mtbrown@mail.lipscomb.edu</i> <a href="https://github.com/mekealbrown">Github</a> <br />
-Steven Yassa - <i>seyassa@mail.lipscomb.edu</i>
+Zachary Haskins - <i>zdhdev@yahoo.com</i> <a href="https://github.com/malloc-nbytes/">Github</a>
+</p>
+
+<p>
+Turner Austin - <i>tcaustin@mail.lipscomb.edu</i> Github
+</p>
+
+<p>
+Mekeal Brown - <i>mtbrown@mail.lipscomb.edu</i> <a href="https://github.com/mekealbrown">Github</a>
+</p>
+
+<p>
+Steven Yassa - <i>seyassa@mail.lipscomb.edu</i> Github
 </p>
 </blockquote>
 </div>
@@ -336,7 +646,7 @@ Steven Yassa - <i>seyassa@mail.lipscomb.edu</i>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zachary Haskins</p>
-<p class="date">Created: 2024-04-16 Tue 12:51</p>
+<p class="date">Created: 2024-04-16 Tue 15:33</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

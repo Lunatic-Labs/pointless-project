@@ -1,56 +1,365 @@
 #+TITLE: Pointless Project
-#+AUTHOR: Zachary Haskins
-#+OPTIONS: html5-fancy:t
-#+SUBTITLE: Introduction
 #+DESCRIPTION: Introduction to the Pointless Project
+#+AUTHOR: Zachary Haskins
+#+EMAIL: zdhdev@yahoo.com
+
+#+OPTIONS: html5-fancy:t num:nil
+
+# Theme from: https://github.com/fniessen/org-html-themes
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 
 * Introduction
 
-The point(less) of the /Pointless Project/ is to provide fun puzzles to future potential students while
-teaching them about computer science topics without them realizing it. The project started when the School of Computing
-found that it was hard to keep in touch with the hopefully-to-be-students in Computer Science/Software Engineering.
+The point(less) of the /Pointless Project/ is to create a compelling, puzzle-filled
+challenge inspired by the [[https://challenge.synacor.com][Synacor Challenge]], but targeted at a pre-college audience.
+The goal is to allow the School of Computing (SoC) to engage potential
+students during the time they are selecting a college by providing opportunities to remain in
+contact, encourage curiosity, and engage in creative problem solving while learning about
+computing and the SoC.
+
+Playing through the Synacor Challenge will provide the clearest understanding, however reading
+someone else's "[[https://github.com/KanegaeGabriel/synacor-challenge/blob/master/writeup.md][travel log]]" is also insightful. The key components to success include:
+1. a personalized download containing the complete game
+2. the ability to play completely offline
+3. a series of different but related logic puzzles and riddles
+4. multiple opportunities "along the way" to be recognized for their problem solving skills.
+
+* Project Setup
+
+** Installation
+
+*** Linux (/recommened/)
+
+For Debian based distributions, run:
+
+#+begin_src bash
+  sudo apt update
+  sudo apt install g++ libboost-all-dev libzip-dev
+#+end_src
+
+You will also need a way to open the zipfiles. We have found the best programs to use
+is =file-roller= and =pcmanfm= (or some other file manager such as =nautilus=). But use whatever you see fit.
+
+#+begin_src bash
+  sudo apt update
+  sudo apt install file-roller pcmanfm
+#+end_src
+
+For Arch based distributions, run:
+
+#+begin_src bash
+  sudo pacman -S gcc
+  sudo pacman -S boost
+  sudo pacman -S libzip
+  sudo pacman -S pcmanfm
+  sudo pacman -S file-roller
+#+end_src
+
+*** Windows
+
+For windows, we recommend developing with [[https://learn.microsoft.com/en-us/windows/wsl/about][WSL]] (Windows Subsystem for Linux).
+Please install it if you do not already have it using this [[https://learn.microsoft.com/en-us/windows/wsl/install][guide]]. After that,
+launch WSL and follow the steps to installing on Linux.
+
+For viewing the zipfiles, we have found that [[https://www.7-zip.org/download.html][7-zip]] works best.
+
+*** Mac
+
+Unfortunately, we have not been able to get the project built on MacOS. We have
+decided the the best option for Mac users is to choose a virtual machine to run
+some Linux distribution.
+
+Here are some popular VM's:
+- [[https://www.qemu.org/][QEMU]] (my favorite but harder to set up)
+- [[https://www.virtualbox.org/][Virtualbox]] (easiest but slowest)
+- [[https://www.vmware.com/][VMware]] (high quality but paid)
+
+There are many more out there, so choose whichever one suits you best.
+
+Once a VM has been chosen, choose your favorite flavor of Linux and download its ISO
+and have the VM use it, then follow the installation on Linux.
+
+** Building
+
+First, clone the repository if not done already:
+#+begin_src bash
+  git clone https://www.github.com/Lunatic-Labs/pointless-project.git/
+#+end_src
+
+Go into the =src/= directory:
+#+begin_src bash
+  cd ./src/
+#+end_src
+
+Then use the =Makefile= to build the project:
+#+begin_src bash
+  make all <opt>
+#+end_src
+#+begin_quote
+where =opt= is one of:
+- =all= \rightarrow perform all =Makefile= flags
+- =clean= \rightarrow removes all object files and all generated zipfiles
+- =cleanzip= \rightarrow removes all generated zipfiles
+#+end_quote
+
+Building the project will create a directory called =obj= where all object files
+are located as well as create a =zipfiles= directory where all puzzle zipfiles are
+generated. You can now inspect and solve the puzzle(s) by choosing the appropriate zipfile.
+
+* Puzzle Creation Framework
+
+It is obvious to see that there are a lot of directories in this project, and not all
+of them contain code. In fact, most of these directories contains the necessary resources
+for their respective puzzle.
+
+Any directory that starts with =files-= are resource directories. They contain (at least) the =.desc.txt=
+for each puzzle as well as any supporting files that the puzzle needs (other HTML files, images, etc).
+
+#+begin_quote
+*Any support files that are prefixed with `.` will not be included in the zipped-up
+puzzle. Files that do not have this prefix will be included in the zipfile.*
+#+end_quote
+
+Each puzzle's generated HTML page (=instructions.html=) has a specific structure:
+
+| Instructions.html  |
+|--------------------|
+| Header (generated) |
+| Body (.desc.txt)   |
+| Footer (generated) |
+
+The HTML /Header/ and /Footer/ are located in =src/resources/= and do
+not need to be touched (unless changes are needed).
+
+Below is a UML diagram of how a puzzle gets created.
+
+#+CAPTION: Puzzle Creation UML
+[[./puzzle-uml.svg]]
+
+* Implementing a New Puzzle
+
+Implementing a new puzzle is increadibly easy with how we implemented it. Here are the steps
+to take when doing so.
+
+** Puzzle Resources Directory
+
+Start by creating a new directory in =src/= and name it =files-<new puzzle name>=.
+Then inside of there, create a new file called =.desc.txt=. This is where the instructions,
+hints, and other info about the puzzle is stored. Everything in this file will be put into an HTML file,
+so make sure that it follows the HTML rules.
+
+In order to transfer information easily from C++ to HTML/Javascript, we use a special delimiter in this file,
+namely =%DELIM=. For example, if I need to pass a password and an array that is generated in C++
+into this =.desc.txt= file, I would do something like:
+
+#+CAPTION: =.desc.txt= example
+#+begin_src javascript
+  <script>
+    let password = %DELIM;
+    let array = [%DELIM];
+  </script>
+#+end_src
+
+It is then the job of C++ to "stringify" the required information to pass to =.desc.txt=.
+In order to make the explanation more easy to follow, I will make a new puzzle called "fib",
+where the point(less) of it is to have the user find the /n^th/ number of the fibonacci sequence.
+
+#+CAPTION: Creating =src/files-fib/.desc.txt=
+#+begin_src bash
+  cd ./src/
+  mkdir files-fib && cd files-fib
+  echo "What is the <b>%DELIM</b>th number in the fibonacci sequence?" > .desc.txt
+#+end_src
+
+** Puzzle Implementation
+
+Once the above step is done, create a new file called =<puzzle name>-puzzle.cpp=
+in =src/= and put the entrypoint of the function that will create the puzzle.
+We will also need to include =./include/puzzle.h= to have access to the =Puzzle= object.
+
+#+CAPTION: =src/fib-puzzle.cpp=
+#+begin_src c++
+  #include "./include/puzzle.h"
+
+  Puzzle fib_puzzle_create(long seed)
+  {
+    return {"files-fib", "changeme", {}}; // NOTE: "files-fib" is the puzzle requirements directory from the previous step.
+  }
+#+end_src
+
+The return value of this function is a =Puzzle= object. It is defined as:
+
+#+CAPTION: =src/include/puzzle.h=
+#+begin_src c++
+struct Puzzle {
+  // The filepath to the appropriate directory
+  // that contains all of the information needed
+  // for the puzzle.
+  std::string contents_fp;
+
+  std::string password;
+
+  std::optional<std::string> extra_info;
+};
+#+end_src
+
+#+begin_quote
+So we are returning a new puzzle where
+
+- requirements = "files-fib"
+- password = "changeme"
+- extra info = None
+#+end_quote
+
+The =password= field is what will set the password for the next zipfile layer.
+The =extra_info= field is purely for debugging and is strictly used for the side
+effect of printing when running the application. Nothing that gets put into it will
+be displayed/used in the final puzzle in the zipfiles.
+
+Now it's time to actually create the solver for the puzzle. I will create a fib function that will find the number.
+
+#+CAPTION: Complete source of =src/fib-puzzle.cpp=
+#+begin_src c++
+  #include "./include/puzzle.h"
+  #include "./include/utils.h" // utils_rng_roll, utils_html_printf, utils_generate_file
+
+  static int fib(int n)
+  {
+    if (n < 2) return n;
+    return fib(n-1) + fib(n-2);
+  }
+
+  Puzzle fib_puzzle_create(long seed)
+  {
+    // Get a random number in the range 3..=10.
+    int fibnum = utils_rng_roll(3, 10, seed);
+
+    // Get the solution to the puzzle.
+    int password = fib(fibnum);
+
+    // Generate the HTML content to be displayed to the user
+    std::string html_content = utils_html_printf("Fibonacci Sequence",
+                                                 "./files-fib/.desc.txt",
+                                                 {std::to_string(fibnum)});
+
+    // Create the instructions.html
+    utils_generate_file("./files-fib/instructions.html", html_content);
+
+    // Finally return the Puzzle object.
+    return {"files-fib", std::to_string(password), {}};
+  }
+#+end_src
+
+Now that the implementation is done, add the signature of =fib_puzzle_create= to =./src/include/puzzle.h=.
+
+** Using the Puzzle
+
+In the =main= function in =main.cpp=, there is some code that looks like:
+
+#+CAPTION: src/main.cpp
+#+begin_src c++
+  std::vector<Puzzle> puzzles = {
+    math_puzzle_create(seed),
+    color_puzzle_create(seed),
+    pixel_puzzle_create(seed),
+    maze_puzzle_create(seed),
+    encrypt_puzzle_create(seed),
+    based_puzzle_create(seed),
+    ast_puzzle_create(seed),
+    fin_puzzle_create(seed),
+  };
+#+end_src
+
+Put the new puzzle that was created in the spot that you want it to
+appear in the nested zipfiles. For example, if I want it to be the
+third puzzle that the user solves, I would do:
+
+#+CAPTION: src/main.cpp
+#+begin_src c++
+  std::vector<Puzzle> puzzles = {
+    math_puzzle_create(seed),
+    color_puzzle_create(seed),
+    fib_puzzle_create(seed), // Added it here
+    pixel_puzzle_create(seed),
+    maze_puzzle_create(seed),
+    encrypt_puzzle_create(seed),
+    based_puzzle_create(seed),
+    ast_puzzle_create(seed),
+    fin_puzzle_create(seed),
+  };
+#+end_src
+
+Now run =make all= and these things will happen:
+
+#+begin_quote
+- The =files-<puzzle name>= directories will all generate a file called =instructions.html=.
+- =./src/zipfiles/= will be populated with zipfiles.
+#+end_quote
+
+The entire project will be located in =./src/zipfiles/puzzle1.zip=, as it contains
+the zipped files /puzzle1..puzzleN/. The reason why we also generate the other puzzles
+outside of =puzzle1.zip=, is because it allows for easy testing without having to go through the entire zipfile structure.
 
 * Current Puzzles
 
 ** Math
 
-** Color
+This puzzle serves as the /Hello, World!/ puzzle. It introduces the user
+to reading the description, solving the puzzle, and inputing the password.
 
-** Pixel
+We prompt the user to solve a very simple math question and that solution is the password.
 
-** Maze
+** TODO Color
 
-** Encrypt
+** TODO Pixel
 
-** Based
+** TODO Maze
+
+** TODO Encrypt
+
+** TODO Based
 
 ** Rematches
+The "rematch" puzzles serve as the point in the project where there is a
+noticable difficulty spike. It interrupts the linear nested puzzle format
+by having the user solve three harder versions of previous puzzles. Each one
+of these rematch puzzles gives a piece of the password to advance past this
+rematch section.
 
-*** Maze II
+*** TODO Maze Rematch
 
-*** Encrypt II
+*** TODO Encrypt Rematch
 
-*** Based II
+*** TODO Based Rematch
 
-** Ast
+** TODO Ast
 
-** Binary Addition (Graph Paper Robot I)
+** TODO Binary Addition (Graph Paper Robot I)
 
-** Logic Gate (Graph Paper Robot II)
+** TODO Logic Gate (Graph Paper Robot II)
 
 ** TODO (Graph Paper Robot III)
 
 Currently unimplemented
 
-* Issues
+* Creating a New Puzzle
 
-* Future Plans
+* TODO Tools that We Have Made
+svg, graphics...
 
-* Contact
+* TODO Issues
+
+* TODO Future Plans
+
+* Previous Maintainers
 
 #+begin_quote
-Zachary Haskins - /zdhdev@yahoo.com/ [[https://github.com/malloc-nbytes/][Github]] \\
-Turner Austin - /tcaustin@mail.lipscomb.edu/ Github \\
-Mekeal Brown - /mtbrown@mail.lipscomb.edu/ [[https://github.com/mekealbrown][Github]] \\
-Steven Yassa - /seyassa@mail.lipscomb.edu/
+Zachary Haskins - /zdhdev@yahoo.com/ [[https://github.com/malloc-nbytes/][Github]]
+
+Turner Austin - /tcaustin@mail.lipscomb.edu/ Github
+
+Mekeal Brown - /mtbrown@mail.lipscomb.edu/ [[https://github.com/mekealbrown][Github]]
+
+Steven Yassa - /seyassa@mail.lipscomb.edu/ Github
 #+end_quote
+
