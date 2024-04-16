@@ -8,6 +8,9 @@
 # Theme from: https://github.com/fniessen/org-html-themes
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 
+*NOTE*: I suggest opening =introduction.html= to view this document
+in a much better format.
+
 * Introduction
 
 The point(less) of the /Pointless Project/ is to create a compelling, puzzle-filled
@@ -250,7 +253,7 @@ Now it's time to actually create the solver for the puzzle. I will create a fib 
   }
 #+end_src
 
-Now that the implementation is done, add the signature of =fib_puzzle_create= to =./src/include/puzzle.h=.
+Now that the implementation is done, add the signature of =Puzzle fib_puzzle_create(long)= into =./src/include/puzzle.h=.
 
 ** Using the Puzzle
 
@@ -307,15 +310,54 @@ outside of =puzzle1.zip=, is because it allows for easy testing without having t
 This puzzle serves as the /Hello, World!/ puzzle. It introduces the user
 to reading the description, solving the puzzle, and inputing the password.
 
-We prompt the user to solve a very simple math question and that solution is the password.
+We prompt the user to solve a very simple math question in the form of /a/ + /b/.
 
-** TODO Color
+/RNG/: /a/, /b/
+
+** Color
+
+This puzzle asks the user to enter the hex value of on of Lipscomb's colors (purple or yellow).
+The goal of this puzzle is to teach the user about hex values. We hope that the user does
+some simple Googling to find [[https://teamcolorcodes.com/lipscomb-university-bisons-color-codes/][this website]] to find the colors.
+
+/RNG/: purple|yellow
 
 ** TODO Pixel
 
-** TODO Maze
+** Maze
 
-** TODO Encrypt
+The goal of this puzzle is to teach the user about [[https://en.wikipedia.org/wiki/Run-length_encoding][run-length encoding]].
+This encoding algorithm places numbers before the letters, while we expect the numbers to be after.
+We do this because it more closely matches function calls in the form of /f(x) \rightarrow n/.
+
+We randomly generate a maze as an SVG and have the user navigate it using the following rules:
+
+| Instruction | Direction |
+|-------------+-----------|
+| /u/         | up        |
+| /d/         | down      |
+| /l/         | left      |
+| /r/         | right     |
+
+However, the answer is not just the path that you must take (/uulrrrd/ for example), you must
+apply the run-length encoding algorithm to it. So the answer would be: /u2lr3d/.
+
+/RNG/: The maze that is presented.
+
+** Encrypt
+
+This puzzle challenges the user by decrypting the password. We present them with
+a list of steps used to encrypt it, and they must undo it to get the password.
+
+The following things can happen:
+- shift all characters by /i/ to either the right (/r/) or left (/l/)
+- swap the characters at index /j/ and /k/
+- increase each *fourth* letter alphabetically by /n/.
+
+/RNG/:
+
+- The instructions used
+- /i/, /r/, /l/, /j/, /k/, /n/
 
 ** TODO Based
 
@@ -327,6 +369,15 @@ of these rematch puzzles gives a piece of the password to advance past this
 rematch section.
 
 *** TODO Maze Rematch
+
+This is the harder version of the /Maze/ puzzle. We provide cryptic instructions
+in with the goal of having them inspect the page and navigate to the console. Once they
+type "instructions" a list of function calls are presented. The user then needs to navigate
+the maze using these function calls and must explore two other mazes with items that need to
+be picked up. Once these items are picked up, they then need to go to the first maze and go
+to the yellow tile. The password is then presented when they type "exit".
+
+/RNG/: Maze 1, Maze 2, and Maze 3
 
 *** TODO Encrypt Rematch
 
@@ -342,8 +393,6 @@ rematch section.
 
 Currently unimplemented
 
-* Creating a New Puzzle
-
 * TODO Tools that We Have Made
 svg, graphics...
 
@@ -351,7 +400,7 @@ svg, graphics...
 
 * TODO Future Plans
 
-* Previous Maintainers
+* Maintainers
 
 #+begin_quote
 Zachary Haskins - /zdhdev@yahoo.com/ [[https://github.com/malloc-nbytes/][Github]]

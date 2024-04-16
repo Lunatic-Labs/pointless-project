@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-04-16 Tue 15:33 -->
+<!-- 2024-04-16 Tue 16:14 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pointless Project</title>
@@ -24,60 +24,63 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgb7fbf85">Introduction</a></li>
-<li><a href="#orgd98251a">Project Setup</a>
+<li><a href="#org339638c">Introduction</a></li>
+<li><a href="#org137e0d0">Project Setup</a>
 <ul>
-<li><a href="#orgd6d1e1b">Installation</a>
+<li><a href="#org58fca86">Installation</a>
 <ul>
-<li><a href="#org91a23c9">Linux (<i>recommened</i>)</a></li>
-<li><a href="#org4cfdad5">Windows</a></li>
-<li><a href="#org5849daa">Mac</a></li>
+<li><a href="#orge444bc5">Linux (<i>recommened</i>)</a></li>
+<li><a href="#orga72c44e">Windows</a></li>
+<li><a href="#orgfd80a06">Mac</a></li>
 </ul>
 </li>
-<li><a href="#org0b0675f">Building</a></li>
+<li><a href="#org2de47d8">Building</a></li>
 </ul>
 </li>
-<li><a href="#org17525ee">Puzzle Creation Framework</a></li>
-<li><a href="#org1ab7b12">Implementing a New Puzzle</a>
+<li><a href="#orge6154c2">Puzzle Creation Framework</a></li>
+<li><a href="#org6a592db">Implementing a New Puzzle</a>
 <ul>
-<li><a href="#orgd4e7923">Puzzle Resources Directory</a></li>
-<li><a href="#org345c1f1">Puzzle Implementation</a></li>
-<li><a href="#orgdbb03ac">Using the Puzzle</a></li>
+<li><a href="#org8e37b44">Puzzle Resources Directory</a></li>
+<li><a href="#orge187c99">Puzzle Implementation</a></li>
+<li><a href="#orgdfb4269">Using the Puzzle</a></li>
 </ul>
 </li>
-<li><a href="#orgb6887cb">Current Puzzles</a>
+<li><a href="#orgef09c96">Current Puzzles</a>
 <ul>
-<li><a href="#orgae56de5">Math</a></li>
-<li><a href="#orgdcccd2e"><span class="todo TODO">TODO</span> Color</a></li>
-<li><a href="#orgd6e6f82"><span class="todo TODO">TODO</span> Pixel</a></li>
-<li><a href="#org9f9fc35"><span class="todo TODO">TODO</span> Maze</a></li>
-<li><a href="#orgcff3450"><span class="todo TODO">TODO</span> Encrypt</a></li>
-<li><a href="#org832e684"><span class="todo TODO">TODO</span> Based</a></li>
-<li><a href="#org4c52073">Rematches</a>
+<li><a href="#orgb9cf8ae">Math</a></li>
+<li><a href="#org3dbdb1b">Color</a></li>
+<li><a href="#org140b4bf"><span class="todo TODO">TODO</span> Pixel</a></li>
+<li><a href="#orgb2832b8">Maze</a></li>
+<li><a href="#org72c5bbc">Encrypt</a></li>
+<li><a href="#org461dec3"><span class="todo TODO">TODO</span> Based</a></li>
+<li><a href="#org8ef0d4b">Rematches</a>
 <ul>
-<li><a href="#org71dc6a7"><span class="todo TODO">TODO</span> Maze Rematch</a></li>
-<li><a href="#orgbc3d5a0"><span class="todo TODO">TODO</span> Encrypt Rematch</a></li>
-<li><a href="#orgcf74a2d"><span class="todo TODO">TODO</span> Based Rematch</a></li>
+<li><a href="#orge86ab5e"><span class="todo TODO">TODO</span> Maze Rematch</a></li>
+<li><a href="#org4685738"><span class="todo TODO">TODO</span> Encrypt Rematch</a></li>
+<li><a href="#orga631291"><span class="todo TODO">TODO</span> Based Rematch</a></li>
 </ul>
 </li>
-<li><a href="#org96dae97"><span class="todo TODO">TODO</span> Ast</a></li>
-<li><a href="#org504a8a4"><span class="todo TODO">TODO</span> Binary Addition (Graph Paper Robot I)</a></li>
-<li><a href="#orge5f4ecc"><span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</a></li>
-<li><a href="#orgadbfa17"><span class="todo TODO">TODO</span> (Graph Paper Robot III)</a></li>
+<li><a href="#org54eee66"><span class="todo TODO">TODO</span> Ast</a></li>
+<li><a href="#org4e19814"><span class="todo TODO">TODO</span> Binary Addition (Graph Paper Robot I)</a></li>
+<li><a href="#orge35b01c"><span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</a></li>
+<li><a href="#orgde0268b"><span class="todo TODO">TODO</span> (Graph Paper Robot III)</a></li>
 </ul>
 </li>
-<li><a href="#org6a8c5e7">Creating a New Puzzle</a></li>
-<li><a href="#org2cc81c6"><span class="todo TODO">TODO</span> Tools that We Have Made</a></li>
-<li><a href="#orgf232d0d"><span class="todo TODO">TODO</span> Issues</a></li>
-<li><a href="#org6f4a069"><span class="todo TODO">TODO</span> Future Plans</a></li>
-<li><a href="#org7a61684">Previous Maintainers</a></li>
+<li><a href="#orgaefcf6d"><span class="todo TODO">TODO</span> Tools that We Have Made</a></li>
+<li><a href="#org2a9eb7b"><span class="todo TODO">TODO</span> Issues</a></li>
+<li><a href="#org1e1e79a"><span class="todo TODO">TODO</span> Future Plans</a></li>
+<li><a href="#org665827a">Maintainers</a></li>
 </ul>
 </div>
 </div>
+<p>
+<b>NOTE</b>: I suggest opening <code>introduction.html</code> to view this document
+in a much better format.
+</p>
 
-<div id="outline-container-orgb7fbf85" class="outline-2">
-<h2 id="orgb7fbf85">Introduction</h2>
-<div class="outline-text-2" id="text-orgb7fbf85">
+<div id="outline-container-org339638c" class="outline-2">
+<h2 id="org339638c">Introduction</h2>
+<div class="outline-text-2" id="text-org339638c">
 <p>
 The point(less) of the <i>Pointless Project</i> is to create a compelling, puzzle-filled
 challenge inspired by the <a href="https://challenge.synacor.com">Synacor Challenge</a>, but targeted at a pre-college audience.
@@ -100,17 +103,17 @@ someone else's "<a href="https://github.com/KanegaeGabriel/synacor-challenge/blo
 </div>
 </div>
 
-<div id="outline-container-orgd98251a" class="outline-2">
-<h2 id="orgd98251a">Project Setup</h2>
-<div class="outline-text-2" id="text-orgd98251a">
+<div id="outline-container-org137e0d0" class="outline-2">
+<h2 id="org137e0d0">Project Setup</h2>
+<div class="outline-text-2" id="text-org137e0d0">
 </div>
-<div id="outline-container-orgd6d1e1b" class="outline-3">
-<h3 id="orgd6d1e1b">Installation</h3>
-<div class="outline-text-3" id="text-orgd6d1e1b">
+<div id="outline-container-org58fca86" class="outline-3">
+<h3 id="org58fca86">Installation</h3>
+<div class="outline-text-3" id="text-org58fca86">
 </div>
-<div id="outline-container-org91a23c9" class="outline-4">
-<h4 id="org91a23c9">Linux (<i>recommened</i>)</h4>
-<div class="outline-text-4" id="text-org91a23c9">
+<div id="outline-container-orge444bc5" class="outline-4">
+<h4 id="orge444bc5">Linux (<i>recommened</i>)</h4>
+<div class="outline-text-4" id="text-orge444bc5">
 <p>
 For Debian based distributions, run:
 </p>
@@ -147,9 +150,9 @@ sudo pacman -S file-roller
 </div>
 </div>
 
-<div id="outline-container-org4cfdad5" class="outline-4">
-<h4 id="org4cfdad5">Windows</h4>
-<div class="outline-text-4" id="text-org4cfdad5">
+<div id="outline-container-orga72c44e" class="outline-4">
+<h4 id="orga72c44e">Windows</h4>
+<div class="outline-text-4" id="text-orga72c44e">
 <p>
 For windows, we recommend developing with <a href="https://learn.microsoft.com/en-us/windows/wsl/about">WSL</a> (Windows Subsystem for Linux).
 Please install it if you do not already have it using this <a href="https://learn.microsoft.com/en-us/windows/wsl/install">guide</a>. After that,
@@ -162,9 +165,9 @@ For viewing the zipfiles, we have found that <a href="https://www.7-zip.org/down
 </div>
 </div>
 
-<div id="outline-container-org5849daa" class="outline-4">
-<h4 id="org5849daa">Mac</h4>
-<div class="outline-text-4" id="text-org5849daa">
+<div id="outline-container-orgfd80a06" class="outline-4">
+<h4 id="orgfd80a06">Mac</h4>
+<div class="outline-text-4" id="text-orgfd80a06">
 <p>
 Unfortunately, we have not been able to get the project built on MacOS. We have
 decided the the best option for Mac users is to choose a virtual machine to run
@@ -192,9 +195,9 @@ and have the VM use it, then follow the installation on Linux.
 </div>
 </div>
 
-<div id="outline-container-org0b0675f" class="outline-3">
-<h3 id="org0b0675f">Building</h3>
-<div class="outline-text-3" id="text-org0b0675f">
+<div id="outline-container-org2de47d8" class="outline-3">
+<h3 id="org2de47d8">Building</h3>
+<div class="outline-text-3" id="text-org2de47d8">
 <p>
 First, clone the repository if not done already:
 </p>
@@ -238,9 +241,9 @@ generated. You can now inspect and solve the puzzle(s) by choosing the appropria
 </div>
 </div>
 
-<div id="outline-container-org17525ee" class="outline-2">
-<h2 id="org17525ee">Puzzle Creation Framework</h2>
-<div class="outline-text-2" id="text-org17525ee">
+<div id="outline-container-orge6154c2" class="outline-2">
+<h2 id="orge6154c2">Puzzle Creation Framework</h2>
+<div class="outline-text-2" id="text-orge6154c2">
 <p>
 It is obvious to see that there are a lot of directories in this project, and not all
 of them contain code. In fact, most of these directories contains the necessary resources
@@ -299,7 +302,7 @@ Below is a UML diagram of how a puzzle gets created.
 </p>
 
 
-<div id="org44ad8fb" class="figure">
+<div id="org95e620b" class="figure">
 <p><img src="./puzzle-uml.svg" alt="puzzle-uml.svg" class="org-svg" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Puzzle Creation UML</p>
@@ -307,18 +310,18 @@ Below is a UML diagram of how a puzzle gets created.
 </div>
 </div>
 
-<div id="outline-container-org1ab7b12" class="outline-2">
-<h2 id="org1ab7b12">Implementing a New Puzzle</h2>
-<div class="outline-text-2" id="text-org1ab7b12">
+<div id="outline-container-org6a592db" class="outline-2">
+<h2 id="org6a592db">Implementing a New Puzzle</h2>
+<div class="outline-text-2" id="text-org6a592db">
 <p>
 Implementing a new puzzle is increadibly easy with how we implemented it. Here are the steps
 to take when doing so.
 </p>
 </div>
 
-<div id="outline-container-orgd4e7923" class="outline-3">
-<h3 id="orgd4e7923">Puzzle Resources Directory</h3>
-<div class="outline-text-3" id="text-orgd4e7923">
+<div id="outline-container-org8e37b44" class="outline-3">
+<h3 id="org8e37b44">Puzzle Resources Directory</h3>
+<div class="outline-text-3" id="text-org8e37b44">
 <p>
 Start by creating a new directory in <code>src/</code> and name it <code>files-&lt;new puzzle name&gt;</code>.
 Then inside of there, create a new file called <code>.desc.txt</code>. This is where the instructions,
@@ -355,9 +358,9 @@ echo "What is the &lt;b&gt;%DELIM&lt;/b&gt;th number in the fibonacci sequence?"
 </div>
 </div>
 
-<div id="outline-container-org345c1f1" class="outline-3">
-<h3 id="org345c1f1">Puzzle Implementation</h3>
-<div class="outline-text-3" id="text-org345c1f1">
+<div id="outline-container-orge187c99" class="outline-3">
+<h3 id="orge187c99">Puzzle Implementation</h3>
+<div class="outline-text-3" id="text-orge187c99">
 <p>
 Once the above step is done, create a new file called <code>&lt;puzzle name&gt;-puzzle.cpp</code>
 in <code>src/</code> and put the entrypoint of the function that will create the puzzle.
@@ -448,14 +451,14 @@ Puzzle fib_puzzle_create(long seed)
 </div>
 
 <p>
-Now that the implementation is done, add the signature of <code>fib_puzzle_create</code> to <code>./src/include/puzzle.h</code>.
+Now that the implementation is done, add the signature of <code>Puzzle fib_puzzle_create(long)</code> into <code>./src/include/puzzle.h</code>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgdbb03ac" class="outline-3">
-<h3 id="orgdbb03ac">Using the Puzzle</h3>
-<div class="outline-text-3" id="text-orgdbb03ac">
+<div id="outline-container-orgdfb4269" class="outline-3">
+<h3 id="orgdfb4269">Using the Puzzle</h3>
+<div class="outline-text-3" id="text-orgdfb4269">
 <p>
 In the <code>main</code> function in <code>main.cpp</code>, there is some code that looks like:
 </p>
@@ -515,47 +518,143 @@ outside of <code>puzzle1.zip</code>, is because it allows for easy testing witho
 </div>
 </div>
 
-<div id="outline-container-orgb6887cb" class="outline-2">
-<h2 id="orgb6887cb">Current Puzzles</h2>
-<div class="outline-text-2" id="text-orgb6887cb">
+<div id="outline-container-orgef09c96" class="outline-2">
+<h2 id="orgef09c96">Current Puzzles</h2>
+<div class="outline-text-2" id="text-orgef09c96">
 </div>
-<div id="outline-container-orgae56de5" class="outline-3">
-<h3 id="orgae56de5">Math</h3>
-<div class="outline-text-3" id="text-orgae56de5">
+<div id="outline-container-orgb9cf8ae" class="outline-3">
+<h3 id="orgb9cf8ae">Math</h3>
+<div class="outline-text-3" id="text-orgb9cf8ae">
 <p>
 This puzzle serves as the <i>Hello, World!</i> puzzle. It introduces the user
 to reading the description, solving the puzzle, and inputing the password.
 </p>
 
 <p>
-We prompt the user to solve a very simple math question and that solution is the password.
+We prompt the user to solve a very simple math question in the form of <i>a</i> + <i>b</i>.
+</p>
+
+<p>
+<i>RNG</i>: <i>a</i>, <i>b</i>
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgdcccd2e" class="outline-3">
-<h3 id="orgdcccd2e"><span class="todo TODO">TODO</span> Color</h3>
+<div id="outline-container-org3dbdb1b" class="outline-3">
+<h3 id="org3dbdb1b">Color</h3>
+<div class="outline-text-3" id="text-org3dbdb1b">
+<p>
+This puzzle asks the user to enter the hex value of on of Lipscomb's colors (purple or yellow).
+The goal of this puzzle is to teach the user about hex values. We hope that the user does
+some simple Googling to find <a href="https://teamcolorcodes.com/lipscomb-university-bisons-color-codes/">this website</a> to find the colors.
+</p>
+
+<p>
+<i>RNG</i>: purple|yellow
+</p>
+</div>
 </div>
 
-<div id="outline-container-orgd6e6f82" class="outline-3">
-<h3 id="orgd6e6f82"><span class="todo TODO">TODO</span> Pixel</h3>
+<div id="outline-container-org140b4bf" class="outline-3">
+<h3 id="org140b4bf"><span class="todo TODO">TODO</span> Pixel</h3>
 </div>
 
-<div id="outline-container-org9f9fc35" class="outline-3">
-<h3 id="org9f9fc35"><span class="todo TODO">TODO</span> Maze</h3>
+<div id="outline-container-orgb2832b8" class="outline-3">
+<h3 id="orgb2832b8">Maze</h3>
+<div class="outline-text-3" id="text-orgb2832b8">
+<p>
+The goal of this puzzle is to teach the user about <a href="https://en.wikipedia.org/wiki/Run-length_encoding">run-length encoding</a>.
+This encoding algorithm places numbers before the letters, while we expect the numbers to be after.
+We do this because it more closely matches function calls in the form of <i>f(x) &rarr; n</i>.
+</p>
+
+<p>
+We randomly generate a maze as an SVG and have the user navigate it using the following rules:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Instruction</th>
+<th scope="col" class="org-left">Direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><i>u</i></td>
+<td class="org-left">up</td>
+</tr>
+
+<tr>
+<td class="org-left"><i>d</i></td>
+<td class="org-left">down</td>
+</tr>
+
+<tr>
+<td class="org-left"><i>l</i></td>
+<td class="org-left">left</td>
+</tr>
+
+<tr>
+<td class="org-left"><i>r</i></td>
+<td class="org-left">right</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+However, the answer is not just the path that you must take (<i>uulrrrd</i> for example), you must
+apply the run-length encoding algorithm to it. So the answer would be: <i>u2lr3d</i>.
+</p>
+
+<p>
+<i>RNG</i>: The maze that is presented.
+</p>
+</div>
 </div>
 
-<div id="outline-container-orgcff3450" class="outline-3">
-<h3 id="orgcff3450"><span class="todo TODO">TODO</span> Encrypt</h3>
+<div id="outline-container-org72c5bbc" class="outline-3">
+<h3 id="org72c5bbc">Encrypt</h3>
+<div class="outline-text-3" id="text-org72c5bbc">
+<p>
+This puzzle challenges the user by decrypting the password. We present them with
+a list of steps used to encrypt it, and they must undo it to get the password.
+</p>
+
+<p>
+The following things can happen:
+</p>
+<ul class="org-ul">
+<li>shift all characters by <i>i</i> to either the right (<i>r</i>) or left (<i>l</i>)</li>
+<li>swap the characters at index <i>j</i> and <i>k</i></li>
+<li>increase each <b>fourth</b> letter alphabetically by <i>n</i>.</li>
+</ul>
+
+<p>
+<i>RNG</i>:
+</p>
+
+<ul class="org-ul">
+<li>The instructions used</li>
+<li><i>i</i>, <i>r</i>, <i>l</i>, <i>j</i>, <i>k</i>, <i>n</i></li>
+</ul>
+</div>
 </div>
 
-<div id="outline-container-org832e684" class="outline-3">
-<h3 id="org832e684"><span class="todo TODO">TODO</span> Based</h3>
+<div id="outline-container-org461dec3" class="outline-3">
+<h3 id="org461dec3"><span class="todo TODO">TODO</span> Based</h3>
 </div>
 
-<div id="outline-container-org4c52073" class="outline-3">
-<h3 id="org4c52073">Rematches</h3>
-<div class="outline-text-3" id="text-org4c52073">
+<div id="outline-container-org8ef0d4b" class="outline-3">
+<h3 id="org8ef0d4b">Rematches</h3>
+<div class="outline-text-3" id="text-org8ef0d4b">
 <p>
 The "rematch" puzzles serve as the point in the project where there is a
 noticable difficulty spike. It interrupts the linear nested puzzle format
@@ -565,34 +664,48 @@ rematch section.
 </p>
 </div>
 
-<div id="outline-container-org71dc6a7" class="outline-4">
-<h4 id="org71dc6a7"><span class="todo TODO">TODO</span> Maze Rematch</h4>
+<div id="outline-container-orge86ab5e" class="outline-4">
+<h4 id="orge86ab5e"><span class="todo TODO">TODO</span> Maze Rematch</h4>
+<div class="outline-text-4" id="text-orge86ab5e">
+<p>
+This is the harder version of the <i>Maze</i> puzzle. We provide cryptic instructions
+in with the goal of having them inspect the page and navigate to the console. Once they
+type "instructions" a list of function calls are presented. The user then needs to navigate
+the maze using these function calls and must explore two other mazes with items that need to
+be picked up. Once these items are picked up, they then need to go to the first maze and go
+to the yellow tile. The password is then presented when they type "exit".
+</p>
+
+<p>
+<i>RNG</i>: Maze 1, Maze 2, and Maze 3
+</p>
+</div>
 </div>
 
-<div id="outline-container-orgbc3d5a0" class="outline-4">
-<h4 id="orgbc3d5a0"><span class="todo TODO">TODO</span> Encrypt Rematch</h4>
+<div id="outline-container-org4685738" class="outline-4">
+<h4 id="org4685738"><span class="todo TODO">TODO</span> Encrypt Rematch</h4>
 </div>
 
-<div id="outline-container-orgcf74a2d" class="outline-4">
-<h4 id="orgcf74a2d"><span class="todo TODO">TODO</span> Based Rematch</h4>
+<div id="outline-container-orga631291" class="outline-4">
+<h4 id="orga631291"><span class="todo TODO">TODO</span> Based Rematch</h4>
 </div>
 </div>
 
-<div id="outline-container-org96dae97" class="outline-3">
-<h3 id="org96dae97"><span class="todo TODO">TODO</span> Ast</h3>
+<div id="outline-container-org54eee66" class="outline-3">
+<h3 id="org54eee66"><span class="todo TODO">TODO</span> Ast</h3>
 </div>
 
-<div id="outline-container-org504a8a4" class="outline-3">
-<h3 id="org504a8a4"><span class="todo TODO">TODO</span> Binary Addition (Graph Paper Robot I)</h3>
+<div id="outline-container-org4e19814" class="outline-3">
+<h3 id="org4e19814"><span class="todo TODO">TODO</span> Binary Addition (Graph Paper Robot I)</h3>
 </div>
 
-<div id="outline-container-orge5f4ecc" class="outline-3">
-<h3 id="orge5f4ecc"><span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</h3>
+<div id="outline-container-orge35b01c" class="outline-3">
+<h3 id="orge35b01c"><span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</h3>
 </div>
 
-<div id="outline-container-orgadbfa17" class="outline-3">
-<h3 id="orgadbfa17"><span class="todo TODO">TODO</span> (Graph Paper Robot III)</h3>
-<div class="outline-text-3" id="text-orgadbfa17">
+<div id="outline-container-orgde0268b" class="outline-3">
+<h3 id="orgde0268b"><span class="todo TODO">TODO</span> (Graph Paper Robot III)</h3>
+<div class="outline-text-3" id="text-orgde0268b">
 <p>
 Currently unimplemented
 </p>
@@ -600,30 +713,26 @@ Currently unimplemented
 </div>
 </div>
 
-<div id="outline-container-org6a8c5e7" class="outline-2">
-<h2 id="org6a8c5e7">Creating a New Puzzle</h2>
-</div>
-
-<div id="outline-container-org2cc81c6" class="outline-2">
-<h2 id="org2cc81c6"><span class="todo TODO">TODO</span> Tools that We Have Made</h2>
-<div class="outline-text-2" id="text-org2cc81c6">
+<div id="outline-container-orgaefcf6d" class="outline-2">
+<h2 id="orgaefcf6d"><span class="todo TODO">TODO</span> Tools that We Have Made</h2>
+<div class="outline-text-2" id="text-orgaefcf6d">
 <p>
 svg, graphics&#x2026;
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgf232d0d" class="outline-2">
-<h2 id="orgf232d0d"><span class="todo TODO">TODO</span> Issues</h2>
+<div id="outline-container-org2a9eb7b" class="outline-2">
+<h2 id="org2a9eb7b"><span class="todo TODO">TODO</span> Issues</h2>
 </div>
 
-<div id="outline-container-org6f4a069" class="outline-2">
-<h2 id="org6f4a069"><span class="todo TODO">TODO</span> Future Plans</h2>
+<div id="outline-container-org1e1e79a" class="outline-2">
+<h2 id="org1e1e79a"><span class="todo TODO">TODO</span> Future Plans</h2>
 </div>
 
-<div id="outline-container-org7a61684" class="outline-2">
-<h2 id="org7a61684">Previous Maintainers</h2>
-<div class="outline-text-2" id="text-org7a61684">
+<div id="outline-container-org665827a" class="outline-2">
+<h2 id="org665827a">Maintainers</h2>
+<div class="outline-text-2" id="text-org665827a">
 <blockquote>
 <p>
 Zachary Haskins - <i>zdhdev@yahoo.com</i> <a href="https://github.com/malloc-nbytes/">Github</a>
@@ -646,7 +755,7 @@ Steven Yassa - <i>seyassa@mail.lipscomb.edu</i> Github
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zachary Haskins</p>
-<p class="date">Created: 2024-04-16 Tue 15:33</p>
+<p class="date">Created: 2024-04-16 Tue 16:14</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
