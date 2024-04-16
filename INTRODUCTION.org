@@ -1,0 +1,56 @@
+#+TITLE: Pointless Project
+#+AUTHOR: Zachary Haskins
+#+OPTIONS: html5-fancy:t
+#+SUBTITLE: Introduction
+#+DESCRIPTION: Introduction to the Pointless Project
+
+* Introduction
+
+The point(less) of the /Pointless Project/ is to provide fun puzzles to future potential students while
+teaching them about computer science topics without them realizing it. The project started when the School of Computing
+found that it was hard to keep in touch with the hopefully-to-be-students in Computer Science/Software Engineering.
+
+* Current Puzzles
+
+** Math
+
+** Color
+
+** Pixel
+
+** Maze
+
+** Encrypt
+
+** Based
+
+** Rematches
+
+*** Maze II
+
+*** Encrypt II
+
+*** Based II
+
+** Ast
+
+** Binary Addition (Graph Paper Robot I)
+
+** Logic Gate (Graph Paper Robot II)
+
+** TODO (Graph Paper Robot III)
+
+Currently unimplemented
+
+* Issues
+
+* Future Plans
+
+* Contact
+
+#+begin_quote
+Zachary Haskins - /zdhdev@yahoo.com/ [[https://github.com/malloc-nbytes/][Github]] \\
+Turner Austin - /tcaustin@mail.lipscomb.edu/ Github \\
+Mekeal Brown - /mtbrown@mail.lipscomb.edu/ [[https://github.com/mekealbrown][Github]] \\
+Steven Yassa - /seyassa@mail.lipscomb.edu/
+#+end_quote
