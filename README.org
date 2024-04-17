@@ -312,9 +312,9 @@ outside of =puzzle1.zip=, is because it allows for easy testing without having t
 This puzzle serves as the /Hello, World!/ puzzle. It introduces the user
 to reading the description, solving the puzzle, and inputing the password.
 
-We prompt the user to solve a very simple math question in the form of /a/ + /b/.
+We prompt the user to solve a very simple math question in the form of $a$ + $b$.
 
-/RNG/: /a/, /b/
+/RNG/: $a$, $b$
 
 ** Color
 
