@@ -352,14 +352,14 @@ This puzzle challenges the user by decrypting the password. We present them with
 a list of steps used to encrypt it, and they must undo it to get the password.
 
 The following things can happen:
-- shift all characters by /i/ to either the right (/r/) or left (/l/)
-- swap the characters at index /j/ and /k/
-- increase each *fourth* letter alphabetically by /n/.
+- shift all characters by $i$ to either the right $(r)$ or left $(l)$
+- swap the characters at index $j$ and $k$
+- increase each *fourth* letter alphabetically by $n$.
 
 /RNG/:
 
 - The instructions used
-- /i/, /r/, /l/, /j/, /k/, /n/
+- $i$, $r$, $l$, $j$, $k$, $n$
 
 ** TODO Based
 
@@ -375,11 +375,11 @@ rematch section.
 This is the harder version of the /Maze/ puzzle. We provide cryptic instructions
 in with the goal of having them inspect the page and navigate to the console. Once they
 type "instructions" a list of function calls are presented. The user then needs to navigate
-the maze using these function calls and must explore two other mazes with items that need to
-be picked up. Once these items are picked up, they then need to go to the first maze and go
-to the yellow tile. The password is then presented when they type "exit".
+the maze $(M_1)$ using these function calls and must explore two other mazes $(M_2, M_3)$ with items that need to
+be picked up. Once these items are picked up, they then need to go to $M_1$ and go
+to the yellow tile. The password is then presented when they type "exit()".
 
-/RNG/: Maze 1, Maze 2, and Maze 3
+/RNG/: $M_1, M_2, M_3$
 
 *** Encrypt Rematch
 
@@ -396,7 +396,7 @@ Once they have figured it out, they must decrypt the password.
 
 *NOTE*: This is a very difficult puzzle.
 
-The player is presented with grammar rules, an expression ($e$) (such as $a*(b/c)+d$), and a destination identifer ($i$).
+The player is presented with grammar rules, an expression $(e)$ (such as $a*(b/c)+d$), and a destination identifer $(i)$.
 The goal is to create an Abstract Syntax Tree (AST) and trace the route from the root node
 to $i$ and use that to find the correct path of the nested directories that gets generated.
 
@@ -411,11 +411,11 @@ incorporate those ideas in the last one.
 
 *** Binary Addition (Graph Paper Robot I)
 
-The player is presented with a 2x12 grid of (mostly) red and green pixels. The red pixels means 0
+The player is presented with a 2x12 grid of (mostly) red $(r)$ and green $(g)$ pixels. The red pixels means 0
 and green means 1. Then, following the rules in the instructions, the player should color in the correct
 squares with the correct color. The idea of this puzzle is that the player is actually performing binary addition.
 
-/RNG/: on/off pixels
+/RNG/: $r, g$ pixels
 
 *** TODO Logic Gate (Graph Paper Robot II)
 
