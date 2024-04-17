@@ -114,7 +114,7 @@ generated. You can now inspect and solve the puzzle(s) by choosing the appropria
 * Puzzle Creation Framework
 
 It is obvious to see that there are a lot of directories in this project, and not all
-of them contain code. In fact, most of these directories contains the necessary resources
+of them contain code. In fact, most of these directories contain the necessary resources
 for their respective puzzle.
 
 Any directory that starts with =files-= are resource directories. They contain (at least) the =.desc.txt=
@@ -307,30 +307,54 @@ outside of =puzzle1.zip=, is because it allows for easy testing without having t
 
 * Current Puzzles
 
+These are the currently implemented puzzles. Each one has three entries.
+1. /Adjustable Variables/: Variables can be adjusted to make the puzzle harder/easier
+2. /Description/: What the puzzle does
+3. /RNG/: What exactly in the puzzles are random
+
 ** Math
+
+/Adjustable Variables/:
+- =MATH_MIN1=
+- =MATH_MAX1=
+- =MATH_MIN2=
+- =MATH_MAX2=
+
+/Description/:
 
 This puzzle serves as the /Hello, World!/ puzzle. It introduces the user
 to reading the description, solving the puzzle, and inputing the password.
 
 We prompt the user to solve a very simple math question in the form of $a$ + $b$.
 
-/RNG/: $a$, $b$
+/RNG/:
+- $a$, $b$
 
 ** Color
 
-This puzzle asks the user to enter the hex value of on of Lipscomb's colors (purple or yellow).
+/Adjustable Variables/: /None/
+
+/Description/:
+
+This puzzle asks the user to enter the hex value of one of Lipscomb's colors (purple or yellow).
 The goal of this puzzle is to teach the user about hex values. We hope that the user does
 some simple Googling to find [[https://teamcolorcodes.com/lipscomb-university-bisons-color-codes/][this website]] to find the colors.
 
-/RNG/: purple|yellow
+/RNG/:
+- purple | yellow
 
 ** TODO Pixel
 
 ** Maze
 
+/Adjustable Variables/:
+- =MAZE_SIZE= (*must be an odd number*)
+
+/Description/:
+
 The goal of this puzzle is to teach the user about [[https://en.wikipedia.org/wiki/Run-length_encoding][run-length encoding]].
 This encoding algorithm places numbers before the letters, while we expect the numbers to be after.
-We do this because it more closely matches function calls in the form of /f(x) \rightarrow n/.
+We do this because it more closely matches function calls in the form of $f \space x \rightarrow n$.
 
 We randomly generate a maze as an SVG and have the user navigate it using the following rules:
 
@@ -344,9 +368,21 @@ We randomly generate a maze as an SVG and have the user navigate it using the fo
 However, the answer is not just the path that you must take (/uulrrrd/ for example), you must
 apply the run-length encoding algorithm to it. So the answer would be: /u2lr3d/.
 
-/RNG/: The maze that is presented.
+/RNG/:
+- The maze that is presented.
 
 ** Encrypt
+
+/Adjustable Variables/:
+
+- =ENCR_WORDS=
+- =ENCR_OPS=
+- =ENCR_ROTATIONS_MIN=
+- =ENCR_ROTATIONS_MAX=
+- =ENCR_CHANGE_MIN=
+- =ENCR_CHANGE_MAX=
+
+/Description/:
 
 This puzzle challenges the user by decrypting the password. We present them with
 a list of steps used to encrypt it, and they must undo it to get the password.
@@ -357,7 +393,6 @@ The following things can happen:
 - increase each *fourth* letter alphabetically by $n$.
 
 /RNG/:
-
 - The instructions used
 - $i$, $r$, $l$, $j$, $k$, $n$
 
@@ -372,6 +407,11 @@ rematch section.
 
 *** Maze Rematch
 
+/Adjustable Variables/:
+- =MAZE_SIZE= (*must be an odd number*)
+
+/Description/:
+
 This is the harder version of the /Maze/ puzzle. We provide cryptic instructions
 in with the goal of having them inspect the page and navigate to the console. Once they
 type "instructions" a list of function calls are presented. The user then needs to navigate
@@ -379,20 +419,29 @@ the maze $(M_1)$ using these function calls and must explore two other mazes $(M
 be picked up. Once these items are picked up, they then need to go to $M_1$ and go
 to the yellow tile. The password is then presented when they type "exit()".
 
-/RNG/: $M_1, M_2, M_3$
+/RNG/:
+- $M_1, M_2, M_3$, password
 
 *** Encrypt Rematch
+/Adjustable Variables/:
+- =ENCR_WORDS=
+
+/Description/:
 
 This is a harder version of the /Encrypt/ puzzle. It presents the user with an encrypted password
 as well as a /not-so-helpful-at-first/ order of steps that were taken. The user must interact with
 a textbox on screen and try to figure out that pattern in which the buttons mess with their input.
 Once they have figured it out, they must decrypt the password.
 
-/RNG/: The password
+/RNG/:
+- The password
 
 *** TODO Based Rematch
 
 ** AST
+/Adjustable Variables/: /None/
+
+/Description/:
 
 *NOTE*: This is a very difficult puzzle.
 
@@ -400,7 +449,9 @@ The player is presented with grammar rules, an expression $(e)$ (such as $a*(b/c
 The goal is to create an Abstract Syntax Tree (AST) and trace the route from the root node
 to $i$ and use that to find the correct path of the nested directories that gets generated.
 
-/RNG/: $e$, $i$, path from root \rightarrow $i$
+/RNG/:
+- $e$, $i$
+- path from root \rightarrow $i$
 
 ** Graph Paper Robot Puzzles
 
@@ -410,6 +461,12 @@ teach the player about certain topics in the first two paper robot puzzles (stat
 incorporate those ideas in the last one.
 
 *** Binary Addition (Graph Paper Robot I)
+/Adjustable Variables/:
+- =TAPE_WIDTH=
+- =TAPE_HEIGHT=
+- =REQ_CARRIES=
+
+/Description/:
 
 The player is presented with a 2x12 grid of (mostly) red $(r)$ and green $(g)$ pixels. The red pixels means 0
 and green means 1. Then, following the rules in the instructions, the player should color in the correct
@@ -425,89 +482,39 @@ Currently unimplemented
 
 Currently unimplemented
 
-* API
-
-We have made some tools that makes things such as images easier to implement in the frontend.
-
-** Image API
-
-=struct Image= implements:
-
-#+begin_src c++
-  Image(size_t w, size_t h);
-#+end_src
-
-The =Image= constructor. Sets the width and height to =w= and =h= respectively.
-Sets all pixels to transparent.
-
-#+begin_src c++
-  Pixel &operator()(size_t i, size_t j);
-#+end_src
-
-The pixels are a matrix of pixels represented as a 1D array. This is an operator
-overload to access some pixel at =i=, =j=.
-
-** SVG API
-
-This is used when you want to have SVGs in your HTML file. The overall structure is
-just a vector of shapes that then get converted into one long string and inserted directly
-into the HTML file.
-
-=struct Svg= implements:
-
-#+begin_src c++
-  struct Shape
-#+end_src
-
-#+begin_src c++
-  struct Rect inherits Shape
-#+end_src
-
-#+begin_src c++
-  struct Circle inherits Shape
-#+end_src
-
-#+begin_src c++
-  Svg(float w, float h);
-#+end_src
-
-The constructor. Sets the width and height of the SVG.
-
-#+begin_src c++
-  template <class Shape> void add_shape(Shape shape);
-#+end_src
-
-Appends a shape to the SVG.
-
-#+begin_src c++
-std::string build(void);
-#+end_src
-
-Returns a string of all shapes in valid SVG format to embed into HTML.
-
 * Utilities
 
 Like the name implies, these are very helpful utility functions that are available.
 
+** Externs
+
+=extern uint32_t FLAGS;=
+
+** Typedefs
+
+=typedef std::vector<std::string> strvec_t;=
+
+=typedef const std::string filepath_t;=
+
 ** Macros
 
-=#define ANS_ONLY 1 << 0=
+=ANS_ONLY=
 
 Disables artifacts from being created
 
-=#define SET_SEED 1 << 1=
+=SET_SEED=
 
 Whether or not to use a set seed
 
-=#define NO_HDR 1 << 2=
+=NO_HDR=
 
 Makes it so that the header of a puzzle will not be generated
 
-=#define NO_FTR 1 << 3=
+=NO_FTR=
 
 Makes it so that the footer of a puzzle will not be generated
 
-=#define BISON_GRID 1 << 4=
+=BISON_GRID=
 
 Makes the pixelated bison generate with a grid
 
@@ -536,13 +543,13 @@ Rolls a seed using the current time.
 #+end_src
 
 Returns a vector of strings containing the names of all files in =path=.
-Recursively walks all subdirectories and will ignore all files/dirs that start with `.`
+Recursively walks all subdirectories and will ignore all files/dirs that start with =.=.
 
 #+begin_src c++
   void utils_zip_files(filepath_t out_file_name, strvec_t file_names, std::string password="");
 #+end_src
 
-Zips the given files into a single file =out_file_name= with the =file_names= and the password =password=.
+Zips the given files into a single file =out_file_name= with =file_names= and the password =password=.
 
 #+begin_src c++
   std::string utils_file_to_str(filepath_t filepath);
@@ -574,6 +581,14 @@ A simple grouping of R, G, B, =uint8_t='s and =float= A for alpha.
 
 A matrix of pixels.
 
+=struct Svg::Shape=
+
+=struct Svg::Shape::Rect= inherits =struct Svg::Shape=
+
+=struct Svg::Shape::Circle= inherits =struct Svg::Shape=
+
+Shape structs that is used within =struct Svg=.
+
 =struct Svg=
 
 A list of =Shape= s that can be built into a =string= of a valid SVG.
@@ -583,7 +598,83 @@ A list of =Shape= s that can be built into a =string= of a valid SVG.
 *NOTE*: We have moved away from PPM files and focus more on SVGs.
 
 #+begin_src c++
-  void graphics_create_ppm(Image &img, const char *filepath);
+  Svg(float w, float h);
+#+end_src
+
+Constructor for an =Svg=. Sets with width and height to =w= and =h=.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.h
+
+#+begin_src c++
+  template <class Shape> void add_shape(Shape shape);
+#+end_src
+
+Appends a shape to the SVG.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.h
+
+#+begin_src c++
+  std::string Svg::build(void);
+#+end_src
+
+Returns a string of all shapes in valid SVG format to embed into HTML.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.cpp
+
+#+begin_src c++
+  Rect(float _x, float _y,
+       float _width, float _height,
+       std::string _fill,
+       std::optional<std::string> _stroke = {},
+       std::optional<std::string> _html_classname = {});
+#+end_src
+
+Constructor for =Svg::Shape::Rect=.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.h
+
+#+begin_src c++
+  Circle(float _x, float _y, float _radius, std::string _fill,
+         std::optional<std::string> _stroke = {},
+         std::optional<std::string> _html_classname = {});
+#+end_src
+
+Constructor for =Svg::Shape::Circle=.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.h
+
+#+begin_src c++
+  std::string Svg::Rect::make() const
+#+end_src
+
+Creates an SVG line of a =Rect=.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.cpp
+
+#+begin_src c++
+  std::string Svg::Circle::make() const
+#+end_src
+
+Creates an SVG line of a =Circle=.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.cpp
+
+#+begin_src c++
+    void graphics_create_ppm(Image &img, const char *filepath);
 #+end_src
 
 Creates a PPM image from =img= and saves it to =filepath=.

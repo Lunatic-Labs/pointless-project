@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-04-16 Tue 20:12 -->
+<!-- 2024-04-16 Tue 21:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pointless Project</title>
@@ -50,73 +50,69 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org425e7a1">Introduction</a></li>
-<li><a href="#org83ba9e3">Project Setup</a>
+<li><a href="#org277af6d">Introduction</a></li>
+<li><a href="#orgd53a37b">Project Setup</a>
 <ul>
-<li><a href="#org60b4222">Installation</a>
+<li><a href="#orge8971e9">Installation</a>
 <ul>
-<li><a href="#org2a9ea36">Linux (<i>recommened</i>)</a></li>
-<li><a href="#orgfdd26b5">Windows</a></li>
-<li><a href="#org28b1aad">Mac</a></li>
+<li><a href="#orgdd4406c">Linux (<i>recommened</i>)</a></li>
+<li><a href="#org66683ae">Windows</a></li>
+<li><a href="#orgb9445a7">Mac</a></li>
 </ul>
 </li>
-<li><a href="#org7a2d068">Building</a></li>
+<li><a href="#org6efcc8f">Building</a></li>
 </ul>
 </li>
-<li><a href="#orgc671009">Puzzle Creation Framework</a></li>
-<li><a href="#orga4c6658">Implementing a New Puzzle</a>
+<li><a href="#org665194c">Puzzle Creation Framework</a></li>
+<li><a href="#orga790dc0">Implementing a New Puzzle</a>
 <ul>
-<li><a href="#org417f465">Puzzle Resources Directory</a></li>
-<li><a href="#org0c87069">Puzzle Implementation</a></li>
-<li><a href="#org466d8d7">Using the Puzzle</a></li>
+<li><a href="#orgacfefde">Puzzle Resources Directory</a></li>
+<li><a href="#org3686a5b">Puzzle Implementation</a></li>
+<li><a href="#org52ab26d">Using the Puzzle</a></li>
 </ul>
 </li>
-<li><a href="#orga0470d8">Current Puzzles</a>
+<li><a href="#org09188f9">Current Puzzles</a>
 <ul>
-<li><a href="#org3d785d5">Math</a></li>
-<li><a href="#orge81d099">Color</a></li>
-<li><a href="#org233cbcc"><span class="todo TODO">TODO</span> Pixel</a></li>
-<li><a href="#orgec8fb58">Maze</a></li>
-<li><a href="#org3766b0e">Encrypt</a></li>
-<li><a href="#org7c42afe"><span class="todo TODO">TODO</span> Based</a></li>
-<li><a href="#orga5cb911">Rematches</a>
+<li><a href="#org09cb4bc">Math</a></li>
+<li><a href="#org21268ab">Color</a></li>
+<li><a href="#org84846ac"><span class="todo TODO">TODO</span> Pixel</a></li>
+<li><a href="#org541b132">Maze</a></li>
+<li><a href="#org4b979e9">Encrypt</a></li>
+<li><a href="#org04aca95"><span class="todo TODO">TODO</span> Based</a></li>
+<li><a href="#orgdc47587">Rematches</a>
 <ul>
-<li><a href="#org45dac06">Maze Rematch</a></li>
-<li><a href="#orgc5cf506">Encrypt Rematch</a></li>
-<li><a href="#org84fbf36"><span class="todo TODO">TODO</span> Based Rematch</a></li>
+<li><a href="#orgb89df20">Maze Rematch</a></li>
+<li><a href="#orgb375d2b">Encrypt Rematch</a></li>
+<li><a href="#org82b3e88"><span class="todo TODO">TODO</span> Based Rematch</a></li>
 </ul>
 </li>
-<li><a href="#orgd97a644">AST</a></li>
-<li><a href="#org851cd96">Graph Paper Robot Puzzles</a>
+<li><a href="#orgc81020e">AST</a></li>
+<li><a href="#org6ed4115">Graph Paper Robot Puzzles</a>
 <ul>
-<li><a href="#org3b372a2">Binary Addition (Graph Paper Robot I)</a></li>
-<li><a href="#org572d1ac"><span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</a></li>
-<li><a href="#org9c7c088"><span class="todo TODO">TODO</span> (Graph Paper Robot III)</a></li>
+<li><a href="#org62c8a65">Binary Addition (Graph Paper Robot I)</a></li>
+<li><a href="#org6047cf4"><span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</a></li>
+<li><a href="#org21e9ad7"><span class="todo TODO">TODO</span> (Graph Paper Robot III)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orge7976cd">API</a>
+<li><a href="#org3a91e2e">Utilities</a>
 <ul>
-<li><a href="#org2652916">Image API</a></li>
-<li><a href="#orgf6aee7d">SVG API</a></li>
+<li><a href="#org152a159">Externs</a></li>
+<li><a href="#orgb0d34c3">Typedefs</a></li>
+<li><a href="#org4030ef8">Macros</a></li>
+<li><a href="#org182e988">Functions</a></li>
 </ul>
 </li>
-<li><a href="#org430789d">Utilities</a>
+<li><a href="#org902de47">Graphics</a>
 <ul>
-<li><a href="#orgee253ea">Macros</a></li>
-<li><a href="#orga4d5af3">Functions</a></li>
+<li><a href="#org65f2034">Structs</a></li>
+<li><a href="#org7565274">Functions</a></li>
 </ul>
 </li>
-<li><a href="#orgde359fd">Graphics</a>
-<ul>
-<li><a href="#orgd583351">Structs</a></li>
-<li><a href="#orgaf13ace">Functions</a></li>
-</ul>
-</li>
-<li><a href="#orgf81121a">Issues</a></li>
-<li><a href="#org88a2735"><span class="todo TODO">TODO</span> Future Plans</a></li>
-<li><a href="#orgb4e53e5">Contact</a></li>
+<li><a href="#org2c7d683">Issues</a></li>
+<li><a href="#org53e0031"><span class="todo TODO">TODO</span> Future Plans</a></li>
+<li><a href="#org58fcd6f">Contact</a></li>
 </ul>
 </div>
 </div>
@@ -125,9 +121,9 @@
 in a much better format.
 </p>
 
-<div id="outline-container-org425e7a1" class="outline-2">
-<h2 id="org425e7a1">Introduction</h2>
-<div class="outline-text-2" id="text-org425e7a1">
+<div id="outline-container-org277af6d" class="outline-2">
+<h2 id="org277af6d">Introduction</h2>
+<div class="outline-text-2" id="text-org277af6d">
 <blockquote>
 <p>
 The point(less) of the <i>Pointless Project</i> is to create a compelling, puzzle-filled
@@ -152,17 +148,17 @@ someone else's "<a href="https://github.com/KanegaeGabriel/synacor-challenge/blo
 </div>
 </div>
 
-<div id="outline-container-org83ba9e3" class="outline-2">
-<h2 id="org83ba9e3">Project Setup</h2>
-<div class="outline-text-2" id="text-org83ba9e3">
+<div id="outline-container-orgd53a37b" class="outline-2">
+<h2 id="orgd53a37b">Project Setup</h2>
+<div class="outline-text-2" id="text-orgd53a37b">
 </div>
-<div id="outline-container-org60b4222" class="outline-3">
-<h3 id="org60b4222">Installation</h3>
-<div class="outline-text-3" id="text-org60b4222">
+<div id="outline-container-orge8971e9" class="outline-3">
+<h3 id="orge8971e9">Installation</h3>
+<div class="outline-text-3" id="text-orge8971e9">
 </div>
-<div id="outline-container-org2a9ea36" class="outline-4">
-<h4 id="org2a9ea36">Linux (<i>recommened</i>)</h4>
-<div class="outline-text-4" id="text-org2a9ea36">
+<div id="outline-container-orgdd4406c" class="outline-4">
+<h4 id="orgdd4406c">Linux (<i>recommened</i>)</h4>
+<div class="outline-text-4" id="text-orgdd4406c">
 <p>
 For Debian based distributions, run:
 </p>
@@ -199,9 +195,9 @@ sudo pacman -S file-roller
 </div>
 </div>
 
-<div id="outline-container-orgfdd26b5" class="outline-4">
-<h4 id="orgfdd26b5">Windows</h4>
-<div class="outline-text-4" id="text-orgfdd26b5">
+<div id="outline-container-org66683ae" class="outline-4">
+<h4 id="org66683ae">Windows</h4>
+<div class="outline-text-4" id="text-org66683ae">
 <p>
 For windows, we recommend developing with <a href="https://learn.microsoft.com/en-us/windows/wsl/about">WSL</a> (Windows Subsystem for Linux).
 Please install it if you do not already have it using this <a href="https://learn.microsoft.com/en-us/windows/wsl/install">guide</a>. After that,
@@ -214,9 +210,9 @@ For viewing the zipfiles, we have found that <a href="https://www.7-zip.org/down
 </div>
 </div>
 
-<div id="outline-container-org28b1aad" class="outline-4">
-<h4 id="org28b1aad">Mac</h4>
-<div class="outline-text-4" id="text-org28b1aad">
+<div id="outline-container-orgb9445a7" class="outline-4">
+<h4 id="orgb9445a7">Mac</h4>
+<div class="outline-text-4" id="text-orgb9445a7">
 <p>
 Unfortunately, we have not been able to get the project built on MacOS. We have
 decided the the best option for Mac users is to choose a virtual machine to run
@@ -244,9 +240,9 @@ and have the VM use it, then follow the installation on Linux.
 </div>
 </div>
 
-<div id="outline-container-org7a2d068" class="outline-3">
-<h3 id="org7a2d068">Building</h3>
-<div class="outline-text-3" id="text-org7a2d068">
+<div id="outline-container-org6efcc8f" class="outline-3">
+<h3 id="org6efcc8f">Building</h3>
+<div class="outline-text-3" id="text-org6efcc8f">
 <p>
 First, clone the repository if not done already:
 </p>
@@ -290,12 +286,12 @@ generated. You can now inspect and solve the puzzle(s) by choosing the appropria
 </div>
 </div>
 
-<div id="outline-container-orgc671009" class="outline-2">
-<h2 id="orgc671009">Puzzle Creation Framework</h2>
-<div class="outline-text-2" id="text-orgc671009">
+<div id="outline-container-org665194c" class="outline-2">
+<h2 id="org665194c">Puzzle Creation Framework</h2>
+<div class="outline-text-2" id="text-org665194c">
 <p>
 It is obvious to see that there are a lot of directories in this project, and not all
-of them contain code. In fact, most of these directories contains the necessary resources
+of them contain code. In fact, most of these directories contain the necessary resources
 for their respective puzzle.
 </p>
 
@@ -351,7 +347,7 @@ Below is a UML diagram of how a puzzle gets created.
 </p>
 
 
-<div id="orgac8236f" class="figure">
+<div id="org60bde4c" class="figure">
 <p><img src="./puzzle-uml.svg" alt="puzzle-uml.svg" class="org-svg" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Puzzle Creation UML</p>
@@ -359,18 +355,18 @@ Below is a UML diagram of how a puzzle gets created.
 </div>
 </div>
 
-<div id="outline-container-orga4c6658" class="outline-2">
-<h2 id="orga4c6658">Implementing a New Puzzle</h2>
-<div class="outline-text-2" id="text-orga4c6658">
+<div id="outline-container-orga790dc0" class="outline-2">
+<h2 id="orga790dc0">Implementing a New Puzzle</h2>
+<div class="outline-text-2" id="text-orga790dc0">
 <p>
 Implementing a new puzzle is increadibly easy with how we implemented it. Here are the steps
 to take when doing so.
 </p>
 </div>
 
-<div id="outline-container-org417f465" class="outline-3">
-<h3 id="org417f465">Puzzle Resources Directory</h3>
-<div class="outline-text-3" id="text-org417f465">
+<div id="outline-container-orgacfefde" class="outline-3">
+<h3 id="orgacfefde">Puzzle Resources Directory</h3>
+<div class="outline-text-3" id="text-orgacfefde">
 <p>
 Start by creating a new directory in <code>src/</code> and name it <code>files-&lt;new puzzle name&gt;</code>.
 Then inside of there, create a new file called <code>.desc.txt</code>. This is where the instructions,
@@ -407,9 +403,9 @@ echo "What is the &lt;b&gt;%DELIM&lt;/b&gt;th number in the fibonacci sequence?"
 </div>
 </div>
 
-<div id="outline-container-org0c87069" class="outline-3">
-<h3 id="org0c87069">Puzzle Implementation</h3>
-<div class="outline-text-3" id="text-org0c87069">
+<div id="outline-container-org3686a5b" class="outline-3">
+<h3 id="org3686a5b">Puzzle Implementation</h3>
+<div class="outline-text-3" id="text-org3686a5b">
 <p>
 Once the above step is done, create a new file called <code>&lt;puzzle name&gt;-puzzle.cpp</code>
 in <code>src/</code> and put the entrypoint of the function that will create the puzzle.
@@ -505,9 +501,9 @@ Now that the implementation is done, add the signature of <code>Puzzle fib_puzzl
 </div>
 </div>
 
-<div id="outline-container-org466d8d7" class="outline-3">
-<h3 id="org466d8d7">Using the Puzzle</h3>
-<div class="outline-text-3" id="text-org466d8d7">
+<div id="outline-container-org52ab26d" class="outline-3">
+<h3 id="org52ab26d">Using the Puzzle</h3>
+<div class="outline-text-3" id="text-org52ab26d">
 <p>
 In the <code>main</code> function in <code>main.cpp</code>, there is some code that looks like:
 </p>
@@ -567,13 +563,36 @@ outside of <code>puzzle1.zip</code>, is because it allows for easy testing witho
 </div>
 </div>
 
-<div id="outline-container-orga0470d8" class="outline-2">
-<h2 id="orga0470d8">Current Puzzles</h2>
-<div class="outline-text-2" id="text-orga0470d8">
+<div id="outline-container-org09188f9" class="outline-2">
+<h2 id="org09188f9">Current Puzzles</h2>
+<div class="outline-text-2" id="text-org09188f9">
+<p>
+These are the currently implemented puzzles. Each one has three entries.
+</p>
+<ol class="org-ol">
+<li><i>Adjustable Variables</i>: Variables can be adjusted to make the puzzle harder/easier</li>
+<li><i>Description</i>: What the puzzle does</li>
+<li><i>RNG</i>: What exactly in the puzzles are random</li>
+</ol>
 </div>
-<div id="outline-container-org3d785d5" class="outline-3">
-<h3 id="org3d785d5">Math</h3>
-<div class="outline-text-3" id="text-org3d785d5">
+
+<div id="outline-container-org09cb4bc" class="outline-3">
+<h3 id="org09cb4bc">Math</h3>
+<div class="outline-text-3" id="text-org09cb4bc">
+<p>
+<i>Adjustable Variables</i>:
+</p>
+<ul class="org-ul">
+<li><code>MATH_MIN1</code></li>
+<li><code>MATH_MAX1</code></li>
+<li><code>MATH_MIN2</code></li>
+<li><code>MATH_MAX2</code></li>
+</ul>
+
+<p>
+<i>Description</i>:
+</p>
+
 <p>
 This puzzle serves as the <i>Hello, World!</i> puzzle. It introduces the user
 to reading the description, solving the puzzle, and inputing the password.
@@ -584,37 +603,62 @@ We prompt the user to solve a very simple math question in the form of \(a\) + \
 </p>
 
 <p>
-<i>RNG</i>: \(a\), \(b\)
+<i>RNG</i>:
 </p>
+<ul class="org-ul">
+<li>\(a\), \(b\)</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-orge81d099" class="outline-3">
-<h3 id="orge81d099">Color</h3>
-<div class="outline-text-3" id="text-orge81d099">
+<div id="outline-container-org21268ab" class="outline-3">
+<h3 id="org21268ab">Color</h3>
+<div class="outline-text-3" id="text-org21268ab">
 <p>
-This puzzle asks the user to enter the hex value of on of Lipscomb's colors (purple or yellow).
+<i>Adjustable Variables</i>: <i>None</i>
+</p>
+
+<p>
+<i>Description</i>:
+</p>
+
+<p>
+This puzzle asks the user to enter the hex value of one of Lipscomb's colors (purple or yellow).
 The goal of this puzzle is to teach the user about hex values. We hope that the user does
 some simple Googling to find <a href="https://teamcolorcodes.com/lipscomb-university-bisons-color-codes/">this website</a> to find the colors.
 </p>
 
 <p>
-<i>RNG</i>: purple|yellow
+<i>RNG</i>:
 </p>
+<ul class="org-ul">
+<li>purple | yellow</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-org233cbcc" class="outline-3">
-<h3 id="org233cbcc"><span class="todo TODO">TODO</span> Pixel</h3>
+<div id="outline-container-org84846ac" class="outline-3">
+<h3 id="org84846ac"><span class="todo TODO">TODO</span> Pixel</h3>
 </div>
 
-<div id="outline-container-orgec8fb58" class="outline-3">
-<h3 id="orgec8fb58">Maze</h3>
-<div class="outline-text-3" id="text-orgec8fb58">
+<div id="outline-container-org541b132" class="outline-3">
+<h3 id="org541b132">Maze</h3>
+<div class="outline-text-3" id="text-org541b132">
+<p>
+<i>Adjustable Variables</i>:
+</p>
+<ul class="org-ul">
+<li><code>MAZE_SIZE</code> (<b>must be an odd number</b>)</li>
+</ul>
+
+<p>
+<i>Description</i>:
+</p>
+
 <p>
 The goal of this puzzle is to teach the user about <a href="https://en.wikipedia.org/wiki/Run-length_encoding">run-length encoding</a>.
 This encoding algorithm places numbers before the letters, while we expect the numbers to be after.
-We do this because it more closely matches function calls in the form of <i>f(x) &rarr; n</i>.
+We do this because it more closely matches function calls in the form of \(f \space x \rightarrow n\).
 </p>
 
 <p>
@@ -664,14 +708,34 @@ apply the run-length encoding algorithm to it. So the answer would be: <i>u2lr3d
 </p>
 
 <p>
-<i>RNG</i>: The maze that is presented.
+<i>RNG</i>:
 </p>
+<ul class="org-ul">
+<li>The maze that is presented.</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-org3766b0e" class="outline-3">
-<h3 id="org3766b0e">Encrypt</h3>
-<div class="outline-text-3" id="text-org3766b0e">
+<div id="outline-container-org4b979e9" class="outline-3">
+<h3 id="org4b979e9">Encrypt</h3>
+<div class="outline-text-3" id="text-org4b979e9">
+<p>
+<i>Adjustable Variables</i>:
+</p>
+
+<ul class="org-ul">
+<li><code>ENCR_WORDS</code></li>
+<li><code>ENCR_OPS</code></li>
+<li><code>ENCR_ROTATIONS_MIN</code></li>
+<li><code>ENCR_ROTATIONS_MAX</code></li>
+<li><code>ENCR_CHANGE_MIN</code></li>
+<li><code>ENCR_CHANGE_MAX</code></li>
+</ul>
+
+<p>
+<i>Description</i>:
+</p>
+
 <p>
 This puzzle challenges the user by decrypting the password. We present them with
 a list of steps used to encrypt it, and they must undo it to get the password.
@@ -689,7 +753,6 @@ The following things can happen:
 <p>
 <i>RNG</i>:
 </p>
-
 <ul class="org-ul">
 <li>The instructions used</li>
 <li>\(i\), \(r\), \(l\), \(j\), \(k\), \(n\)</li>
@@ -697,13 +760,13 @@ The following things can happen:
 </div>
 </div>
 
-<div id="outline-container-org7c42afe" class="outline-3">
-<h3 id="org7c42afe"><span class="todo TODO">TODO</span> Based</h3>
+<div id="outline-container-org04aca95" class="outline-3">
+<h3 id="org04aca95"><span class="todo TODO">TODO</span> Based</h3>
 </div>
 
-<div id="outline-container-orga5cb911" class="outline-3">
-<h3 id="orga5cb911">Rematches</h3>
-<div class="outline-text-3" id="text-orga5cb911">
+<div id="outline-container-orgdc47587" class="outline-3">
+<h3 id="orgdc47587">Rematches</h3>
+<div class="outline-text-3" id="text-orgdc47587">
 <p>
 The "rematch" puzzles serve as the point in the project where there is a
 noticable difficulty spike. It interrupts the linear nested puzzle format
@@ -713,9 +776,20 @@ rematch section.
 </p>
 </div>
 
-<div id="outline-container-org45dac06" class="outline-4">
-<h4 id="org45dac06">Maze Rematch</h4>
-<div class="outline-text-4" id="text-org45dac06">
+<div id="outline-container-orgb89df20" class="outline-4">
+<h4 id="orgb89df20">Maze Rematch</h4>
+<div class="outline-text-4" id="text-orgb89df20">
+<p>
+<i>Adjustable Variables</i>:
+</p>
+<ul class="org-ul">
+<li><code>MAZE_SIZE</code> (<b>must be an odd number</b>)</li>
+</ul>
+
+<p>
+<i>Description</i>:
+</p>
+
 <p>
 This is the harder version of the <i>Maze</i> puzzle. We provide cryptic instructions
 in with the goal of having them inspect the page and navigate to the console. Once they
@@ -726,14 +800,28 @@ to the yellow tile. The password is then presented when they type "exit()".
 </p>
 
 <p>
-<i>RNG</i>: \(M_1, M_2, M_3\)
+<i>RNG</i>:
 </p>
+<ul class="org-ul">
+<li>\(M_1, M_2, M_3\), password</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-orgc5cf506" class="outline-4">
-<h4 id="orgc5cf506">Encrypt Rematch</h4>
-<div class="outline-text-4" id="text-orgc5cf506">
+<div id="outline-container-orgb375d2b" class="outline-4">
+<h4 id="orgb375d2b">Encrypt Rematch</h4>
+<div class="outline-text-4" id="text-orgb375d2b">
+<p>
+<i>Adjustable Variables</i>:
+</p>
+<ul class="org-ul">
+<li><code>ENCR_WORDS</code></li>
+</ul>
+
+<p>
+<i>Description</i>:
+</p>
+
 <p>
 This is a harder version of the <i>Encrypt</i> puzzle. It presents the user with an encrypted password
 as well as a <i>not-so-helpful-at-first</i> order of steps that were taken. The user must interact with
@@ -742,19 +830,30 @@ Once they have figured it out, they must decrypt the password.
 </p>
 
 <p>
-<i>RNG</i>: The password
+<i>RNG</i>:
 </p>
+<ul class="org-ul">
+<li>The password</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-org84fbf36" class="outline-4">
-<h4 id="org84fbf36"><span class="todo TODO">TODO</span> Based Rematch</h4>
+<div id="outline-container-org82b3e88" class="outline-4">
+<h4 id="org82b3e88"><span class="todo TODO">TODO</span> Based Rematch</h4>
 </div>
 </div>
 
-<div id="outline-container-orgd97a644" class="outline-3">
-<h3 id="orgd97a644">AST</h3>
-<div class="outline-text-3" id="text-orgd97a644">
+<div id="outline-container-orgc81020e" class="outline-3">
+<h3 id="orgc81020e">AST</h3>
+<div class="outline-text-3" id="text-orgc81020e">
+<p>
+<i>Adjustable Variables</i>: <i>None</i>
+</p>
+
+<p>
+<i>Description</i>:
+</p>
+
 <p>
 <b>NOTE</b>: This is a very difficult puzzle.
 </p>
@@ -766,14 +865,18 @@ to \(i\) and use that to find the correct path of the nested directories that ge
 </p>
 
 <p>
-<i>RNG</i>: \(e\), \(i\), path from root &rarr; \(i\)
+<i>RNG</i>:
 </p>
+<ul class="org-ul">
+<li>\(e\), \(i\)</li>
+<li>path from root &rarr; \(i\)</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-org851cd96" class="outline-3">
-<h3 id="org851cd96">Graph Paper Robot Puzzles</h3>
-<div class="outline-text-3" id="text-org851cd96">
+<div id="outline-container-org6ed4115" class="outline-3">
+<h3 id="org6ed4115">Graph Paper Robot Puzzles</h3>
+<div class="outline-text-3" id="text-org6ed4115">
 <p>
 The idea behind this trilogy of paper robot puzzles, is that we want the player to bring out
 a piece of graph paper and something to color the squares with and do this all on paper. We want to
@@ -782,9 +885,22 @@ incorporate those ideas in the last one.
 </p>
 </div>
 
-<div id="outline-container-org3b372a2" class="outline-4">
-<h4 id="org3b372a2">Binary Addition (Graph Paper Robot I)</h4>
-<div class="outline-text-4" id="text-org3b372a2">
+<div id="outline-container-org62c8a65" class="outline-4">
+<h4 id="org62c8a65">Binary Addition (Graph Paper Robot I)</h4>
+<div class="outline-text-4" id="text-org62c8a65">
+<p>
+<i>Adjustable Variables</i>:
+</p>
+<ul class="org-ul">
+<li><code>TAPE_WIDTH</code></li>
+<li><code>TAPE_HEIGHT</code></li>
+<li><code>REQ_CARRIES</code></li>
+</ul>
+
+<p>
+<i>Description</i>:
+</p>
+
 <p>
 The player is presented with a 2x12 grid of (mostly) red \((r)\) and green \((g)\) pixels. The red pixels means 0
 and green means 1. Then, following the rules in the instructions, the player should color in the correct
@@ -797,18 +913,18 @@ squares with the correct color. The idea of this puzzle is that the player is ac
 </div>
 </div>
 
-<div id="outline-container-org572d1ac" class="outline-4">
-<h4 id="org572d1ac"><span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</h4>
-<div class="outline-text-4" id="text-org572d1ac">
+<div id="outline-container-org6047cf4" class="outline-4">
+<h4 id="org6047cf4"><span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</h4>
+<div class="outline-text-4" id="text-org6047cf4">
 <p>
 Currently unimplemented
 </p>
 </div>
 </div>
 
-<div id="outline-container-org9c7c088" class="outline-4">
-<h4 id="org9c7c088"><span class="todo TODO">TODO</span> (Graph Paper Robot III)</h4>
-<div class="outline-text-4" id="text-org9c7c088">
+<div id="outline-container-org21e9ad7" class="outline-4">
+<h4 id="org21e9ad7"><span class="todo TODO">TODO</span> (Graph Paper Robot III)</h4>
+<div class="outline-text-4" id="text-org21e9ad7">
 <p>
 Currently unimplemented
 </p>
@@ -817,114 +933,41 @@ Currently unimplemented
 </div>
 </div>
 
-<div id="outline-container-orge7976cd" class="outline-2">
-<h2 id="orge7976cd">API</h2>
-<div class="outline-text-2" id="text-orge7976cd">
-<p>
-We have made some tools that makes things such as images easier to implement in the frontend.
-</p>
-</div>
-
-<div id="outline-container-org2652916" class="outline-3">
-<h3 id="org2652916">Image API</h3>
-<div class="outline-text-3" id="text-org2652916">
-<p>
-<code>struct Image</code> implements:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-c++">Image(size_t w, size_t h);
-</pre>
-</div>
-
-<p>
-The <code>Image</code> constructor. Sets the width and height to <code>w</code> and <code>h</code> respectively.
-Sets all pixels to transparent.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-c++">Pixel &amp;operator()(size_t i, size_t j);
-</pre>
-</div>
-
-<p>
-The pixels are a matrix of pixels represented as a 1D array. This is an operator
-overload to access some pixel at <code>i</code>, <code>j</code>.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgf6aee7d" class="outline-3">
-<h3 id="orgf6aee7d">SVG API</h3>
-<div class="outline-text-3" id="text-orgf6aee7d">
-<p>
-This is used when you want to have SVGs in your HTML file. The overall structure is
-just a vector of shapes that then get converted into one long string and inserted directly
-into the HTML file.
-</p>
-
-<p>
-<code>struct Svg</code> implements:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-c++">struct Shape
-</pre>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-c++">struct Rect inherits Shape
-</pre>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-c++">struct Circle inherits Shape
-</pre>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-c++">Svg(float w, float h);
-</pre>
-</div>
-
-<p>
-The constructor. Sets the width and height of the SVG.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-c++">template &lt;class Shape&gt; void add_shape(Shape shape);
-</pre>
-</div>
-
-<p>
-Appends a shape to the SVG.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-c++">std::string build(void);
-</pre>
-</div>
-
-<p>
-Returns a string of all shapes in valid SVG format to embed into HTML.
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org430789d" class="outline-2">
-<h2 id="org430789d">Utilities</h2>
-<div class="outline-text-2" id="text-org430789d">
+<div id="outline-container-org3a91e2e" class="outline-2">
+<h2 id="org3a91e2e">Utilities</h2>
+<div class="outline-text-2" id="text-org3a91e2e">
 <p>
 Like the name implies, these are very helpful utility functions that are available.
 </p>
 </div>
 
-<div id="outline-container-orgee253ea" class="outline-3">
-<h3 id="orgee253ea">Macros</h3>
-<div class="outline-text-3" id="text-orgee253ea">
+<div id="outline-container-org152a159" class="outline-3">
+<h3 id="org152a159">Externs</h3>
+<div class="outline-text-3" id="text-org152a159">
 <p>
-<code>#define ANS_ONLY 1 &lt;&lt; 0</code>
+<code>extern uint32_t FLAGS;</code>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb0d34c3" class="outline-3">
+<h3 id="orgb0d34c3">Typedefs</h3>
+<div class="outline-text-3" id="text-orgb0d34c3">
+<p>
+<code>typedef std::vector&lt;std::string&gt; strvec_t;</code>
+</p>
+
+<p>
+<code>typedef const std::string filepath_t;</code>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4030ef8" class="outline-3">
+<h3 id="org4030ef8">Macros</h3>
+<div class="outline-text-3" id="text-org4030ef8">
+<p>
+<code>ANS_ONLY</code>
 </p>
 
 <p>
@@ -932,7 +975,7 @@ Disables artifacts from being created
 </p>
 
 <p>
-<code>#define SET_SEED 1 &lt;&lt; 1</code>
+<code>SET_SEED</code>
 </p>
 
 <p>
@@ -940,7 +983,7 @@ Whether or not to use a set seed
 </p>
 
 <p>
-<code>#define NO_HDR 1 &lt;&lt; 2</code>
+<code>NO_HDR</code>
 </p>
 
 <p>
@@ -948,7 +991,7 @@ Makes it so that the header of a puzzle will not be generated
 </p>
 
 <p>
-<code>#define NO_FTR 1 &lt;&lt; 3</code>
+<code>NO_FTR</code>
 </p>
 
 <p>
@@ -956,7 +999,7 @@ Makes it so that the footer of a puzzle will not be generated
 </p>
 
 <p>
-<code>#define BISON_GRID 1 &lt;&lt; 4</code>
+<code>BISON_GRID</code>
 </p>
 
 <p>
@@ -965,9 +1008,9 @@ Makes the pixelated bison generate with a grid
 </div>
 </div>
 
-<div id="outline-container-orga4d5af3" class="outline-3">
-<h3 id="orga4d5af3">Functions</h3>
-<div class="outline-text-3" id="text-orga4d5af3">
+<div id="outline-container-org182e988" class="outline-3">
+<h3 id="org182e988">Functions</h3>
+<div class="outline-text-3" id="text-org182e988">
 <div class="org-src-container">
 <pre class="src src-c++">void utils_generate_file(filepath_t filepath, std::string output_body);
 </pre>
@@ -1002,7 +1045,7 @@ Rolls a seed using the current time.
 
 <p>
 Returns a vector of strings containing the names of all files in <code>path</code>.
-Recursively walks all subdirectories and will ignore all files/dirs that start with `.`
+Recursively walks all subdirectories and will ignore all files/dirs that start with <code>.</code>.
 </p>
 
 <div class="org-src-container">
@@ -1011,7 +1054,7 @@ Recursively walks all subdirectories and will ignore all files/dirs that start w
 </div>
 
 <p>
-Zips the given files into a single file <code>out_file_name</code> with the <code>file_names</code> and the password <code>password</code>.
+Zips the given files into a single file <code>out_file_name</code> with <code>file_names</code> and the password <code>password</code>.
 </p>
 
 <div class="org-src-container">
@@ -1041,17 +1084,17 @@ to calling this function. The same is true for the footer if <code>NO_FTR</code>
 </div>
 </div>
 
-<div id="outline-container-orgde359fd" class="outline-2">
-<h2 id="orgde359fd">Graphics</h2>
-<div class="outline-text-2" id="text-orgde359fd">
+<div id="outline-container-org902de47" class="outline-2">
+<h2 id="org902de47">Graphics</h2>
+<div class="outline-text-2" id="text-org902de47">
 <p>
 This section includes a bunch of utility functions dedicated to graphics.
 </p>
 </div>
 
-<div id="outline-container-orgd583351" class="outline-3">
-<h3 id="orgd583351">Structs</h3>
-<div class="outline-text-3" id="text-orgd583351">
+<div id="outline-container-org65f2034" class="outline-3">
+<h3 id="org65f2034">Structs</h3>
+<div class="outline-text-3" id="text-org65f2034">
 <p>
 <code>struct Pixel</code>
 </p>
@@ -1069,6 +1112,22 @@ A matrix of pixels.
 </p>
 
 <p>
+<code>struct Svg::Shape</code>
+</p>
+
+<p>
+<code>struct Svg::Shape::Rect</code> inherits <code>struct Svg::Shape</code>
+</p>
+
+<p>
+<code>struct Svg::Shape::Circle</code> inherits <code>struct Svg::Shape</code>
+</p>
+
+<p>
+Shape structs that is used within <code>struct Svg</code>.
+</p>
+
+<p>
 <code>struct Svg</code>
 </p>
 
@@ -1078,11 +1137,136 @@ A list of <code>Shape</code> s that can be built into a <code>string</code> of a
 </div>
 </div>
 
-<div id="outline-container-orgaf13ace" class="outline-3">
-<h3 id="orgaf13ace">Functions</h3>
-<div class="outline-text-3" id="text-orgaf13ace">
+<div id="outline-container-org7565274" class="outline-3">
+<h3 id="org7565274">Functions</h3>
+<div class="outline-text-3" id="text-org7565274">
 <p>
 <b>NOTE</b>: We have moved away from PPM files and focus more on SVGs.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">Svg(float w, float h);
+</pre>
+</div>
+
+<p>
+Constructor for an <code>Svg</code>. Sets with width and height to <code>w</code> and <code>h</code>.
+</p>
+
+<p>
+<i>Prototype</i>: include/graphics.h
+</p>
+
+<p>
+<i>Implementation</i>: include/graphics.h
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">template &lt;class Shape&gt; void add_shape(Shape shape);
+</pre>
+</div>
+
+<p>
+Appends a shape to the SVG.
+</p>
+
+<p>
+<i>Prototype</i>: include/graphics.h
+</p>
+
+<p>
+<i>Implementation</i>: include/graphics.h
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">std::string Svg::build(void);
+</pre>
+</div>
+
+<p>
+Returns a string of all shapes in valid SVG format to embed into HTML.
+</p>
+
+<p>
+<i>Prototype</i>: include/graphics.h
+</p>
+
+<p>
+<i>Implementation</i>: include/graphics.cpp
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">Rect(float _x, float _y,
+     float _width, float _height,
+     std::string _fill,
+     std::optional&lt;std::string&gt; _stroke = {},
+     std::optional&lt;std::string&gt; _html_classname = {});
+</pre>
+</div>
+
+<p>
+Constructor for <code>Svg::Shape::Rect</code>.
+</p>
+
+<p>
+<i>Prototype</i>: include/graphics.h
+</p>
+
+<p>
+<i>Implementation</i>: include/graphics.h
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">Circle(float _x, float _y, float _radius, std::string _fill,
+       std::optional&lt;std::string&gt; _stroke = {},
+       std::optional&lt;std::string&gt; _html_classname = {});
+</pre>
+</div>
+
+<p>
+Constructor for <code>Svg::Shape::Circle</code>.
+</p>
+
+<p>
+<i>Prototype</i>: include/graphics.h
+</p>
+
+<p>
+<i>Implementation</i>: include/graphics.h
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">std::string Svg::Rect::make() const
+</pre>
+</div>
+
+<p>
+Creates an SVG line of a <code>Rect</code>.
+</p>
+
+<p>
+<i>Prototype</i>: include/graphics.h
+</p>
+
+<p>
+<i>Implementation</i>: include/graphics.cpp
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">std::string Svg::Circle::make() const
+</pre>
+</div>
+
+<p>
+Creates an SVG line of a <code>Circle</code>.
+</p>
+
+<p>
+<i>Prototype</i>: include/graphics.h
+</p>
+
+<p>
+<i>Implementation</i>: include/graphics.cpp
 </p>
 
 <div class="org-src-container">
@@ -1119,9 +1303,9 @@ Creates an <code>Svg</code> from <code>img</code> using the scaling of <code>pix
 </div>
 </div>
 
-<div id="outline-container-orgf81121a" class="outline-2">
-<h2 id="orgf81121a">Issues</h2>
-<div class="outline-text-2" id="text-orgf81121a">
+<div id="outline-container-org2c7d683" class="outline-2">
+<h2 id="org2c7d683">Issues</h2>
+<div class="outline-text-2" id="text-org2c7d683">
 <ul class="org-ul">
 <li>No support for building on MacOS</li>
 <li>The formatting for the <i>Binary Addition</i> (Graph Paper Robot II) puzzle
@@ -1140,13 +1324,13 @@ to figure out the seed that they have so help can be offered.</li>
 </div>
 </div>
 
-<div id="outline-container-org88a2735" class="outline-2">
-<h2 id="org88a2735"><span class="todo TODO">TODO</span> Future Plans</h2>
+<div id="outline-container-org53e0031" class="outline-2">
+<h2 id="org53e0031"><span class="todo TODO">TODO</span> Future Plans</h2>
 </div>
 
-<div id="outline-container-orgb4e53e5" class="outline-2">
-<h2 id="orgb4e53e5">Contact</h2>
-<div class="outline-text-2" id="text-orgb4e53e5">
+<div id="outline-container-org58fcd6f" class="outline-2">
+<h2 id="org58fcd6f">Contact</h2>
+<div class="outline-text-2" id="text-org58fcd6f">
 <p>
 Zachary Haskins - <i>zdhdev@yahoo.com</i> <a href="https://github.com/malloc-nbytes/">Github</a>
 </p>
@@ -1167,7 +1351,7 @@ Steven Yassa - <i>seyassa@mail.lipscomb.edu</i> Github
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zachary Haskins</p>
-<p class="date">Created: 2024-04-16 Tue 20:12</p>
+<p class="date">Created: 2024-04-16 Tue 21:12</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
