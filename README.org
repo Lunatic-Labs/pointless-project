@@ -98,7 +98,7 @@ Go into the =src/= directory:
 
 Then use the =Makefile= to build the project:
 #+begin_src bash
-  make all <opt>
+  make <opt>
 #+end_src
 #+begin_quote
 where =opt= is one of:
