@@ -25,8 +25,7 @@ struct Image {
   // Accessor to the pixel at position (i, j).
   // We need this because the pixels are stored in a 1D array
   // but being represented as a 2D array.
-  inline Pixel &operator()(size_t i, size_t j)
-  {
+  inline Pixel &operator()(size_t i, size_t j) {
     return pixels[i*width+j];
   }
 };
@@ -85,18 +84,23 @@ struct Svg {
     std::string make() const override;
   };
 
+  // Required
   std::string xmlns = "http://www.w3.org/2000/svg";
   std::string version = "1.1";
 
+  // width and height of the SVG itself.
   float width;
   float height;
+
+  // The shapes that the SVG contains
   std::vector<std::string> lines;
 
   Svg(float w, float h) : width(w), height(h) {}
 
   std::string build(void);
 
-  template <class Shape> void add_shape(Shape shape) {
+  template <class Shape>
+  inline void add_shape(Shape shape) {
     lines.push_back(shape.make());
   }
 };

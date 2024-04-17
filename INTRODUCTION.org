@@ -6,13 +6,14 @@
 #+OPTIONS: html5-fancy:t num:nil
 
 # Theme from: https://github.com/fniessen/org-html-themes
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
 
-*NOTE*: I suggest opening =introduction.html= to view this document
+*NOTE*: Open =introduction.html= in a browser to view this document
 in a much better format.
 
 * Introduction
 
+#+begin_quote
 The point(less) of the /Pointless Project/ is to create a compelling, puzzle-filled
 challenge inspired by the [[https://challenge.synacor.com][Synacor Challenge]], but targeted at a pre-college audience.
 The goal is to allow the School of Computing (SoC) to engage potential
@@ -26,6 +27,7 @@ someone else's "[[https://github.com/KanegaeGabriel/synacor-challenge/blob/maste
 2. the ability to play completely offline
 3. a series of different but related logic puzzles and riddles
 4. multiple opportunities "along the way" to be recognized for their problem solving skills.
+#+end_quote
 
 * Project Setup
 
@@ -368,7 +370,7 @@ by having the user solve three harder versions of previous puzzles. Each one
 of these rematch puzzles gives a piece of the password to advance past this
 rematch section.
 
-*** TODO Maze Rematch
+*** Maze Rematch
 
 This is the harder version of the /Maze/ puzzle. We provide cryptic instructions
 in with the goal of having them inspect the page and navigate to the console. Once they
@@ -379,30 +381,247 @@ to the yellow tile. The password is then presented when they type "exit".
 
 /RNG/: Maze 1, Maze 2, and Maze 3
 
-*** TODO Encrypt Rematch
+*** Encrypt Rematch
+
+This is a harder version of the /Encrypt/ puzzle. It presents the user with an encrypted password
+as well as a /not-so-helpful-at-first/ order of steps that were taken. The user must interact with
+a textbox on screen and try to figure out that pattern in which the buttons mess with their input.
+Once they have figured it out, they must decrypt the password.
+
+/RNG/: The password
 
 *** TODO Based Rematch
 
-** TODO Ast
+** AST
 
-** TODO Binary Addition (Graph Paper Robot I)
+*NOTE*: This is a very difficult puzzle.
 
-** TODO Logic Gate (Graph Paper Robot II)
+The player is presented with grammar rules, an expression ($e$) (such as $a*(b/c)+d$), and a destination identifer ($i$).
+The goal is to create an Abstract Syntax Tree (AST) and trace the route from the root node
+to $i$ and use that to find the correct path of the nested directories that gets generated.
 
-** TODO (Graph Paper Robot III)
+/RNG/: $e$, $i$, path from root \rightarrow $i$
+
+** Graph Paper Robot Puzzles
+
+The idea behind this trilogy of paper robot puzzles, is that we want the player to bring out
+a piece of graph paper and something to color the squares with and do this all on paper. We want to
+teach the player about certain topics in the first two paper robot puzzles (state, memory etc.) then
+incorporate those ideas in the last one.
+
+*** Binary Addition (Graph Paper Robot I)
+
+The player is presented with a 2x12 grid of (mostly) red and green pixels. The red pixels means 0
+and green means 1. Then, following the rules in the instructions, the player should color in the correct
+squares with the correct color. The idea of this puzzle is that the player is actually performing binary addition.
+
+/RNG/: on/off pixels
+
+*** TODO Logic Gate (Graph Paper Robot II)
 
 Currently unimplemented
 
-* TODO Tools that We Have Made
-svg, graphics...
+*** TODO (Graph Paper Robot III)
 
-* TODO Issues
+Currently unimplemented
+
+* API
+
+We have made some tools that makes things such as images easier to implement in the frontend.
+
+** Image API
+
+=struct Image= implements:
+
+#+begin_src c++
+  Image(size_t w, size_t h);
+#+end_src
+
+The =Image= constructor. Sets the width and height to =w= and =h= respectively.
+Sets all pixels to transparent.
+
+#+begin_src c++
+  Pixel &operator()(size_t i, size_t j);
+#+end_src
+
+The pixels are a matrix of pixels represented as a 1D array. This is an operator
+overload to access some pixel at =i=, =j=.
+
+** SVG API
+
+This is used when you want to have SVGs in your HTML file. The overall structure is
+just a vector of shapes that then get converted into one long string and inserted directly
+into the HTML file.
+
+=struct Svg= implements:
+
+#+begin_src c++
+  struct Shape
+#+end_src
+
+#+begin_src c++
+  struct Rect inherits Shape
+#+end_src
+
+#+begin_src c++
+  struct Circle inherits Shape
+#+end_src
+
+#+begin_src c++
+  Svg(float w, float h);
+#+end_src
+
+The constructor. Sets the width and height of the SVG.
+
+#+begin_src c++
+  template <class Shape> void add_shape(Shape shape);
+#+end_src
+
+Appends a shape to the SVG.
+
+#+begin_src c++
+std::string build(void);
+#+end_src
+
+Returns a string of all shapes in valid SVG format to embed into HTML.
+
+* Utilities
+
+Like the name implies, these are very helpful utility functions that are available.
+
+** Macros
+
+=#define ANS_ONLY 1 << 0=
+
+Disables artifacts from being created
+
+=#define SET_SEED 1 << 1=
+
+Whether or not to use a set seed
+
+=#define NO_HDR 1 << 2=
+
+Makes it so that the header of a puzzle will not be generated
+
+=#define NO_FTR 1 << 3=
+
+Makes it so that the footer of a puzzle will not be generated
+
+=#define BISON_GRID 1 << 4=
+
+Makes the pixelated bison generate with a grid
+
+** Functions
+
+#+begin_src c++
+  void utils_generate_file(filepath_t filepath, std::string output_body);
+#+end_src
+
+Generates a file with the given =output_body=. Will be written to the =filepath=.
+
+#+begin_src c++
+  int utils_rng_roll(int min, int max, long &seed);
+#+end_src
+
+Generates a random number between =min= and =max= inclusive using =seed=.
+
+#+begin_src c++
+  int utils_roll_seed(void);
+#+end_src
+
+Rolls a seed using the current time.
+
+#+begin_src c++
+  strvec_t utils_walkdir(filepath_t path);
+#+end_src
+
+Returns a vector of strings containing the names of all files in =path=.
+Recursively walks all subdirectories and will ignore all files/dirs that start with `.`
+
+#+begin_src c++
+  void utils_zip_files(filepath_t out_file_name, strvec_t file_names, std::string password="");
+#+end_src
+
+Zips the given files into a single file =out_file_name= with the =file_names= and the password =password=.
+
+#+begin_src c++
+  std::string utils_file_to_str(filepath_t filepath);
+#+end_src
+
+Returns the contents of =filepath= as a string.
+
+#+begin_src c++
+  std::string utils_html_printf(std::string title, filepath_t desc_filepath, strvec_t args);
+#+end_src
+
+Creates an HTML body. All occurrences of "%DELIM" in the text of =desc_filepath= will be
+replaced with the given =args= in order. It is similar to =printf=.
+
+*NOTE*: You can have this function not insert a header if the flag =NO_HDR= is set prior
+to calling this function. The same is true for the footer if =NO_FTR= is set.
+
+* Graphics
+
+This section includes a bunch of utility functions dedicated to graphics.
+
+** Structs
+
+=struct Pixel=
+
+A simple grouping of R, G, B, =uint8_t='s and =float= A for alpha.
+
+=struct Image=
+
+A matrix of pixels.
+
+=struct Svg=
+
+A list of =Shape= s that can be built into a =string= of a valid SVG.
+
+** Functions
+
+*NOTE*: We have moved away from PPM files and focus more on SVGs.
+
+#+begin_src c++
+  void graphics_create_ppm(Image &img, const char *filepath);
+#+end_src
+
+Creates a PPM image from =img= and saves it to =filepath=.
+
+#+begin_src c++
+  Image graphics_scale_ppm(Image &img, size_t scale);
+#+end_src
+
+Scales =img= by =scale= and returns a new =Image=.
+
+*NOTE*: This function is extremely slow as it runs in $O(n^4)$ time.
+
+#+begin_src c++
+  Svg graphics_gen_svg_from_image(Image &img, float pixel_size);
+#+end_src
+
+Creates an =Svg= from =img= using the scaling of =pixel_size=.
+
+* Issues
+
+- No support for building on MacOS
+- The formatting for the /Binary Addition/ (Graph Paper Robot II) puzzle
+  is not formatted correctly
+- Issues with accessing the zip files on MacOS and Linux without file-roller. It immediately
+  prompts for a password even though it should not.
+- There is no storyline.
+- The puzzle difficulty does not scale smoothly. The earlier puzzles should be harder.
+- The /AST/ puzzle is way to difficult to solve. Even some Computer Science students were unable to solve it.
+- The formatting on the /AST/ puzzle is very incorrect.
+- The /Maze Rematch/ puzzle needs a better description.
+- Missing required "whitty" quotes on all puzzles.
+- Need some way of keeping track of the seed in some meta-data in case the student is stuck. Lipscomb needs
+  to figure out the seed that they have so help can be offered.
 
 * TODO Future Plans
 
-* Maintainers
+* Contact
 
-#+begin_quote
 Zachary Haskins - /zdhdev@yahoo.com/ [[https://github.com/malloc-nbytes/][Github]]
 
 Turner Austin - /tcaustin@mail.lipscomb.edu/ Github
@@ -410,5 +629,4 @@ Turner Austin - /tcaustin@mail.lipscomb.edu/ Github
 Mekeal Brown - /mtbrown@mail.lipscomb.edu/ [[https://github.com/mekealbrown][Github]]
 
 Steven Yassa - /seyassa@mail.lipscomb.edu/ Github
-#+end_quote
 
