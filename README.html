@@ -212,7 +212,7 @@ For viewing the zipfiles, we have found that <a href="https://www.7-zip.org/down
 </div>
 
 <div id="outline-container-org106e2ed" class="outline-4">
-<h4 id="org106e2ed"><span class="section-number-4">2.1.3.</span> Mac</h4>
+<h4 id="org106e2ed"><span class="section-number-4">2.1.3.</span> Mac (<i>unrecommened</i>)</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <p>
 Unfortunately, we have not been able to get the project built on MacOS. We have
@@ -639,8 +639,51 @@ some simple Googling to find <a href="https://teamcolorcodes.com/lipscomb-univer
 </div>
 
 <div id="outline-container-org282abe4" class="outline-3">
-<h3 id="org282abe4"><span class="section-number-3">5.3.</span> <span class="todo TODO">TODO</span> Pixel</h3>
-</div>
+  <h3 id="org282abe4"><span class="section-number-3">5.3.</span>Pixel</h3>
+  <div class="outline-text-3" id="text-5-4">
+    <p>
+    <i>Adjustable Variables</i>:
+    </p>
+    <ul class="org-ul">
+    <li><code>MAX_LOOP</code> (<b>must change number of html elements to match</b>)</li>
+  
+    </ul>
+    
+    <p>
+    <i>Description</i>:
+    </p>
+    
+    <p>
+    The goal of this puzzle is to retest the user on their knowledge on <a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://en.wikipedia.org/wiki/Web_colors&ved=2ahUKEwiC5YSTmcqFAxV7fTABHWc-BkcQFnoECD4QAQ&usg=AOvVaw18c4MTcDyUUWEZ5XtahOp3"
+    target="_blank">hexadecimal color codes</a>
+     learned in the "Color" puzzle. The hex codes come directly from the bison svg included in the pages header.
+    </p>
+    
+    <p>
+      The user is shown a hex code with along with a number.<br>
+      <ul class="org-ul">
+        #331E54 = 66
+      </ul>
+      The number corresponds to the number of pixels of the given hex code found in the bison svg.
+      Following the first code/number pair, there are two more rows. The first row will contain two hex codes, an "X" denoting multiplication, and a number.
+      The number is the product of the pixel count related to the respective hex codes.
+      <ul class="org-ul">
+        #F4AA00 X #331E54 = 396
+      </ul>
+      The final row contains three code/number pairs and a question mark. The user must find the product.
+      <ul class="org-ul">
+        #FFFFFF X #F4AA00 X #000000 = ?
+      </ul>
+    </p>
+    
+    <p>
+    <i>RNG</i>:
+    </p>
+    <ul class="org-ul">
+    <li>The order of hex codes in the arithmetic</li>
+    </ul>
+  </div>
+  </div>
 
 <div id="outline-container-org3cd2578" class="outline-3">
 <h3 id="org3cd2578"><span class="section-number-3">5.4.</span> Maze</h3>
@@ -762,7 +805,69 @@ The following things can happen:
 </div>
 
 <div id="outline-container-org82e12da" class="outline-3">
-<h3 id="org82e12da"><span class="section-number-3">5.6.</span> <span class="todo TODO">TODO</span> Based</h3>
+  <h3 id="org82e12da"><span class="section-number-3">5.6.</span> Based</h3>
+  <div class="outline-text-4" id="text-5-7-1">
+    <p>
+      <i>Adjustable Variables</i>:
+      <ul class="org-ul">
+        <li><code>CELLS</code> (<b>must modify table in .desc.txt to match</b>)</li>
+      </ul>
+    </p>
+    <p>
+      <i>Description</i>:
+    </p>
+  
+    <p>
+      The goal of this puzzle is to teach the user about <a href="https://en.wikipedia.org/wiki/Positional_notation#Base_conversion" target="_blank">base conversion.</a>
+      They are given a description of three Pointless-created bases. The actual instructions follow in a story-esque fashion, here they are simplified:
+      <ul class="org-ul">
+        <li>Convert values to base 10</li>
+        <li>Sum them up for each row</li>
+        <li>Convert the sum to base 2</li>
+        <li>Check if lsb is on or off</li>
+        <li>Save the resulting lsb values</li>
+        <li>Take that base 2 number and convert it back to base 10 (the rightmost column)</li>
+      </ul>
+
+        <p>
+          They are then shown a table with values occupying each cell, except for the right most cell in each row.<br>
+        </p>
+      
+        <table>
+        <tr>
+            <td>24</td>
+            <td>F</td>
+            <td>3</td>
+            <td>?</td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>41</td>
+            <td>41</td>
+            <td>?</td>
+        </tr>
+        <tr>
+            <td>A</td>
+            <td>18</td>
+            <td>27</td>
+            <td>?</td>
+        </tr>
+        <tr>
+            <td>35</td>
+            <td>F</td>
+            <td>E</td>
+            <td>?</td>
+        </tr>
+    </table>
+    </p>
+    <p>
+      <i>RNG</i>:
+    </p>
+    <ul class="org-ul">
+    <li>The values in each cell</li>
+    </ul>
+    
+</div>
 </div>
 
 <div id="outline-container-org7755ea5" class="outline-3">
@@ -840,7 +945,41 @@ Once they have figured it out, they must decrypt the password.
 </div>
 
 <div id="outline-container-orgaa4f21f" class="outline-4">
-<h4 id="orgaa4f21f"><span class="section-number-4">5.7.3.</span> <span class="todo TODO">TODO</span> Based Rematch</h4>
+<h4 id="orgaa4f21f"><span class="section-number-4">5.7.3.</span>Based Rematch</h4>
+<div class="outline-text-4" id="text-5-7-2">
+  <p>
+  <i>Adjustable Variables</i>:
+  </p>
+  <ul class="org-ul">
+  <li><code>NUM_VALS</code> (<b>must modify html elements to match</b>)</li>
+  <li><code>VAL_SZ</code></li>
+  </ul>
+  
+  <p>
+  <i>Description</i>:
+  </p>
+  
+  <p>
+  This is a harder version of the <i>Based</i> puzzle that also incorporates sorting. The user is presented with an instructions page outlining the challenge. Hidden on the page are three buttons 
+  that, when clicked, enumerate the Pointless-created bases that they will encounter in the actual puzzle.
+  <br><br>The bases:
+  <ul class="org-ul">
+    <li>Symbolic 8: !, @, #, $, %, ^, &, *</li>
+    <li>Glyphic 16: {, }, [, ], (, ), `, >, a, b, c, d, e, f, g, h</li>
+    <li>Mystic 36: |, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z</li>
+  </ul>
+  Upon clicking the "Enter" button, they will be brought to the actual puzzle. There are <code>NUM_VALS</code> number of values, each of length <code>VAL_SZ</code>.
+  Clicking on these values places them into the container in the center of the page. The user must fill this container with the values sorted from smallest to greatest.
+  Doing so correctly will prompt a modal to appear containing the key.
+  </p>
+  
+  <p>
+  <i>RNG</i>:
+  </p>
+  <ul class="org-ul">
+  <li>The values</li>
+  </ul>
+</div>
 </div>
 </div>
 
