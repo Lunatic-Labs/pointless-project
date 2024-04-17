@@ -1,9 +1,9 @@
-#+TITLE: Pointless Project
+#+TITLE: Pointless Project [[./imgs/messed-up-bison.png]]
 #+DESCRIPTION: Introduction to the Pointless Project
 #+AUTHOR: Zachary Haskins
 #+EMAIL: zdhdev@yahoo.com
 
-#+OPTIONS: html5-fancy:t num:nil
+# #+OPTIONS: html5-fancy:t num:nil
 
 # Theme from: https://github.com/fniessen/org-html-themes
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
@@ -139,7 +139,7 @@ not need to be touched (unless changes are needed).
 Below is a UML diagram of how a puzzle gets created.
 
 #+CAPTION: Puzzle Creation UML
-[[./puzzle-uml.svg]]
+[[./imgs/puzzle-uml.png]]
 
 * Implementing a New Puzzle
 
@@ -575,11 +575,9 @@ This section includes a bunch of utility functions dedicated to graphics.
 
 =struct Pixel=
 
-A simple grouping of R, G, B, =uint8_t='s and =float= A for alpha.
-
 =struct Image=
 
-A matrix of pixels.
+=struct Svg=
 
 =struct Svg::Shape=
 
@@ -587,15 +585,25 @@ A matrix of pixels.
 
 =struct Svg::Shape::Circle= inherits =struct Svg::Shape=
 
-Shape structs that is used within =struct Svg=.
+** Operator Overloads
 
-=struct Svg=
-
-A list of =Shape= s that can be built into a =string= of a valid SVG.
+#+begin_src c++
+  Pixel &Image::operator()(size_t i, size_t j);
+#+end_src
 
 ** Functions
 
 *NOTE*: We have moved away from PPM files and focus more on SVGs.
+
+#+begin_src c++
+Image(size_t w, size_t h);
+#+end_src
+
+Constructor for an =Image=. Sets width and height to =w= and =h= and all pixels to transparent.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.h
 
 #+begin_src c++
   Svg(float w, float h);
@@ -608,7 +616,7 @@ Constructor for an =Svg=. Sets with width and height to =w= and =h=.
 /Implementation/: include/graphics.h
 
 #+begin_src c++
-  template <class Shape> void add_shape(Shape shape);
+  template <class Shape> void Svg::add_shape(Shape shape);
 #+end_src
 
 Appends a shape to the SVG.
@@ -628,26 +636,38 @@ Returns a string of all shapes in valid SVG format to embed into HTML.
 /Implementation/: include/graphics.cpp
 
 #+begin_src c++
-  Rect(float _x, float _y,
-       float _width, float _height,
-       std::string _fill,
-       std::optional<std::string> _stroke = {},
-       std::optional<std::string> _html_classname = {});
+  Svg::Shape::Rect(float _x, float _y,
+                   float _width, float _height,
+                   std::string _fill,
+                   std::optional<std::string> _stroke = {},
+                   std::optional<std::string> _html_classname = {});
 #+end_src
 
 Constructor for =Svg::Shape::Rect=.
+
+Sets the position of the shape to =_x= and =_y=, it's width and height to =_width= and =_height=,
+and it's color as =_fill=.
+
+Optionally can set =_stroke= (use this if you want a border) and =_html_classname= (if you want
+to modify it in HTML/JS).
 
 /Prototype/: include/graphics.h
 
 /Implementation/: include/graphics.h
 
 #+begin_src c++
-  Circle(float _x, float _y, float _radius, std::string _fill,
-         std::optional<std::string> _stroke = {},
-         std::optional<std::string> _html_classname = {});
+  Svg::Shape::Circle(float _x, float _y, float _radius, std::string _fill,
+                     std::optional<std::string> _stroke = {},
+                     std::optional<std::string> _html_classname = {});
 #+end_src
 
 Constructor for =Svg::Shape::Circle=.
+
+Sets the position of the shape to =_x= and =_y=, it's radius to =_radius=,
+and it's color as =_fill=.
+
+Optionally can set =_stroke= (use this if you want a border) and =_html_classname= (if you want
+to modify it in HTML/JS).
 
 /Prototype/: include/graphics.h
 
@@ -674,6 +694,14 @@ Creates an SVG line of a =Circle=.
 /Implementation/: include/graphics.cpp
 
 #+begin_src c++
+  Svg graphics_gen_svg_from_image(Image &img, float pixel_size);
+#+end_src
+
+Creates an =Svg= from =img= using the scaling of =pixel_size=.
+
+*NOTE*: all "dead" pixels are set to transparent.
+
+#+begin_src c++
     void graphics_create_ppm(Image &img, const char *filepath);
 #+end_src
 
@@ -686,12 +714,6 @@ Creates a PPM image from =img= and saves it to =filepath=.
 Scales =img= by =scale= and returns a new =Image=.
 
 *NOTE*: This function is extremely slow as it runs in $O(n^4)$ time.
-
-#+begin_src c++
-  Svg graphics_gen_svg_from_image(Image &img, float pixel_size);
-#+end_src
-
-Creates an =Svg= from =img= using the scaling of =pixel_size=.
 
 * Issues
 
