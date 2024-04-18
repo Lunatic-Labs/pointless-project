@@ -3,13 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-04-16 Tue 21:53 -->
+<!-- 2024-04-18 Thu 15:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pointless Project [[file:./imgs/messed-up-bison.png]]</title>
+<title>Pointless Project <img src="./imgs/messed-up-bison.png" alt="messed-up-bison.png" /></title>
+<meta name="generator" content="Org mode" />
 <meta name="author" content="Zachary Haskins" />
-<meta name="description" content="Introduction to the Pointless Project" />
-<meta name="generator" content="Org Mode" />
+<meta name="description" content="Introduction to the Pointless Project"
+ />
 <link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/htmlize.css"/>
 <link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/bigblow.css"/>
 <link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/hideshow.css"/>
@@ -21,6 +22,52 @@
 <script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/bigblow.js"></script>
 <script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/hideshow.js"></script>
 <script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         displayAlign: "center",
@@ -41,79 +88,80 @@
              }
 });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
-<div id="content" class="content">
+<div id="content">
 <h1 class="title">Pointless Project <img src="./imgs/messed-up-bison.png" alt="messed-up-bison.png" /></h1>
-<div id="table-of-contents" role="doc-toc">
+<div id="table-of-contents">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
+<div id="text-table-of-contents">
 <ul>
-<li><a href="#org457324b">1. Introduction</a></li>
-<li><a href="#org277bc9f">2. Project Setup</a>
+<li><a href="#org47b6153">1. Introduction</a></li>
+<li><a href="#org6ced719">2. Project Setup</a>
 <ul>
-<li><a href="#org2ef8a92">2.1. Installation</a>
+<li><a href="#org5214ca4">2.1. Installation</a>
 <ul>
-<li><a href="#orgf3550f2">2.1.1. Linux (<i>recommened</i>)</a></li>
-<li><a href="#org0c40c60">2.1.2. Windows</a></li>
-<li><a href="#org106e2ed">2.1.3. Mac</a></li>
+<li><a href="#org33771c1">2.1.1. Linux (<i>recommened</i>)</a></li>
+<li><a href="#org595b1b0">2.1.2. Windows</a></li>
+<li><a href="#org640c23a">2.1.3. Mac</a></li>
 </ul>
 </li>
-<li><a href="#org0c32971">2.2. Building</a></li>
+<li><a href="#org1b31a69">2.2. Building</a></li>
 </ul>
 </li>
-<li><a href="#org3b2ed2a">3. Puzzle Creation Framework</a></li>
-<li><a href="#org15a34e5">4. Implementing a New Puzzle</a>
+<li><a href="#orgce6ed09">3. Puzzle Creation Framework</a></li>
+<li><a href="#org809d1e5">4. Implementing a New Puzzle</a>
 <ul>
-<li><a href="#org506fe91">4.1. Puzzle Resources Directory</a></li>
-<li><a href="#org59b1449">4.2. Puzzle Implementation</a></li>
-<li><a href="#org4d83c66">4.3. Using the Puzzle</a></li>
+<li><a href="#org9977884">4.1. Puzzle Resources Directory</a></li>
+<li><a href="#orga5f75db">4.2. Puzzle Implementation</a></li>
+<li><a href="#orgf48634b">4.3. Using the Puzzle</a></li>
 </ul>
 </li>
-<li><a href="#org7af73c8">5. Current Puzzles</a>
+<li><a href="#org1e6a32c">5. Current Puzzles</a>
 <ul>
-<li><a href="#org2ca81e5">5.1. Math</a></li>
-<li><a href="#orgf441440">5.2. Color</a></li>
-<li><a href="#org282abe4">5.3. <span class="todo TODO">TODO</span> Pixel</a></li>
-<li><a href="#org3cd2578">5.4. Maze</a></li>
-<li><a href="#org28649c8">5.5. Encrypt</a></li>
-<li><a href="#org82e12da">5.6. <span class="todo TODO">TODO</span> Based</a></li>
-<li><a href="#org7755ea5">5.7. Rematches</a>
+<li><a href="#org50707b1">5.1. Math</a></li>
+<li><a href="#orgb8a445c">5.2. Color</a></li>
+<li><a href="#org9fd72da">5.3. <span class="todo TODO">TODO</span> Pixel</a></li>
+<li><a href="#orge1af4d5">5.4. Maze</a></li>
+<li><a href="#orgcbc36dd">5.5. Encrypt</a></li>
+<li><a href="#org5c447f2">5.6. <span class="todo TODO">TODO</span> Based</a></li>
+<li><a href="#orgc0ead32">5.7. Rematches</a>
 <ul>
-<li><a href="#org5af4e4a">5.7.1. Maze Rematch</a></li>
-<li><a href="#orgfeb6646">5.7.2. Encrypt Rematch</a></li>
-<li><a href="#orgaa4f21f">5.7.3. <span class="todo TODO">TODO</span> Based Rematch</a></li>
+<li><a href="#org274b061">5.7.1. Maze Rematch</a></li>
+<li><a href="#org63dd463">5.7.2. Encrypt Rematch</a></li>
+<li><a href="#org0d89bd9">5.7.3. <span class="todo TODO">TODO</span> Based Rematch</a></li>
 </ul>
 </li>
-<li><a href="#org81db604">5.8. AST</a></li>
-<li><a href="#org718b2c2">5.9. Graph Paper Robot Puzzles</a>
+<li><a href="#orgdb58d6c">5.8. AST</a></li>
+<li><a href="#org8e5bdb4">5.9. Graph Paper Robot Puzzles</a>
 <ul>
-<li><a href="#org98720d6">5.9.1. Binary Addition (Graph Paper Robot I)</a></li>
-<li><a href="#orgc7903d9">5.9.2. <span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</a></li>
-<li><a href="#orga95f86c">5.9.3. <span class="todo TODO">TODO</span> (Graph Paper Robot III)</a></li>
+<li><a href="#org469de11">5.9.1. Binary Addition (Graph Paper Robot I)</a></li>
+<li><a href="#orge5ecb48">5.9.2. <span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</a></li>
+<li><a href="#org4a6b96e">5.9.3. <span class="todo TODO">TODO</span> (Graph Paper Robot III)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org30fd77b">6. Utilities</a>
+<li><a href="#orgea8fe77">6. Utilities</a>
 <ul>
-<li><a href="#org0ad1ca2">6.1. Externs</a></li>
-<li><a href="#orgc6d3ee9">6.2. Typedefs</a></li>
-<li><a href="#org8d05e12">6.3. Macros</a></li>
-<li><a href="#org06d11bd">6.4. Functions</a></li>
+<li><a href="#orge4df63e">6.1. Externs</a></li>
+<li><a href="#orgbc46a0a">6.2. Typedefs</a></li>
+<li><a href="#orgc5ca60e">6.3. Macros</a></li>
+<li><a href="#org3cd76a2">6.4. Functions</a></li>
 </ul>
 </li>
-<li><a href="#orgc628dfa">7. Graphics</a>
+<li><a href="#org60b409b">7. Graphics</a>
 <ul>
-<li><a href="#orgfc25648">7.1. Structs</a></li>
-<li><a href="#org1fcd2cb">7.2. Operator Overloads</a></li>
-<li><a href="#org70b307d">7.3. Functions</a></li>
+<li><a href="#org720d16f">7.1. Structs</a></li>
+<li><a href="#org10c0b71">7.2. Operator Overloads</a></li>
+<li><a href="#orgd62a2db">7.3. Functions</a></li>
 </ul>
 </li>
-<li><a href="#orgcafced9">8. Issues</a></li>
-<li><a href="#org3a500b9">9. <span class="todo TODO">TODO</span> Future Plans</a></li>
-<li><a href="#org9498455">10. Contact</a></li>
+<li><a href="#org72b2bd8">8. Issues</a></li>
+<li><a href="#org8d6f033">9. <span class="todo TODO">TODO</span> Future Plans</a></li>
+<li><a href="#org7cc92df">10. Contact</a></li>
 </ul>
 </div>
 </div>
@@ -122,8 +170,8 @@
 in a much better format.
 </p>
 
-<div id="outline-container-org457324b" class="outline-2">
-<h2 id="org457324b"><span class="section-number-2">1.</span> Introduction</h2>
+<div id="outline-container-org47b6153" class="outline-2">
+<h2 id="org47b6153"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <blockquote>
 <p>
@@ -149,16 +197,16 @@ someone else's "<a href="https://github.com/KanegaeGabriel/synacor-challenge/blo
 </div>
 </div>
 
-<div id="outline-container-org277bc9f" class="outline-2">
-<h2 id="org277bc9f"><span class="section-number-2">2.</span> Project Setup</h2>
+<div id="outline-container-org6ced719" class="outline-2">
+<h2 id="org6ced719"><span class="section-number-2">2</span> Project Setup</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org2ef8a92" class="outline-3">
-<h3 id="org2ef8a92"><span class="section-number-3">2.1.</span> Installation</h3>
+<div id="outline-container-org5214ca4" class="outline-3">
+<h3 id="org5214ca4"><span class="section-number-3">2.1</span> Installation</h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
-<div id="outline-container-orgf3550f2" class="outline-4">
-<h4 id="orgf3550f2"><span class="section-number-4">2.1.1.</span> Linux (<i>recommened</i>)</h4>
+<div id="outline-container-org33771c1" class="outline-4">
+<h4 id="org33771c1"><span class="section-number-4">2.1.1</span> Linux (<i>recommened</i>)</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 For Debian based distributions, run:
@@ -196,8 +244,8 @@ sudo pacman -S file-roller
 </div>
 </div>
 
-<div id="outline-container-org0c40c60" class="outline-4">
-<h4 id="org0c40c60"><span class="section-number-4">2.1.2.</span> Windows</h4>
+<div id="outline-container-org595b1b0" class="outline-4">
+<h4 id="org595b1b0"><span class="section-number-4">2.1.2</span> Windows</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 For windows, we recommend developing with <a href="https://learn.microsoft.com/en-us/windows/wsl/about">WSL</a> (Windows Subsystem for Linux).
@@ -211,8 +259,8 @@ For viewing the zipfiles, we have found that <a href="https://www.7-zip.org/down
 </div>
 </div>
 
-<div id="outline-container-org106e2ed" class="outline-4">
-<h4 id="org106e2ed"><span class="section-number-4">2.1.3.</span> Mac (<i>unrecommened</i>)</h4>
+<div id="outline-container-org640c23a" class="outline-4">
+<h4 id="org640c23a"><span class="section-number-4">2.1.3</span> Mac</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <p>
 Unfortunately, we have not been able to get the project built on MacOS. We have
@@ -241,8 +289,8 @@ and have the VM use it, then follow the installation on Linux.
 </div>
 </div>
 
-<div id="outline-container-org0c32971" class="outline-3">
-<h3 id="org0c32971"><span class="section-number-3">2.2.</span> Building</h3>
+<div id="outline-container-org1b31a69" class="outline-3">
+<h3 id="org1b31a69"><span class="section-number-3">2.2</span> Building</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 First, clone the repository if not done already:
@@ -287,8 +335,8 @@ generated. You can now inspect and solve the puzzle(s) by choosing the appropria
 </div>
 </div>
 
-<div id="outline-container-org3b2ed2a" class="outline-2">
-<h2 id="org3b2ed2a"><span class="section-number-2">3.</span> Puzzle Creation Framework</h2>
+<div id="outline-container-orgce6ed09" class="outline-2">
+<h2 id="orgce6ed09"><span class="section-number-2">3</span> Puzzle Creation Framework</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 It is obvious to see that there are a lot of directories in this project, and not all
@@ -348,7 +396,7 @@ Below is a UML diagram of how a puzzle gets created.
 </p>
 
 
-<div id="orga9e6029" class="figure">
+<div class="figure">
 <p><img src="./imgs/puzzle-uml.png" alt="puzzle-uml.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Puzzle Creation UML</p>
@@ -356,8 +404,8 @@ Below is a UML diagram of how a puzzle gets created.
 </div>
 </div>
 
-<div id="outline-container-org15a34e5" class="outline-2">
-<h2 id="org15a34e5"><span class="section-number-2">4.</span> Implementing a New Puzzle</h2>
+<div id="outline-container-org809d1e5" class="outline-2">
+<h2 id="org809d1e5"><span class="section-number-2">4</span> Implementing a New Puzzle</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Implementing a new puzzle is increadibly easy with how we implemented it. Here are the steps
@@ -365,8 +413,8 @@ to take when doing so.
 </p>
 </div>
 
-<div id="outline-container-org506fe91" class="outline-3">
-<h3 id="org506fe91"><span class="section-number-3">4.1.</span> Puzzle Resources Directory</h3>
+<div id="outline-container-org9977884" class="outline-3">
+<h3 id="org9977884"><span class="section-number-3">4.1</span> Puzzle Resources Directory</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 Start by creating a new directory in <code>src/</code> and name it <code>files-&lt;new puzzle name&gt;</code>.
@@ -404,8 +452,8 @@ echo "What is the &lt;b&gt;%DELIM&lt;/b&gt;th number in the fibonacci sequence?"
 </div>
 </div>
 
-<div id="outline-container-org59b1449" class="outline-3">
-<h3 id="org59b1449"><span class="section-number-3">4.2.</span> Puzzle Implementation</h3>
+<div id="outline-container-orga5f75db" class="outline-3">
+<h3 id="orga5f75db"><span class="section-number-3">4.2</span> Puzzle Implementation</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 Once the above step is done, create a new file called <code>&lt;puzzle name&gt;-puzzle.cpp</code>
@@ -502,8 +550,8 @@ Now that the implementation is done, add the signature of <code>Puzzle fib_puzzl
 </div>
 </div>
 
-<div id="outline-container-org4d83c66" class="outline-3">
-<h3 id="org4d83c66"><span class="section-number-3">4.3.</span> Using the Puzzle</h3>
+<div id="outline-container-orgf48634b" class="outline-3">
+<h3 id="orgf48634b"><span class="section-number-3">4.3</span> Using the Puzzle</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 In the <code>main</code> function in <code>main.cpp</code>, there is some code that looks like:
@@ -564,8 +612,8 @@ outside of <code>puzzle1.zip</code>, is because it allows for easy testing witho
 </div>
 </div>
 
-<div id="outline-container-org7af73c8" class="outline-2">
-<h2 id="org7af73c8"><span class="section-number-2">5.</span> Current Puzzles</h2>
+<div id="outline-container-org1e6a32c" class="outline-2">
+<h2 id="org1e6a32c"><span class="section-number-2">5</span> Current Puzzles</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 These are the currently implemented puzzles. Each one has three entries.
@@ -577,8 +625,8 @@ These are the currently implemented puzzles. Each one has three entries.
 </ol>
 </div>
 
-<div id="outline-container-org2ca81e5" class="outline-3">
-<h3 id="org2ca81e5"><span class="section-number-3">5.1.</span> Math</h3>
+<div id="outline-container-org50707b1" class="outline-3">
+<h3 id="org50707b1"><span class="section-number-3">5.1</span> Math</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 <i>Adjustable Variables</i>:
@@ -612,8 +660,8 @@ We prompt the user to solve a very simple math question in the form of \(a\) + \
 </div>
 </div>
 
-<div id="outline-container-orgf441440" class="outline-3">
-<h3 id="orgf441440"><span class="section-number-3">5.2.</span> Color</h3>
+<div id="outline-container-orgb8a445c" class="outline-3">
+<h3 id="orgb8a445c"><span class="section-number-3">5.2</span> Color</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 <i>Adjustable Variables</i>: <i>None</i>
@@ -638,55 +686,12 @@ some simple Googling to find <a href="https://teamcolorcodes.com/lipscomb-univer
 </div>
 </div>
 
-<div id="outline-container-org282abe4" class="outline-3">
-  <h3 id="org282abe4"><span class="section-number-3">5.3.</span>Pixel</h3>
-  <div class="outline-text-3" id="text-5-4">
-    <p>
-    <i>Adjustable Variables</i>:
-    </p>
-    <ul class="org-ul">
-    <li><code>MAX_LOOP</code> (<b>must change number of html elements to match</b>)</li>
-  
-    </ul>
-    
-    <p>
-    <i>Description</i>:
-    </p>
-    
-    <p>
-    The goal of this puzzle is to retest the user on their knowledge on <a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://en.wikipedia.org/wiki/Web_colors&ved=2ahUKEwiC5YSTmcqFAxV7fTABHWc-BkcQFnoECD4QAQ&usg=AOvVaw18c4MTcDyUUWEZ5XtahOp3"
-    target="_blank">hexadecimal color codes</a>
-     learned in the "Color" puzzle. The hex codes come directly from the bison svg included in the pages header.
-    </p>
-    
-    <p>
-      The user is shown a hex code with along with a number.<br>
-      <ul class="org-ul">
-        #331E54 = 66
-      </ul>
-      The number corresponds to the number of pixels of the given hex code found in the bison svg.
-      Following the first code/number pair, there are two more rows. The first row will contain two hex codes, an "X" denoting multiplication, and a number.
-      The number is the product of the pixel count related to the respective hex codes.
-      <ul class="org-ul">
-        #F4AA00 X #331E54 = 396
-      </ul>
-      The final row contains three code/number pairs and a question mark. The user must find the product.
-      <ul class="org-ul">
-        #FFFFFF X #F4AA00 X #000000 = ?
-      </ul>
-    </p>
-    
-    <p>
-    <i>RNG</i>:
-    </p>
-    <ul class="org-ul">
-    <li>The order of hex codes in the arithmetic</li>
-    </ul>
-  </div>
-  </div>
+<div id="outline-container-org9fd72da" class="outline-3">
+<h3 id="org9fd72da"><span class="section-number-3">5.3</span> <span class="todo TODO">TODO</span> Pixel</h3>
+</div>
 
-<div id="outline-container-org3cd2578" class="outline-3">
-<h3 id="org3cd2578"><span class="section-number-3">5.4.</span> Maze</h3>
+<div id="outline-container-orge1af4d5" class="outline-3">
+<h3 id="orge1af4d5"><span class="section-number-3">5.4</span> Maze</h3>
 <div class="outline-text-3" id="text-5-4">
 <p>
 <i>Adjustable Variables</i>:
@@ -760,8 +765,8 @@ apply the run-length encoding algorithm to it. So the answer would be: <i>u2lr3d
 </div>
 </div>
 
-<div id="outline-container-org28649c8" class="outline-3">
-<h3 id="org28649c8"><span class="section-number-3">5.5.</span> Encrypt</h3>
+<div id="outline-container-orgcbc36dd" class="outline-3">
+<h3 id="orgcbc36dd"><span class="section-number-3">5.5</span> Encrypt</h3>
 <div class="outline-text-3" id="text-5-5">
 <p>
 <i>Adjustable Variables</i>:
@@ -804,74 +809,12 @@ The following things can happen:
 </div>
 </div>
 
-<div id="outline-container-org82e12da" class="outline-3">
-  <h3 id="org82e12da"><span class="section-number-3">5.6.</span> Based</h3>
-  <div class="outline-text-4" id="text-5-7-1">
-    <p>
-      <i>Adjustable Variables</i>:
-      <ul class="org-ul">
-        <li><code>CELLS</code> (<b>must modify table in .desc.txt to match</b>)</li>
-      </ul>
-    </p>
-    <p>
-      <i>Description</i>:
-    </p>
-  
-    <p>
-      The goal of this puzzle is to teach the user about <a href="https://en.wikipedia.org/wiki/Positional_notation#Base_conversion" target="_blank">base conversion.</a>
-      They are given a description of three Pointless-created bases. The actual instructions follow in a story-esque fashion, here they are simplified:
-      <ul class="org-ul">
-        <li>Convert values to base 10</li>
-        <li>Sum them up for each row</li>
-        <li>Convert the sum to base 2</li>
-        <li>Check if lsb is on or off</li>
-        <li>Save the resulting lsb values</li>
-        <li>Take that base 2 number and convert it back to base 10 (the rightmost column)</li>
-      </ul>
-
-        <p>
-          They are then shown a table with values occupying each cell, except for the right most cell in each row.<br>
-        </p>
-      
-        <table>
-        <tr>
-            <td>24</td>
-            <td>F</td>
-            <td>3</td>
-            <td>?</td>
-        </tr>
-        <tr>
-            <td>11</td>
-            <td>41</td>
-            <td>41</td>
-            <td>?</td>
-        </tr>
-        <tr>
-            <td>A</td>
-            <td>18</td>
-            <td>27</td>
-            <td>?</td>
-        </tr>
-        <tr>
-            <td>35</td>
-            <td>F</td>
-            <td>E</td>
-            <td>?</td>
-        </tr>
-    </table>
-    </p>
-    <p>
-      <i>RNG</i>:
-    </p>
-    <ul class="org-ul">
-    <li>The values in each cell</li>
-    </ul>
-    
-</div>
+<div id="outline-container-org5c447f2" class="outline-3">
+<h3 id="org5c447f2"><span class="section-number-3">5.6</span> <span class="todo TODO">TODO</span> Based</h3>
 </div>
 
-<div id="outline-container-org7755ea5" class="outline-3">
-<h3 id="org7755ea5"><span class="section-number-3">5.7.</span> Rematches</h3>
+<div id="outline-container-orgc0ead32" class="outline-3">
+<h3 id="orgc0ead32"><span class="section-number-3">5.7</span> Rematches</h3>
 <div class="outline-text-3" id="text-5-7">
 <p>
 The "rematch" puzzles serve as the point in the project where there is a
@@ -882,8 +825,8 @@ rematch section.
 </p>
 </div>
 
-<div id="outline-container-org5af4e4a" class="outline-4">
-<h4 id="org5af4e4a"><span class="section-number-4">5.7.1.</span> Maze Rematch</h4>
+<div id="outline-container-org274b061" class="outline-4">
+<h4 id="org274b061"><span class="section-number-4">5.7.1</span> Maze Rematch</h4>
 <div class="outline-text-4" id="text-5-7-1">
 <p>
 <i>Adjustable Variables</i>:
@@ -914,8 +857,8 @@ to the yellow tile. The password is then presented when they type "exit()".
 </div>
 </div>
 
-<div id="outline-container-orgfeb6646" class="outline-4">
-<h4 id="orgfeb6646"><span class="section-number-4">5.7.2.</span> Encrypt Rematch</h4>
+<div id="outline-container-org63dd463" class="outline-4">
+<h4 id="org63dd463"><span class="section-number-4">5.7.2</span> Encrypt Rematch</h4>
 <div class="outline-text-4" id="text-5-7-2">
 <p>
 <i>Adjustable Variables</i>:
@@ -944,47 +887,13 @@ Once they have figured it out, they must decrypt the password.
 </div>
 </div>
 
-<div id="outline-container-orgaa4f21f" class="outline-4">
-<h4 id="orgaa4f21f"><span class="section-number-4">5.7.3.</span>Based Rematch</h4>
-<div class="outline-text-4" id="text-5-7-2">
-  <p>
-  <i>Adjustable Variables</i>:
-  </p>
-  <ul class="org-ul">
-  <li><code>NUM_VALS</code> (<b>must modify html elements to match</b>)</li>
-  <li><code>VAL_SZ</code></li>
-  </ul>
-  
-  <p>
-  <i>Description</i>:
-  </p>
-  
-  <p>
-  This is a harder version of the <i>Based</i> puzzle that also incorporates sorting. The user is presented with an instructions page outlining the challenge. Hidden on the page are three buttons 
-  that, when clicked, enumerate the Pointless-created bases that they will encounter in the actual puzzle.
-  <br><br>The bases:
-  <ul class="org-ul">
-    <li>Symbolic 8: !, @, #, $, %, ^, &, *</li>
-    <li>Glyphic 16: {, }, [, ], (, ), `, >, a, b, c, d, e, f, g, h</li>
-    <li>Mystic 36: |, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z</li>
-  </ul>
-  Upon clicking the "Enter" button, they will be brought to the actual puzzle. There are <code>NUM_VALS</code> number of values, each of length <code>VAL_SZ</code>.
-  Clicking on these values places them into the container in the center of the page. The user must fill this container with the values sorted from smallest to greatest.
-  Doing so correctly will prompt a modal to appear containing the key.
-  </p>
-  
-  <p>
-  <i>RNG</i>:
-  </p>
-  <ul class="org-ul">
-  <li>The values</li>
-  </ul>
-</div>
+<div id="outline-container-org0d89bd9" class="outline-4">
+<h4 id="org0d89bd9"><span class="section-number-4">5.7.3</span> <span class="todo TODO">TODO</span> Based Rematch</h4>
 </div>
 </div>
 
-<div id="outline-container-org81db604" class="outline-3">
-<h3 id="org81db604"><span class="section-number-3">5.8.</span> AST</h3>
+<div id="outline-container-orgdb58d6c" class="outline-3">
+<h3 id="orgdb58d6c"><span class="section-number-3">5.8</span> AST</h3>
 <div class="outline-text-3" id="text-5-8">
 <p>
 <i>Adjustable Variables</i>: <i>None</i>
@@ -1014,8 +923,8 @@ to \(i\) and use that to find the correct path of the nested directories that ge
 </div>
 </div>
 
-<div id="outline-container-org718b2c2" class="outline-3">
-<h3 id="org718b2c2"><span class="section-number-3">5.9.</span> Graph Paper Robot Puzzles</h3>
+<div id="outline-container-org8e5bdb4" class="outline-3">
+<h3 id="org8e5bdb4"><span class="section-number-3">5.9</span> Graph Paper Robot Puzzles</h3>
 <div class="outline-text-3" id="text-5-9">
 <p>
 The idea behind this trilogy of paper robot puzzles, is that we want the player to bring out
@@ -1025,8 +934,8 @@ incorporate those ideas in the last one.
 </p>
 </div>
 
-<div id="outline-container-org98720d6" class="outline-4">
-<h4 id="org98720d6"><span class="section-number-4">5.9.1.</span> Binary Addition (Graph Paper Robot I)</h4>
+<div id="outline-container-org469de11" class="outline-4">
+<h4 id="org469de11"><span class="section-number-4">5.9.1</span> Binary Addition (Graph Paper Robot I)</h4>
 <div class="outline-text-4" id="text-5-9-1">
 <p>
 <i>Adjustable Variables</i>:
@@ -1053,8 +962,8 @@ squares with the correct color. The idea of this puzzle is that the player is ac
 </div>
 </div>
 
-<div id="outline-container-orgc7903d9" class="outline-4">
-<h4 id="orgc7903d9"><span class="section-number-4">5.9.2.</span> <span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</h4>
+<div id="outline-container-orge5ecb48" class="outline-4">
+<h4 id="orge5ecb48"><span class="section-number-4">5.9.2</span> <span class="todo TODO">TODO</span> Logic Gate (Graph Paper Robot II)</h4>
 <div class="outline-text-4" id="text-5-9-2">
 <p>
 Currently unimplemented
@@ -1062,8 +971,8 @@ Currently unimplemented
 </div>
 </div>
 
-<div id="outline-container-orga95f86c" class="outline-4">
-<h4 id="orga95f86c"><span class="section-number-4">5.9.3.</span> <span class="todo TODO">TODO</span> (Graph Paper Robot III)</h4>
+<div id="outline-container-org4a6b96e" class="outline-4">
+<h4 id="org4a6b96e"><span class="section-number-4">5.9.3</span> <span class="todo TODO">TODO</span> (Graph Paper Robot III)</h4>
 <div class="outline-text-4" id="text-5-9-3">
 <p>
 Currently unimplemented
@@ -1073,16 +982,16 @@ Currently unimplemented
 </div>
 </div>
 
-<div id="outline-container-org30fd77b" class="outline-2">
-<h2 id="org30fd77b"><span class="section-number-2">6.</span> Utilities</h2>
+<div id="outline-container-orgea8fe77" class="outline-2">
+<h2 id="orgea8fe77"><span class="section-number-2">6</span> Utilities</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 Like the name implies, these are very helpful utility functions that are available.
 </p>
 </div>
 
-<div id="outline-container-org0ad1ca2" class="outline-3">
-<h3 id="org0ad1ca2"><span class="section-number-3">6.1.</span> Externs</h3>
+<div id="outline-container-orge4df63e" class="outline-3">
+<h3 id="orge4df63e"><span class="section-number-3">6.1</span> Externs</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 <code>extern uint32_t FLAGS;</code>
@@ -1090,8 +999,8 @@ Like the name implies, these are very helpful utility functions that are availab
 </div>
 </div>
 
-<div id="outline-container-orgc6d3ee9" class="outline-3">
-<h3 id="orgc6d3ee9"><span class="section-number-3">6.2.</span> Typedefs</h3>
+<div id="outline-container-orgbc46a0a" class="outline-3">
+<h3 id="orgbc46a0a"><span class="section-number-3">6.2</span> Typedefs</h3>
 <div class="outline-text-3" id="text-6-2">
 <p>
 <code>typedef std::vector&lt;std::string&gt; strvec_t;</code>
@@ -1103,8 +1012,8 @@ Like the name implies, these are very helpful utility functions that are availab
 </div>
 </div>
 
-<div id="outline-container-org8d05e12" class="outline-3">
-<h3 id="org8d05e12"><span class="section-number-3">6.3.</span> Macros</h3>
+<div id="outline-container-orgc5ca60e" class="outline-3">
+<h3 id="orgc5ca60e"><span class="section-number-3">6.3</span> Macros</h3>
 <div class="outline-text-3" id="text-6-3">
 <p>
 <code>ANS_ONLY</code>
@@ -1148,8 +1057,8 @@ Makes the pixelated bison generate with a grid
 </div>
 </div>
 
-<div id="outline-container-org06d11bd" class="outline-3">
-<h3 id="org06d11bd"><span class="section-number-3">6.4.</span> Functions</h3>
+<div id="outline-container-org3cd76a2" class="outline-3">
+<h3 id="org3cd76a2"><span class="section-number-3">6.4</span> Functions</h3>
 <div class="outline-text-3" id="text-6-4">
 <div class="org-src-container">
 <pre class="src src-c++">void utils_generate_file(filepath_t filepath, std::string output_body);
@@ -1224,16 +1133,16 @@ to calling this function. The same is true for the footer if <code>NO_FTR</code>
 </div>
 </div>
 
-<div id="outline-container-orgc628dfa" class="outline-2">
-<h2 id="orgc628dfa"><span class="section-number-2">7.</span> Graphics</h2>
+<div id="outline-container-org60b409b" class="outline-2">
+<h2 id="org60b409b"><span class="section-number-2">7</span> Graphics</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 This section includes a bunch of utility functions dedicated to graphics.
 </p>
 </div>
 
-<div id="outline-container-orgfc25648" class="outline-3">
-<h3 id="orgfc25648"><span class="section-number-3">7.1.</span> Structs</h3>
+<div id="outline-container-org720d16f" class="outline-3">
+<h3 id="org720d16f"><span class="section-number-3">7.1</span> Structs</h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 <code>struct Pixel</code>
@@ -1261,8 +1170,8 @@ This section includes a bunch of utility functions dedicated to graphics.
 </div>
 </div>
 
-<div id="outline-container-org1fcd2cb" class="outline-3">
-<h3 id="org1fcd2cb"><span class="section-number-3">7.2.</span> Operator Overloads</h3>
+<div id="outline-container-org10c0b71" class="outline-3">
+<h3 id="org10c0b71"><span class="section-number-3">7.2</span> Operator Overloads</h3>
 <div class="outline-text-3" id="text-7-2">
 <div class="org-src-container">
 <pre class="src src-c++">Pixel &amp;Image::operator()(size_t i, size_t j);
@@ -1271,8 +1180,8 @@ This section includes a bunch of utility functions dedicated to graphics.
 </div>
 </div>
 
-<div id="outline-container-org70b307d" class="outline-3">
-<h3 id="org70b307d"><span class="section-number-3">7.3.</span> Functions</h3>
+<div id="outline-container-orgd62a2db" class="outline-3">
+<h3 id="orgd62a2db"><span class="section-number-3">7.3</span> Functions</h3>
 <div class="outline-text-3" id="text-7-3">
 <p>
 <b>NOTE</b>: We have moved away from PPM files and focus more on SVGs.
@@ -1478,8 +1387,8 @@ Scales <code>img</code> by <code>scale</code> and returns a new <code>Image</cod
 </div>
 </div>
 
-<div id="outline-container-orgcafced9" class="outline-2">
-<h2 id="orgcafced9"><span class="section-number-2">8.</span> Issues</h2>
+<div id="outline-container-org72b2bd8" class="outline-2">
+<h2 id="org72b2bd8"><span class="section-number-2">8</span> Issues</h2>
 <div class="outline-text-2" id="text-8">
 <ul class="org-ul">
 <li>No support for building on MacOS</li>
@@ -1499,12 +1408,12 @@ to figure out the seed that they have so help can be offered.</li>
 </div>
 </div>
 
-<div id="outline-container-org3a500b9" class="outline-2">
-<h2 id="org3a500b9"><span class="section-number-2">9.</span> <span class="todo TODO">TODO</span> Future Plans</h2>
+<div id="outline-container-org8d6f033" class="outline-2">
+<h2 id="org8d6f033"><span class="section-number-2">9</span> <span class="todo TODO">TODO</span> Future Plans</h2>
 </div>
 
-<div id="outline-container-org9498455" class="outline-2">
-<h2 id="org9498455"><span class="section-number-2">10.</span> Contact</h2>
+<div id="outline-container-org7cc92df" class="outline-2">
+<h2 id="org7cc92df"><span class="section-number-2">10</span> Contact</h2>
 <div class="outline-text-2" id="text-10">
 <p>
 Zachary Haskins - <i>zdhdev@yahoo.com</i> <a href="https://github.com/malloc-nbytes/">Github</a>
@@ -1526,8 +1435,8 @@ Steven Yassa - <i>seyassa@mail.lipscomb.edu</i> Github
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zachary Haskins</p>
-<p class="date">Created: 2024-04-16 Tue 21:53</p>
-<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+<p class="date">Created: 2024-04-18 Thu 15:03</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
 </html>

@@ -737,9 +737,9 @@ Scales =img= by =scale= and returns a new =Image=.
 
 Zachary Haskins - /zdhdev@yahoo.com/ [[https://github.com/malloc-nbytes/][Github]]
 
-Turner Austin - /tcaustin@mail.lipscomb.edu/ Github
+Turner Austin - /tcaustin@mail.lipscomb.edu/ [[https://github.com/TurnerAustin][Github]]
 
 Mekeal Brown - /mtbrown@mail.lipscomb.edu/ [[https://github.com/mekealbrown][Github]]
 
-Steven Yassa - /seyassa@mail.lipscomb.edu/ Github
+Steven Yassa - /stevenyassa02@gmail.com/ [[https://github.com/Stevenyassa][Github]]
 
