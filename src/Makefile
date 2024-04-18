@@ -1,4 +1,4 @@
-CFLAGS := -ggdb -pedantic -std=c++17 -Wextra -Wall -O3
+CFLAGS := -ggdb -pedantic -std=c++17 -Wextra -Wall
 CLINKS := -lboost_iostreams -lzip -lboost_unit_test_framework
 CC := g++
 
@@ -14,7 +14,7 @@ make-main: $(OBJDIR) $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(CLINKS)
-	
+
 all: make-main cleanzip
 	./main
 

@@ -11,10 +11,10 @@
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-#define MATH_MIN1 1
-#define MATH_MAX1 6
-#define MATH_MIN2 10
-#define MATH_MAX2 19
+#define MATH_MIN1 20
+#define MATH_MAX1 39
+#define MATH_MIN2 40
+#define MATH_MAX2 90
 
 Puzzle math_puzzle_create(long seed)
 {
