@@ -547,9 +547,26 @@ squares with the correct color. The idea of this puzzle is that the player is ac
 
 /RNG/: $r, g$ pixels
 
-*** TODO Logic Gate (Graph Paper Robot II)
+*** Logic Gate (Graph Paper Robot II)
 
-Currently unimplemented
+/Adjustable Variables/:
+- =enum Gate= (*needs implementation*)
+- =input length= (unimplemented, *needs to be a power of 2*)
+
+/Description/:
+
+*NOTE*: This puzzle is currently in development, so the description is sparse on purpose.
+
+The player is presented with a grid of colors $(g)$ which are (unknown to the player) logicgates.
+These logic gates will be read in by the robot as instructions. The first instruction is in bottom left.
+Then the robot reads to the right, and loops back to the left when it reaches the end. (like reading a book, but bottom to top)
+There is another robot managing the memory, which are the colored circles $(c)$.
+When the first robot reads in a gate, the memory robot pops off the two bits on the left.
+The logic gate is then evaluted with those bits, and the result pushed on the right end of memory.
+
+The answer is every evaluation in order.
+
+/RNG/: $g,c$
 
 *** TODO (Graph Paper Robot III)
 
