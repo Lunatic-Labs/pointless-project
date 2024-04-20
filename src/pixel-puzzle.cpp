@@ -1,8 +1,3 @@
-#include "./include/puzzle.h"
-#include "./include/utils.h"
-
-#define MAX_LOOP 3// if i can modify the html somehow... 
-
 /*
 * File: rematch-based-puzzle.cpp
 * Author: Mekeal Brown
@@ -15,13 +10,19 @@
 *  in the bison svg on the webpage and perform the arithmetic to solve.
 */
 
+#include "./include/puzzle.h"
+#include "./include/utils.h"
+
+#define MAX_LOOP 3 // if i can modify the html somehow...
+
 static int get_pixel_count(const std::string& hexValue) {
     static std::unordered_map<std::string, int> pixelCounts = {
         {"#FFFFFF", 2},
         {"#000000", 30},
         {"#F4AA00", 6},
         {"#331E54", 66},
-        {"#964B00", 183}
+        {"#D2BB8D", 11},
+        // {"#552D1B", 183} This is brown. We don't want them counting 183 pixels
     };
 
     auto it = pixelCounts.find(hexValue);
@@ -34,7 +35,7 @@ static int get_pixel_count(const std::string& hexValue) {
 Puzzle pixel_puzzle_create(long seed)
 {
   std::vector<std::string> hex_vals = {"#FFFFFF", "#000000", "#F4AA00", "#331E54", "#964B00"};
-  std::vector<std::string> delim_values; 
+  std::vector<std::string> delim_values;
 
   for (int i = 0; i < MAX_LOOP; i++) {
     int prod = 1;
@@ -46,8 +47,11 @@ Puzzle pixel_puzzle_create(long seed)
     delim_values.push_back(std::to_string(prod));
   }
 
+  // Give the bison a grid
   FLAGS |= BISON_GRID;
   std::string html = utils_html_printf("Pixel Puzzle", "./files-pixel/.desc.txt", {delim_values}); 
+
+  // Disable it so later ones don't have it.
   FLAGS &= ~(BISON_GRID);
 
   utils_generate_file("./files-pixel/instructions.html", html);

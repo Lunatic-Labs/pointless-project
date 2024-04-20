@@ -13,17 +13,17 @@ Math:
 
 Color:
     - [X] Fix purple background
-    - [] Better/longer description
+    - [X] Better/longer description
 
 Pixel:
-    - [] Remove quote/link
-    - [] Add space before first set of ()
+    - [X] Remove quote/link
+    - [X] Add space before first set of ()
     - [] Spice up instructions
 
 Maze:
-    - [] Explain what UDRL mean.
-    - [] Should say it is similar to run length encoding.
-    - [] should say encoded instead of compressed at the end.
+    - [X] Explain what UDRL mean.
+    - [X] Should say it is similar to run length encoding.
+    - [X] should say encoded instead of compressed at the end.
 
 Encrypt:
     - [] Boring as all could be.

@@ -1,6 +1,33 @@
-Congratulations on completing the previous puzzle! You have been awarded another 0 points. Sweet! You are now ready to move on to the next puzzle.
+<style>
+  .container ul {
+    margin-right: 21px;
+    text-align: left;
+    list-style-position: inside;
+  }
+  .container div {
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid #ccc;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #331E54;
+    color: rgb(255, 217, 90);
+  }
+</style>
+Good job making it throught that tricky maze, you must be 200 IQ.<br />
 
-<p>We have encrypted the words <b>%DELIM</b> and your job is to decrypt it. Here are the steps that were performed:</p>
-<ul style=\"display: inline-block; float: right; margin-right: 50%\">
-%DELIM
+You have been awarded another 0 points. Sweet! I hope you are still keeping count. <br />
+This next puzzle will knock your socks off! <br />
+<small>Unless you aren't wearing any.</small> <br /> <br />
+
+Dr. Pepper has encrypted a phrase: <br />
+<h4>%DELIM</h4>
+and your job is to decrypt it.<br />
+Here are the steps that were performed:
+<ul>
+<div><b> %DELIM </b></div>
 </ul>
+
+<h3>What is the decrypted password?</h3>
+
