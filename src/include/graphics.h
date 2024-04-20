@@ -11,7 +11,10 @@ struct Pixel {
   uint8_t red;
   uint8_t green;
   uint8_t blue;
+  float alpha = 1.f;
 };
+
+std::string graphics_pixel_to_hex(Pixel p);
 
 // `Image` is a simple DS that represents a 2D array of pixels.
 struct Image {
@@ -20,7 +23,11 @@ struct Image {
   std::vector<Pixel> pixels;
 
   // Default constructor. Initializes an empty image.
-  inline Image(size_t w, size_t h) : width(w), height(h), pixels(w*h) {}
+  inline Image(size_t w, size_t h) : width(w), height(h), pixels(w*h) {
+    for (size_t i = 0; i < w*h; i++) {
+      pixels[i] = {0,0,0,0};
+    }
+  }
 
   // Accessor to the pixel at position (i, j).
   // We need this because the pixels are stored in a 1D array
@@ -45,6 +52,7 @@ struct Svg {
     std::string fill;
     std::optional<std::string> stroke;
     std::optional<std::string> html_classname;
+    std::optional<float> opacity;
 
     virtual std::string make() const = 0;
   };
@@ -56,12 +64,14 @@ struct Svg {
         float _width, float _height,
         std::string _fill,
         std::optional<std::string> _stroke = {},
+        std::optional<float> _opacity = {},
         std::optional<std::string> _html_classname = {})
       : width(_width), height(_height) {
       x = _x;
       y = _y;
       fill = _fill;
       stroke = _stroke;
+      opacity = _opacity;
       html_classname = _html_classname;
       width = _width;
     }
@@ -73,12 +83,14 @@ struct Svg {
     float radius;
     Circle(float _x, float _y, float _radius, std::string _fill,
           std::optional<std::string> _stroke = {},
+          std::optional<float> _opacity = {},
           std::optional<std::string> _html_classname = {})
       : radius(_radius) {
       x = _x;
       y = _y;
       fill = _fill;
       stroke = _stroke;
+      opacity = _opacity;
       html_classname = _html_classname;
     }
 
@@ -101,6 +113,6 @@ struct Svg {
   }
 };
 
-Svg graphics_gen_svg_from_image(Image &img, float pixel_size);
+Svg graphics_gen_svg_from_image(Image &img, float pixel_size, std::optional<std::string> outline);
 
 #endif // GRAPHICS_H
