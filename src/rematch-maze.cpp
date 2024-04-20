@@ -87,6 +87,11 @@ Puzzle rematch_maze_puzzle_create(long seed)
 
   for (int i = 0; i < 3; ++i) {
     Image maze(MAZE_SIZE, MAZE_SIZE);
+    for (size_t i = 0; i < MAZE_SIZE; i++) {
+      for (size_t j = 0; j < MAZE_SIZE; j++) {
+        maze(i,j) = MAZE_WALL;
+      }
+    }
 
     std::vector<int> binmaze = {};
     binmaze.resize(MAZE_SIZE*MAZE_SIZE, 0); // Set all to 0
@@ -122,8 +127,8 @@ Puzzle rematch_maze_puzzle_create(long seed)
       } break;
     }
 
-    Svg svg = graphics_gen_svg_from_image(maze, 40.f);
-    Svg::Circle player(-200.f, -200.f, 15.f, "#F4AA00", "#000000", "player");
+    Svg svg = graphics_gen_svg_from_image(maze, 40.f, {});
+    Svg::Circle player(-200.f, -200.f, 15.f, "#F4AA00", "#000000", {}, "player");
     svg.add_shape(player);
     std::string svg_html = svg.build();
 
