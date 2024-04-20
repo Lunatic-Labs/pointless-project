@@ -8,12 +8,12 @@
 #include "./include/puzzle.h"
 #include "./include/graphics.h"
 
-#define TAPE_WIDTH 10
+#define TAPE_WIDTH 7
 #define TAPE_HEIGHT 3
 
-#define REQ_CARRIES 3
+#define REQ_CARRIES 2
 
-#define EMPTY {255, 255, 255} // blank
+#define EMPTY {255, 255, 255, 0} // blank
 #define RED {255, 0, 0}       // off
 #define GREEN {0, 255, 0}     // on
 #define GOLD {255, 255, 0}    // start
@@ -35,7 +35,6 @@ std::string create_bin_str(long seed)
 
 Puzzle binary_addition_puzzle_create(long seed)
 {
-
   std::string top;
   std::string bottom;
 
@@ -78,7 +77,7 @@ Puzzle binary_addition_puzzle_create(long seed)
   }
 
   // std::string svg = graphics_gen_svg(graph, 20);
-  Svg svg = graphics_gen_svg_from_image(graph, 20.f);
+  Svg svg = graphics_gen_svg_from_image(graph, 20.f, {});
   std::string svg_html = svg.build();
   std::string html_body = utils_html_printf("Graph Paper Robot", "./files-binary-addition/.desc.txt", {{svg_html}});
   utils_generate_file("./files-binary-addition/instructions.html", html_body);

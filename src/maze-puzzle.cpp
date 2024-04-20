@@ -144,6 +144,11 @@ static void randomized_dfs(Image &maze, int x, int y, long &seed)
 Puzzle maze_puzzle_create(long seed)
 {
   Image maze(MAZE_SIZE, MAZE_SIZE);
+  for (size_t i = 0; i < MAZE_SIZE; i++) {
+    for (size_t j = 0; j < MAZE_SIZE; j++) {
+      maze(i,j) = MAZE_WALL;
+    }
+  }
 
   randomized_dfs(maze, MAZE_SIZE-1, 0, seed);
 
@@ -156,7 +161,7 @@ Puzzle maze_puzzle_create(long seed)
   maze(0, MAZE_SIZE-1) = MAZE_START;
   maze(MAZE_SIZE-1, 0) = MAZE_END;
 
-  Svg svg = graphics_gen_svg_from_image(maze, 20);
+  Svg svg = graphics_gen_svg_from_image(maze, 20, {});
   std::string svg_html = svg.build();
   std::string html_body = utils_html_printf("Maze Puzzle", "./files-maze/.desc.txt", {{svg_html}});
   utils_generate_file("./files-maze/instructions.html", html_body);

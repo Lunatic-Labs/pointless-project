@@ -30,5 +30,6 @@ Puzzle rematch_encrypt_puzzle_create(long seed);
 Puzzle rematch_maze_puzzle_create(long seed);
 Puzzle rematch_based_puzzle_create(long seed);
 Puzzle rematch_puzzle_create(long seed);
+Puzzle logicgate_puzzle_create(long seed);
 
 #endif // PUZZLE_H
