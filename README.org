@@ -820,6 +820,8 @@ Scales =img= by =scale= and returns a new =Image=.
 - Missing required "whitty" quotes on all puzzles.
 - Need some way of keeping track of the seed in some meta-data in case the student is stuck. Lipscomb needs
   to figure out the seed that they have so help can be offered.
+- The rematch puzzles produce "pieces" of the final password, and the user must concat them together. However,
+  this does not work if the user decides to do them in a non-linear order. Maybe just add the numbers together?
 
 * TODO Future Plans
 
