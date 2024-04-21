@@ -20,7 +20,7 @@ li {
 <p style="text-align:center"></p>
 
 <p>
-    Eggcelent! You completed the second puzzle (just when we thought we had you stumped!). <br>
+    Eggcelent! You completed the second puzzle (just when we thought we had you stumped!). You have been awarded..0 points!<br>
     Ready for the next challenge?
 </p>
 
@@ -35,3 +35,4 @@ li {
         <li>%DELIM × %DELIM × %DELIM = ?</li>
     </p>
 </div>
+<p> LU is feeling kinda funny, I wonder if that has anything to do with the weirdness above..</p>

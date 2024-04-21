@@ -102,14 +102,23 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
     ++it;
   }
 
-  std::string content_concatenated = header_content
-    + "<h2 style=\"text-align:center\">"
-    + title
-    + "</h2>"
-    + "<p style=\"text-align:center\">"
-    + body
-    + "</p>"
-    + footer_content;
+  //the additional tags are unsightly when using a custom header..ahem..based rematch
+  std::string content_concatenated;
+  if(FLAGS & NO_HDR) {
+    content_concatenated = header_content
+      + body
+      + "</p>"
+      + footer_content;
+  } else {
+      content_concatenated = header_content
+      + "<h2 style=\"text-align:center\">"
+      + title
+      + "</h2>"
+      + "<p style=\"text-align:center\">"
+      + body
+      + "</p>"
+      + footer_content;
+  }
 
   return content_concatenated;
 }

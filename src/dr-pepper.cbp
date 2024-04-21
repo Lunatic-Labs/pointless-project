@@ -18,7 +18,7 @@ Color:
 Pixel:
     - [X] Remove quote/link
     - [X] Add space before first set of ()
-    - [] Spice up instructions
+    - [X] Spice up instructions
 
 Maze:
     - [X] Explain what UDRL mean.
@@ -26,15 +26,15 @@ Maze:
     - [X] should say encoded instead of compressed at the end.
 
 Encrypt:
-    - [] Boring as all could be.
-    - [] Change "words" to "phrase"
-    - [] Add a "What is the decrypted password" to the end
+    - [X] Boring as all could be.
+    - [X] Change "words" to "phrase"
+    - [X] Add a "What is the decrypted password" to the end
 
 Based:
-    - [] It is based.
+    - [X] It is based.
 
 Maze rematch:
-    - [] NEEDS to say console.
+    - [X] NEEDS to say console.
 
 Encrypt rematch:
     - [] needs pizzazz

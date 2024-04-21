@@ -447,7 +447,7 @@
           room to fill the obelisk. <br>
           Only with the correct order will your key be revealed
         </p>
-        <a id="showPuzzle" class="button" onclick="toggleDivDisplay()">Enter</a>
+        <a id="showPuzzle" class="button" onclick="toggleDivDisplay('enter')">Enter</a>
         <br><br><br>
 
         <button class="hints" onclick="displayText('Symbolic 8: !, @, #, $, %, ^, &, *')">S8</button>
@@ -484,6 +484,19 @@
       font-size: 16px;
       cursor: pointer;
       color: red;
+    }
+
+    .back_button {
+      border: none;
+      background-color: transparent;
+      padding: 10px 20px;
+      font-size: 10px;
+      cursor: pointer;
+      color: red;
+      box-shadow: 0 0 10px 5px red;
+      border-radius: 10px;
+      overflow: hidden;
+      animation: glowAnimation 1s infinite alternate;
     }
 
     #flush {
@@ -589,7 +602,7 @@
   <button class="modifier_buttons" ; id="flush" onclick="flush()"
     style="position: absolute; top: 90vh; left: 46.5vw;">FLUSH</button>
   <button class="modifier_buttons" ; id="goBack" onclick="goBack()"
-    style="position: absolute; top: 95vh; left: 45.9vw;">GO BACK</button>
+    style="position: absolute; top: 95vh; left: 45.9vw;">BACK ONE</button>
 
   <button class="base_vals" ; id="val_1" style="position:absolute; top: 5rem;  left: 1rem; ">%DELIM</button>
   <button class="base_vals" ; id="val_2" style="position:absolute; top: 15rem; left: 15rem;">%DELIM</button>
@@ -602,6 +615,7 @@
   <button class="base_vals" ; id="val_9" style="position:absolute; top: 20rem; left: 86rem;">%DELIM</button>
   <button class="base_vals" ; id="val_10" style="position:absolute;top: 30rem; left: 80rem; ">%DELIM</button>
   <button class="base_vals" ; id="val_11" style="position:absolute;top: 10rem; left: 40rem; ">%DELIM</button>
+  <button class="back_button" onclick="toggleDivDisplay('home')">GO HOME</button>
 
   <div id="customAlert" class="modal">
     <div class="modal-content">
@@ -616,7 +630,7 @@
       let buttonText = event.target.textContent;
       
       //terribly formatted code has led to the need for the S8, G16, and M36 checks, sorry
-      if (buttonText != "FLUSH" && buttonText != "GO BACK" && buttonText != "S8" && buttonText != "G16" && buttonText != "M36") { //if not these, its a value
+      if (buttonText != "FLUSH" && buttonText != "GO BACK" && buttonText != "S8" && buttonText != "G16" && buttonText != "M36" && buttonText != "GO HOME") { //if not these, its a value
         event.target.style.display = "none";
         buttonNames.push(buttonText);
         addLiquid();
@@ -735,13 +749,20 @@
     document.getElementById('display').innerText = text;
   }
   const enterButton = document.getElementById("showPuzzle");
-  const page1 = document.getElementById("page1");
-  const page2 = document.getElementById("page2");
+  const backButton = document.getElementById("goHome");
+  
 
-  function toggleDivDisplay() {
-    page1.style.display = "none";
-    page2.style.display = "block";
-    console.log(page2.style);
+  function toggleDivDisplay(text) {
+    const page1 = document.getElementById("page1");
+    const page2 = document.getElementById("page2");
+
+    if (text == 'enter') {
+      page1.style.display = "none";
+      page2.style.display = "block";
+    } else {
+      page1.style.display = "block";
+      page2.style.display = "none";
+    }
   };
 </script>
 </body>
