@@ -459,6 +459,12 @@
 
       </div>
   </div>
+  <footer>
+  <div style="text-align:center; margin-top: 34.5px;">
+    <p>Dr. Pepper -
+      dpepper@lipscomb.edu</p>
+  </div>
+<footer>
 </div>
 <div id="page2" style="display: none;">
   <style>
@@ -630,7 +636,7 @@
       let buttonText = event.target.textContent;
       
       //terribly formatted code has led to the need for the S8, G16, and M36 checks, sorry
-      if (buttonText != "FLUSH" && buttonText != "GO BACK" && buttonText != "S8" && buttonText != "G16" && buttonText != "M36" && buttonText != "GO HOME") { //if not these, its a value
+      if (buttonText != "FLUSH" && buttonText != "BACK ONE" && buttonText != "S8" && buttonText != "G16" && buttonText != "M36" && buttonText != "GO HOME") { //if not these, its a value
         event.target.style.display = "none";
         buttonNames.push(buttonText);
         addLiquid();
@@ -766,12 +772,5 @@
   };
 </script>
 </body>
-
-<footer>
-  <div style="text-align:center; margin-top: 34.5px;">
-    <p>Dr. Pepper -
-      dpepper@lipscomb.edu</p>
-  </div>
-<footer>
 </div>
 </div>
