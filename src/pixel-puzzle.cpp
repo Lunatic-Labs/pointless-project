@@ -1,8 +1,3 @@
-#include "./include/puzzle.h"
-#include "./include/utils.h"
-
-#define MAX_LOOP 3// if i can modify the html somehow... 
-
 /*
 * File: rematch-based-puzzle.cpp
 * Author: Mekeal Brown
@@ -14,6 +9,13 @@
 *  The third requires the user to solve. The user must count the number of pixels
 *  in the bison svg on the webpage and perform the arithmetic to solve.
 */
+
+#include <unordered_map>
+
+#include "./include/puzzle.h"
+#include "./include/utils.h"
+
+#define MAX_LOOP 3 // if i can modify the html somehow...
 
 static int get_pixel_count(const std::string& hexValue) {
     static std::unordered_map<std::string, int> pixelCounts = {
@@ -34,7 +36,7 @@ static int get_pixel_count(const std::string& hexValue) {
 Puzzle pixel_puzzle_create(long seed)
 {
   std::vector<std::string> hex_vals = {"#FFFFFF", "#000000", "#F4AA00", "#331E54", "#964B00"};
-  std::vector<std::string> delim_values; 
+  std::vector<std::string> delim_values;
 
   for (int i = 0; i < MAX_LOOP; i++) {
     int prod = 1;

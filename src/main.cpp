@@ -41,7 +41,8 @@ int main(int argc, char **argv)
   while (argc > 1) {
     if (strcmp(argv[1], "-a") == 0) {
       FLAGS |= ANS_ONLY;
-    } else if (strcmp(argv[1], "-s") == 0) {
+    }
+    else if (strcmp(argv[1], "-s") == 0) {
       FLAGS |= SET_SEED;
       --argc;
       ++argv;
@@ -76,7 +77,6 @@ int main(int argc, char **argv)
     logicgate_puzzle_create(seed),
     fin_puzzle_create(seed),
   };
-
 
   for (auto &puzzle : puzzles) {
     std::printf("%-15s Password: %s", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());

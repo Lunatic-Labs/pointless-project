@@ -4,7 +4,6 @@
 #include <optional>
 #include <string>
 #include <vector>
-#include <unordered_map>
 
 struct Puzzle {
   // The filepath to the appropriate directory
