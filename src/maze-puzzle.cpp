@@ -24,7 +24,7 @@
 #define MAZE_PATH {255,255,255}
 #define MAZE_CHECKER_PATH {200,200,255};
 
-#define MAZE_SIZE 13 // Must be an odd number
+#define MAZE_SIZE 13 // Must be an odd number. Also is hardcoded into HTML
 #define PIXEL_IS_BLACK(p) (p.red + p.green + p.blue == 0)
 
 #define MAZE_END {255, 0, 255};   // Purple
@@ -161,7 +161,7 @@ Puzzle maze_puzzle_create(long seed)
   maze(0, MAZE_SIZE-1) = MAZE_START;
   maze(MAZE_SIZE-1, 0) = MAZE_END;
 
-  Svg svg = graphics_gen_svg_from_image(maze, 20, {});
+  Svg svg = graphics_gen_svg_from_image(maze, 20, {}); // Maze size is hardcoded into HTML
   std::string svg_html = svg.build();
   std::string html_body = utils_html_printf("Maze Puzzle", "./files-maze/.desc.txt", {{svg_html}});
   utils_generate_file("./files-maze/instructions.html", html_body);

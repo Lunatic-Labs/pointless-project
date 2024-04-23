@@ -1,0 +1,55 @@
+- [X] Fix Dr. Pepper.
+- [] Spice up the congrats at the start of every puzzle.
+- [] All puzzles should say. "You have been awarded 0 points"
+- [] Do a set seed for beta. So that we can give them the passwords.
+- [X] make AST the last puzzle
+- [X] Add a real ending for beta
+
+Math:
+    - [X] Bigger numbers!
+    - [X] Remove Link. (sad hyaah)
+    - [X] Remove plot coupons
+    - [X] Remove all after MacGuffin
+
+Color:
+    - [X] Fix purple background
+    - [X] Better/longer description
+
+Pixel:
+    - [X] Remove quote/link
+    - [X] Add space before first set of ()
+    - [X] Spice up instructions
+
+Maze:
+    - [X] Explain what UDRL mean.
+    - [X] Should say it is similar to run length encoding.
+    - [X] should say encoded instead of compressed at the end.
+
+Encrypt:
+    - [X] Boring as all could be.
+    - [X] Change "words" to "phrase"
+    - [X] Add a "What is the decrypted password" to the end
+
+Based:
+    - [X] It is based.
+
+Maze rematch:
+    - [X] NEEDS to say console.
+
+Encrypt rematch:
+    - [] needs pizzazz
+    - [] needs pizza
+
+Based Rematch:
+    - [X] Unbased
+    - [X] Title at top?
+    - [X] Moon is cringe?
+    - [X] Needs a way to go back?
+
+AST:
+    - [] YIKES!!!
+
+Graph paper 1:
+    - [] Robot instructions need to be aligned
+    - [] Bigger SVG
+    - [] More words, letters, and or pixels.

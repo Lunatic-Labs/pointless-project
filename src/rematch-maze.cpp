@@ -13,7 +13,7 @@
 #define MAZE_PATH {255,255,255}
 #define MAZE_CHECKER_PATH {200,200,255}; // This color is hard coded into JS as hex
 
-#define MAZE_SIZE 9 // Must be an odd number
+#define MAZE_SIZE 9 // Must be an odd number. Also is hardcoded into HTML
 #define PIXEL_IS_BLACK(p) (p.red + p.green + p.blue == 0)
 
 #define MAZE_END {255, 0, 255};   // Purple
@@ -127,7 +127,7 @@ Puzzle rematch_maze_puzzle_create(long seed)
       } break;
     }
 
-    Svg svg = graphics_gen_svg_from_image(maze, 40.f, {});
+    Svg svg = graphics_gen_svg_from_image(maze, 40.f, {}); // Maze size is hardcoded into HTML
     Svg::Circle player(-200.f, -200.f, 15.f, "#F4AA00", "#000000", {}, "player");
     svg.add_shape(player);
     std::string svg_html = svg.build();

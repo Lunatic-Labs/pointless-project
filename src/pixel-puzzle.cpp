@@ -23,7 +23,8 @@ static int get_pixel_count(const std::string& hexValue) {
         {"#000000", 30},
         {"#F4AA00", 6},
         {"#331E54", 66},
-        {"#964B00", 183}
+        {"#D2BB8D", 11},
+        // {"#552D1B", 183} This is brown. We don't want them counting 183 pixels
     };
 
     auto it = pixelCounts.find(hexValue);
@@ -48,8 +49,11 @@ Puzzle pixel_puzzle_create(long seed)
     delim_values.push_back(std::to_string(prod));
   }
 
+  // Give the bison a grid
   FLAGS |= BISON_GRID;
   std::string html = utils_html_printf("Pixel Puzzle", "./files-pixel/.desc.txt", {delim_values}); 
+
+  // Disable it so later ones don't have it.
   FLAGS &= ~(BISON_GRID);
 
   utils_generate_file("./files-pixel/instructions.html", html);

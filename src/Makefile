@@ -14,7 +14,7 @@ make-main: $(OBJDIR) $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(CLINKS)
-	
+
 all: make-main cleanzip
 	./main
 

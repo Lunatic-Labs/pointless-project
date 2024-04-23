@@ -1,72 +1,71 @@
-        <style>
-            table {
-                margin: 20px auto; /* Center the table horizontally */
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add a shadow effect */
-                background-image: url('https://t3.ftcdn.net/jpg/01/36/12/48/360_F_136124808_WWhIcVaUK0boBd4KhFsSittv9HJm7M8T.jpg'); /* Add a background image */
-                background-size: cover; /* Ensure the background image covers the entire table */
-                border-radius: 10px;
-            }
+<style>
+    table {
+        margin: 20px auto; /* Center the table horizontally */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add a shadow effect */
+        background-image: url('https://t3.ftcdn.net/jpg/01/36/12/48/360_F_136124808_WWhIcVaUK0boBd4KhFsSittv9HJm7M8T.jpg'); /* Add a background image */
+        background-size: cover; /* Ensure the background image covers the entire table */
+        border-radius: 10px;
+    }
 
-            td {
-                width: 70px; /* Set cell width */
-                height: 70px; /* Set cell height */
-                /* border: 2px solid #696969; Remove this line */
-                text-align: center; /* Center text horizontally */
-                vertical-align: middle; /* Center text vertically */
-                color: #ffffff; /* Set text color to a light gray */
-                font-size: 25px; /* Set font size */
-                text-shadow: 2px 2px 10px #2dcf08;
-            }
-        </style>
-    
-            <p>In a far-off galaxy, there exists an advanced alien civilization that uses a peculiar numbering system. This system is based on a combination of base-16, base-20, and base-31, all intertwined. Here's how it works:</p>
-    
-            <ul>
-                <li>Digits A through F are represented as usual in base-16.</li>
-                <li>Digits 0 through 20 are represented in base-20.</li>
-                <li>Digits 21 through 42 are represented in base-31.</li>
-            </ul>
-    
-            <h3>Now, your challenge:</h3>
-    
-            <p>An alien artifact has been discovered, and on it, there's four rows, each a cipher. The cipher contains three values and then a light. 
-            Each row of values contains an instruction to either turn on the light or keep it off. Only with the correct combination of lights will the cipher be solved.</p>
-            
-            <p> To decipher this instruction, you need to recall your knowledge on <a href="https://en.wikipedia.org/wiki/Base_conversion" target="_blank">base conversion</a>. 
-            While the aliens like their numbers as a combination of base-16, base-20, and base-31, we typically like our numbers represented as base-10.</p>
-            
-            <p> <b> Once in a representation we like, sum the values. </b></p>
-    
-            <p>Recall that electronics work in 1's and 0's, on or off, including the aliens lights. The instruction to turn the light on or off is found in the 
-            <a href="https://en.wikipedia.org/wiki/Bit_numbering" target="_blank">least significant bit</a> of the row's sum.</p>
-    
-            <p><b>Can you crack the code and unveil the hidden message within the artifact?</b></p>
+    td {
+        width: 70px; /* Set cell width */
+        height: 70px; /* Set cell height */
+        text-align: center; /* Center text horizontally */
+        vertical-align: middle; /* Center text vertically */
+        color: #ffffff; /* Set text color to a light gray */
+        font-size: 25px; /* Set font size */
+        text-shadow: 2px 2px 10px #2dcf08;
+    }
+</style>
+    <p>You're a master decrypter! You have been awarded a whopping 0 points. </p>
+    <p>In a far-off galaxy, there exists an advanced alien civilization that uses a peculiar numbering system. This system is based on a combination of base-16, base-20, and base-31, all intertwined. Here's how it works:</p>
 
-            <table>
-                <tr>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>?</td>
-                </tr>
-                <tr>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>?</td>
-                </tr>
-                <tr>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>?</td>
-                </tr>
-                <tr>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>%DELIM</td>
-                    <td>?</td>
-                </tr>
-            </table>
-            <p>Hint: The solution will be in base-10</p>
-        </div>
+    <ul>
+        <li>Digits <b>A</b> through <b>F</b> are represented as usual in <b>base-16</b>.</li>
+        <li>Digits <b>0</b> through <b>20</b> are represented in <b>base-20</b>.</li>
+        <li>Digits <b>21</b> through <b>42</b> are represented in <b>base-31</b>.</li>
+    </ul>
+
+    <h3>Now, your challenge:</h3>
+
+    <p>An alien artifact has been discovered, and on it, there's four rows, each a cipher. The cipher contains three values and then a light. 
+    Each row of values contains an instruction to either turn on the light or keep it off. Only with the correct combination of lights will the cipher be solved.</p>
+
+    <p> To decipher this instruction, you need to recall your knowledge on <a href="https://en.wikipedia.org/wiki/Base_conversion" target="_blank">base conversion</a>. 
+    While the aliens like their numbers as a combination of base-16, base-20, and base-31, we typically like our numbers represented as base-10.</p>
+
+    <p> <b>Once in a representation we like, sum the values. </b></p>
+
+    <p>Recall that electronics work in 1's and 0's, on or off, including the aliens lights. The instruction to turn the light on or off is found in the 
+    <a href="https://en.wikipedia.org/wiki/Bit_numbering" target="_blank">least significant bit</a> of the row's sum.</p>
+
+    <p><b>Can you crack the code and unveil the hidden message within the artifact?</b></p>
+
+    <table>
+        <tr>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>?</td>
+        </tr>
+        <tr>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>?</td>
+        </tr>
+        <tr>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>?</td>
+        </tr>
+        <tr>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>?</td>
+        </tr>
+    </table>
+    <p>Hint: The solution will be in base-10</p>
+</div>

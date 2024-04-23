@@ -1,23 +1,38 @@
-
-<body>
-    <h3 style="text-align:center"></h3>
-    <p style="text-align:center"></p>
-
-        <p>Excellent! You completed the second puzzle(just when we thought we had you stumped!). <br>
-            Ready for the next challenge?
-        </p>
-        <br>
-        <a href="https://uxdesign.cc/color-blindness-in-user-interfaces-66c27331b858"target="_blank">https://uxdesign.cc/color-blindness-in-user-interfaces-66c27331b858</a>
-        <br><i>Design is where science and art break even. -- Robin Matthews</i>
-
-    
-        <h3>Your challenge:</h3>
-        <p>As usual, you'll need a password. To complete this level, you must fully Grok the following:</p>
-        <br>
-        <p style="font-family:'Courier New', Courier, monospace;"> %DELIM = %DELIM <br> %DELIM X %DELIM = %DELIM <br>
-            %DELIM X %DELIM X %DELIM = ?<br>
-        </p>
-        </div>
-    </div>
+<style>
+.container div {
+    max-width: 300px;
+    white-space: nowrap;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid #ccc;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #331E54;
+    color: rgb(255, 217, 90);
+}
+li {
+  list-style-type: none;
+}
+</style>
 
 
+<h3 style="text-align:center"></h3>
+<p style="text-align:center"></p>
+
+<p>
+    Eggcelent! You completed the second puzzle (just when we thought we had you stumped!). You have been awarded..0 points!<br>
+    Ready for the next challenge?
+</p>
+
+<h3>Your challenge:</h3>
+<p>As usual, you'll need a password. To complete this level, you must fully Grok the following:</p>
+<br>
+<div>
+
+    <p style="font-family:'Courier New', Courier, monospace;"> 
+        <li>%DELIM = %DELIM</li>
+        <li>%DELIM × %DELIM = %DELIM</li>
+        <li>%DELIM × %DELIM × %DELIM = ?</li>
+    </p>
+</div>
+<p> LU is feeling kinda funny, I wonder if that has anything to do with the weirdness above..</p>
