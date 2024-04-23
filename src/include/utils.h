@@ -38,9 +38,10 @@ void utils_zip_files(filepath_t out_file_name, strvec_t file_names, std::string 
 // Returns the contents of the given file as a string.
 std::string utils_file_to_str(filepath_t filepath);
 
-// Creates an HTML body. All occurrences of "%DELIM" in the text of `desc_filepath` will be 
+// Creates an HTML body. All occurrences of "%DELIM" in the text of `desc_filepath` will be
 // replaced with the given `args` in order. It is similar to `printf`.
 std::string utils_html_printf(std::string title, filepath_t desc_filepath, strvec_t args);
+
 void utils_mkdir(filepath_t filepath);
 
 int utils_chance(int percentage, long &seed);

@@ -1,0 +1,837 @@
+#+TITLE: Pointless Project [[./imgs/messed-up-bison.png]]
+#+DESCRIPTION: Introduction to the Pointless Project
+#+AUTHOR: Zachary Haskins
+#+EMAIL: zdhdev@yahoo.com
+
+# #+OPTIONS: html5-fancy:t num:nil
+
+# Theme from: https://github.com/fniessen/org-html-themes
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
+
+*NOTE*: Open =README.html= in a browser to view this document
+in a much better format.
+
+* Introduction
+
+#+begin_quote
+The point(less) of the /Pointless Project/ is to create a compelling, puzzle-filled
+challenge inspired by the [[https://challenge.synacor.com][Synacor Challenge]], but targeted at a pre-college audience.
+The goal is to allow the School of Computing (SoC) to engage potential
+students during the time they are selecting a college by providing opportunities to remain in
+contact, encourage curiosity, and engage in creative problem solving while learning about
+computing and the SoC.
+
+Playing through the Synacor Challenge will provide the clearest understanding, however reading
+someone else's "[[https://github.com/KanegaeGabriel/synacor-challenge/blob/master/writeup.md][travel log]]" is also insightful. The key components to success include:
+1. a personalized download containing the complete game
+2. the ability to play completely offline
+3. a series of different but related logic puzzles and riddles
+4. multiple opportunities "along the way" to be recognized for their problem solving skills.
+#+end_quote
+
+* Project Setup
+
+** Installation
+
+*** Linux (/recommened/)
+
+For Debian based distributions, run:
+
+#+begin_src bash
+  sudo apt update
+  sudo apt install g++ libboost-all-dev libzip-dev
+#+end_src
+
+You will also need a way to open the zipfiles. We have found the best programs to use
+is =file-roller= and =pcmanfm= (or some other file manager such as =nautilus=). But use whatever you see fit.
+
+#+begin_src bash
+  sudo apt update
+  sudo apt install file-roller pcmanfm
+#+end_src
+
+For Arch based distributions, run:
+
+#+begin_src bash
+  sudo pacman -S gcc
+  sudo pacman -S boost
+  sudo pacman -S libzip
+  sudo pacman -S pcmanfm
+  sudo pacman -S file-roller
+#+end_src
+
+*** Windows
+
+For windows, we recommend developing with [[https://learn.microsoft.com/en-us/windows/wsl/about][WSL]] (Windows Subsystem for Linux).
+Please install it if you do not already have it using this [[https://learn.microsoft.com/en-us/windows/wsl/install][guide]]. After that,
+launch WSL and follow the steps to installing on Linux.
+
+For viewing the zipfiles, we have found that [[https://www.7-zip.org/download.html][7-zip]] works best.
+
+*** Mac
+
+Unfortunately, we have not been able to get the project built on MacOS. We have
+decided the the best option for Mac users is to choose a virtual machine to run
+some Linux distribution.
+
+Here are some popular VM's:
+- [[https://www.qemu.org/][QEMU]] (my favorite but harder to set up)
+- [[https://www.virtualbox.org/][Virtualbox]] (easiest but slowest)
+- [[https://www.vmware.com/][VMware]] (high quality but paid)
+
+There are many more out there, so choose whichever one suits you best.
+
+Once a VM has been chosen, choose your favorite flavor of Linux and download its ISO
+and have the VM use it, then follow the installation on Linux.
+
+** Building
+
+First, clone the repository if not done already:
+#+begin_src bash
+  git clone https://www.github.com/Lunatic-Labs/pointless-project.git/
+#+end_src
+
+Go into the =src/= directory:
+#+begin_src bash
+  cd ./src/
+#+end_src
+
+Then use the =Makefile= to build the project:
+#+begin_src bash
+  make <opt>
+#+end_src
+#+begin_quote
+where =opt= is one of:
+- =all= \rightarrow perform all =Makefile= flags
+- =clean= \rightarrow removes all object files and all generated zipfiles
+- =cleanzip= \rightarrow removes all generated zipfiles
+#+end_quote
+
+Building the project will create a directory called =obj= where all object files
+are located as well as create a =zipfiles= directory where all puzzle zipfiles are
+generated. You can now inspect and solve the puzzle(s) by choosing the appropriate zipfile.
+
+* Puzzle Creation Framework
+
+It is obvious to see that there are a lot of directories in this project, and not all
+of them contain code. In fact, most of these directories contain the necessary resources
+for their respective puzzle.
+
+Any directory that starts with =files-= are resource directories. They contain (at least) the =.desc.txt=
+for each puzzle as well as any supporting files that the puzzle needs (other HTML files, images, etc).
+
+#+begin_quote
+*Any support files that are prefixed with `.` will not be included in the zipped-up
+puzzle. Files that do not have this prefix will be included in the zipfile.*
+#+end_quote
+
+Each puzzle's generated HTML page (=instructions.html=) has a specific structure:
+
+| Instructions.html  |
+|--------------------|
+| Header (generated) |
+| Body (.desc.txt)   |
+| Footer (generated) |
+
+The HTML /Header/ and /Footer/ are located in =src/resources/= and do
+not need to be touched (unless changes are needed).
+
+Below is a UML diagram of how a puzzle gets created.
+
+#+CAPTION: Puzzle Creation UML
+[[./imgs/puzzle-uml.png]]
+
+* Implementing a New Puzzle
+
+Implementing a new puzzle is increadibly easy with how we implemented it. Here are the steps
+to take when doing so.
+
+** Puzzle Resources Directory
+
+Start by creating a new directory in =src/= and name it =files-<new puzzle name>=.
+Then inside of there, create a new file called =.desc.txt=. This is where the instructions,
+hints, and other info about the puzzle is stored. Everything in this file will be put into an HTML file,
+so make sure that it follows the HTML rules.
+
+In order to transfer information easily from C++ to HTML/Javascript, we use a special delimiter in this file,
+namely =%DELIM=. For example, if I need to pass a password and an array that is generated in C++
+into this =.desc.txt= file, I would do something like:
+
+#+CAPTION: =.desc.txt= example
+#+begin_src javascript
+  <script>
+    let password = %DELIM;
+    let array = [%DELIM];
+  </script>
+#+end_src
+
+It is then the job of C++ to "stringify" the required information to pass to =.desc.txt=.
+In order to make the explanation more easy to follow, I will make a new puzzle called "fib",
+where the point(less) of it is to have the user find the /n^th/ number of the fibonacci sequence.
+
+#+CAPTION: Creating =src/files-fib/.desc.txt=
+#+begin_src bash
+  cd ./src/
+  mkdir files-fib && cd files-fib
+  echo "What is the <b>%DELIM</b>th number in the fibonacci sequence?" > .desc.txt
+#+end_src
+
+** Puzzle Implementation
+
+Once the above step is done, create a new file called =<puzzle name>-puzzle.cpp=
+in =src/= and put the entrypoint of the function that will create the puzzle.
+We will also need to include =./include/puzzle.h= to have access to the =Puzzle= object.
+
+#+CAPTION: =src/fib-puzzle.cpp=
+#+begin_src c++
+  #include "./include/puzzle.h"
+
+  Puzzle fib_puzzle_create(long seed)
+  {
+    return {"files-fib", "changeme", {}}; // NOTE: "files-fib" is the puzzle requirements directory from the previous step.
+  }
+#+end_src
+
+The return value of this function is a =Puzzle= object. It is defined as:
+
+#+CAPTION: =src/include/puzzle.h=
+#+begin_src c++
+struct Puzzle {
+  // The filepath to the appropriate directory
+  // that contains all of the information needed
+  // for the puzzle.
+  std::string contents_fp;
+
+  std::string password;
+
+  std::optional<std::string> extra_info;
+};
+#+end_src
+
+#+begin_quote
+So we are returning a new puzzle where
+
+- requirements = "files-fib"
+- password = "changeme"
+- extra info = None
+#+end_quote
+
+The =password= field is what will set the password for the next zipfile layer.
+The =extra_info= field is purely for debugging and is strictly used for the side
+effect of printing when running the application. Nothing that gets put into it will
+be displayed/used in the final puzzle in the zipfiles.
+
+Now it's time to actually create the solver for the puzzle. I will create a fib function that will find the number.
+
+#+CAPTION: Complete source of =src/fib-puzzle.cpp=
+#+begin_src c++
+  #include "./include/puzzle.h"
+  #include "./include/utils.h" // utils_rng_roll, utils_html_printf, utils_generate_file
+
+  static int fib(int n)
+  {
+    if (n < 2) return n;
+    return fib(n-1) + fib(n-2);
+  }
+
+  Puzzle fib_puzzle_create(long seed)
+  {
+    // Get a random number in the range 3..=10.
+    int fibnum = utils_rng_roll(3, 10, seed);
+
+    // Get the solution to the puzzle.
+    int password = fib(fibnum);
+
+    // Generate the HTML content to be displayed to the user
+    std::string html_content = utils_html_printf("Fibonacci Sequence",
+                                                 "./files-fib/.desc.txt",
+                                                 {std::to_string(fibnum)});
+
+    // Create the instructions.html
+    utils_generate_file("./files-fib/instructions.html", html_content);
+
+    // Finally return the Puzzle object.
+    return {"files-fib", std::to_string(password), {}};
+  }
+#+end_src
+
+Now that the implementation is done, add the signature of =Puzzle fib_puzzle_create(long)= into =./src/include/puzzle.h=.
+
+** Using the Puzzle
+
+In the =main= function in =main.cpp=, there is some code that looks like:
+
+#+CAPTION: src/main.cpp
+#+begin_src c++
+  std::vector<Puzzle> puzzles = {
+    math_puzzle_create(seed),
+    color_puzzle_create(seed),
+    pixel_puzzle_create(seed),
+    maze_puzzle_create(seed),
+    encrypt_puzzle_create(seed),
+    based_puzzle_create(seed),
+    ast_puzzle_create(seed),
+    fin_puzzle_create(seed),
+  };
+#+end_src
+
+Put the new puzzle that was created in the spot that you want it to
+appear in the nested zipfiles. For example, if I want it to be the
+third puzzle that the user solves, I would do:
+
+#+CAPTION: src/main.cpp
+#+begin_src c++
+  std::vector<Puzzle> puzzles = {
+    math_puzzle_create(seed),
+    color_puzzle_create(seed),
+    fib_puzzle_create(seed), // Added it here
+    pixel_puzzle_create(seed),
+    maze_puzzle_create(seed),
+    encrypt_puzzle_create(seed),
+    based_puzzle_create(seed),
+    ast_puzzle_create(seed),
+    fin_puzzle_create(seed),
+  };
+#+end_src
+
+Now run =make all= and these things will happen:
+
+#+begin_quote
+- The =files-<puzzle name>= directories will all generate a file called =instructions.html=.
+- =./src/zipfiles/= will be populated with zipfiles.
+#+end_quote
+
+The entire project will be located in =./src/zipfiles/puzzle1.zip=, as it contains
+the zipped files /puzzle1..puzzleN/. The reason why we also generate the other puzzles
+outside of =puzzle1.zip=, is because it allows for easy testing without having to go through the entire zipfile structure.
+
+* Current Puzzles
+
+These are the currently implemented puzzles. Each one has three entries.
+1. /Adjustable Variables/: Variables can be adjusted to make the puzzle harder/easier
+2. /Description/: What the puzzle does
+3. /RNG/: What exactly in the puzzles are random
+
+** Math
+
+/Adjustable Variables/:
+- =MATH_MIN1=
+- =MATH_MAX1=
+- =MATH_MIN2=
+- =MATH_MAX2=
+
+/Description/:
+
+This puzzle serves as the /Hello, World!/ puzzle. It introduces the user
+to reading the description, solving the puzzle, and inputing the password.
+
+We prompt the user to solve a very simple math question in the form of $a$ + $b$.
+
+/RNG/:
+- $a$, $b$
+
+** Color
+
+/Adjustable Variables/: /None/
+
+/Description/:
+
+This puzzle asks the user to enter the hex value of one of Lipscomb's colors (purple or yellow).
+The goal of this puzzle is to teach the user about hex values. We hope that the user does
+some simple Googling to find [[https://teamcolorcodes.com/lipscomb-university-bisons-color-codes/][this website]] to find the colors.
+
+/RNG/:
+- purple | yellow
+
+** Pixel
+
+  /Adjustable Variables/:
+  - =MAX_LOOP= (*must change number of html elements to match*)
+    
+  /Description/:
+
+  The goal of this puzzle is to retest the user on their knowledge on [[https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://en.wikipedia.org/wiki/Web_colors&ved=2ahUKEwiC5YSTmcqFAxV7fTABHWc-BkcQFnoECD4QAQ&usg=AOvVaw18c4MTcDyUUWEZ5XtahOp3][this website]]
+  hexadecimal color codes learned in the "Color" puzzle. The hex codes come directly from the bison svg included in the pages header.
+
+  The user is shown a hex code with along with a number.
+
+    - =#331E54 = 66=
+
+  The number corresponds to the number of pixels of the given hex code found in the bison svg.
+  Following the first code/number pair, there are two more rows. The first row will contain two hex codes, an "X" denoting multiplication, and a number.
+  The number is the product of the pixel count related to the respective hex codes.
+
+    - =#F4AA00 X #331E54 = 396=
+
+  The final row contains three code/number pairs and a question mark. The user must find the product.
+
+    - =#FFFFFF X #F4AA00 X #000000 = ?=
+
+    /RNG/:
+    - The order of hex codes in the arithmetic
+
+** Maze
+
+/Adjustable Variables/:
+- =MAZE_SIZE= (*must be an odd number*)
+
+/Description/:
+
+The goal of this puzzle is to teach the user about [[https://en.wikipedia.org/wiki/Run-length_encoding][run-length encoding]].
+This encoding algorithm places numbers before the letters, while we expect the numbers to be after.
+We do this because it more closely matches function calls in the form of $f \space x \rightarrow n$.
+
+We randomly generate a maze as an SVG and have the user navigate it using the following rules:
+
+| Instruction | Direction |
+|-------------+-----------|
+| /u/         | up        |
+| /d/         | down      |
+| /l/         | left      |
+| /r/         | right     |
+
+However, the answer is not just the path that you must take (/uulrrrd/ for example), you must
+apply the run-length encoding algorithm to it. So the answer would be: /u2lr3d/.
+
+/RNG/:
+- The maze that is presented.
+
+** Encrypt
+
+/Adjustable Variables/:
+
+- =ENCR_WORDS=
+- =ENCR_OPS=
+- =ENCR_ROTATIONS_MIN=
+- =ENCR_ROTATIONS_MAX=
+- =ENCR_CHANGE_MIN=
+- =ENCR_CHANGE_MAX=
+
+/Description/:
+
+This puzzle challenges the user by decrypting the password. We present them with
+a list of steps used to encrypt it, and they must undo it to get the password.
+
+The following things can happen:
+- shift all characters by $i$ to either the right $(r)$ or left $(l)$
+- swap the characters at index $j$ and $k$
+- increase each *fourth* letter alphabetically by $n$.
+
+/RNG/:
+- The instructions used
+- $i$, $r$, $l$, $j$, $k$, $n$
+
+
+** Based
+
+    /Adjustable Variables/:
+      - =CELLS= (*must modify table in .desc.txt to match*)
+
+    /Description/:
+
+      The goal of this puzzle is to teach the user about [[https://en.wikipedia.org/wiki/Positional_notation#Base_conversion][base conversion]].
+      They are given a description of three Pointless-created bases. The actual instructions follow in a story-esque fashion, here they are simplified:
+        - Convert values to base 10
+        - Sum them up for each row
+        - Convert the sum to base 2
+        - Check if LSB is on or off
+        - Save the resulting LSB values
+        - Take that base 2 number and convert it back to base 10 (the rightmost column)
+
+      They are then shown a table with values occupying each cell, except for the right most cell in each row.
+
+      |    24 | F     |     3 | ?     |
+      |    11 | 41    |    41 | ?     |
+      |     A | 18    |    27 | ?     |
+      |    35 | F     |     E | ?     |
+
+      /RNG/:
+      - The values in each cell
+
+** Rematches
+The "rematch" puzzles serve as the point in the project where there is a
+noticable difficulty spike. It interrupts the linear nested puzzle format
+by having the user solve three harder versions of previous puzzles. Each one
+of these rematch puzzles gives a piece of the password to advance past this
+rematch section.
+
+*** Maze Rematch
+
+/Adjustable Variables/:
+- =MAZE_SIZE= (*must be an odd number*)
+
+/Description/:
+
+This is the harder version of the /Maze/ puzzle. We provide cryptic instructions
+in with the goal of having them inspect the page and navigate to the console. Once they
+type "instructions" a list of function calls are presented. The user then needs to navigate
+the maze $(M_1)$ using these function calls and must explore two other mazes $(M_2, M_3)$ with items that need to
+be picked up. Once these items are picked up, they then need to go to $M_1$ and go
+to the yellow tile. The password is then presented when they type "exit()".
+
+/RNG/:
+- $M_1, M_2, M_3$, password
+
+*** Encrypt Rematch
+/Adjustable Variables/:
+- =ENCR_WORDS=
+
+/Description/:
+
+This is a harder version of the /Encrypt/ puzzle. It presents the user with an encrypted password
+as well as a /not-so-helpful-at-first/ order of steps that were taken. The user must interact with
+a textbox on screen and try to figure out that pattern in which the buttons mess with their input.
+Once they have figured it out, they must decrypt the password.
+
+/RNG/:
+- The password
+
+** Based Rematch
+
+    /Adjustable Variables/:
+      - =NUM_VALS= (*must modify html elements to match*)
+      - =VAL_SZ=
+
+  /Description/:
+
+  This is a harder version of the /Based/ puzzle that also incorporates sorting. The user is presented with an instructions page outlining the challenge. Hidden on the page are three buttons 
+  that, when clicked, enumerate the Pointless-created bases that they will encounter in the actual puzzle.
+
+  The bases:
+
+    - /Symbolic 8/: =!, @, #, $, %, ^, &, *=
+    - /Glyphic 16/: ={, }, [, ], (, ), `, >, a, b, c, d, e, f, g, h=
+    - /Mystic 36/: =|, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z=
+
+  Upon clicking the "Enter" button, they will be brought to the actual puzzle. There are =NUM_VALS= number of values, each of length =VAL_SZ=.
+  Clicking on these values places them into the container in the center of the page. The user must fill this container with the values sorted from smallest to greatest.
+  Doing so correctly will prompt a modal to appear containing the key.
+
+  /RNG/:
+
+  - The values
+
+** AST
+/Adjustable Variables/: /None/
+
+/Description/:
+
+*NOTE*: This is a very difficult puzzle.
+
+The player is presented with grammar rules, an expression $(e)$ (such as $a*(b/c)+d$), and a destination identifer $(i)$.
+The goal is to create an Abstract Syntax Tree (AST) and trace the route from the root node
+to $i$ and use that to find the correct path of the nested directories that gets generated.
+
+/RNG/:
+- $e$, $i$
+- path from root \rightarrow $i$
+
+** Graph Paper Robot Puzzles
+
+The idea behind this trilogy of paper robot puzzles, is that we want the player to bring out
+a piece of graph paper and something to color the squares with and do this all on paper. We want to
+teach the player about certain topics in the first two paper robot puzzles (state, memory etc.) then
+incorporate those ideas in the last one.
+
+*** Binary Addition (Graph Paper Robot I)
+/Adjustable Variables/:
+- =TAPE_WIDTH=
+- =TAPE_HEIGHT=
+- =REQ_CARRIES=
+
+/Description/:
+
+The player is presented with a 2x12 grid of (mostly) red $(r)$ and green $(g)$ pixels. The red pixels means 0
+and green means 1. Then, following the rules in the instructions, the player should color in the correct
+squares with the correct color. The idea of this puzzle is that the player is actually performing binary addition.
+
+/RNG/: $r, g$ pixels
+
+*** Logic Gate (Graph Paper Robot II)
+
+/Adjustable Variables/:
+- =enum Gate= (*needs implementation*)
+- =input length= (unimplemented, *needs to be a power of 2*)
+
+/Description/:
+
+*NOTE*: This puzzle is currently in development, so the description is sparse on purpose.
+
+The player is presented with a grid of colors $(g)$ which are (unknown to the player) logicgates.
+These logic gates will be read in by the robot as instructions. The first instruction is in bottom left.
+Then the robot reads to the right, and loops back to the left when it reaches the end. (like reading a book, but bottom to top)
+There is another robot managing the memory, which are the colored circles $(c)$.
+When the first robot reads in a gate, the memory robot pops off the two bits on the left.
+The logic gate is then evaluted with those bits, and the result pushed on the right end of memory.
+
+The answer is every evaluation in order.
+
+/RNG/: $g,c$
+
+*** TODO (Graph Paper Robot III)
+
+Currently unimplemented
+
+* Utilities
+
+Like the name implies, these are very helpful utility functions that are available.
+
+** Externs
+
+=extern uint32_t FLAGS;=
+
+** Typedefs
+
+=typedef std::vector<std::string> strvec_t;=
+
+=typedef const std::string filepath_t;=
+
+** Macros
+
+=ANS_ONLY=
+
+Disables artifacts from being created
+
+=SET_SEED=
+
+Whether or not to use a set seed
+
+=NO_HDR=
+
+Makes it so that the header of a puzzle will not be generated
+
+=NO_FTR=
+
+Makes it so that the footer of a puzzle will not be generated
+
+=BISON_GRID=
+
+Makes the pixelated bison generate with a grid
+
+** Functions
+
+#+begin_src c++
+  void utils_generate_file(filepath_t filepath, std::string output_body);
+#+end_src
+
+Generates a file with the given =output_body=. Will be written to the =filepath=.
+
+#+begin_src c++
+  int utils_rng_roll(int min, int max, long &seed);
+#+end_src
+
+Generates a random number between =min= and =max= inclusive using =seed=.
+
+#+begin_src c++
+  int utils_roll_seed(void);
+#+end_src
+
+Rolls a seed using the current time.
+
+#+begin_src c++
+  strvec_t utils_walkdir(filepath_t path);
+#+end_src
+
+Returns a vector of strings containing the names of all files in =path=.
+Recursively walks all subdirectories and will ignore all files/dirs that start with =.=.
+
+#+begin_src c++
+  void utils_zip_files(filepath_t out_file_name, strvec_t file_names, std::string password="");
+#+end_src
+
+Zips the given files into a single file =out_file_name= with =file_names= and the password =password=.
+
+#+begin_src c++
+  std::string utils_file_to_str(filepath_t filepath);
+#+end_src
+
+Returns the contents of =filepath= as a string.
+
+#+begin_src c++
+  std::string utils_html_printf(std::string title, filepath_t desc_filepath, strvec_t args);
+#+end_src
+
+Creates an HTML body. All occurrences of "%DELIM" in the text of =desc_filepath= will be
+replaced with the given =args= in order. It is similar to =printf=.
+
+*NOTE*: You can have this function not insert a header if the flag =NO_HDR= is set prior
+to calling this function. The same is true for the footer if =NO_FTR= is set.
+
+* Graphics
+
+This section includes a bunch of utility functions dedicated to graphics.
+
+** Structs
+
+=struct Pixel=
+
+=struct Image=
+
+=struct Svg=
+
+=struct Svg::Shape=
+
+=struct Svg::Shape::Rect= inherits =struct Svg::Shape=
+
+=struct Svg::Shape::Circle= inherits =struct Svg::Shape=
+
+** Operator Overloads
+
+#+begin_src c++
+  Pixel &Image::operator()(size_t i, size_t j);
+#+end_src
+
+** Functions
+
+*NOTE*: We have moved away from PPM files and focus more on SVGs.
+
+#+begin_src c++
+Image(size_t w, size_t h);
+#+end_src
+
+Constructor for an =Image=. Sets width and height to =w= and =h= and all pixels to transparent.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.h
+
+#+begin_src c++
+  Svg(float w, float h);
+#+end_src
+
+Constructor for an =Svg=. Sets with width and height to =w= and =h=.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.h
+
+#+begin_src c++
+  template <class Shape> void Svg::add_shape(Shape shape);
+#+end_src
+
+Appends a shape to the SVG.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.h
+
+#+begin_src c++
+  std::string Svg::build(void);
+#+end_src
+
+Returns a string of all shapes in valid SVG format to embed into HTML.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.cpp
+
+#+begin_src c++
+  Svg::Shape::Rect(float _x, float _y,
+                   float _width, float _height,
+                   std::string _fill,
+                   std::optional<std::string> _stroke = {},
+                   std::optional<std::string> _html_classname = {});
+#+end_src
+
+Constructor for =Svg::Shape::Rect=.
+
+Sets the position of the shape to =_x= and =_y=, it's width and height to =_width= and =_height=,
+and it's color as =_fill=.
+
+Optionally can set =_stroke= (use this if you want a border) and =_html_classname= (if you want
+to modify it in HTML/JS).
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.h
+
+#+begin_src c++
+  Svg::Shape::Circle(float _x, float _y, float _radius, std::string _fill,
+                     std::optional<std::string> _stroke = {},
+                     std::optional<std::string> _html_classname = {});
+#+end_src
+
+Constructor for =Svg::Shape::Circle=.
+
+Sets the position of the shape to =_x= and =_y=, it's radius to =_radius=,
+and it's color as =_fill=.
+
+Optionally can set =_stroke= (use this if you want a border) and =_html_classname= (if you want
+to modify it in HTML/JS).
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.h
+
+#+begin_src c++
+  std::string Svg::Rect::make() const
+#+end_src
+
+Creates an SVG line of a =Rect=.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.cpp
+
+#+begin_src c++
+  std::string Svg::Circle::make() const
+#+end_src
+
+Creates an SVG line of a =Circle=.
+
+/Prototype/: include/graphics.h
+
+/Implementation/: include/graphics.cpp
+
+#+begin_src c++
+  Svg graphics_gen_svg_from_image(Image &img, float pixel_size);
+#+end_src
+
+Creates an =Svg= from =img= using the scaling of =pixel_size=.
+
+*NOTE*: all "dead" pixels are set to transparent.
+
+#+begin_src c++
+    void graphics_create_ppm(Image &img, const char *filepath);
+#+end_src
+
+Creates a PPM image from =img= and saves it to =filepath=.
+
+#+begin_src c++
+  Image graphics_scale_ppm(Image &img, size_t scale);
+#+end_src
+
+Scales =img= by =scale= and returns a new =Image=.
+
+*NOTE*: This function is extremely slow as it runs in $O(n^4)$ time.
+
+* Issues
+
+- No support for building on MacOS
+- The formatting for the /Binary Addition/ (Graph Paper Robot II) puzzle
+  is not formatted correctly
+- Issues with accessing the zip files on MacOS and Linux without file-roller. It immediately
+  prompts for a password even though it should not.
+- There is no storyline.
+- The puzzle difficulty does not scale smoothly. The earlier puzzles should be harder.
+- The /AST/ puzzle is way to difficult to solve. Even some Computer Science students were unable to solve it.
+- The formatting on the /AST/ puzzle is very incorrect.
+- The /Maze Rematch/ puzzle needs a better description.
+- Missing required "whitty" quotes on all puzzles.
+- Need some way of keeping track of the seed in some meta-data in case the student is stuck. Lipscomb needs
+  to figure out the seed that they have so help can be offered.
+- The rematch puzzles produce "pieces" of the final password, and the user must concat them together. However,
+  this does not work if the user decides to do them in a non-linear order. Maybe just add the numbers together?
+
+* TODO Future Plans
+
+* Contact
+
+Zachary Haskins - /zdhdev@yahoo.com/ [[https://github.com/malloc-nbytes/][Github]]
+
+Turner Austin - /tcaustin@mail.lipscomb.edu/ Github
+
+Mekeal Brown - /mtbrown@mail.lipscomb.edu/ [[https://github.com/mekealbrown][Github]]
+
+Steven Yassa - /seyassa@mail.lipscomb.edu/ Github
+

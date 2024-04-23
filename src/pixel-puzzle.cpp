@@ -10,6 +10,8 @@
 *  in the bison svg on the webpage and perform the arithmetic to solve.
 */
 
+#include <unordered_map>
+
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
