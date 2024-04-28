@@ -10,7 +10,7 @@ TARGET := main
 
 .PHONY: all clean cleanzip make-main
 
-make-main: $(OBJDIR) $(TARGET)
+make-main: $(ZIP_DIR) $(OBJDIR) $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(CLINKS)
@@ -23,6 +23,9 @@ $(OBJDIR)/%.o: %.cpp
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
+
+$(ZIP_DIR):
+	mkdir -p $(ZIP_DIR)
 
 cleanzip:
 	rm -f ./zipfiles/*
