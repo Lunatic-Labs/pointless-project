@@ -11,10 +11,12 @@ static void create_rematch_zipfiles(std::vector<Puzzle> &puzzles)
   int i = 0;
 
   for (auto puzzle = puzzles.begin(); puzzle != puzzles.end(); ++puzzle, i++) {
-    std::vector<std::string> files = utils_walkdir(puzzle->contents_fp);
-    files.insert(files.begin(), zipdir + ".passwords/password" + std::to_string(i+1) + ".txt");
+    if (i != 0) {
+      std::vector<std::string> files = utils_walkdir(puzzle->contents_fp);
+      files.insert(files.begin(), zipdir + ".passwords/password" + std::to_string(i) + ".txt");
 
-    utils_zip_files(std::string(zipdir + "rematch" + std::to_string(i+1) + ".zip"), files, puzzle->password);
+      utils_zip_files(std::string(zipdir + "rematch" + std::to_string(i) + ".zip"), files, puzzle->password);
+    }
   }
 }
 
@@ -27,18 +29,30 @@ static std::string create_rematch_password_files(std::vector<Puzzle> &puzzles, l
   utils_mkdir(password_dir);
 
   for (auto puzzle = puzzles.begin(); puzzle != puzzles.end(); ++puzzle, i++) {
-    std::string password_part = std::to_string(utils_rng_roll(0, 999, seed));
-    password += password_part;
-    std::string password_fp = password_dir + "password" + std::to_string(i+1) + ".txt";
-    utils_generate_file(password_fp, password_part);
+    if (i != 0)  {
+      std::string password_part = std::to_string(utils_rng_roll(0, 999, seed));
+      password += password_part;
+      std::string password_fp = password_dir + "password" + std::to_string(i) + ".txt";
+      utils_generate_file(password_fp, password_part);
+    }
   }
 
   return password;
 }
 
+Puzzle rematch_puzzle_inst(long seed)
+{
+  (void)seed;
+
+  std::string html_content = utils_html_printf("Rematch Instructions", "./files-rematch/.desc.txt", {});
+  utils_generate_file("./files-rematch/instructions.html", html_content);
+  return {"files-rematch", "", {}};
+}
+
 Puzzle rematch_puzzle_create(long seed)
 {
   std::vector<Puzzle> puzzles = {
+    rematch_puzzle_inst(seed),
     rematch_maze_puzzle_create(seed),
     rematch_encrypt_puzzle_create(seed),
     rematch_based_puzzle_create(seed),
