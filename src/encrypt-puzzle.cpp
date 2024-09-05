@@ -17,19 +17,19 @@
 #include "./include/utils.h"
 
 #define ENCR_WORDS {       \
-  "lipscomb university",   \
-  "computer science",      \
-  "programming languages", \
-  "data structures",       \
-  "dijkstras algorithm",   \
-  "depth first search",    \
-  "breadth first search",  \
-  "graph theory",          \
-  "dynamic programming",   \
-  "greedy algorithms",     \
-  "big o notation",        \
-  "recursive function",    \
-  "binary search tree",    \
+  "lipscomb_university",   \
+  "computer_science",      \
+  "programming_languages", \
+  "data_structures",       \
+  "dijkstras_algorithm",   \
+  "depth_first_search",    \
+  "breadth_first_search",  \
+  "graph_theory",          \
+  "dynamic_programming",   \
+  "greedy_algorithms",     \
+  "big_o_notation",        \
+  "recursive_function",    \
+  "binary_search_tree",    \
 }
 
 #define ENCR_OPS_SHIFT 0
