@@ -3,7 +3,7 @@
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-#define CELLS 12
+#define CELLS 24
 #define MAX_RAND 67 //0-42, A-Z(0, 67)
 
 /*
@@ -21,6 +21,9 @@
 *   -Check if lsb is on or off
 *   -Save the resulting lsb values
 *   -Take that base 2 number and convert it back to base 10
+*   
+*   CHANGES BY JORDAN
+*   This puzzle is a bit too easy to brute force. 
 */
 
 
@@ -28,7 +31,7 @@ static int solve(std::vector<std::string> &vals, std::vector<int> &base)
 {
   int decimalval, items, solution, mask;
   decimalval = items = solution = 0;
-  mask = 8;
+  mask = 128;
 
   std::vector<std::string>::iterator it;
   std::vector<int>::iterator it2;

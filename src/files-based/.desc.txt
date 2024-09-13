@@ -21,9 +21,9 @@
     <p>In a far-off galaxy, there exists an advanced alien civilization that uses a peculiar numbering system. This system is based on a combination of base-16, base-20, and base-31, all intertwined. Here's how it works:</p>
 
     <ul>
-        <li>Digits <b>A</b> through <b>F</b> are represented as usual in <b>base-16</b>.</li>
-        <li>Digits <b>0</b> through <b>20</b> are represented in <b>base-20</b>.</li>
-        <li>Digits <b>21</b> through <b>42</b> are represented in <b>base-31</b>.</li>
+        <li>Numbers <b>A</b> through <b>F</b> are represented as usual in <b>base-16</b>.</li>
+        <li>Numbers <b>0</b> through <b>20</b> are represented in <b>base-20</b>.</li>
+        <li>Numbers <b>21</b> through <b>42</b> are represented in <b>base-31</b>.</li>
     </ul>
 
     <h3>Now, your challenge:</h3>
@@ -42,6 +42,30 @@
     <p><b>Can you crack the code and unveil the hidden message within the artifact?</b></p>
 
     <table>
+        <tr>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>?</td>
+        </tr>
+        <tr>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>?</td>
+        </tr>
+        <tr>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>?</td>
+        </tr>
+        <tr>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>%DELIM</td>
+            <td>?</td>
+        </tr>
         <tr>
             <td>%DELIM</td>
             <td>%DELIM</td>
