@@ -158,8 +158,8 @@ Puzzle maze_puzzle_create(long seed)
   std::reverse(path.begin(), path.end());
   std::string password = compress_path(path);
 
-  maze(0, MAZE_SIZE-1) = MAZE_START;
-  maze(MAZE_SIZE-1, 0) = MAZE_END;
+  maze(0, MAZE_SIZE-1) = MAZE_END; //swapped these
+  maze(MAZE_SIZE-1, 0) = MAZE_START;
 
   Svg svg = graphics_gen_svg_from_image(maze, 20, {}); // Maze size is hardcoded into HTML
   std::string svg_html = svg.build();
