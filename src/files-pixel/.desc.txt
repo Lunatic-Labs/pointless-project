@@ -35,4 +35,4 @@ li {
         <li>%DELIM × %DELIM × %DELIM = ?</li>
     </p>
 </div>
-<p> LU is feeling kinda funny, I wonder if that has anything to do with the weirdness above..</p>
+<p> Lou is <i>looking</i> kinda funny, I wonder if that has anything to do with the weirdness above..</p>
