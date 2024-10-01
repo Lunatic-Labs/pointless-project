@@ -21,9 +21,9 @@
     <p>In a far-off galaxy, there exists an advanced alien civilization that uses a peculiar numbering system. This system is based on a combination of base-16, base-20, and base-31, all intertwined. Here's how it works:</p>
 
     <ul>
-        <li>Numbers <b>A</b> through <b>F</b> are represented as usual in <b>base-16</b>.</li>
-        <li>Numbers <b>0</b> through <b>20</b> are represented in <b>base-20</b>.</li>
-        <li>Numbers <b>21</b> through <b>42</b> are represented in <b>base-31</b>.</li>
+        <li>Digits <b>A</b> through <b>F</b> are represented as usual in <b>base-16</b>.</li>
+        <li>Digits <b>0</b> through <b>20</b> are represented in <b>base-20</b>.</li>
+        <li>Digits <b>21</b> through <b>42</b> are represented in <b>base-31</b>.</li>
     </ul>
 
     <h3>Now, your challenge:</h3>
@@ -34,38 +34,14 @@
     <p> To decipher this instruction, you need to recall your knowledge on <a href="https://en.wikipedia.org/wiki/Base_conversion" target="_blank">base conversion</a>. 
     While the aliens like their numbers as a combination of base-16, base-20, and base-31, we typically like our numbers represented as base-10.</p>
 
-    <p> <b>Once in a representation we like, sum the values. </b></p>
+    <!-- <p> <b>Once in a representation we like, sum the values. </b></p> -->
 
-    <p>Recall that electronics work in 1's and 0's, on or off, including the aliens lights. The instruction to turn the light on or off is found in the 
+    <p>Recall that electronics work in 1's and 0's, on or off, including the aliens lights (The <b>?</b> at the end of each row). The instruction to turn the light on or off is found in the 
     <a href="https://en.wikipedia.org/wiki/Bit_numbering" target="_blank">least significant bit</a> of the row's sum.</p>
 
     <p><b>Can you crack the code and unveil the hidden message within the artifact?</b></p>
 
     <table>
-        <tr>
-            <td>%DELIM</td>
-            <td>%DELIM</td>
-            <td>%DELIM</td>
-            <td>?</td>
-        </tr>
-        <tr>
-            <td>%DELIM</td>
-            <td>%DELIM</td>
-            <td>%DELIM</td>
-            <td>?</td>
-        </tr>
-        <tr>
-            <td>%DELIM</td>
-            <td>%DELIM</td>
-            <td>%DELIM</td>
-            <td>?</td>
-        </tr>
-        <tr>
-            <td>%DELIM</td>
-            <td>%DELIM</td>
-            <td>%DELIM</td>
-            <td>?</td>
-        </tr>
         <tr>
             <td>%DELIM</td>
             <td>%DELIM</td>

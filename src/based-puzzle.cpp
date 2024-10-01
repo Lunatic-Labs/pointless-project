@@ -3,7 +3,7 @@
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-#define CELLS 24
+#define CELLS 12 // Keep it a multiple of 3. Make sure to update HTML when changing.
 #define MAX_RAND 67 //0-42, A-Z(0, 67)
 
 /*
@@ -31,7 +31,7 @@ static int solve(std::vector<std::string> &vals, std::vector<int> &base)
 {
   int decimalval, items, solution, mask;
   decimalval = items = solution = 0;
-  mask = 128;
+  mask = 8;
 
   std::vector<std::string>::iterator it;
   std::vector<int>::iterator it2;
