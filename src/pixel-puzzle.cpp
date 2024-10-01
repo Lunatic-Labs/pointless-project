@@ -24,7 +24,7 @@ static int get_pixel_count(const std::string& hexValue) {
         {"#F4AA00", 6},
         {"#331E54", 66},
         {"#D2BB8D", 11},
-        // {"#552D1B", 183} This is brown. We don't want them counting 183 pixels
+        //{"#552D1B", 183} //This is brown. We don't want them counting 183 pixels
     };
 
     auto it = pixelCounts.find(hexValue);
@@ -36,7 +36,7 @@ static int get_pixel_count(const std::string& hexValue) {
 
 Puzzle pixel_puzzle_create(long seed)
 {
-  std::vector<std::string> hex_vals = {"#FFFFFF", "#000000", "#F4AA00", "#331E54", "#964B00"};
+  std::vector<std::string> hex_vals = {"#FFFFFF", "#000000", "#F4AA00", "#331E54", "#D2BB8D"};
   std::vector<std::string> delim_values;
 
   for (int i = 0; i < MAX_LOOP; i++) {

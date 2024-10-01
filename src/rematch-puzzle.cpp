@@ -55,7 +55,7 @@ Puzzle rematch_puzzle_create(long seed)
     rematch_puzzle_inst(seed),
     rematch_maze_puzzle_create(seed),
     rematch_encrypt_puzzle_create(seed),
-    rematch_based_puzzle_create(seed),
+    // rematch_based_puzzle_create(seed),
     // math_puzzle_create(seed),
     // math_puzzle_create(seed),
   };

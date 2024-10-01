@@ -21,7 +21,7 @@ You have been awarded another 0 points. Sweet! I hope you are still keeping coun
 This next puzzle will knock your socks off! <br />
 <small>Unless you aren't wearing any.</small> <br /> <br />
 
-Dr. Pepper has encrypted a phrase: <br />
+Dr. Towell has encrypted a phrase: <br />
 <h4>%DELIM</h4>
 and your job is to decrypt it.<br />
 Here are the steps that were performed:
