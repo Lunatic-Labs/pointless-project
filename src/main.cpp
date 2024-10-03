@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     rematch_puzzle_create(seed),
     binary_addition_puzzle_create(seed),
     logicgate_puzzle_create(seed),
-    ast_puzzle_create(seed),
+    bst_puzzle_create(seed),
     fin_puzzle_create(seed),
   };
 
