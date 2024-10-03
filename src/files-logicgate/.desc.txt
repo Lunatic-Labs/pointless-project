@@ -1,2 +1,153 @@
+<style>
+.state_purple {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background-color: #D200C8;
+}
+
+.state_gold {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background-color: #C8CD00;
+}
+
+.state_blue {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background-color: #0064C8;
+}
+
+.red_circle {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: red;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.green_circle {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: green;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.bullet {
+  list-style-type: disc;
+}
+</style>
+
+<ul>
+<! PURPLE  OR > 
+
+  <li class="bullet">
+    <span class="state_purple"></span>
+    <span class="red_circle"></span>
+    <span class="red_circle"></span>
+    <b> =  </b>
+    <span class="red_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_purple"></span>
+    <span class="red_circle"></span>
+    <span class="green_circle"></span>
+    <b> =  </b>
+    <span class="green_circle"></span>
+  </li>
+    <li class="bullet">
+    <span class="state_purple"></span>
+    <span class="green_circle"></span>
+    <span class="red_circle"></span>
+    <b> =  </b>
+    <span class="green_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_purple"></span>
+    <span class="green_circle"></span>
+    <span class="green_circle"></span>
+    <b> =  </b>
+    <span class="green_circle"></span>
+  </li>
+
+  <! GOLD  AND > 
+
+  <li class="bullet">
+    <span class="state_gold"></span>
+    <span class="red_circle"></span>
+    <span class="red_circle"></span>
+    <b> =  </b>
+    <span class="red_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_gold"></span>
+    <span class="red_circle"></span>
+    <span class="green_circle"></span>
+    <b> =  </b>
+    <span class="red_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_gold"></span>
+    <span class="green_circle"></span>
+    <span class="red_circle"></span>
+    <b> =  </b>
+    <span class="red_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_gold"></span>
+    <span class="green_circle"></span>
+    <span class="green_circle"></span>
+    <b> =  </b>
+    <span class="green_circle"></span>
+  </li>
+
+  <! BLUE  XOR > 
+
+  <li class="bullet">
+    <span class="state_blue"></span>
+    <span class="red_circle"></span>
+    <span class="red_circle"></span>
+    <b> =  </b>
+    <span class="red_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_blue"></span>
+    <span class="red_circle"></span>
+    <span class="green_circle"></span>
+    <b> =  </b>
+    <span class="green_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_blue"></span>
+    <span class="green_circle"></span>
+    <span class="red_circle"></span>
+    <b> =  </b>
+    <span class="green_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_blue"></span>
+    <span class="green_circle"></span>
+    <span class="green_circle"></span>
+    <b> =  </b>
+    <span class="red_circle"></span>
+  </li>
+</ul>
+
+<p>The line of blocks is a queue. Once you calculate an answer, it is queued on the the queue. Always use the first two circles to calculate.
+ For every answer calculated, that answered is placed onto a stack which, when finished calculating, it will be the answer to the puzzle. 
+
+ <p><br></br></p>
+
 %DELIM
+
+<p><br></br></p>
+
+
 %DELIM
+
+<p><b>What is the secret message that is produced?</b></p>

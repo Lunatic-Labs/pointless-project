@@ -8,18 +8,18 @@
 #define BLANK {0, 0, 0, 0}   // nothing
 #define OFF {255, 0, 0}      // red
 #define ON {0, 255, 0}       // green
-#define AND {200, 205, 0}    // gold
-#define XOR {0, 100, 200}    // bluish
+#define AND {200, 205, 0}    // gold    - AND
+#define XOR {0, 100, 200}    // bluish  - XOR
 #define NAND {200, 100, 0}   // orange
 #define NOR {180, 230, 180}  // odd green
-#define OR {210, 0, 200}     // purple
+#define OR {210, 0, 200}     // purple  - OR
 
 enum class Gate {
   And,
   Or,
   Xor,
-  Nand,
-  Nor,
+  // Nand,
+  // Nor,
   NumberOfGates, // UNUSED -- only get the number of items
 };
 
@@ -43,12 +43,12 @@ static Image generate_image(std::vector<bool> orig_binary, std::vector<Gate> &ga
       case Gate::Xor:
         pixel = XOR;
         break;
-      case Gate::Nand:
-        pixel = NAND;
-        break;
-      case Gate::Nor:
-        pixel = NOR;
-        break;
+      // case Gate::Nand:
+      //   pixel = NAND;
+      //   break;
+      // case Gate::Nor:
+      //   pixel = NOR;
+      //   break;
       default:
         std::cerr << "unimplemented gate: " << (int)gates[i] << std::endl;
         exit(1);
@@ -84,15 +84,16 @@ static void generate_logicgate(std::vector<bool> memory, std::vector<bool> &answ
       memory.push_back(bit1^bit2);
       answers.push_back(bit1^bit2);
     }
-    else if(gate == Gate::Nand) {
-      memory.push_back(!(bit1&bit2));
-      answers.push_back(!(bit1&bit2));
-    }
-    else if(gate == Gate::Nor) {
-      memory.push_back(!(bit1|bit2));
-      answers.push_back(!(bit1|bit2));
-    }
-    else {
+    // else if(gate == Gate::Nand) {
+    //   memory.push_back(!(bit1&bit2));
+    //   answers.push_back(!(bit1&bit2));
+    // }
+    // else if(gate == Gate::Nor) {
+    //   memory.push_back(!(bit1|bit2));
+    //   answers.push_back(!(bit1|bit2));
+    // }
+    else{
+      //OR
       memory.push_back(bit1|bit2);
       answers.push_back(bit1|bit2);
     }
