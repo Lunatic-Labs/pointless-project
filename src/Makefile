@@ -1,5 +1,5 @@
 CFLAGS := -ggdb -pedantic -std=c++17 -Wextra -Wall
-CLINKS := -lboost_iostreams -lzip -lboost_unit_test_framework
+CLINKS := -lzip
 CC := g++
 
 SRCS := $(wildcard *.cpp) $(wildcard *./include/.h)
@@ -29,7 +29,7 @@ $(ZIP_DIR):
 
 cleanzip:
 	rm -f ./zipfiles/*
-	rm -rf ./files-bst/BST
+	rm -rf ./files-bst/tree
 	rm -rf ./files-rematch/*
 	rm -rf ./files-rematch/.passwords
 	rm -f ./files*/instructions.html
