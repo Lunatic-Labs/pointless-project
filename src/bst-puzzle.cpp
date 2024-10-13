@@ -50,10 +50,10 @@ std::string addition(std::string path, const int root)
   std::string text;
   std::string dir;
   if((b & 1) == 1) {
-    text = "if " + std::to_string(a) + " + " + std::to_string(b) + " = x, then go right\nelse if " + std::to_string(a) + " + " + std::to_string(c) + " = x, go left";
+    text = "if " + std::to_string(a) + " + " + std::to_string(b) + " = x, then go right\nelse, go left";
     dir = "r";
   }else {
-    text = "if " + std::to_string(a) + " + " + std::to_string(c) + " = x, then go right\nelse if " + std::to_string(a) + " + " + std::to_string(b) + " = x, go left";
+    text = "if " + std::to_string(a) + " + " + std::to_string(c) + " = x, then go right\nelse, go left";
     dir = "l";
   }
   utils_generate_file(path + "/Addition.txt", text);
@@ -76,10 +76,10 @@ std::string subtraction(std::string path, const int root)
   std::string text;
   std::string dir;
   if((b & 1) == 1) {
-    text = "if " + std::to_string(b) + " - " + std::to_string(a) + " = x, then go right\nelse if " + std::to_string(c) + " - " + std::to_string(a) + " = x, go left";
+    text = "if " + std::to_string(b) + " - " + std::to_string(a) + " = x, then go right\nelse, go left";
     dir = "r";
   }else {
-    text = "if " + std::to_string(c) + " - " + std::to_string(a) + " = x, then go right\nelse if " + std::to_string(b) + " - " + std::to_string(a) + " = x, go left";
+    text = "if " + std::to_string(c) + " - " + std::to_string(a) + " = x, then go right\nelse, go left";
     dir = "l";
   }
   utils_generate_file(path + "/Subtraction.txt", text);
@@ -102,10 +102,10 @@ std::string multiplication(std::string path, const int root)
   std::string text;
   std::string dir;
   if((a & 1) == 1) {
-    text = "if " + std::to_string(a) + " * " + std::to_string(b) + " = x, then go right\nelse if " + std::to_string(a) + " * " + std::to_string(d) + " = x, go left";
+    text = "if " + std::to_string(a) + " * " + std::to_string(b) + " = x, then go right\nelse, go left";
     dir = "r";
   }else {
-    text = "if " + std::to_string(a) + " * " + std::to_string(d) + " = x, then go right\nelse if " + std::to_string(a) + " * " + std::to_string(b) + " = x, go left";
+    text = "if " + std::to_string(a) + " * " + std::to_string(d) + " = x, then go right\nelse, go left";
     dir = "l";
   }
   utils_generate_file(path + "/Multiplication.txt", text);
@@ -128,10 +128,10 @@ std::string division(std::string path, const int root)
   std::string text;
   std::string dir;
   if((a & 1) == 1) {
-    text = "if " + std::to_string(b) + " / " + std::to_string(a) + " = x, then go right\nelse if " + std::to_string(c) + " / " + std::to_string(a) + " = x, go left";
+    text = "if " + std::to_string(b) + " / " + std::to_string(a) + " = x, then go right\nelse, go left";
     dir = "r";
   }else {
-    text = "if " + std::to_string(c) + " / " + std::to_string(a) + " = x, then go right\nelse if " + std::to_string(b) + " / " + std::to_string(a) + " = x, go left";
+    text = "if " + std::to_string(c) + " / " + std::to_string(a) + " = x, then go right\nelse, go left";
     dir = "l";
   }
   utils_generate_file(path + "/Division.txt", text);
@@ -153,10 +153,10 @@ std::string square_root(std::string path, const int root)
   std::string text;
   std::string dir;
   if((b & 1) == 1) {
-    text = "if √" + std::to_string(a) + " = x, then go right\nelse if √" + std::to_string(b) + " = x, go left";
+    text = "if √" + std::to_string(a) + " = x, then go right\nelse, go left";
     dir = "r";
   }else {
-    text = "if √" + std::to_string(b) + " = x, then go right\nelse if √" + std::to_string(a) + " = x, go left";
+    text = "if √" + std::to_string(b) + " = x, then go right\nelse, go left";
     dir = "l";
   }
   utils_generate_file(path + "/Square_Root.txt", text);
@@ -234,11 +234,11 @@ std::string expression(std::string path, const int root)
   std::string dir;
   if(symbols[0] == "0") {
     text = "if (" + std::to_string((rng & 1) == 1? e:x) + symbols[2] + std::to_string((rng & 1) == 1? d:w) + ")" + symbols[1] + "(" + std::to_string((rng & 1) == 1? g:z) + symbols[3] + std::to_string((rng & 1) == 1? f:y) + ") = x, then go right";
-    text += "\nelse if (" + std::to_string((rng & 1) == 1? x:e) + symbols[2] + std::to_string((rng & 1) == 1? w:d) + ")" + symbols[1] + "(" + std::to_string((rng & 1) == 1? z:g) + symbols[3] + std::to_string((rng & 1) == 1? y:f) + ") = x, then go left";
+    text += "\nelse, then go left";
     dir = "r";
   } else {
     text = "if √((" + std::to_string((rng & 1) == 1? e:x) + symbols[2] + std::to_string((rng & 1) == 1? d:w) + ")" + symbols[1] + "(" + std::to_string((rng & 1) == 1? g:z) + symbols[3] + std::to_string((rng & 1) == 1? f:y) + ")) = x, then go right";
-    text += "\nelse if √((" + std::to_string((rng & 1) == 1? x:e) + symbols[2] + std::to_string((rng & 1) == 1? w:d) + ")" + symbols[1] + "(" + std::to_string((rng & 1) == 1? z:g) + symbols[3] + std::to_string((rng & 1) == 1? y:f) + ")) = x, then go left";
+    text += "\nelse, then go left";
     dir = "l";
   }
   utils_generate_file(path + "/Expression.txt", text);
@@ -248,7 +248,7 @@ std::string expression(std::string path, const int root)
 std::string comparison(std::string path, const int root)
 {
   int comp = utils_rng_roll(10, 100, mutable_seed);
-  std::string text = "if x > " + std::to_string(comp) + ", then go right\nelse if x <= " + std::to_string(comp) + ", go left";
+  std::string text = "if x > " + std::to_string(comp) + ", then go right\nelse, go left";
   std::string dir;
   if(root > comp) {
     dir = "r";
@@ -293,10 +293,10 @@ std::string hexadecimal(std::string path, const int root)
   std::string text;
   std::string dir;
   if((a & 1) == 1) {
-    text = "if " + ans + " is hexadecimal for x, then go right\nelse if " + hex + " = x, go left";
+    text = "if " + ans + " is hexadecimal for x, then go right\nelse, go left";
     dir = "r";
   }else {
-    text = "if " + hex + " is hexadecimal for x, then go right\nelse if " + ans + " = x, go left";
+    text = "if " + hex + " is hexadecimal for x, then go right\nelse, go left";
     dir = "l";
   }
   utils_generate_file(path + "/Hexadecimal", text);
