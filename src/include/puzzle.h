@@ -21,6 +21,7 @@ Puzzle color_puzzle_create(long seed);
 Puzzle pixel_puzzle_create(long seed);
 Puzzle maze_puzzle_create(long seed);
 Puzzle encrypt_puzzle_create(long seed);
+Puzzle based_intro_puzzle_create(long seed);
 Puzzle based_puzzle_create(long seed);
 Puzzle bst_puzzle_create(long seed);
 Puzzle binary_addition_puzzle_create(long seed);

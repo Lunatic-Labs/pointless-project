@@ -69,6 +69,7 @@ int main(int argc, char **argv)
     color_puzzle_create(seed),
     pixel_puzzle_create(seed),
     maze_puzzle_create(seed),
+    based_intro_puzzle_create(seed),
     encrypt_puzzle_create(seed),
     based_puzzle_create(seed),
     rematch_puzzle_create(seed),
