@@ -25,14 +25,17 @@ enum class Gate {
 
 static Image generate_image(std::vector<bool> orig_binary, std::vector<Gate> &gates)
 {
-  int height = std::log2(orig_binary.size());
-  Image image(orig_binary.size()/2, height);
+  (void) orig_binary;
+  // Create an image with height 1 (for a single row) and width equal to the number of gates
+  Image image(gates.size(), 1);
 
-  int max_row = orig_binary.size()/2;
-  int row = 0;
-  int column = 0;
+  int row = 0;    // Fixed row, as everything will be in a single row (row 0)
+  int column = 0; // We will only increment the column
+
   for (size_t i = 0; i < gates.size(); i++) {
-    Pixel pixel{0,0,0};
+    Pixel pixel{0,0,0}; // Default pixel (black)
+    
+    // Assign colors based on the gate type
     switch (gates[i]) {
       case Gate::And:
         pixel = AND;
@@ -54,13 +57,11 @@ static Image generate_image(std::vector<bool> orig_binary, std::vector<Gate> &ga
         exit(1);
     }
 
-    image(height-column-1, row) = pixel;
-    row++;
-    if (row >= max_row) {
-      max_row /= 2;
-      row = 0;
-      column += 1;
-    }
+    // Place the gate in the single row
+    image(row, column) = pixel;
+    
+    // Increment the column to move to the next position in the row
+    column++;
   }
 
   return image;
