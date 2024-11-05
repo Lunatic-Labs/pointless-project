@@ -1,0 +1,7 @@
+sudo apt install cmake
+sudo apt install libasio-dev
+
+# cd into web/build
+cmake ..
+make
+./pointless_web
