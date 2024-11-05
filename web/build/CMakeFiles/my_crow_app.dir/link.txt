@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/my_crow_app.dir/main.cpp.o  -o my_crow_app  -lpthread 

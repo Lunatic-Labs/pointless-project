@@ -299,7 +299,7 @@ std::string hexadecimal(std::string path, const int root)
     text = "if " + hex + " is hexadecimal for x, then go right\nelse, go left";
     dir = "l";
   }
-  utils_generate_file(path + "/Hexadecimal", text);
+  utils_generate_file(path + "/Hexadecimal.txt", text);
   return dir;
 }
 
