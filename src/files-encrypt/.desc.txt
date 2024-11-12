@@ -15,16 +15,16 @@
     color: rgb(255, 217, 90);
   }
 </style>
-Good job making it throught that tricky maze, you must be 200 IQ.<br />
+Good job making it through that tricky maze; you must be 200 IQ!<br />
 
-You have been awarded another 0 points. Sweet! I hope you are still keeping count. <br />
+You have been awarded another 0 points. Sweet! I hope you’re still keeping count. <br />
 This next puzzle will knock your socks off! <br />
-<small>Unless you aren't wearing any.</small> <br /> <br />
+<small>Unless you aren’t wearing any.</small> <br /> <br />
 
-Dr. Pepper has encrypted a phrase: <br />
+Dr. Pepper, the eccentric genius, has encrypted a phrase: <br />
 <h4>%DELIM</h4>
-and your job is to decrypt it.<br />
-Here are the steps that were performed:
+If you want to holst the MacGuffin your must decrypt it to move forward on your journey.<br />
+According to his cryptic notes, Dr. Pepper believes only the brightest minds can solve his challenge. Here are the steps he used:
 <ul>
 <div><b> %DELIM </b></div>
 </ul>

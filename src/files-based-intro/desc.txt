@@ -25,11 +25,16 @@ p, h4 {
     text-align: center;
 }
 </style>
+
+
 <p>
-    Hello person. Today you will be working with a structure called a light box. Each light box has rows and columns with lights in each cell, and symbolizes a numerical value.
-    The height(number of rows) of a light box is called its <b>base</b> and the number of columns is called its length.
-    Each column of the box must have exactly one light on. If a light on the bottom row is on, it lights up red, indicating that
-    its column's value is zero. All other lights light up green and symbolize a non-zero value for their column. 
+    Hello, codebreaker. Before you lies a light box, a cryptic structure designed to hold hidden meanings. Each light in this box represents part of an encrypted sequence, a cipher waiting to be unlocked.
+</p>
+<p>
+    Today, you’ll be working with this light box. Each light box has rows and columns, with lights in each cell that symbolize encrypted values in a hidden code.
+    The height (number of rows) of a light box is called its <b>base</b>, and the number of columns is called its length.
+    Each column of the box must have exactly one light on. If a light on the bottom row is on, it lights up red, signaling that
+    this column’s value is zero. All other lights light up green, indicating a non-zero encrypted value for their column.
 </p>
 <p>
     In the first column (on the left), each light from the bottom
@@ -140,7 +145,7 @@ p, h4 {
 </table>
 
 <p>
-    You must then take the following light box, and figure out how to represent it as previously described in a structure of base 16 and length 8.
+    Now, using this encrypted structure, determine the encoded cipher for the following light box with a base of 16 and length of 8.
 </p>
 
 %DELIM

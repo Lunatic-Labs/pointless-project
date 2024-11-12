@@ -1,10 +1,9 @@
 <p>
-Welcome, weary traveler! You've stumbled upon a digital labyrinth waiting to challenge your wit and cunning. <br/>
-You will need to <i>inspect the elements of this maze</i> as you make your way through the twists turns of the virtual corridors. <br/>
-Guides and compasses are meaningless; all that is required is your trusty <i><u><b>console</b></u></i> and a keen sense of adventure.<br/><br/>
+  Welcome, weary traveler! You've stumbled upon a digital labyrinth waiting to challenge your wit and cunning. <br/>
+  This maze holds secrets known only to the ancient Oracle—a timeless, mysterious force that dwells within the <i><u><b>console</b></u></i> itself.<br/>
+  As you navigate the twists and turns of these virtual corridors, the only guidance will come from your keystrokes and the Oracle’s cryptic wisdom.<br/><br/>
 
-You vaguely recall that typing <code>instructions</code> into the <i><u><b>console</b></u></i> will set you on the correct path forward.
-
+  You vaguely recall that typing <code>instructions</code> into the <i><u><b>console</b></u></i> may summon the Oracle’s insight and set you on the correct path forward. Tread carefully, as the Oracle reveals its secrets only to those brave enough to seek them.
 </p>
 </br>
 

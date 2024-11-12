@@ -1,6 +1,9 @@
-So you have beaten the last puzzle, good job!
+<p>So you have beaten the last puzzle, good job!</p>
 
-Your <b>golden</b> robot has been shut down. Solve this problem.
+<p>Your <b>golden</b> robot has been shut down, its energy reserves depleted. But its journey isn’t over yet. Solve this problem to reactivate the robot, allowing it to move once again. However, this time its movements aren’t just steps forward—they are part of a hidden message.</p>
+
+<p>As the robot awakens, it begins to move in a deliberate, rhythmic pattern, each step encoding clues essential to the journey. Solve the puzzle to decipher the meaning behind its movements and unlock the path forward. Only by interpreting this <i>message in motion</i> can you guide the robot closer to the elusive MacGuffin.</p>
+
 
 <style>
 .state_purple {
