@@ -138,15 +138,25 @@
   </li>
 </ul>
 
-<p>The line of blocks is a queue. Once you calculate an answer, it is queued on the the queue. Always use the first two circles to calculate.
- For every answer calculated, that answered is placed onto a stack which, when finished calculating, it will be the answer to the puzzle. 
+<p>The line of blocks represents a <b>queue</b>. Your task is to calculate answers step by step, following these instructions:</p>
 
- <p><br></br></p>
+<ul>
+  <li>Always take the <b>first two circles</b> from the queue to calculate the next value.</li>
+  <li>Once an answer is calculated, add it to the <b>stack</b>—a growing "Tower of Wisdom."</li>
+  <li>After each calculation, remove the two circles you used from the queue.</li>
+  <li>Place the calculated answer at the <b>end</b> of the queue.</li>
+  <li>Repeat this process until the queue is empty.</li>
+</ul>
+
+<p>When all calculations are complete, the <b>stack</b> will contain the final "Tower of Wisdom." The value at the <b>top of the stack</b> will reveal the solution to the puzzle.</p>
+
+<p><i>"Each calculation is a building block, forming a Tower of Wisdom. As you calculate, the tower grows higher, layer by layer, unveiling its secrets. Only when the tower is complete will its pinnacle reveal the answer you seek."</i></p>
+
+<p><br></br></p>
 
 %DELIM
 
 <p><br></br></p>
-
 
 %DELIM
 
