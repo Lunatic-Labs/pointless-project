@@ -511,20 +511,30 @@ Once they have figured it out, they must decrypt the password.
 
   - The values
 
-** AST
-/Adjustable Variables/: /None/
+** BST
+/Adjustable Variables/:
+- =ROOT_MIN=
+- =ROOT_MAX=
 
 /Description/:
 
-*NOTE*: This is a very difficult puzzle.
+The player is presented with a root number. The goal is to create a binary search tree (BST), and trace
+the route from the root node to the destination by solving the expression set with your root number.
 
-The player is presented with grammar rules, an expression $(e)$ (such as $a*(b/c)+d$), and a destination identifer $(i)$.
-The goal is to create an Abstract Syntax Tree (AST) and trace the route from the root node
-to $i$ and use that to find the correct path of the nested directories that gets generated.
+These are the possible expressions that can show up with examples:
+- addition: $a$ + $b$
+- subtraction: $a$ - $b$
+- multiplication: $a$ * $b$
+- division: $a$ / $b$
+- square root: √($a$)
+- comparisons: $a$ > $b$
+- hexadecimal: FFFFFF
+- complex expression: √?(($a$ -/+ $b$) +/- ($c$ *||/ $d$))
 
 /RNG/:
-- $e$, $i$
-- path from root \rightarrow $i$
+- root
+- expressions in each path
+- path from root \rightarrow destination
 
 ** Graph Paper Robot Puzzles
 
@@ -835,3 +845,4 @@ Mekeal Brown - /mtbrown@mail.lipscomb.edu/ [[https://github.com/mekealbrown][Git
 
 Steven Yassa - /seyassa@mail.lipscomb.edu/ Github
 
+Michael Hernandez-Lara - /mahernandezlara@mail.lipscomb.edu/ Github

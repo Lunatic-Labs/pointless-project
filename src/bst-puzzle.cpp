@@ -15,6 +15,9 @@
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
+#define ROOT_MIN 11
+#define ROOT_MAX 150
+
 static int fail_safe = 0;
 static int password;
 static std::string password_path;
@@ -23,7 +26,7 @@ static long mutable_seed;
 int not_root(int x, const int root)
 {
   if(x == root) {
-    if(x + 10 > 150) {
+    if(x + 10 > ROOT_MAX) {
       x -= 10;
     }else {
       x += 10;
@@ -43,7 +46,7 @@ std::string addition(std::string path, const int root)
 {
   int a = utils_rng_roll(10, root-1, mutable_seed);
   int b = add(root, a);
-  int c = utils_rng_roll(1, 150, mutable_seed);
+  int c = utils_rng_roll(1, ROOT_MAX, mutable_seed);
   c = not_root(c, root);
   c = add(c,a);
 
@@ -69,7 +72,7 @@ std::string subtraction(std::string path, const int root)
 {
   int a = utils_rng_roll(0, 200, mutable_seed);
   int b = sub(root,a);
-  int c = utils_rng_roll(1, 150, mutable_seed);
+  int c = utils_rng_roll(1, ROOT_MAX, mutable_seed);
   c = not_root(c, root);
   c = sub(c,a);
 
@@ -95,7 +98,7 @@ std::string multiplication(std::string path, const int root)
 {
   int a = utils_rng_roll(1, root-1, mutable_seed);
   double b = multiply(root, a);
-  int c = utils_rng_roll(50, 150, mutable_seed);
+  int c = utils_rng_roll(50, ROOT_MAX, mutable_seed);
   c = not_root(c, root);
   double d = multiply(c,a);
 
@@ -119,9 +122,9 @@ int divide(int i, int j)
 
 std::string division(std::string path, const int root)
 {
-  int a = utils_rng_roll(1, 150, mutable_seed);
+  int a = utils_rng_roll(1, ROOT_MAX, mutable_seed);
   int b = divide(root, a);
-  int c = utils_rng_roll(1, 150, mutable_seed);
+  int c = utils_rng_roll(1, ROOT_MAX, mutable_seed);
   c = not_root(c, root);
   c = divide(c, a);
 
@@ -146,7 +149,7 @@ int sqrt(int i)
 std::string square_root(std::string path, const int root)
 {
   int a = sqrt(root);
-  int b = utils_rng_roll(1, 150, mutable_seed);
+  int b = utils_rng_roll(1, ROOT_MAX, mutable_seed);
   b = not_root(b, root);
   b = sqrt(b);
 
@@ -286,7 +289,7 @@ std::string to_hex(int num)
 std::string hexadecimal(std::string path, const int root)
 {
   std::string ans = to_hex(root);
-  int a = utils_rng_roll(0, 150, mutable_seed);
+  int a = utils_rng_roll(0, ROOT_MAX, mutable_seed);
   a = not_root(a, root);
   std::string hex = to_hex(a);
 
@@ -378,7 +381,7 @@ static void create_dirs(std::string path, int depth, std::string dir, const int 
 Puzzle bst_puzzle_create(long seed)
 {
   mutable_seed = seed;
-  const int root = utils_rng_roll(11,150,seed);
+  const int root = utils_rng_roll(ROOT_MIN,ROOT_MAX,seed);
   const size_t depth = 10;
 
   create_dirs("./files-bst", depth, "/tree", root, true);
