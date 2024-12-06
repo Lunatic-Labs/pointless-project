@@ -767,8 +767,29 @@ apply the run-length encoding algorithm to it. So the answer would be: <i>u2lr3d
 </div>
 </div>
 
+
+<div id="outline-container-orgffba3b5" class="outline-3">
+  <h3 id="orgffba3b5"><span class="section-number-3">5.5.</span> Based Intro</h3>
+  <div class="outline-text-3" id="text-5-7">
+    <p>
+      <i>Adjustable Variables</i>:
+    </p>
+    <ul class="org-ul">
+      <li><code>BOX_MIN_BASE</code></li>
+      <li><code>BOX_MAX_BASE</code></li>
+      <li><code>MAX_HEX_ANS_LEN</code></li>
+    </ul>
+    <p>
+      <i>Description</i>
+    </p>
+    
+    <p>
+      The goal of this puzzle is to introduce the player to number bases and base conversion. The puzzle contains a visual representation of numbers with different bases called a lightbox. Using these visual representations of bases, the player must convert a lightbox from a base in the range decided by the adjustable variables into base 16.
+    </p>
+  </div>
+
 <div id="outline-container-org92fb4ce" class="outline-3">
-<h3 id="org92fb4ce"><span class="section-number-3">5.5.</span> Encrypt</h3>
+<h3 id="org92fb4ce"><span class="section-number-3">5.6.</span> Encrypt</h3>
 <div class="outline-text-3" id="text-5-5">
 <p>
 <i>Adjustable Variables</i>:
@@ -811,9 +832,8 @@ The following things can happen:
 </div>
 </div>
 
-
 <div id="outline-container-org65bf211" class="outline-3">
-<h3 id="org65bf211"><span class="section-number-3">5.6.</span> Based</h3>
+<h3 id="org65bf211"><span class="section-number-3">5.7.</span> Based</h3>
 <div class="outline-text-3" id="text-5-6">
 <p>
 <i>Adjustable Variables</i>:
@@ -896,7 +916,7 @@ They are then shown a table with values occupying each cell, except for the righ
 </div>
 
 <div id="outline-container-orgffba3b5" class="outline-3">
-<h3 id="orgffba3b5"><span class="section-number-3">5.7.</span> Rematches</h3>
+<h3 id="orgffba3b5"><span class="section-number-3">5.8.</span> Rematches</h3>
 <div class="outline-text-3" id="text-5-7">
 <p>
 The "rematch" puzzles serve as the point in the project where there is a
@@ -908,7 +928,7 @@ rematch section.
 </div>
 
 <div id="outline-container-orgb0ef0f7" class="outline-4">
-<h4 id="orgb0ef0f7"><span class="section-number-4">5.7.1.</span> Maze Rematch</h4>
+<h4 id="orgb0ef0f7"><span class="section-number-4">5.8.1.</span> Maze Rematch</h4>
 <div class="outline-text-4" id="text-5-7-1">
 <p>
 <i>Adjustable Variables</i>:
@@ -940,7 +960,7 @@ to the yellow tile. The password is then presented when they type "exit()".
 </div>
 
 <div id="outline-container-org055b0a8" class="outline-4">
-<h4 id="org055b0a8"><span class="section-number-4">5.7.2.</span> Encrypt Rematch</h4>
+<h4 id="org055b0a8"><span class="section-number-4">5.8.2.</span> Encrypt Rematch</h4>
 <div class="outline-text-4" id="text-5-7-2">
 <p>
 <i>Adjustable Variables</i>:
@@ -968,56 +988,123 @@ Once they have figured it out, they must decrypt the password.
 </ul>
 </div>
 </div>
+
+<div id="outline-container-org055b0a8" class="outline-4">
+<h4 id="org055b0a8"><span class="section-number-4">5.8.3.</span> Based Rematch</h4>
+<div class="outline-text-4" id="text-5-7-2">
+  <p>
+  <i>Adjustable Variables</i>:
+  </p>
+  <ul class="org-ul">
+  <li><code>NUM_VALS</code> (<b>must modify html elements to match</b>)</li>
+  <li><code>VAL_SZ</code></li>
+  </ul>
+  
+  <p>
+  <i>Description</i>:
+  </p>
+  
+  <p>
+  This is a harder version of the <i>Based</i> puzzle that also incorporates sorting. The user is presented with an instructions page outlining the challenge. Hidden on the page are three buttons 
+  that, when clicked, enumerate the Pointless-created bases that they will encounter in the actual puzzle.
+  </p>
+  
+  <p>
+  The bases:
+  </p>
+  
+  <ul class="org-ul">
+  <li><i>Symbolic 8</i>: <code>!, @, #, $, %, ^, &amp;, *</code></li>
+  <li><i>Glyphic 16</i>: <code>{, }, [, ], (, ), `, &gt;, a, b, c, d, e, f, g, h</code></li>
+  <li><i>Mystic 36</i>: <code>|, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z</code></li>
+  </ul>
+  
+  <p>
+  Upon clicking the "Enter" button, they will be brought to the actual puzzle. There are <code>NUM_VALS</code> number of values, each of length <code>VAL_SZ</code>.
+  Clicking on these values places them into the container in the center of the page. The user must fill this container with the values sorted from smallest to greatest.
+  Doing so correctly will prompt a modal to appear containing the key.
+  </p>
+  
+  <p>
+  <i>RNG</i>:
+  </p>
+  
+  <ul class="org-ul">
+  <li>The values</li>
+  </ul>
+</div>
+</div>
 </div>
 
-<div id="outline-container-orgfabbf1e" class="outline-3">
-<h3 id="orgfabbf1e"><span class="section-number-3">5.8.</span> Based Rematch</h3>
-<div class="outline-text-3" id="text-5-8">
-<p>
-<i>Adjustable Variables</i>:
-</p>
-<ul class="org-ul">
-<li><code>NUM_VALS</code> (<b>must modify html elements to match</b>)</li>
-<li><code>VAL_SZ</code></li>
-</ul>
 
-<p>
-<i>Description</i>:
-</p>
+<div id="outline-container-org9381d25" class="outline-3">
+  <h3 id="org9381d25"><span class="section-number-3">5.9.</span> Binary Addition (Graph Paper Robot I)</h3>
+  <div class="outline-text-3" id="text-5-10">
+  <p>
+    <i>Adjustable Variables</i>:
+  </p>
+  <ul class="org-ul">
+    <li><code>TAPE_WIDTH</code></li>
+    <li><code>TAPE_HEIGHT</code></li>
+    <li><code>REQ_CARRIES</code></li>
+  </ul>
 
-<p>
-This is a harder version of the <i>Based</i> puzzle that also incorporates sorting. The user is presented with an instructions page outlining the challenge. Hidden on the page are three buttons 
-that, when clicked, enumerate the Pointless-created bases that they will encounter in the actual puzzle.
-</p>
-
-<p>
-The bases:
-</p>
-
-<ul class="org-ul">
-<li><i>Symbolic 8</i>: <code>!, @, #, $, %, ^, &amp;, *</code></li>
-<li><i>Glyphic 16</i>: <code>{, }, [, ], (, ), `, &gt;, a, b, c, d, e, f, g, h</code></li>
-<li><i>Mystic 36</i>: <code>|, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z</code></li>
-</ul>
-
-<p>
-Upon clicking the "Enter" button, they will be brought to the actual puzzle. There are <code>NUM_VALS</code> number of values, each of length <code>VAL_SZ</code>.
-Clicking on these values places them into the container in the center of the page. The user must fill this container with the values sorted from smallest to greatest.
-Doing so correctly will prompt a modal to appear containing the key.
-</p>
-
-<p>
-<i>RNG</i>:
-</p>
-
-<ul class="org-ul">
-<li>The values</li>
-</ul>
+  <p>
+    <i>Description</i>:
+  </p>
+  
+  <p>
+    The player is presented with a 2x12 grid of (mostly) red \((r)\) and green \((g)\) pixels. The red pixels means 0
+    and green means 1. Then, following the rules in the instructions, the player should color in the correct
+    squares with the correct color. The idea of this puzzle is that the player is actually performing binary addition.
+  </p>
+  
+  <p>
+    <i>RNG</i>: \(r, g\) pixels
+  </p>
 </div>
+
+
+<div id="outline-container-org9381d25" class="outline-3">
+  <h3 id="org9381d25"><span class="section-number-3">5.10.</span> Logic Gate (Graph Paper Robot II)</h3>
+  <div class="outline-text-3" id="text-5-10">
+
+  <p>
+  <i>Adjustable Variables</i>:
+  </p>
+  <ul class="org-ul">
+  <li><code>enum Gate</code> (<b>needs implementation</b>)</li>
+  <li><code>input length</code> (unimplemented, <b>needs to be a power of 2</b>)</li>
+  </ul>
+  
+  <p>
+  <i>Description</i>:
+  </p>
+  
+  <p>
+    <b>NOTE</b>: This puzzle is currently in development, so the description is sparse on purpose.
+  </p>
+  
+  <p>
+    The player is presented with a grid of colors \((g)\) which are (unknown to the player) logicgates.
+    These logic gates will be read in by the robot as instructions. The first instruction is in bottom left.
+    Then the robot reads to the right, and loops back to the left when it reaches the end. (like reading a book, but bottom to top)
+    There is another robot managing the memory, which are the colored circles \((c)\).
+    When the first robot reads in a gate, the memory robot pops off the two bits on the left.
+    The logic gate is then evaluted with those bits, and the result pushed on the right end of memory.
+  </p>
+  
+  <p>
+  The answer is every evaluation in order.
+  </p>
+  
+  <p>
+    <i>RNG</i>: \(g,c\)
+  </p>
 </div>
 
 <div id="outline-container-org2d5c28b" class="outline-3">
-<h3 id="org2d5c28b"><span class="section-number-3">5.9.</span> AST</h3>
+<h3 id="org2d5c28b"><span class="section-number-3">5.11.</span> AST</h3>
 <div class="outline-text-3" id="text-5-9">
 <p>
 <i>Adjustable Variables</i>: <i>None</i>
@@ -1048,100 +1135,20 @@ to \(i\) and use that to find the correct path of the nested directories that ge
 </div>
 
 <div id="outline-container-org9381d25" class="outline-3">
-<h3 id="org9381d25"><span class="section-number-3">5.10.</span> Graph Paper Robot Puzzles</h3>
-<div class="outline-text-3" id="text-5-10">
-<p>
-The idea behind this trilogy of paper robot puzzles, is that we want the player to bring out
-a piece of graph paper and something to color the squares with and do this all on paper. We want to
-teach the player about certain topics in the first two paper robot puzzles (state, memory etc.) then
-incorporate those ideas in the last one.
-</p>
-</div>
+  <h3 id="org9381d25"><span class="section-number-3">5.12.</span> <span class="todo TODO">TODO</span> (Graph Paper Robot III)</h3>
+  <div class="outline-text-3" id="text-5-10">
+  <p>Currently Unimplemented</p>
 
-<div id="outline-container-orge8b562e" class="outline-4">
-<h4 id="orge8b562e"><span class="section-number-4">5.10.1.</span> Binary Addition (Graph Paper Robot I)</h4>
-<div class="outline-text-4" id="text-5-10-1">
-<p>
-<i>Adjustable Variables</i>:
-</p>
-<ul class="org-ul">
-<li><code>TAPE_WIDTH</code></li>
-<li><code>TAPE_HEIGHT</code></li>
-<li><code>REQ_CARRIES</code></li>
-</ul>
-
-<p>
-<i>Description</i>:
-</p>
-
-<p>
-The player is presented with a 2x12 grid of (mostly) red \((r)\) and green \((g)\) pixels. The red pixels means 0
-and green means 1. Then, following the rules in the instructions, the player should color in the correct
-squares with the correct color. The idea of this puzzle is that the player is actually performing binary addition.
-</p>
-
-<p>
-<i>RNG</i>: \(r, g\) pixels
-</p>
-</div>
-</div>
-
-<div id="outline-container-orge89996f" class="outline-4">
-<h4 id="orge89996f"><span class="section-number-4">5.10.2.</span> Logic Gate (Graph Paper Robot II)</h4>
-<div class="outline-text-4" id="text-5-10-2">
-<p>
-<i>Adjustable Variables</i>:
-</p>
-<ul class="org-ul">
-<li><code>enum Gate</code> (<b>needs implementation</b>)</li>
-<li><code>input length</code> (unimplemented, <b>needs to be a power of 2</b>)</li>
-</ul>
-
-<p>
-<i>Description</i>:
-</p>
-
-<p>
-<b>NOTE</b>: This puzzle is currently in development, so the description is sparse on purpose.
-</p>
-
-<p>
-The player is presented with a grid of colors \((g)\) which are (unknown to the player) logicgates.
-These logic gates will be read in by the robot as instructions. The first instruction is in bottom left.
-Then the robot reads to the right, and loops back to the left when it reaches the end. (like reading a book, but bottom to top)
-There is another robot managing the memory, which are the colored circles \((c)\).
-When the first robot reads in a gate, the memory robot pops off the two bits on the left.
-The logic gate is then evaluted with those bits, and the result pushed on the right end of memory.
-</p>
-
-<p>
-The answer is every evaluation in order.
-</p>
-
-<p>
-<i>RNG</i>: \(g,c\)
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgd0e49b0" class="outline-4">
-<h4 id="orgd0e49b0"><span class="section-number-4">5.10.3.</span> <span class="todo TODO">TODO</span> (Graph Paper Robot III)</h4>
-<div class="outline-text-4" id="text-5-10-3">
-<p>
-Currently unimplemented
-</p>
-</div>
-</div>
-</div>
 </div>
 
 <div id="outline-container-org0ab6c22" class="outline-2">
-<h2 id="org0ab6c22"><span class="section-number-2">6.</span> Utilities</h2>
-<div class="outline-text-2" id="text-6">
-<p>
-Like the name implies, these are very helpful utility functions that are available.
-</p>
-</div>
+  <h2 id="org0ab6c22"><span class="section-number-2">6.</span> Utilities</h2>
+  <div class="outline-text-2" id="text-6">
+    <p>
+      Like the name implies, these are very helpful utility functions that are available.
+    </p>
+  </div>
+  
 
 <div id="outline-container-org90d99e4" class="outline-3">
 <h3 id="org90d99e4"><span class="section-number-3">6.1.</span> Externs</h3>
