@@ -1,4 +1,10 @@
 // This is basic layout for automated email sender
+// install curl library
+// TO MAKE WORK YOU MUST:
+// PUT CURL ONTO WEB BUILD SCRIPT
+// it is a local thing for each device
+// but sence we are make a build script
+// it needs to be in the web build script
 // to finish:
 // import proper data from application
 // ie. who has finished what process
