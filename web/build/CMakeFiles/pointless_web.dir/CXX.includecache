@@ -138,6 +138,10 @@ string
 zlib.h
 -
 
+../Crow/include/crow/exceptions.h
+stdexcept
+-
+
 ../Crow/include/crow/http_connection.h
 boost/asio.hpp
 -
@@ -353,6 +357,8 @@ crow/returnable.h
 ../Crow/include/crow/crow/returnable.h
 crow/ci_map.h
 ../Crow/include/crow/crow/ci_map.h
+crow/exceptions.h
+../Crow/include/crow/crow/exceptions.h
 
 ../Crow/include/crow/multipart_view.h
 charconv
@@ -451,6 +457,8 @@ crow/utility.h
 ../Crow/include/crow/crow/utility.h
 crow/logging.h
 ../Crow/include/crow/crow/logging.h
+crow/exceptions.h
+../Crow/include/crow/crow/exceptions.h
 crow/websocket.h
 ../Crow/include/crow/crow/websocket.h
 crow/mustache.h

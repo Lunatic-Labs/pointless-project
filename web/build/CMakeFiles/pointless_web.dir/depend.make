@@ -7,6 +7,7 @@ CMakeFiles/pointless_web.dir/main.cpp.o: ../Crow/include/crow/app.h
 CMakeFiles/pointless_web.dir/main.cpp.o: ../Crow/include/crow/ci_map.h
 CMakeFiles/pointless_web.dir/main.cpp.o: ../Crow/include/crow/common.h
 CMakeFiles/pointless_web.dir/main.cpp.o: ../Crow/include/crow/compression.h
+CMakeFiles/pointless_web.dir/main.cpp.o: ../Crow/include/crow/exceptions.h
 CMakeFiles/pointless_web.dir/main.cpp.o: ../Crow/include/crow/http_connection.h
 CMakeFiles/pointless_web.dir/main.cpp.o: ../Crow/include/crow/http_parser_merged.h
 CMakeFiles/pointless_web.dir/main.cpp.o: ../Crow/include/crow/http_request.h

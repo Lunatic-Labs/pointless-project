@@ -62,5 +62,19 @@ int main() {
         
         return res;
     });
+
+    std::vector<std::string> validTokens = {"1", "2", "3"};
+
+    CROW_ROUTE(app, "/validateToken").methods("POST"_method)([&validTokens](const crow::request& req) {
+        auto body = crow::json::load(req.body);
+        if (!body) return crow::response(400, "Invalid JSON");
+
+        std::string token = body["token"].s();
+        bool isValid = std::find(validTokens.begin(), validTokens.end(), token) != validTokens.end();
+
+        crow::json::wvalue result;
+        result["message"] = isValid ? "Token is valid!" : "Token is invalid.";
+        return crow::response(result);
+    });
     app.port(8080).multithreaded().run();
 }
