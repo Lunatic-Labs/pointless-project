@@ -30,4 +30,5 @@ Our university hosts a Purple & Gold Day to celebrate the academic success of it
 <li>6-character sequence,</li>
 <li>hexadecimal color code,</li>
 <li>uppercase letters.</li>
+<p>Digging for Gold? Enter the code and unlock the wonders ahead.</p>
 </ul>

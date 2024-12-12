@@ -1,6 +1,6 @@
-So you have beaten the last puzzle, good job!
+So, you have beaten the last puzzle, good job! But there's no time to celebrate.
 
-Your <b>golden</b> robot is trapped in a maze. You need to give him the instructions to the <b>purple</b> exit. 
+Your <b>golden</b> robot is stuck inside a labyrinth full of winding paths and dead ends. Somewhere in this maze is the <b>purple</b> exit. But the journey isn't just about finding the right path—it's about **finding the fastest way through**.
 
 <style>
   .container ul {
@@ -15,7 +15,7 @@ Your <b>golden</b> robot is trapped in a maze. You need to give him the instruct
   }
 </style>
 
-These insructions are:
+These instructions are:
 <div>
 <ul>
   <li>u - up </li>
@@ -102,9 +102,10 @@ These insructions are:
 </div>
 <br />
 
-The instruction set for this maze is `uuurddruur`. However, this is too many instructions for the robot.<br/>
-Luckily it remembers a certain compression algorithm called <a href="https://en.wikipedia.org/wiki/Run-length_encoding">run-length encoding</a> <br/>
-and decides to try it out. The algorithm goes something like:
+
+The instruction set for this smaller maze is `uuurddruur`. However, for the larger labyrinth, there are too many moves for the robot to process—**speed and efficiency are the key to survival**.<br/>
+
+Fortunately, the robot remembers a trick from its programming: <a href="https://en.wikipedia.org/wiki/Run-length_encoding">Run-Length Encoding</a>. This algorithm compresses instructions to make them shorter and faster. Here's how it works:
 
 <div>
   <ul>
@@ -113,10 +114,13 @@ and decides to try it out. The algorithm goes something like:
   </ul>
 </div>
 
-<h3>Now the golden robot has a larger maze to escape</h3>
+<h3>The robot now faces a larger labyrinth.</h3>
 
 <div class="div_maze">
   %DELIM
 </div>
 
 <p><b>What is the encoded set of instructions for this larger maze?</b></p>
+<p style="font-style: italic; color: gray;">
+  (Sometimes, the only way out is the fastest way. **Can you compress the path to escape?**) 
+</p>
