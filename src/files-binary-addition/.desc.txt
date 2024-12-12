@@ -4,7 +4,6 @@
 
 <p>As the robot awakens, it begins to move in a deliberate, rhythmic pattern, each step encoding clues essential to the journey. Solve the puzzle to decipher the meaning behind its movements and unlock the path forward. Only by interpreting this <i>message in motion</i> can you guide the robot closer to the elusive MacGuffin.</p>
 
-
 <style>
 .state_purple {
   display: inline-block;
