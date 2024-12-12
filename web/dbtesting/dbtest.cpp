@@ -14,7 +14,6 @@ int main(){
 
     int rc = sqlite3_open("STUDENTS.db", &db);
     if(rc == SQLITE_OK) {
-        std::cout << "working!";
         std::string query = "INSERT INTO STUDENTS (email, level) VALUES ('" + userText + "', 0);";
         sqlite3_exec(db, query.c_str(), 0, 0, &stmt);
     }

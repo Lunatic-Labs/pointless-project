@@ -323,12 +323,6 @@ Crow_BINARY_DIR:STATIC=/home/turner/pointless-project/build/Crow
 //Value Computed by CMake
 Crow_SOURCE_DIR:STATIC=/home/turner/pointless-project/web/Crow
 
-//Path to a file.
-SQLite3_INCLUDE_DIR:PATH=SQLite3_INCLUDE_DIR-NOTFOUND
-
-//Path to a library.
-SQLite3_LIBRARY:FILEPATH=SQLite3_LIBRARY-NOTFOUND
-
 //Value Computed by CMake
 my_crow_project_BINARY_DIR:STATIC=/home/turner/pointless-project/build
 
@@ -541,10 +535,6 @@ CPACK_SOURCE_ZIP-ADVANCED:INTERNAL=1
 FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[/usr/bin/python3.8][cfound components: Interpreter ][v3.8.10()]
 //Details about finding asio
 FIND_PACKAGE_MESSAGE_DETAILS_asio:INTERNAL=[/usr/include][v()]
-//ADVANCED property for variable: SQLite3_INCLUDE_DIR
-SQLite3_INCLUDE_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: SQLite3_LIBRARY
-SQLite3_LIBRARY-ADVANCED:INTERNAL=1
 //CMAKE_INSTALL_PREFIX during last run
 _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=/usr/local
 //ADVANCED property for variable: _Python3_EXECUTABLE
