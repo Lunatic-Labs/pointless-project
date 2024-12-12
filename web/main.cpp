@@ -17,11 +17,10 @@ std::string readFile(const std::string& path) {
 
 int main() {
     crow::SimpleApp app;
-    // app.bindaddr("0.0.0.0").port(8080).multithreaded().run();
-    // app.bindaddr("127.0.0.1").port(8080).multithreaded().run();
+
 
     CROW_ROUTE(app, "/")([]() {
-        return readFile("static/index.html");
+        return readFile("../index.html");
     });
 
     CROW_ROUTE(app, "/generateFile").methods("POST"_method)([](const crow::request& req) {
@@ -50,7 +49,6 @@ int main() {
         if (!file.is_open()) {
             return crow::response(500, "File not found");
         }
-
         std::string fileContent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
         file.close();
 
@@ -61,6 +59,21 @@ int main() {
         std::system(precommand.c_str());
         
         return res;
+    });
+
+    std::vector<std::string> validTokens = {"1", "2", "3"};
+
+    CROW_ROUTE(app, "/validateToken").methods("POST"_method)([&validTokens](const crow::request& req) {
+        auto body = crow::json::load(req.body);
+        if (!body) return crow::response(400, "Invalid JSON");
+
+        std::string token = body["token"].s();
+        bool isValid = std::find(validTokens.begin(), validTokens.end(), token) != validTokens.end();
+
+        crow::json::wvalue result;
+        result["message"] = isValid ? "Token is valid!" : "Token is invalid.";
+
+        return crow::response(result);
     });
     app.port(8080).multithreaded().run();
 }

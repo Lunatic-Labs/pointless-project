@@ -1,5 +1,6 @@
 sudo apt install cmake
 sudo apt install libasio-dev
+sudo apt-get install libsqlite3-dev
 
 # cd into web/build
 cmake ..
