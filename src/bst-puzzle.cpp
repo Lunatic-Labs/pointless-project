@@ -238,11 +238,14 @@ std::string expression(std::string path, const int root)
   if(symbols[0] == "0") {
     text = "if (" + std::to_string((rng & 1) == 1? e:x) + symbols[2] + std::to_string((rng & 1) == 1? d:w) + ")" + symbols[1] + "(" + std::to_string((rng & 1) == 1? g:z) + symbols[3] + std::to_string((rng & 1) == 1? f:y) + ") = x, then go right";
     text += "\nelse, then go left";
-    dir = "r";
   } else {
     text = "if √((" + std::to_string((rng & 1) == 1? e:x) + symbols[2] + std::to_string((rng & 1) == 1? d:w) + ")" + symbols[1] + "(" + std::to_string((rng & 1) == 1? g:z) + symbols[3] + std::to_string((rng & 1) == 1? f:y) + ")) = x, then go right";
     text += "\nelse, then go left";
-    dir = "l";
+  }
+  if((rng & 1) == 1) {
+    dir = "r";
+  } else {
+    dir ="l";
   }
   utils_generate_file(path + "/Expression.txt", text);
   return dir;
@@ -330,7 +333,7 @@ static void create_dirs(std::string path, int depth, std::string dir, const int 
   std::string correct_path;
   if(depth > 0) {
     ++mutable_seed;
-    int rng = utils_rng_roll(1, 8, mutable_seed);
+    int rng = 8/*utils_rng_roll(1, 8, mutable_seed)*/;
     switch(rng) {
       case 1:
         correct_path = comparison(path, root);

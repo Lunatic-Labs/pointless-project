@@ -113,8 +113,7 @@ void values_create(const std::vector<int> bases, strvec_t &values, long seed)
   }
 }
 
-
-Puzzle rematch_based_puzzle_create(long seed)
+Puzzle based_puzzle_create(long seed)
 {
   std::vector<int> bases, solved; 
   strvec_t values;
@@ -179,7 +178,3 @@ Puzzle rematch_based_puzzle_create(long seed)
 *    Symbols: |, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
 *    Example:  |+= is 1684 in decimal.
 */
-
-
-
-
