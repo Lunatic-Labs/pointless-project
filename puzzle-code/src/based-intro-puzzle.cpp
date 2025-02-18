@@ -6,10 +6,7 @@
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-#define BOX_MIN_BASE 4
-#define BOX_MAX_BASE 6
 #define MAX_HEX_ANS_LEN 8
-
 
 static std::string solve(int num)
 {
@@ -35,7 +32,8 @@ static std::string solve(int num)
 // styling and values which visually represents a light box as 
 // described in desc.txt.
 //=====================================================================
-static std::string create_table(const short base, short len, int num) {
+static std::string create_table(const short base, short len, int num)
+{
   if(num > pow(base, len)-1) { //number cant be stored in specified light box 
     return "ERROR: Number Does not fit light box.";
   }
@@ -74,14 +72,14 @@ Puzzle based_intro_puzzle_create(long seed)
   std::vector<std::string> values;
   
   //define arguments
-  short base = utils_rng_roll(BOX_MIN_BASE, BOX_MAX_BASE, seed);
+  short base = 16;
   int num = utils_rng_roll((INT_MAX >> 1), INT_MAX, seed);
   int len = 0;
   while(pow(base, len) < num) len++;
 
   values.push_back(create_table(base, len, num));
 
-  std::string html_content = utils_html_printf("Base Intro Puzzle", "./files-based-intro/desc.txt", values);
+  std::string html_content = utils_html_printf("Base Intro Puzzle", "./files-based-intro/.desc.txt", values);
   utils_generate_file("./files-based-intro/instructions.html", html_content);
 
   return Puzzle{"files-based-intro", solve(num), {}};

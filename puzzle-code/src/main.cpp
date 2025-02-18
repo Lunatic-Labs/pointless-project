@@ -71,7 +71,7 @@ int main(int argc, char **argv)
     maze_puzzle_create(seed),
     based_intro_puzzle_create(seed),
     encrypt_puzzle_create(seed),
-    based_puzzle_create(seed),
+    //based_puzzle_create(seed),
     rematch_puzzle_create(seed),
     binary_addition_puzzle_create(seed),
     logicgate_puzzle_create(seed),
