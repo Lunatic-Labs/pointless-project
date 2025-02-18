@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/turner/pointless-project/build",
-  "command": "/usr/bin/c++  -DASIO_STANDALONE -I/home/turner/pointless-project/web/Crow/include  -g   -std=gnu++17 -o CMakeFiles/pointless_web.dir/main.cpp.o -c /home/turner/pointless-project/web/main.cpp",
-  "file": "/home/turner/pointless-project/web/main.cpp"
-}
-]

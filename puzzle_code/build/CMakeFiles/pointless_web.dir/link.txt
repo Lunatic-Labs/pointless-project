@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/pointless_web.dir/main.cpp.o  -o pointless_web  -lpthread 
