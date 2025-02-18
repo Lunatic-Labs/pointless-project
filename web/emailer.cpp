@@ -122,10 +122,10 @@ int main() {
     sender.payload_text = {};
     
     
-    while(true){
-        if(sender.sendEmail()){
+    while(true) {
+        if(sender.sendEmail()) {
             std::cout << "Email sent successfully\n";
-        }else{
+        } else {
             std::cout << "Failed to send email\n";
         }
         

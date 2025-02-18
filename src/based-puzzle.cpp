@@ -49,7 +49,7 @@ static int solve(std::vector<std::string> &vals, std::vector<int> &base)
   return solution;
 }
 
-Puzzle based_puzzle_create(long seed)
+Puzzle rematch_based_puzzle_create(long seed)
 {
   std::vector<std::string> values;
   std::vector<int> bases;
@@ -78,10 +78,8 @@ Puzzle based_puzzle_create(long seed)
     }
   }
 
-  std::string html_content = utils_html_printf("Base Puzzle", "./files-based/.desc.txt", values);
-  utils_generate_file("./files-based/instructions.html", html_content);
+  std::string html_content = utils_html_printf("Base Puzzle Rematch", "./files-rematch-based/.desc.txt", values);
+  utils_generate_file("./files-rematch-based/instructions.html", html_content);
 
-  return Puzzle{"files-based", std::to_string(solve(values, bases)), {}};
+  return Puzzle{"files-rematch-based", std::to_string(solve(values, bases)), {}};
 }
-
-

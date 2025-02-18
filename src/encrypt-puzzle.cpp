@@ -89,6 +89,9 @@ static std::string num_to_english(int idx)
   if (idx%10 == 2) {
     return numstr  + "nd";
   }
+  if (idx%10 == 3) {
+    return numstr + "rd";
+  }
   return numstr + "th";
 }
 
@@ -124,7 +127,7 @@ Puzzle encrypt_puzzle_create(long seed)
       } break;
       case 2: {
         int jump_dist = utils_rng_roll(ENCR_CHANGE_MIN, ENCR_CHANGE_MAX, seed);
-        encrypt_steps += std::to_string(i+1) + ".) Alphabetically increased every 4th letter by " + std::to_string(jump_dist) + ".\n";
+        encrypt_steps += std::to_string(i+1) + ".) Alphabetically increased every 4th letter by " + std::to_string(jump_dist) + ", skiping the _ character.\n";
         change(word, jump_dist);
       } break;
       default:
