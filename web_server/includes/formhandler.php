@@ -1,5 +1,5 @@
 <?php
-
+// php code for testing
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstname = htmlspecialchars(string: $_POST["firstname"]);
     $lastname = htmlspecialchars(string: $_POST["lastname"]);
@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       exit();
     }
 
-    $file_open = fopen(filename: "./contact_data.csv",mode: "a");
+    $file_open = fopen(filename: "./test_data.csv",mode: "a");
 
     echo "hi1";
     fputcsv($file_open, [$firstname, $lastname]);
