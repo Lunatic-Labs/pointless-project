@@ -325,7 +325,7 @@
     </div>
 </div>
 
-    <script>
+    <script> //script for dark mode
         const themeBtn = document.getElementById("theme-btn");
             themeBtn.onclick = () => {
                 themeBtn.classList.toggle("fa-sun");
@@ -362,17 +362,22 @@
         <div class="container"><h2 style="text-align:center">The Pointless Challenge.</h2><p style="text-align:center">
 Under construction
 
-<form id="stringForm">
-    <label for="userString">Enter Email:</label>
-    <input type="text" id="userString" name="userString" required>
-    <button type="submit">Download Challenge</button>
+<form action="includes/pointless_form.php" method="post" id="stringForm">
+    <label for="fname">First Name:</label>
+    <input type="text" id="fname" name="fname" required>
+    <label for="lname">Last Name:</label>
+    
+    <input type="text" id="lname" name="lname" required>
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" required>
+    <button type="submit">Submit</button>
 </form>
 
-<form id="tokenForm">
+<!-- <form action="includes/pointless.php?get=pointless.zip" method="post" id="tokenForm">
     <label for="tokenString">Enter Token:</label>
     <input type="text" id="tokenString" name="tokenString" required>
     <button type="submit">Submit</button>
-</form>
+</form> -->
 
 <p id="tokenResponse"></p>
 
@@ -424,18 +429,18 @@ Under construction
     
 </div>
 
-<script>
+<!-- <script>
     document.getElementById('stringForm').addEventListener('submit', async function(event) {
         event.preventDefault();
 
-        const userString = document.getElementById('userString').value;
+        const email = document.getElementById('email').value;
 
         const response = await fetch('/generateFile', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ text: userString })
+            body: JSON.stringify({ text: email })
         });
 
         if (response.ok) {
@@ -475,7 +480,7 @@ Under construction
             validTokenDiv.style.display = "none";  // Hide the protected div
         }
     });
-</script>
+</script> -->
 
 
 </div>
