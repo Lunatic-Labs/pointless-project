@@ -4,17 +4,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lname = htmlspecialchars(string: $_POST["lname"]);
     $email = htmlspecialchars(string: $_POST["email"]);
 
-    if (empty($email)) {
-      exit();
-    }
-
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+    echo"<script>alert('invalid email')
+    window.location.href='../index.html'</script>";
+    exit;
+    };
+    
     $formdata = array(
       "fname"=> $fname,
       "lname"=> $lname,
       "email"=> $email
     );
 
-    $file_open = fopen(filename: "./contact_data.csv",mode: "a");
+    $file_open = fopen(filename: "./contact-data.csv",mode: "a");
 
     echo "hi1";
     fputcsv(stream: $file_open, fields: $formdata);
