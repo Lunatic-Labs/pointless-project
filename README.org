@@ -93,7 +93,7 @@ First, clone the repository if not done already:
 
 Go into the =src/= directory:
 #+begin_src bash
-  cd ./src/
+  cd ./puzzle-code/src/
 #+end_src
 
 Then use the =Makefile= to build the project:
@@ -421,32 +421,20 @@ The following things can happen:
 - The instructions used
 - $i$, $r$, $l$, $j$, $k$, $n$
 
+** Intro Base
+/Adjustable Variables/:
+- =MAX_HEX_ANS_LEN=
 
-** Based
+/Description/:
 
-    /Adjustable Variables/:
-      - =CELLS= (*must modify table in .desc.txt to match*)
+The goal of this puzzle is to introduce the player to number bases and base conversion.
+The puzzle contains a visual representation of numbers with different bases called a lightbox.
+Using these visual representations of bases, the player must convert a lightbox from base 16
+to base 10.
 
-    /Description/:
-
-      The goal of this puzzle is to teach the user about [[https://en.wikipedia.org/wiki/Positional_notation#Base_conversion][base conversion]].
-      They are given a description of three Pointless-created bases. The actual instructions follow in a story-esque fashion, here they are simplified:
-        - Convert values to base 10
-        - Sum them up for each row
-        - Convert the sum to base 2
-        - Check if LSB is on or off
-        - Save the resulting LSB values
-        - Take that base 2 number and convert it back to base 10 (the rightmost column)
-
-      They are then shown a table with values occupying each cell, except for the right most cell in each row.
-
-      |    24 | F     |     3 | ?     |
-      |    11 | 41    |    41 | ?     |
-      |     A | 18    |    27 | ?     |
-      |    35 | F     |     E | ?     |
-
-      /RNG/:
-      - The values in each cell
+/RNG/:
+- $num
+- lightbox placements
 
 ** Rematches
 The "rematch" puzzles serve as the point in the project where there is a
@@ -486,30 +474,31 @@ Once they have figured it out, they must decrypt the password.
 /RNG/:
 - The password
 
-** Based Rematch
+*** Based Rematch
 
     /Adjustable Variables/:
-      - =NUM_VALS= (*must modify html elements to match*)
-      - =VAL_SZ=
+      - =CELLS= (*must modify table in .desc.txt to match*)
 
-  /Description/:
+    /Description/:
 
-  This is a harder version of the /Based/ puzzle that also incorporates sorting. The user is presented with an instructions page outlining the challenge. Hidden on the page are three buttons 
-  that, when clicked, enumerate the Pointless-created bases that they will encounter in the actual puzzle.
+      The goal of this puzzle is to teach the user about [[https://en.wikipedia.org/wiki/Positional_notation#Base_conversion][base conversion]].
+      They are given a description of three Pointless-created bases. The actual instructions follow in a story-esque fashion, here they are simplified:
+        - Convert values to base 10
+        - Sum them up for each row
+        - Convert the sum to base 2
+        - Check if LSB is on or off
+        - Save the resulting LSB values
+        - Take that base 2 number and convert it back to base 10 (the rightmost column)
 
-  The bases:
+      They are then shown a table with values occupying each cell, except for the right most cell in each row.
 
-    - /Symbolic 8/: =!, @, #, $, %, ^, &, *=
-    - /Glyphic 16/: ={, }, [, ], (, ), `, >, a, b, c, d, e, f, g, h=
-    - /Mystic 36/: =|, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z=
+      |    24 | F     |     3 | ?     |
+      |    11 | 41    |    41 | ?     |
+      |     A | 18    |    27 | ?     |
+      |    35 | F     |     E | ?     |
 
-  Upon clicking the "Enter" button, they will be brought to the actual puzzle. There are =NUM_VALS= number of values, each of length =VAL_SZ=.
-  Clicking on these values places them into the container in the center of the page. The user must fill this container with the values sorted from smallest to greatest.
-  Doing so correctly will prompt a modal to appear containing the key.
-
-  /RNG/:
-
-  - The values
+      /RNG/:
+      - The values in each cell
 
 ** BST
 /Adjustable Variables/:
@@ -535,6 +524,31 @@ These are the possible expressions that can show up with examples:
 - root
 - expressions in each path
 - path from root \rightarrow destination
+
+** Scrapped Based Rematch
+
+    /Adjustable Variables/:
+      - =NUM_VALS= (*must modify html elements to match*)
+      - =VAL_SZ=
+
+  /Description/:
+
+  This is a harder version of the /Based/ puzzle that also incorporates sorting. The user is presented with an instructions page outlining the challenge. Hidden on the page are three buttons 
+  that, when clicked, enumerate the Pointless-created bases that they will encounter in the actual puzzle.
+
+  The bases:
+
+    - /Symbolic 8/: =!, @, #, $, %, ^, &, *=
+    - /Glyphic 16/: ={, }, [, ], (, ), `, >, a, b, c, d, e, f, g, h=
+    - /Mystic 36/: =|, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z=
+
+  Upon clicking the "Enter" button, they will be brought to the actual puzzle. There are =NUM_VALS= number of values, each of length =VAL_SZ=.
+  Clicking on these values places them into the container in the center of the page. The user must fill this container with the values sorted from smallest to greatest.
+  Doing so correctly will prompt a modal to appear containing the key.
+
+  /RNG/:
+
+  - The values
 
 ** Graph Paper Robot Puzzles
 
@@ -814,6 +828,138 @@ Creates a PPM image from =img= and saves it to =filepath=.
 Scales =img= by =scale= and returns a new =Image=.
 
 *NOTE*: This function is extremely slow as it runs in $O(n^4)$ time.
+
+* Automated Tests
+
+Go into the =test/= directory:
+#+begin_src bash
+  cd ./puzzle-code/test/
+#+end_src
+
+Then use the =Makefile= to build the project:
+#+begin_src bash
+  make <opt>
+#+end_src
+#+begin_quote
+where =opt= is one of:
+- =all= \rightarrow perform all =Makefile= flags and starts the automated testing process
+- =clean= \rightarrow removes all object files
+#+end_quote
+
+* Implementing New Tests
+
+** Test Implementation
+
+Create a new file called =<puzzle name>-puzzle-test.cpp=
+in =test/= and put the entrypoint of the function that will create the puzzle.
+We will also need to include =../src/include/puzzle.h= to have access to the =Puzzle= object,
+and =./include/test.h= to have access to the different puzzle test functions.
+
+#+begin_src c++
+#include "./include/test.h"
+#include "../src/include/puzzle.h"
+
+bool fib_puzzle_test()
+{
+  Puzzle test;
+
+  std::cout << "starting fib puzzle tests" << std::endl;
+  // Different assert() tests
+  std::cout << "fib puzzle test successful\n" << std::endl;
+
+  return true;
+}
+#+end_src
+
+Now it's time to create an automated test for puzzle. I will create a fib test function to see if the fib function
+works correctly.
+
+#+begin_src c++
+#include <iostream>
+#include <string>
+#include <cassert>
+#include "./include/test.h"
+#include "../src/include/puzzle.h"
+#include "../src/include/utils.h"
+
+bool fib_puzzle_test()
+{
+  Puzzle test;
+
+  std::cout << "starting fib puzzle tests" << std::endl;
+  test = fib_puzzle_create(1);
+  assert(test.password == "1");
+
+  test = fib_puzzle_create(5);
+  assert(test.password == "5");
+
+  test = fib_puzzle_create(10);
+  assert(test.password == "55");
+  
+  test = fib_puzzle_create(15);
+  assert(test.password == "610");
+  std::cout << "fib puzzle test successful\n" << std::endl;
+
+  return true;
+}
+#+end_src
+
+Now that the implementation is done, add the signature of =bool fib_puzzle_test();= into =./puzzle-code/test/include/test.h=.
+
+** Using the Test
+
+In the =main= function in =main.cpp=, there is some code that looks like:
+
+#+begin_src c++
+std::vector<bool> tests = {
+  math_puzzle_test(),
+  color_puzzle_test(),
+  pixel_puzzle_test(),
+  maze_puzzle_test(),
+  based_intro_puzzle_test(),
+  encrypt_puzzle_test(),
+  rematch_puzzle_test(),
+  rematch_maze_puzzle_test(),
+  rematch_encrypt_puzzle_test(),
+  rematch_based_puzzle_test(),
+  binary_addition_puzzle_test(),
+  logicgate_puzzle_test(),
+  bst_puzzle_test(),
+  fin_puzzle_test(),
+};
+#end_src
+
+Put the new test that was created in the spot that you want it to
+appear in the testing process. For example, if I want it to be the
+third test that the program will test, I would do:
+
+#+begin_src c++
+std::vector<bool> tests = {
+  math_puzzle_test(),
+  color_puzzle_test(),
+  fib_puzzle_test(),  // Added it here
+  pixel_puzzle_test(),
+  maze_puzzle_test(),
+  based_intro_puzzle_test(),
+  encrypt_puzzle_test(),
+  rematch_puzzle_test(),
+  rematch_maze_puzzle_test(),
+  rematch_encrypt_puzzle_test(),
+  rematch_based_puzzle_test(),
+  binary_addition_puzzle_test(),
+  logicgate_puzzle_test(),
+  bst_puzzle_test(),
+  fin_puzzle_test(),
+};
+#end_src
+
+Now run =make all= and these things will happen:
+
+#+begin_quote
+- If =./puzzle-code/test/obj/= is populated, then remove every object file in it.
+- The =<puzzle name>-puzzle.cpp= code will be compiled with the tests.
+- Once compiled, the test will run automaticly.
+#+end_quote
 
 * Issues
 
