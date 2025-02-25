@@ -1,28 +1,41 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $fname = htmlspecialchars(string: $_POST["fname"]);
-    $lname = htmlspecialchars(string: $_POST["lname"]);
-    $email = htmlspecialchars(string: $_POST["email"]);
+    $usr_fname = htmlspecialchars(string: $_POST["fname"]);
+    $usr_lname = htmlspecialchars(string: $_POST["lname"]);
+    $usr_email = htmlspecialchars(string: $_POST["email"]);
 
-    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-    echo"<script>alert('invalid email')
+    // invalid email error
+    if (filter_var($usr_email, FILTER_VALIDATE_EMAIL) === false) {
+    echo"<script>alert('!! INVALID EMAIL !! Please enter a vaild email...')
     window.location.href='../index.html'</script>";
     exit;
     };
     
-    $formdata = array(
-      "fname"=> $fname,
-      "lname"=> $lname,
-      "email"=> $email
-    );
+    // duplicate email in csv error check
+    $file = fopen(filename: './contact-data.csv', mode:'r');
+    fgetcsv(stream: $file); //skips first line in csv
+    $line = fgetcsv(stream: $file);
+    while($line != false){
+        $email = $line[2];
+        if ($usr_email == $email) {
+            echo"<script>alert('!! DUPLICATE EMAIL !! Please enter a different email...')
+            window.location.href='../index.html'</script>";
+            exit;
+            };
+        $line = fgetcsv($file);
+    };
+    fclose($file);
 
+    $formdata = array(
+      "fname"=> $usr_fname,
+      "lname"=> $usr_lname,
+      "email"=> $usr_email
+    );
     $file_open = fopen(filename: "./contact-data.csv",mode: "a");
 
-    echo "hi1";
+    // puts data into csv and closes connection
     fputcsv(stream: $file_open, fields: $formdata);
-    echo "hi2";
     fclose(stream: $file_open);
-    echo "hi3";
 
     header("Location: ../index.html");
 }

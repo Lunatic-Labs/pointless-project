@@ -1,23 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-    </head>
-    <body>
-    <main>
-        <form action="includes/formhandler.php" method="post">
-            <label for="firstname">Firstname?</label>
-            <input id="firstname" type="text" name="firstname" placeholder="Firstname...">
+<?php
+$file = fopen(filename: './includes/contact-data.csv', mode:'r');
 
-            <label for="lastname">Lastname?</label>
-            <input id="lastname" type="text" name="lastname" placeholder="Lastname...">
+// $test_input = "f@gmail.com";
+$test_input = "m@c.com";
 
-            <button type="submit" name="submit">Submit</button>
-        </form>
-    </main>
+fgetcsv(stream: $file); //skips first line in csv
+$line = fgetcsv(stream: $file);
+while($line != false){
+    $email = $line[2];
+    echo "Email: $email \n";
+    if ($test_input == $email) {
+        echo"<script>alert('invalid email')
+        window.location.href='../index.php'</script>";
+        exit;
+        };
+    $line = fgetcsv($file);
+}
 
-    </body>
-</html>
+fclose($file);
