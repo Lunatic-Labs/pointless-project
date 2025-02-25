@@ -18,6 +18,7 @@
 <body>
     <div id="theme-btn" class="far fa-moon"></div>
 
+
 <div style="display:flex; align-items:center; justify-content: center;">
     <div class="title">Pointless Challenge</div>
     <div class="imagen">
@@ -359,27 +360,7 @@
     </head>
     <body>
         <div class="container"><h2 style="text-align:center">The Pointless Challenge.</h2><p style="text-align:center">
-In the works...
-
-    <form action="includes/pointless-form.php" method="post" id="stringForm">
-        <label for="fname">First Name:</label>
-        <input type="text" id="fname" name="fname" required>
-        <label for="lname">Last Name:</label>
-
-        <input type="text" id="lname" name="lname" required>
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" required>
-        <button type="submit">Submit</button>
-    </form>
-
-<!-- code for token submission -->
-<!-- <form action="includes/pointless.php?get=pointless.zip" method="post" id="tokenForm">
-    <label for="tokenString">Enter Token:</label>
-    <input type="text" id="tokenString" name="tokenString" required>
-    <button type="submit">Submit</button>
-</form> -->
-
-<p id="tokenResponse"></p>
+Download <a target="_blank" rel="noopener noreferrer" href="https://www.7-zip.org/">7-zip</a>
 
 <div id="validTokenDiv" style="display: none;">
     <style>
@@ -428,60 +409,6 @@ In the works...
     </div>
     
 </div>
-
-<!-- <script>
-    document.getElementById('stringForm').addEventListener('submit', async function(event) {
-        event.preventDefault();
-
-        const email = document.getElementById('email').value;
-
-        const response = await fetch('/generateFile', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ text: email })
-        });
-
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "pointless.zip";
-            a.click();
-            URL.revokeObjectURL(url);
-        } else {
-            alert("Failed to generate file.");
-        }
-    });
-
-    document.getElementById('tokenForm').addEventListener('submit', async function(event) {
-        event.preventDefault();
-
-        const token = document.getElementById('tokenString').value;
-
-        const response = await fetch('/validateToken', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: token })
-        });
-
-        const result = await response.json();
-        const tokenResponseDiv = document.getElementById('tokenResponse');
-        const validTokenDiv = document.getElementById('validTokenDiv');
-
-        // Display message and show/hide validTokenDiv based on validity
-        if (result.message === "Token is valid!") {
-            tokenResponseDiv.innerText = result.message;
-            validTokenDiv.style.display = "block";  // Show the protected div
-        } else {
-            tokenResponseDiv.innerText = result.message;
-            validTokenDiv.style.display = "none";  // Hide the protected div
-        }
-    });
-</script> -->
-
 <footer>
 <div style="text-align:center; margin-top: 34.5px;"><p>Dr. Towell - dtowell@lipscomb.edu</p></div>
 <footer>
