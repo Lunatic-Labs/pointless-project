@@ -14,6 +14,7 @@
     .maindiv{display: flex;flex-direction: column;height: 95vh;}
     .title{ font-size: 72px; font-weight: bold; color: #331E54; text-shadow:4px  4px 0 #F4AA00;}
     .imagen{height:9rem; padding-left: 28px;}
+    .button {border: none; background:#331E54 ; color: #F4AA00; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;}
 </style>
 <body>
     <div id="theme-btn" class="far fa-moon"></div>
@@ -349,8 +350,12 @@
                 text-align: center;
             }
             .container ul {
-            text-align: center;
-            list-style-position: inside;
+                text-align: center;
+                list-style-position: inside;
+            }
+            .container a{
+                background-color: #F4AA00;
+                color:#331E54;
             }
             .container p {
                 max-width: 60%;
@@ -360,8 +365,14 @@
     </head>
     <body>
         <div class="container"><h2 style="text-align:center">The Pointless Challenge.</h2><p style="text-align:center">
-Download <a target="_blank" rel="noopener noreferrer" href="https://www.7-zip.org/">7-zip</a>
-
+                Before you can use the Pointless Puzzle zip, <strong>you need to download <a target="_blank" rel="noopener noreferrer" href="https://www.7-zip.org/">7-Zip.</a></strong><br>
+                Regular zip openers cannot properly open the pointless project,<br>
+                <strong>so please download 7-Zip before opening the Pointless zip file.</strong></p>
+        </div>
+        <div class="container">
+        <button class="button">Pointless Download</button>
+        </div>
+            
 <div id="validTokenDiv" style="display: none;">
     <style>
         .share-button {
