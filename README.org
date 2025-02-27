@@ -927,7 +927,7 @@ std::vector<bool> tests = {
   bst_puzzle_test(),
   fin_puzzle_test(),
 };
-#end_src
+#+end_src
 
 Put the new test that was created in the spot that you want it to
 appear in the testing process. For example, if I want it to be the
@@ -951,7 +951,7 @@ std::vector<bool> tests = {
   bst_puzzle_test(),
   fin_puzzle_test(),
 };
-#end_src
+#+end_src
 
 Now run =make all= and these things will happen:
 
