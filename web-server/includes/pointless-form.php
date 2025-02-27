@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     fputcsv(stream: $file_open, fields: $formdata);
     fclose(stream: $file_open);
 
-    header("Location: ../index.html");
+    header("Location: ../download.html");
 }
 else {
     header("Location: ../index.html");
