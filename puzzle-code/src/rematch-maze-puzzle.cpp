@@ -140,13 +140,11 @@ Puzzle rematch_maze_puzzle_create(long seed)
   std::string binmaze_str2 = vector_mat_to_str(mazes[1]);
   std::string binmaze_str3 = vector_mat_to_str(mazes[2]);
 
-  if (!(FLAGS & ANS_ONLY)) {
-    std::string html_body = utils_html_printf("Maze Rematch Puzzle",
-                                              "./files-rematch-maze/.desc.txt",
-                                              {svgs[0], svgs[1], svgs[2], binmaze_str1, binmaze_str2, binmaze_str3,
-                                              std::to_string(encrypted_password), std::to_string(password_hash)});
+  std::string html_body = utils_html_printf("Maze Rematch Puzzle",
+                                            "../html-txt/files-rematch-maze/.desc.txt",
+                                            {svgs[0], svgs[1], svgs[2], binmaze_str1, binmaze_str2, binmaze_str3,
+                                            std::to_string(encrypted_password), std::to_string(password_hash)});
 
-    utils_generate_file("./files-rematch-maze/instructions.html", html_body);
-  }
-  return {"files-rematch-maze", std::to_string(password), {}};
+  utils_generate_file("../html-txt/files-rematch-maze/instructions.html", html_body);
+  return {"../html-txt/files-rematch-maze", html_body, std::to_string(password), {}};
 }

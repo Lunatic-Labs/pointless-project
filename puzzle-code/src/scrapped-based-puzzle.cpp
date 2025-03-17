@@ -153,14 +153,12 @@ Puzzle based_puzzle_create(long seed)
   int key = utils_rng_roll(10000, 950000, seed);
   values.push_back(std::to_string(key));
 
-  if (!(FLAGS & ANS_ONLY)) {
-    FLAGS |= (NO_HDR | NO_FTR);
-    std::string html_content = utils_html_printf("Base Puzzle Rematch", "./files-scrapped-based/.desc.txt", values);
-    utils_generate_file("./files-scrapped-based/instructions.html", html_content);
+  FLAGS |= (NO_HDR | NO_FTR);
+  std::string html_content = utils_html_printf("Base Puzzle Rematch", "../html-txt/files-scrapped-based/.desc.txt", values);
+  utils_generate_file("../html-txt/files-scrapped-based/instructions.html", html_content);
 
-    FLAGS &= ~(NO_HDR | NO_FTR);
-  }
-  return Puzzle{"files-scrapped-based", values.back(), {}};
+  FLAGS &= ~(NO_HDR | NO_FTR);
+  return Puzzle{"files-scrapped-based", html_content, values.back(), {}};
 }
 
 /*

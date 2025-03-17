@@ -88,9 +88,7 @@ Puzzle based_intro_puzzle_create(long seed)
 
   values.push_back(create_table(base, len, num));
 
-  if (!(FLAGS & ANS_ONLY)) {
-    std::string html_content = utils_html_printf("Base Intro Puzzle", "./files-based-intro/.desc.txt", values);
-    utils_generate_file("./files-based-intro/instructions.html", html_content);
-  }
-  return Puzzle{"files-based-intro", solve(num), {}};
+  std::string html_content = utils_html_printf("Base Intro Puzzle", "../html-txt/files-based-intro/.desc.txt", values);
+  utils_generate_file("../html-txt/files-based-intro/instructions.html", html_content);
+  return Puzzle{"../html-txt/files-based-intro", html_content, solve(num), {}};
 }

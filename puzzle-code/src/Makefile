@@ -29,11 +29,11 @@ $(ZIP_DIR):
 
 cleanzip:
 	rm -f ./zipfiles/*
-	rm -rf ./files-bst/tree
-	rm -rf ./files-rematch/*
-	rm -rf ./files-rematch/.passwords
-	rm -f ./files*/instructions.html
-	rm -f ./files-rematch-based/____________.html
+	rm -rf ../html-txt/files-bst/tree
+	rm -rf ../html-txt/files-rematch/*
+	rm -rf ../html-txt/files-rematch/.passwords
+	rm -f ../html-txt/files*/instructions.html
+	rm -f ../html-txt/files-rematch-based/____________.html
 
 clean: cleanzip
 	rm -rf $(OBJDIR)/*

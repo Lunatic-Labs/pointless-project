@@ -169,9 +169,9 @@ It is then the job of C++ to "stringify" the required information to pass to =.d
 In order to make the explanation more easy to follow, I will make a new puzzle called "fib",
 where the point(less) of it is to have the user find the /n^th/ number of the fibonacci sequence.
 
-#+CAPTION: Creating =src/files-fib/.desc.txt=
+#+CAPTION: Creating =puzzle-code/html-txt/files-fib/.desc.txt=
 #+begin_src bash
-  cd ./src/
+  cd ./puzzle-code/html-txt/
   mkdir files-fib && cd files-fib
   echo "What is the <b>%DELIM</b>th number in the fibonacci sequence?" > .desc.txt
 #+end_src
@@ -179,16 +179,16 @@ where the point(less) of it is to have the user find the /n^th/ number of the fi
 ** Puzzle Implementation
 
 Once the above step is done, create a new file called =<puzzle name>-puzzle.cpp=
-in =src/= and put the entrypoint of the function that will create the puzzle.
+in =puzzle-code/src/= and put the entrypoint of the function that will create the puzzle.
 We will also need to include =./include/puzzle.h= to have access to the =Puzzle= object.
 
-#+CAPTION: =src/fib-puzzle.cpp=
+#+CAPTION: =puzzle-code/src/fib-puzzle.cpp=
 #+begin_src c++
   #include "./include/puzzle.h"
 
   Puzzle fib_puzzle_create(long seed)
   {
-    return {"files-fib", "changeme", {}}; // NOTE: "files-fib" is the puzzle requirements directory from the previous step.
+    return {"../html-txt/files-fib", "", "changeme", {}}; // NOTE: "../html-txt/files-fib" is the puzzle requirements directory from the previous step.
   }
 #+end_src
 
@@ -198,9 +198,12 @@ The return value of this function is a =Puzzle= object. It is defined as:
 #+begin_src c++
 struct Puzzle {
   // The filepath to the appropriate directory
+  // The content of the instruction.html pages
   // that contains all of the information needed
   // for the puzzle.
   std::string contents_fp;
+  
+  std::string contents_html;
 
   std::string password;
 
@@ -211,11 +214,13 @@ struct Puzzle {
 #+begin_quote
 So we are returning a new puzzle where
 
-- requirements = "files-fib"
+- requirements = "../html-txt/files-fib"
+- html content = ""
 - password = "changeme"
 - extra info = None
 #+end_quote
 
+The =html content= field is a string for the html content of the puzzle.
 The =password= field is what will set the password for the next zipfile layer.
 The =extra_info= field is purely for debugging and is strictly used for the side
 effect of printing when running the application. Nothing that gets put into it will
@@ -223,7 +228,7 @@ be displayed/used in the final puzzle in the zipfiles.
 
 Now it's time to actually create the solver for the puzzle. I will create a fib function that will find the number.
 
-#+CAPTION: Complete source of =src/fib-puzzle.cpp=
+#+CAPTION: Complete source of =puzzle-code/src/fib-puzzle.cpp=
 #+begin_src c++
   #include "./include/puzzle.h"
   #include "./include/utils.h" // utils_rng_roll, utils_html_printf, utils_generate_file
@@ -244,24 +249,24 @@ Now it's time to actually create the solver for the puzzle. I will create a fib 
 
     // Generate the HTML content to be displayed to the user
     std::string html_content = utils_html_printf("Fibonacci Sequence",
-                                                 "./files-fib/.desc.txt",
+                                                 "../html-txt/files-fib/.desc.txt",
                                                  {std::to_string(fibnum)});
 
     // Create the instructions.html
-    utils_generate_file("./files-fib/instructions.html", html_content);
+    utils_generate_file("../html-txt/files-fib/instructions.html", html_content);
 
     // Finally return the Puzzle object.
-    return {"files-fib", std::to_string(password), {}};
+    return {"../html-txt/files-fib", html_content, std::to_string(password), {}};
   }
 #+end_src
 
-Now that the implementation is done, add the signature of =Puzzle fib_puzzle_create(long)= into =./src/include/puzzle.h=.
+Now that the implementation is done, add the signature of =Puzzle fib_puzzle_create(long)= into =.puzzle-code/src/include/puzzle.h=.
 
 ** Using the Puzzle
 
 In the =main= function in =main.cpp=, there is some code that looks like:
 
-#+CAPTION: src/main.cpp
+#+CAPTION: puzzle-code/src/main.cpp
 #+begin_src c++
   std::vector<Puzzle> puzzles = {
     math_puzzle_create(seed),
@@ -279,7 +284,7 @@ Put the new puzzle that was created in the spot that you want it to
 appear in the nested zipfiles. For example, if I want it to be the
 third puzzle that the user solves, I would do:
 
-#+CAPTION: src/main.cpp
+#+CAPTION: puzzle-code/src/main.cpp
 #+begin_src c++
   std::vector<Puzzle> puzzles = {
     math_puzzle_create(seed),
@@ -298,10 +303,10 @@ Now run =make all= and these things will happen:
 
 #+begin_quote
 - The =files-<puzzle name>= directories will all generate a file called =instructions.html=.
-- =./src/zipfiles/= will be populated with zipfiles.
+- =.puzzle-code/src/zipfiles/= will be populated with zipfiles.
 #+end_quote
 
-The entire project will be located in =./src/zipfiles/puzzle1.zip=, as it contains
+The entire project will be located in =.puzzle-code/src/zipfiles/puzzle1.zip=, as it contains
 the zipped files /puzzle1..puzzleN/. The reason why we also generate the other puzzles
 outside of =puzzle1.zip=, is because it allows for easy testing without having to go through the entire zipfile structure.
 
@@ -857,11 +862,15 @@ and =./include/test.h= to have access to the different puzzle test functions.
 
 #+begin_src c++
 #include "./include/test.h"
+#include "./include/file.h"
 #include "../src/include/puzzle.h"
 
 bool fib_puzzle_test()
 {
   Puzzle test;
+  std::string header_content = file_contents("../html-txt/resources/header.txt");
+  std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  size_t found;
 
   std::cout << "starting fib puzzle tests" << std::endl;
   // Different assert() tests
@@ -879,25 +888,45 @@ works correctly.
 #include <string>
 #include <cassert>
 #include "./include/test.h"
+#include "./include/file.h"
 #include "../src/include/puzzle.h"
 #include "../src/include/utils.h"
 
 bool fib_puzzle_test()
 {
   Puzzle test;
+  std::string header_content = file_contents("../html-txt/resources/header.txt");
+  std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  size_t found;
 
   std::cout << "starting fib puzzle tests" << std::endl;
   test = fib_puzzle_create(1);
   assert(test.password == "1");
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
 
   test = fib_puzzle_create(5);
   assert(test.password == "5");
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
 
   test = fib_puzzle_create(10);
   assert(test.password == "55");
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
   
   test = fib_puzzle_create(15);
   assert(test.password == "610");
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
   std::cout << "fib puzzle test successful\n" << std::endl;
 
   return true;

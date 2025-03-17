@@ -161,12 +161,10 @@ Puzzle maze_puzzle_create(long seed)
   maze(0, MAZE_SIZE-1) = MAZE_END; //swapped these
   maze(MAZE_SIZE-1, 0) = MAZE_START;
 
-  if (!(FLAGS & ANS_ONLY)) {
-    Svg svg = graphics_gen_svg_from_image(maze, 20, {}); // Maze size is hardcoded into HTML
-    std::string svg_html = svg.build(0);
-    std::string html_body = utils_html_printf("Maze Puzzle", "./files-maze/.desc.txt", {{svg_html}});
-    utils_generate_file("./files-maze/instructions.html", html_body);
-  }
+  Svg svg = graphics_gen_svg_from_image(maze, 20, {}); // Maze size is hardcoded into HTML
+  std::string svg_html = svg.build(0);
+  std::string html_body = utils_html_printf("Maze Puzzle", "../html-txt/files-maze/.desc.txt", {{svg_html}});
+  utils_generate_file("../html-txt/files-maze/instructions.html", html_body);
   visited.clear();  // For automated testing
-  return {"files-maze", password, {}};
+  return {"../html-txt/files-maze", html_body, password, {}};
 }

@@ -7,7 +7,7 @@
 
 static void create_rematch_zipfiles(std::vector<Puzzle> &puzzles)
 {
-  std::string zipdir = "files-rematch/";
+  std::string zipdir = "../html-txt/files-rematch/";
   int i = 0;
 
   for (auto puzzle = puzzles.begin(); puzzle != puzzles.end(); ++puzzle, i++) {
@@ -22,7 +22,7 @@ static void create_rematch_zipfiles(std::vector<Puzzle> &puzzles)
 
 static std::string create_rematch_password_files(std::vector<Puzzle> &puzzles, long seed)
 {
-  const std::string password_dir = "files-rematch/.passwords/";
+  const std::string password_dir = "../html-txt/files-rematch/.passwords/";
   std::string password = "";
   int i = 0;
 
@@ -44,11 +44,9 @@ Puzzle rematch_puzzle_inst(long seed)
 {
   (void)seed;
 
-  if (!(FLAGS & ANS_ONLY)) {
-    std::string html_content = utils_html_printf("Rematch Instructions", "./files-rematch/.desc.txt", {});
-    utils_generate_file("./files-rematch/instructions.html", html_content);
-  }
-  return {"files-rematch", "", {}};
+  std::string html_content = utils_html_printf("Rematch Instructions", "../html-txt/files-rematch/.desc.txt", {});
+  utils_generate_file("../html-txt/files-rematch/instructions.html", html_content);
+  return {"../html-txt/files-rematch", html_content, "", {}};
 }
 
 Puzzle rematch_puzzle_create(long seed)
@@ -68,7 +66,9 @@ Puzzle rematch_puzzle_create(long seed)
 
     std::cout << "Rematch:" << std::endl;
     for (auto &puzzle : puzzles) {
-      std::printf("  %-17s Password: %s", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
+      std::string puzzle_name = puzzle.contents_fp;
+      puzzle_name.erase(puzzle_name.begin(), puzzle_name.begin()+12);
+      std::printf("  %-17s Password: %s", puzzle_name.substr(6).c_str(), puzzle.password.c_str());
       if (puzzle.extra_info) {
         std::printf(" %s", puzzle.extra_info->c_str());
       }
@@ -76,6 +76,5 @@ Puzzle rematch_puzzle_create(long seed)
     }
   }
 
-  return {"files-rematch", password, {}};
+  return {"../html-txt/files-rematch", "", password, {}};
 }
-

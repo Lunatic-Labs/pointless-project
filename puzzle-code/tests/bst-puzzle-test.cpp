@@ -2,33 +2,49 @@
 #include <string>
 #include <cassert>
 #include "./include/test.h"
+#include "./include/file.h"
 #include "../src/include/puzzle.h"
 #include "../src/include/utils.h"
 
 bool bst_puzzle_test()
 {
   Puzzle test;
+  std::string header_content = file_contents("../html-txt/resources/header.txt");
+  std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  size_t found;
 
   std::cout << "starting BST puzzle tests" << std::endl;
   test = bst_puzzle_create(1);
   assert(test.password == "4299662");
   assert(test.extra_info == " Path: lrlrlrrrll");
-  std::cout << "test 1 completed\npassword = " << test.password << ", extra info =" << test.extra_info->c_str() << std::endl;
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
 
   test = bst_puzzle_create(5);
   assert(test.password == "1403321");
   assert(test.extra_info == " Path: rrrllrrlrl");
-  std::cout << "test 2 completed\npassword = " << test.password << ", extra info =" << test.extra_info->c_str() << std::endl;
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
 
   test = bst_puzzle_create(10);
   assert(test.password == "6118173");
   assert(test.extra_info == " Path: rrlrrlrrlr");
-  std::cout << "test 3 completed\npassword = " << test.password << ", extra info =" << test.extra_info->c_str() << std::endl;
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
   
   test = bst_puzzle_create(15);
   assert(test.password == "2538609");
   assert(test.extra_info == " Path: llrllrlllr");
-  std::cout << "test 4 completed\npassword = " << test.password << ", extra info =" << test.extra_info->c_str() << std::endl;
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
   std::cout << "BST puzzle test successful\n" << std::endl;
 
   return true;

@@ -74,9 +74,7 @@ Puzzle rematch_encrypt_puzzle_create(long seed)
 
   std::string encrypted_password = str_to_ascii_array(password, key);
   
-  if (!(FLAGS & ANS_ONLY)) {
-    std::string html_body = utils_html_printf("Encrypt puzzle", "./files-rematch-encrypt/.desc.txt", {encrypted_password, std::to_string(key), table});
-    utils_generate_file("./files-rematch-encrypt/instructions.html", html_body);
-  }
-  return {"files-rematch-encrypt", password, {}};
+  std::string html_body = utils_html_printf("Encrypt puzzle", "../html-txt/files-rematch-encrypt/.desc.txt", {encrypted_password, std::to_string(key), table});
+  utils_generate_file("../html-txt/files-rematch-encrypt/instructions.html", html_body);
+  return {"../html-txt/files-rematch-encrypt", html_body, password, {}};
 }

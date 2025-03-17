@@ -22,10 +22,8 @@ Puzzle math_puzzle_create(long seed)
   int b = utils_rng_roll(MATH_MIN2, MATH_MAX2, seed);
   int s = a+b;
 
-  if (!(FLAGS & ANS_ONLY)) {
-    std::string html_content = utils_html_printf("Hello Pointless", "./files-math/.desc.txt",
-                                                  {std::to_string(a), std::to_string(b)});
-    utils_generate_file("./files-math/instructions.html", html_content);
-  }
-  return {"files-math", std::to_string(s), {}};
+  std::string html_content = utils_html_printf("Hello Pointless", "../html-txt/files-math/.desc.txt",
+                                                {std::to_string(a), std::to_string(b)});
+  utils_generate_file("../html-txt/files-math/instructions.html", html_content);
+  return {"../html-txt/files-math", html_content, std::to_string(s), {}};
 }
