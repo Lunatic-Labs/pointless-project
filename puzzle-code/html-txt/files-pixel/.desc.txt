@@ -20,7 +20,7 @@ li {
 <p style="text-align:center"></p>
 
 <p>
-    Eggcelent! You completed the second puzzle (just when we thought we had you stumped!). You have been awarded..0 points!<br>
+    Eggcelent! You completed the second puzzle (just when we thought we had you stumped!). You have been awarded..0 points and a "color wheel!"<br>
     Ready for the next challenge?
 </p>
 

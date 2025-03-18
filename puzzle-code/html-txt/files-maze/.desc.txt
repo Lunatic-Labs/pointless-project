@@ -1,4 +1,4 @@
-So, you have beaten the last puzzle, good job! But there's no time to celebrate.
+So, you have beaten "Lou's pixel art" puzzle, good job! But there's no time to celebrate.
 
 Your <b>golden</b> robot is stuck inside a labyrinth full of winding paths and dead ends. Somewhere in this maze is the <b>purple</b> exit. But the journey isn't just about finding the right path—it's about **finding the fastest way through**.
 

@@ -1,4 +1,4 @@
-<p>So you have beaten the last puzzle, good job!</p>
+<p>So you have beaten the rematch puzzles and constructed the "master key," good job! For this you earned 0 points.</p>
 
 <p>Your <b>golden</b> robot has been shut down, its energy reserves depleted. But its journey isn’t over yet. Solve this problem to reactivate the robot, allowing it to move once again. However, this time its movements aren’t just steps forward—they are part of a hidden message.</p>
 

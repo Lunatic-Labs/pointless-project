@@ -138,6 +138,8 @@
   </li>
 </ul>
 
+<p>You have beaten that last puzzle, and been so graciously awarded 0 points! However, had you tried "adding the colored squares?" Well that doesn't matter now! What matters now is this new puzzle, and the MacGuffin encase you had forgotten about it.</p>
+
 <p>The line of blocks represents a <b>queue</b>. Your task is to calculate answers step by step, following these instructions:</p>
 
 <ul>

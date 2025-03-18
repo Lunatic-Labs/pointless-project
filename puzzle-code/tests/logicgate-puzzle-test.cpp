@@ -11,6 +11,7 @@ bool logicgate_puzzle_test()
   Puzzle test;
   std::string header_content = file_contents("../html-txt/resources/header.txt");
   std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  std::string token = "adding the colored squares";
   size_t found;
 
   std::cout << "starting logic gate puzzle tests" << std::endl;
@@ -20,12 +21,16 @@ bool logicgate_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
   assert(found != std::string::npos);
+  found = test.contents_html.find(token);
+  assert(found != std::string::npos);
 
   test = logicgate_puzzle_create(5);
   assert(test.password == "001101110011011");
   found = test.contents_html.find(header_content);
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(token);
   assert(found != std::string::npos);
 
   test = logicgate_puzzle_create(10);
@@ -34,12 +39,16 @@ bool logicgate_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
   assert(found != std::string::npos);
+  found = test.contents_html.find(token);
+  assert(found != std::string::npos);
   
   test = logicgate_puzzle_create(15);
   assert(test.password == "010000100001010");
   found = test.contents_html.find(header_content);
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(token);
   assert(found != std::string::npos);
   std::cout << "logic gate puzzle test successful\n" << std::endl;
 

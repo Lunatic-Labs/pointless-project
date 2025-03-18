@@ -15,7 +15,7 @@
     color: rgb(255, 217, 90);
   }
 </style>
-Good job making it through that tricky maze; you must be 200 IQ!<br />
+Good job at solving that "alien lightbox;" you must be 200 IQ!<br />
 
 You have been awarded another 0 points. Sweet! I hope you’re still keeping count. <br />
 This next puzzle will knock your socks off! <br />

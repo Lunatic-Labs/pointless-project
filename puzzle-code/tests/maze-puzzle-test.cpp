@@ -11,6 +11,7 @@ bool maze_puzzle_test()
   Puzzle test;
   std::string header_content = file_contents("../html-txt/resources/header.txt");
   std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  std::string token = "Lou's pixel art";
   size_t found;
 
   std::cout << "starting maze puzzle tests" << std::endl;
@@ -20,12 +21,16 @@ bool maze_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
   assert(found != std::string::npos);
+  found = test.contents_html.find(token);
+  assert(found != std::string::npos);
 
   test = maze_puzzle_create(5);
   assert(test.password == "r3u2ldl2urulu2r2d2r2druru2l2dlu2r3");
   found = test.contents_html.find(header_content);
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(token);
   assert(found != std::string::npos);
 
   test = maze_puzzle_create(10);
@@ -34,12 +39,16 @@ bool maze_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
   assert(found != std::string::npos);
+  found = test.contents_html.find(token);
+  assert(found != std::string::npos);
   
   test = maze_puzzle_create(15);
   assert(test.password == "r2ulurulu2lur2drdr2dl2d3ru2r2u3lur");
   found = test.contents_html.find(header_content);
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(token);
   assert(found != std::string::npos);
   std::cout << "maze puzzle test successful\n" << std::endl;
 

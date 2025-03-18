@@ -11,6 +11,7 @@ bool bst_puzzle_test()
   Puzzle test;
   std::string header_content = file_contents("../html-txt/resources/header.txt");
   std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  std::string token = "queue of logic gates";
   size_t found;
 
   std::cout << "starting BST puzzle tests" << std::endl;
@@ -21,6 +22,8 @@ bool bst_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
   assert(found != std::string::npos);
+  found = test.contents_html.find(token);
+  assert(found != std::string::npos);
 
   test = bst_puzzle_create(5);
   assert(test.password == "1403321");
@@ -28,6 +31,8 @@ bool bst_puzzle_test()
   found = test.contents_html.find(header_content);
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(token);
   assert(found != std::string::npos);
 
   test = bst_puzzle_create(10);
@@ -37,6 +42,8 @@ bool bst_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
   assert(found != std::string::npos);
+  found = test.contents_html.find(token);
+  assert(found != std::string::npos);
   
   test = bst_puzzle_create(15);
   assert(test.password == "2538609");
@@ -44,6 +51,8 @@ bool bst_puzzle_test()
   found = test.contents_html.find(header_content);
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(token);
   assert(found != std::string::npos);
   std::cout << "BST puzzle test successful\n" << std::endl;
 

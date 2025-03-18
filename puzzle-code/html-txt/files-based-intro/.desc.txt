@@ -28,7 +28,7 @@ p, h4 {
 
 
 <p>
-    Hello, codebreaker. Before you lies a light box, a cryptic structure designed to hold hidden meanings. Each light in this box represents part of an encrypted sequence, a cipher waiting to be unlocked.
+    You have beaten the "speedy maze" and awarded with 0 points! However, we are not done yet. Before you lies a light box, a cryptic structure designed to hold hidden meanings. Each light in this box represents part of an encrypted sequence, a cipher waiting to be unlocked.
 </p>
 <p>
     Today, you’ll be working with this light box. Each light box has rows and columns, with lights in each cell that symbolize encrypted values in a hidden code.
