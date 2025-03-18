@@ -1,23 +1,22 @@
 <?php
-// php code for testing
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $firstname = htmlspecialchars(string: $_POST["firstname"]);
-    $lastname = htmlspecialchars(string: $_POST["lastname"]);
+    $usr_fname = htmlspecialchars(string: $_POST["fname"]);
+    $usr_lname = htmlspecialchars(string: $_POST["lname"]);
 
-    if (empty($firstname) || empty($lastname)) {
-      exit();
+    $formdata = [
+      "fname"=> $usr_fname,
+      "lname"=> $usr_lname
+    ];
+
+    $file = fopen(filename: './test-data.csv',mode: 'r');
+    fgetcsv(stream: $file); //skips first line in csv
+    $line = fgetcsv(stream: $file);
+    while ($line != false) {
+      if ($formdata == $line){
+        
+      }
     }
-
-    $file_open = fopen(filename: "./test_data.csv",mode: "a");
-
-    echo "hi1";
-    fputcsv($file_open, [$firstname, $lastname]);
-    echo "hi2";
-    fclose(stream: $file_open);
-    echo "hi3";
-
-    header("Location: ../index.php");
 }
 else {
-    header("Location: ../index.php");
+  header("Location: ../test.html");
 }
