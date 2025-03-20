@@ -1,20 +1,545 @@
 <?php
-$file = fopen(filename: './includes/contact-data.csv', mode:'r');
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $usr_fname = htmlspecialchars(string: $_POST["fname"]);
+    $usr_lname = htmlspecialchars(string: $_POST["lname"]);
+    $usr_email = htmlspecialchars(string: $_POST["email"]);
 
-// $test_input = "f@gmail.com";
-$test_input = "m@c.com";
+    // invalid email error
+    if (filter_var($usr_email, FILTER_VALIDATE_EMAIL) === false) {
+    echo"<script>alert('!! INVALID EMAIL !! Please enter a vaild email...')
+    window.location.href='../index.html'</script>";
+    exit;
+    };
+    
+    // duplicate email in csv error check
+    $file = fopen(filename: './contact-data.csv', mode:'r');
+    fgetcsv(stream: $file); //skips first line in csv
+    $line = fgetcsv(stream: $file);
+    while($line != false){
+        $email = $line[2];
+        if ($usr_email == $email) {
+            echo"<script>alert('!! DUPLICATE EMAIL !! Please enter a different email...')
+            window.location.href='../index.html'</script>";
+            exit;
+            };
+        $line = fgetcsv($file);
+    };
+    fclose($file);
 
-fgetcsv(stream: $file); //skips first line in csv
-$line = fgetcsv(stream: $file);
-while($line != false){
-    $email = $line[2];
-    echo "Email: $email \n";
-    if ($test_input == $email) {
-        echo"<script>alert('invalid email')
-        window.location.href='../index.php'</script>";
-        exit;
-        };
-    $line = fgetcsv($file);
+    $formdata = array(
+      "fname"=> $usr_fname,
+      "lname"=> $usr_lname,
+      "email"=> $usr_email
+    );
+    $file_open = fopen(filename: "./contact-data.csv",mode: "a");
+
+    // puts data into csv and closes connection
+    fputcsv(stream: $file_open, fields: $formdata);
+    fclose(stream: $file_open);
+
+    header("Location: ../download.html");
 }
+else {
+    header("Location: ../index.html");
+}
+?>
 
-fclose($file);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pointless Challenge</title>
+</head>
+
+<style>
+    #theme-btn {font-size: 1.5rem;cursor: pointer;color: #596AFF;}
+    #theme-btn:hover {color: #BB86FC;}
+    .changeTheme {background: #1D1E22; color: #eee;}        
+    .maindiv{display: flex;flex-direction: column;height: 95vh;}
+    .title{ font-size: 72px; font-weight: bold; color: #331E54; text-shadow:4px  4px 0 #F4AA00;}
+    .imagen{height:9rem; padding-left: 28px;}
+</style>
+
+<body>
+    <div id="theme-btn" class="far fa-moon"></div>
+
+<div style="display:flex; align-items:center; justify-content: center;">
+    <div class="title">Pointless Challenge</div>
+    <div class="imagen">
+        <svg width="78.750000" height="141.750000" xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <rect x="31.500000" y="0.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="0.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="0.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="0.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="5.250000" y="5.250000" width="5.250000" height="5.250000" fill="#D2BB8D"   />
+            <rect x="21.000000" y="5.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="5.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="5.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="5.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="5.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="5.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="5.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="5.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="68.250000" y="5.250000" width="5.250000" height="5.250000" fill="#D2BB8D"   />
+            <rect x="5.250000" y="10.500000" width="5.250000" height="5.250000" fill="#D2BB8D"   />
+            <rect x="10.500000" y="10.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="10.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="10.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="10.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="10.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="10.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="10.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="10.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="10.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="10.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="63.000000" y="10.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="68.250000" y="10.500000" width="5.250000" height="5.250000" fill="#D2BB8D"   />
+            <rect x="5.250000" y="15.750000" width="5.250000" height="5.250000" fill="#D2BB8D"   />
+            <rect x="10.500000" y="15.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="15.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="15.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="15.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="15.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="15.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="15.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="15.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="15.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="15.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="63.000000" y="15.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="68.250000" y="15.750000" width="5.250000" height="5.250000" fill="#D2BB8D"   />
+            <rect x="5.250000" y="21.000000" width="5.250000" height="5.250000" fill="#D2BB8D"   />
+            <rect x="10.500000" y="21.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="21.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="21.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="21.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="21.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="21.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="21.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="21.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="21.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="21.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="63.000000" y="21.000000" width="5.250000" height="5.250000" fill="#D2BB8D"   />
+            <rect x="68.250000" y="21.000000" width="5.250000" height="5.250000" fill="#D2BB8D"   />
+            <rect x="5.250000" y="26.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="10.500000" y="26.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="26.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="26.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="26.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="26.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="26.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="26.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="26.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="26.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="26.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="63.000000" y="26.250000" width="5.250000" height="5.250000" fill="#D2BB8D"   />
+            <rect x="68.250000" y="26.250000" width="5.250000" height="5.250000" fill="#D2BB8D"   />
+            <rect x="73.500000" y="26.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="5.250000" y="31.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="10.500000" y="31.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="31.500000" width="5.250000" height="5.250000" fill="#FFFFFF"   />
+            <rect x="21.000000" y="31.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="26.250000" y="31.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="31.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="31.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="31.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="31.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="52.500000" y="31.500000" width="5.250000" height="5.250000" fill="#FFFFFF"   />
+            <rect x="57.750000" y="31.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="63.000000" y="31.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="68.250000" y="31.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="73.500000" y="31.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="5.250000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="10.500000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="63.000000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="68.250000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="73.500000" y="36.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="10.500000" y="42.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="42.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="42.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="42.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="42.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="42.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="42.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="42.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="42.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="42.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="63.000000" y="42.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="68.250000" y="42.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="10.500000" y="47.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="47.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="47.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="47.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="31.500000" y="47.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="36.750000" y="47.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="42.000000" y="47.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="47.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="47.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="47.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="63.000000" y="47.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="68.250000" y="47.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="52.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="52.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="52.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="31.500000" y="52.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="36.750000" y="52.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="42.000000" y="52.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="52.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="52.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="52.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="63.000000" y="52.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="57.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="57.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="57.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="57.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="57.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="57.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="57.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="57.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="63.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="21.000000" y="63.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="26.250000" y="63.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="63.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="63.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="63.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="63.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="52.500000" y="63.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="57.750000" y="63.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="5.250000" y="68.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="10.500000" y="68.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="68.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="21.000000" y="68.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="26.250000" y="68.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="68.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="68.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="68.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="68.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="52.500000" y="68.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="57.750000" y="68.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="63.000000" y="68.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="68.250000" y="68.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="0.000000" y="73.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="5.250000" y="73.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="10.500000" y="73.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="73.500000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="21.000000" y="73.500000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="26.250000" y="73.500000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="31.500000" y="73.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="73.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="73.500000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="47.250000" y="73.500000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="52.500000" y="73.500000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="57.750000" y="73.500000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="63.000000" y="73.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="68.250000" y="73.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="73.500000" y="73.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="0.000000" y="78.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="5.250000" y="78.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="10.500000" y="78.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="78.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="21.000000" y="78.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="26.250000" y="78.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="31.500000" y="78.750000" width="5.250000" height="5.250000" fill="#F4AA00"   />
+            <rect x="36.750000" y="78.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="42.000000" y="78.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="47.250000" y="78.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="52.500000" y="78.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="57.750000" y="78.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="63.000000" y="78.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="68.250000" y="78.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="73.500000" y="78.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="0.000000" y="84.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="5.250000" y="84.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="10.500000" y="84.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="84.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="21.000000" y="84.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="26.250000" y="84.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="31.500000" y="84.000000" width="5.250000" height="5.250000" fill="#F4AA00"   />
+            <rect x="36.750000" y="84.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="42.000000" y="84.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="47.250000" y="84.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="52.500000" y="84.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="57.750000" y="84.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="63.000000" y="84.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="68.250000" y="84.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="73.500000" y="84.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="5.250000" y="89.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="10.500000" y="89.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="89.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="89.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="26.250000" y="89.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="31.500000" y="89.250000" width="5.250000" height="5.250000" fill="#F4AA00"   />
+            <rect x="36.750000" y="89.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="42.000000" y="89.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="47.250000" y="89.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="52.500000" y="89.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="57.750000" y="89.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="63.000000" y="89.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="68.250000" y="89.250000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="10.500000" y="94.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="94.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="94.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="26.250000" y="94.500000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="31.500000" y="94.500000" width="5.250000" height="5.250000" fill="#F4AA00"   />
+            <rect x="36.750000" y="94.500000" width="5.250000" height="5.250000" fill="#F4AA00"   />
+            <rect x="42.000000" y="94.500000" width="5.250000" height="5.250000" fill="#F4AA00"   />
+            <rect x="47.250000" y="94.500000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="52.500000" y="94.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="57.750000" y="94.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="63.000000" y="94.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="99.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="21.000000" y="99.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="26.250000" y="99.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="31.500000" y="99.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="36.750000" y="99.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="42.000000" y="99.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="47.250000" y="99.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="52.500000" y="99.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="57.750000" y="99.750000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="15.750000" y="105.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="21.000000" y="105.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="26.250000" y="105.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="31.500000" y="105.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="36.750000" y="105.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="42.000000" y="105.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="47.250000" y="105.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="52.500000" y="105.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="57.750000" y="105.000000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="15.750000" y="110.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="21.000000" y="110.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="26.250000" y="110.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="31.500000" y="110.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="36.750000" y="110.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="42.000000" y="110.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="47.250000" y="110.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="52.500000" y="110.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="57.750000" y="110.250000" width="5.250000" height="5.250000" fill="#331E54"   />
+            <rect x="15.750000" y="115.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="115.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="115.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="115.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="36.750000" y="115.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="115.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="115.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="115.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="115.500000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="120.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="120.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="120.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="31.500000" y="120.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="42.000000" y="120.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="120.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="120.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="120.750000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="10.500000" y="126.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="15.750000" y="126.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="21.000000" y="126.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="26.250000" y="126.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="47.250000" y="126.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="52.500000" y="126.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="57.750000" y="126.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="63.000000" y="126.000000" width="5.250000" height="5.250000" fill="#552D1B"   />
+            <rect x="5.250000" y="131.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="10.500000" y="131.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="15.750000" y="131.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="21.000000" y="131.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="52.500000" y="131.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="57.750000" y="131.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="63.000000" y="131.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="68.250000" y="131.250000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="0.000000" y="136.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="5.250000" y="136.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="10.500000" y="136.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="15.750000" y="136.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="21.000000" y="136.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="52.500000" y="136.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="57.750000" y="136.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="63.000000" y="136.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="68.250000" y="136.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            <rect x="73.500000" y="136.500000" width="5.250000" height="5.250000" fill="#000000"   />
+            </svg>                    
+    </div>
+</div>
+
+    <script> //script for dark mode
+        const themeBtn = document.getElementById("theme-btn");
+            themeBtn.onclick = () => {
+                themeBtn.classList.toggle("fa-sun");
+                if (themeBtn.classList.contains("fa-sun")) {
+                    document.body.classList.add("changeTheme");
+                } else {
+                    document.body.classList.remove("changeTheme");
+                }
+            }
+    </script>
+</body>
+
+<div class="content">
+    <head>
+        <style>
+            .container {
+                width: 80%;
+                margin: -4px auto 0; /* This makes the bison stand on the box. We were cookin bro.*/
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                text-align: center;
+            }
+            .container ul {
+            text-align: center;
+            list-style-position: inside;
+            }
+            .container p {
+                max-width: 60%;
+                margin: 10px auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container"><h2 style="text-align:center">The Pointless Challenge.</h2><p style="text-align:center">
+            Hi, welcome to the Pointless Project!<br> 
+            Please register your email, so we can get you to the download page.<br>
+            Already registered? Login <a href="./login.html">here</a>.
+
+    <form action="includes/pointless-form.php" method="post" id="stringForm"> 
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname" name="fname" required>
+        
+        <label for="lname">Last Name:</label>
+        <input type="text" id="lname" name="lname" required>
+        
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+        
+        <button type="submit">Submit</button>
+    </form>
+
+<!-- code for token submission -->
+<!-- <form action="includes/pointless.php?get=pointless.zip" method="post" id="tokenForm">
+    <label for="tokenString">Enter Token:</label>
+    <input type="text" id="tokenString" name="tokenString" required>
+    <button type="submit">Submit</button>
+</form> -->
+
+<p id="tokenResponse"></p>
+
+<div id="validTokenDiv" style="display: none;">
+    <style>
+        .share-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px;
+            width: 60px;
+            height: 12px;
+            color: #fff;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 2px;
+            font-family: 'Arial', Helvetica, sans-serif;
+            font-size: 14px;
+        }
+        .share-button i {
+            display: inline-block;
+            margin-right: 6px;
+            width: 20px;
+            height: 15px;
+            background: transparent no-repeat center;
+            background-size: contain;
+            background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3Csvg viewBox='0 0 32 32' fill='none'  xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='32' height='32' fill='none'/%3E%3Cpath d='M17.9686 14.1623L26.7065 4H24.6358L17.0488 12.8238L10.9891 4H4L13.1634 17.3432L4 28H6.07069L14.0827 18.6817L20.4822 28H27.4714L17.9681 14.1623H17.9686ZM15.1326 17.4607L14.2041 16.132L6.81679 5.55961H9.99723L15.9589 14.0919L16.8873 15.4206L24.6368 26.5113H21.4564L15.1326 17.4612V17.4607Z' fill='white'/%3E%3C/svg%3E%0A");
+        }
+        .twitter-button { background-color: black; }
+        .twitter-button:active, .twitter-button:focus, .twitter-button:hover { background-color: #333; }
+        .facebook-button { background-color: #1877F2; }
+        .facebook-button:active, .facebook-button:focus, .facebook-button:hover { background-color: #3388f8; }
+    </style>
+    
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v21.0"></script>
+    
+    <h2>Share</h2>
+    
+    <a class="share-button twitter-button"
+       href="https://twitter.com/intent/tweet?hashtags=LU,Pointless&amp;text=Lipscomb%20University%20Pointless&amp;">
+       <i></i>Post</a>
+    
+    <div class="fb-share-button" data-href="https://www.pointless.lipscomb" data-layout="button" data-size="small">
+       <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.google.com&amp;src=sdkpreparse"
+          class="fb-xfbml-parse-ignore">
+          Share</a>
+    </div>
+    
+</div>
+
+<!-- <script>
+    // First version of onClick.
+    // After submitting the info, the website would give a zip file.
+    // We have opted for download on another page.
+    document.getElementById('stringForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('email').value;
+
+        const response = await fetch('/generateFile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: email })
+        });
+
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "pointless.zip";
+            a.click();
+            URL.revokeObjectURL(url);
+        } else {
+            alert("Failed to generate file.");
+        }
+    });
+
+    document.getElementById('tokenForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const token = document.getElementById('tokenString').value;
+
+        const response = await fetch('/validateToken', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: token })
+        });
+
+        const result = await response.json();
+        const tokenResponseDiv = document.getElementById('tokenResponse');
+        const validTokenDiv = document.getElementById('validTokenDiv');
+
+        // Display message and show/hide validTokenDiv based on validity
+        if (result.message === "Token is valid!") {
+            tokenResponseDiv.innerText = result.message;
+            validTokenDiv.style.display = "block";  // Show the protected div
+        } else {
+            tokenResponseDiv.innerText = result.message;
+            validTokenDiv.style.display = "none";  // Hide the protected div
+        }
+    });
+</script> -->
+
+<footer>
+<div style="text-align:center; margin-top: 34.5px;"><p>Dr. Towell - dtowell@lipscomb.edu</p></div>
+<footer>
+
+</body>
