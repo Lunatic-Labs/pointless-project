@@ -2,12 +2,14 @@
 #include <string>
 #include <cassert>
 #include "./include/test.h"
+#include "./include/file.h"
 #include "../src/include/puzzle.h"
 #include "../src/include/utils.h"
 
 bool rematch_puzzle_test()
 {
   Puzzle test;
+  int seed = seed_gen("HelloHi@gmail.com");
 
   std::cout << "starting rematch puzzle tests" << std::endl;
   test = rematch_puzzle_create(1);
@@ -24,6 +26,10 @@ bool rematch_puzzle_test()
   
   test = rematch_puzzle_create(15);
   assert(test.password == "550443168");
+  assert(test.contents_html == "");
+
+  test = rematch_puzzle_create(seed);
+  assert(test.password == "756676914");
   assert(test.contents_html == "");
   std::cout << "rematch puzzle test successful\n" << std::endl;
 

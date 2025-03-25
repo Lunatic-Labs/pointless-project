@@ -14,3 +14,15 @@ std::string file_contents(std::string file_dir) {
   
     return html_content;
 }
+
+int seed_gen(std::string email)
+{
+  int seed = 1;
+  int length = email.length();
+  for (int i = 0; i < length; i++) {
+      seed += ((int)email[i] - 30)*i;
+      seed %= 10000000;
+  }
+
+  return seed;
+}

@@ -12,6 +12,7 @@ bool binary_addition_puzzle_test()
   std::string header_content = file_contents("../html-txt/resources/header.txt");
   std::string footer_content = file_contents("../html-txt/resources/footer.txt");
   std::string token = "master key";
+  int seed = seed_gen("HelloHi@gmail.com");
   size_t found;
 
   std::cout << "starting binary addition puzzle tests" << std::endl;
@@ -44,6 +45,15 @@ bool binary_addition_puzzle_test()
   
   test = binary_addition_puzzle_create(15);
   assert(test.password == "01001100");
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(token);
+  assert(found != std::string::npos);
+
+  test = binary_addition_puzzle_create(seed);
+  assert(test.password == "00110110");
   found = test.contents_html.find(header_content);
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);

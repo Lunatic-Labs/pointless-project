@@ -12,6 +12,7 @@ bool logicgate_puzzle_test()
   std::string header_content = file_contents("../html-txt/resources/header.txt");
   std::string footer_content = file_contents("../html-txt/resources/footer.txt");
   std::string token = "adding the colored squares";
+  int seed = seed_gen("HelloHi@gmail.com");
   size_t found;
 
   std::cout << "starting logic gate puzzle tests" << std::endl;
@@ -44,6 +45,15 @@ bool logicgate_puzzle_test()
   
   test = logicgate_puzzle_create(15);
   assert(test.password == "010000100001010");
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(token);
+  assert(found != std::string::npos);
+
+  test = logicgate_puzzle_create(seed);
+  assert(test.password == "011100110101011");
   found = test.contents_html.find(header_content);
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);

@@ -12,6 +12,7 @@ bool bst_puzzle_test()
   std::string header_content = file_contents("../html-txt/resources/header.txt");
   std::string footer_content = file_contents("../html-txt/resources/footer.txt");
   std::string token = "queue of logic gates";
+  int seed = seed_gen("HelloHi@gmail.com");
   size_t found;
 
   std::cout << "starting BST puzzle tests" << std::endl;
@@ -48,6 +49,16 @@ bool bst_puzzle_test()
   test = bst_puzzle_create(15);
   assert(test.password == "2538609");
   assert(test.extra_info == " Path: llrllrlllr");
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(token);
+  assert(found != std::string::npos);
+
+  test = bst_puzzle_create(seed);
+  assert(test.password == "6118173");
+  assert(test.extra_info == " Path: rrlrrlrrlr");
   found = test.contents_html.find(header_content);
   assert(found != std::string::npos);
   found = test.contents_html.find(footer_content);
