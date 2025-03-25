@@ -1,4 +1,10 @@
 <?php
+$usr_fname = "";
+$usr_lname = "";
+$usr_email = "";
+$error = "";
+$success = false;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usr_fname = htmlspecialchars(string: $_POST["fname"]);
     $usr_lname = htmlspecialchars(string: $_POST["lname"]);
@@ -6,10 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // invalid email error
     if (filter_var($usr_email, FILTER_VALIDATE_EMAIL) === false) {
-    echo"<script>alert('!! INVALID EMAIL !! Please enter a vaild email...')
-    window.location.href='../index.html'</script>";
-    exit;
-    };
+    $error = "!! INVALID EMAIL !! Please enter a vaild email..."
+    }; elseif
     
     // duplicate email in csv error check
     $file = fopen(filename: './contact-data.csv', mode:'r');

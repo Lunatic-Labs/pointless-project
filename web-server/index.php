@@ -1,4 +1,10 @@
 <?php
+$usr_fname = "";
+$usr_lname = "";
+$usr_email = "";
+$error = "";
+$success = false;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usr_fname = htmlspecialchars(string: $_POST["fname"]);
     $usr_lname = htmlspecialchars(string: $_POST["lname"]);
@@ -6,41 +12,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // invalid email error
     if (filter_var($usr_email, FILTER_VALIDATE_EMAIL) === false) {
-    echo"<script>alert('!! INVALID EMAIL !! Please enter a vaild email...')
-    window.location.href='../index.html'</script>";
-    exit;
-    };
-    
-    // duplicate email in csv error check
-    $file = fopen(filename: './contact-data.csv', mode:'r');
-    fgetcsv(stream: $file); //skips first line in csv
-    $line = fgetcsv(stream: $file);
-    while($line != false){
-        $email = $line[2];
-        if ($usr_email == $email) {
-            echo"<script>alert('!! DUPLICATE EMAIL !! Please enter a different email...')
-            window.location.href='../index.html'</script>";
-            exit;
-            };
-        $line = fgetcsv($file);
-    };
-    fclose($file);
+        $error = "!! INVALID EMAIL !! Please enter a vaild email...";
+    } elseif ($success = false){
+        // duplicate email in csv error check
+        $file = fopen(filename: './contact-data.csv', mode:'r');
+        fgetcsv(stream: $file); //skips first line in csv
+        $line = fgetcsv(stream: $file);
+        while($line != false){
+            $email = $line[2];
+            if ($usr_email == $email) {
+                $error = "!! DUPLICATE EMAIL !! Please enter a different email...";
+                exit;
+            }
+            $line = fgetcsv($file);
+        };
+        fclose($file);
+    } else {
+        $formdata = array(
+        "fname"=> $usr_fname,
+        "lname"=> $usr_lname,
+        "email"=> $usr_email
+        );
+        $file_open = fopen(filename: "./contact-data.csv",mode: "a");
 
-    $formdata = array(
-      "fname"=> $usr_fname,
-      "lname"=> $usr_lname,
-      "email"=> $usr_email
-    );
-    $file_open = fopen(filename: "./contact-data.csv",mode: "a");
-
-    // puts data into csv and closes connection
-    fputcsv(stream: $file_open, fields: $formdata);
-    fclose(stream: $file_open);
-
+        // puts data into csv and closes connection
+        fputcsv(stream: $file_open, fields: $formdata);
+        fclose(stream: $file_open);
+        $success = true;
+    }
     header("Location: ../download.html");
-}
-else {
-    header("Location: ../index.html");
 }
 ?>
 
@@ -52,20 +52,54 @@ else {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pointless Challenge</title>
+    <style>
+        #theme-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #596AFF;
+        }
+        #theme-btn:hover {
+            color: #BB86FC;
+        }
+        .changeTheme {
+            background: #1D1E22; 
+            color: #eee;
+        }        
+        .maindiv{
+            display: flex;
+            flex-direction: column;
+            height: 95vh;
+        }
+        .title{ 
+            font-size: 72px; 
+            font-weight: bold; 
+            color: #331E54; 
+            text-shadow:4px  4px 0 #F4AA00;
+                }
+        .imagen{
+                    height:9rem; 
+                    padding-left: 28px;
+                }
+        .container {
+                width: 80%;
+                margin: -4px auto 0; /* This makes the bison stand on the box. We were cookin bro.*/
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                text-align: center;
+            }
+        .container ul {
+                text-align: center;
+                list-style-position: inside;
+            }
+        .container p {
+                max-width: 60%;
+                margin: 10px auto;
+            }
+    </style>
 </head>
-
-<style>
-    #theme-btn {font-size: 1.5rem;cursor: pointer;color: #596AFF;}
-    #theme-btn:hover {color: #BB86FC;}
-    .changeTheme {background: #1D1E22; color: #eee;}        
-    .maindiv{display: flex;flex-direction: column;height: 95vh;}
-    .title{ font-size: 72px; font-weight: bold; color: #331E54; text-shadow:4px  4px 0 #F4AA00;}
-    .imagen{height:9rem; padding-left: 28px;}
-</style>
-
-    <body>
+<body>
     <div id="theme-btn" class="far fa-moon"></div>
-
     <div style="display:flex; align-items:center; justify-content: center;">
         <div class="title">Pointless Challenge</div>
         <div class="imagen">
@@ -371,7 +405,6 @@ else {
                 </svg>                    
         </div>
     </div>
-
     <script> //script for dark mode
         const themeBtn = document.getElementById("theme-btn");
             themeBtn.onclick = () => {
@@ -383,47 +416,26 @@ else {
                 }
             }
     </script>
-        <head>
-            <style>
-                .container {
-                    width: 80%;
-                    margin: -4px auto 0; /* This makes the bison stand on the box. We were cookin bro.*/
-                    padding: 20px;
-                    border: 1px solid #ccc;
-                    border-radius: 8px;
-                    text-align: center;
-                }
-                .container ul {
-                    text-align: center;
-                    list-style-position: inside;
-                }
-                .container p {
-                    max-width: 60%;
-                    margin: 10px auto;
-                }
-            </style>
-        </head>
+    <div class="container"><h2 style="text-align:center">The Pointless Challenge.</h2><p style="text-align:center">
+        Hi, welcome to the Pointless Project!<br> 
+        Please register your email, so we can get you to the download page.<br>
+        Already registered? Login <a href="./login.html">here</a>.
 
-        <div class="container"><h2 style="text-align:center">The Pointless Challenge.</h2><p style="text-align:center">
-            Hi, welcome to the Pointless Project!<br> 
-            Please register your email, so we can get you to the download page.<br>
-            Already registered? Login <a href="./login.html">here</a>.
-
-            <form action="includes/pointless-form.php" method="post" id="stringForm"> 
-                <label for="fname">First Name:</label>
-                <input type="text" id="fname" name="fname" required>
-                
-                <label for="lname">Last Name:</label>
-                <input type="text" id="lname" name="lname" required>
-                
-                <label for="email">Email:</label>
-                <input type="text" id="email" name="email" required>
-                
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-    </body>
-    <footer>
-        <div style="text-align:center; margin-top: 34.5px;"><p>Dr. Towell - dtowell@lipscomb.edu</p></div>
-    <footer>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="stringForm"> 
+            <label for="fname">First Name:</label>
+            <input type="text" id="fname" name="fname" required>
+            
+            <label for="lname">Last Name:</label>
+            <input type="text" id="lname" name="lname" required>
+            
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+<footer>
+    <div style="text-align:center; margin-top: 34.5px;"><p>Dr. Towell - dtowell@lipscomb.edu</p></div>
+<footer>
 </html>
