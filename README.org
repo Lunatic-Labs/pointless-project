@@ -846,3 +846,5 @@ Mekeal Brown - /mtbrown@mail.lipscomb.edu/ [[https://github.com/mekealbrown][Git
 Steven Yassa - /seyassa@mail.lipscomb.edu/ Github
 
 Michael Hernandez-Lara - /mahernandezlara@mail.lipscomb.edu/ Github
+
+John Tabelisma - /jmtabelisma@mail.lipscomb.edu/ [[https://github.com/johntable][Github]]

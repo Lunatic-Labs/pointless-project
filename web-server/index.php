@@ -10,12 +10,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usr_lname = htmlspecialchars(string: $_POST["lname"]);
     $usr_email = htmlspecialchars(string: $_POST["email"]);
 
-    // invalid email error
+    // invalid email error *fix; not showing up
     if (filter_var($usr_email, FILTER_VALIDATE_EMAIL) === false) {
         $error = "!! INVALID EMAIL !! Please enter a vaild email...";
     } elseif ($success = false){
-        // duplicate email in csv error check
-        $file = fopen(filename: './contact-data.csv', mode:'r');
+        // duplicate email in csv error check *fix; not showing up
+        $file = fopen(filename: './includes/contact-data.csv', mode:'r');
         fgetcsv(stream: $file); //skips first line in csv
         $line = fgetcsv(stream: $file);
         while($line != false){
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         "lname"=> $usr_lname,
         "email"=> $usr_email
         );
-        $file_open = fopen(filename: "./contact-data.csv",mode: "a");
+        $file_open = fopen(filename: "./includes/contact-data.csv",mode: "a");
 
         // puts data into csv and closes connection
         fputcsv(stream: $file_open, fields: $formdata);
@@ -420,7 +420,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         Hi, welcome to the Pointless Project!<br> 
         Please register your email, so we can get you to the download page.<br>
         Already registered? Login <a href="./login.html">here</a>.
-
+        <?php if ($error): ?>
+        <div class="error"><?php echo $error; ?></div>
+        <?php endif; ?>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="stringForm"> 
             <label for="fname">First Name:</label>
             <input type="text" id="fname" name="fname" required>
