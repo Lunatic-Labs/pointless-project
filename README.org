@@ -815,6 +815,15 @@ Scales =img= by =scale= and returns a new =Image=.
 
 *NOTE*: This function is extremely slow as it runs in $O(n^4)$ time.
 
+* Web Server
+** How to start
+  Change directories to /web-server/
+#+begin_src bash
+  cd ./pointless-project/web-server
+#+end_src
+** Integration Test format
+** Future goals
+
 * Issues
 
 - No support for building on MacOS
