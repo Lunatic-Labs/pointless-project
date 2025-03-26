@@ -1,3 +1,6 @@
+<?php
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +21,6 @@
 </style>
 <body>
     <div id="theme-btn" class="far fa-moon"></div>
-
 
 <div style="display:flex; align-items:center; justify-content: center;">
     <div class="title">Pointless Challenge</div>
@@ -325,7 +327,6 @@
             </svg>                    
     </div>
 </div>
-
     <script> //script for dark mode
         const themeBtn = document.getElementById("theme-btn");
             themeBtn.onclick = () => {
@@ -370,58 +371,11 @@
                 <strong>so please download 7-Zip before opening the Pointless zip file.</strong></p>
         </div>
         <div class="container">
-        <button class="button">Pointless Download</button>
-        </div>
-            
-<div id="validTokenDiv" style="display: none;">
-    <style>
-        .share-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin: 10px;
-            width: 60px;
-            height: 12px;
-            color: #fff;
-            padding: 5px 10px;
-            text-decoration: none;
-            border-radius: 2px;
-            font-family: 'Arial', Helvetica, sans-serif;
-            font-size: 14px;
-        }
-        .share-button i {
-            display: inline-block;
-            margin-right: 6px;
-            width: 20px;
-            height: 15px;
-            background: transparent no-repeat center;
-            background-size: contain;
-            background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3Csvg viewBox='0 0 32 32' fill='none'  xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='32' height='32' fill='none'/%3E%3Cpath d='M17.9686 14.1623L26.7065 4H24.6358L17.0488 12.8238L10.9891 4H4L13.1634 17.3432L4 28H6.07069L14.0827 18.6817L20.4822 28H27.4714L17.9681 14.1623H17.9686ZM15.1326 17.4607L14.2041 16.132L6.81679 5.55961H9.99723L15.9589 14.0919L16.8873 15.4206L24.6368 26.5113H21.4564L15.1326 17.4612V17.4607Z' fill='white'/%3E%3C/svg%3E%0A");
-        }
-        .twitter-button { background-color: black; }
-        .twitter-button:active, .twitter-button:focus, .twitter-button:hover { background-color: #333; }
-        .facebook-button { background-color: #1877F2; }
-        .facebook-button:active, .facebook-button:focus, .facebook-button:hover { background-color: #3388f8; }
-    </style>
-    
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v21.0"></script>
-    
-    <h2>Share</h2>
-    
-    <a class="share-button twitter-button"
-       href="https://twitter.com/intent/tweet?hashtags=LU,Pointless&amp;text=Lipscomb%20University%20Pointless&amp;">
-       <i></i>Post</a>
-    
-    <div class="fb-share-button" data-href="https://www.pointless.lipscomb" data-layout="button" data-size="small">
-       <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.google.com&amp;src=sdkpreparse"
-          class="fb-xfbml-parse-ignore">
-          Share</a>
-    </div>
-    
+            <button class="button">Pointless Download</button>
+        </div>  
 </div>
 <footer>
-<div style="text-align:center; margin-top: 34.5px;"><p>Dr. Towell - dtowell@lipscomb.edu</p></div>
+    <div style="text-align:center; margin-top: 34.5px;"><p>Dr. Towell - dtowell@lipscomb.edu</p></div>
 <footer>
-
 </body>
+</html>

@@ -816,13 +816,34 @@ Scales =img= by =scale= and returns a new =Image=.
 *NOTE*: This function is extremely slow as it runs in $O(n^4)$ time.
 
 * Web Server
+** Description
+
 ** How to start
+  Download php-cli
+#+begin_src bash
+  sudo apt-install php-cli
+#+end_src
   Change directories to /web-server/
 #+begin_src bash
   cd ./pointless-project/web-server
 #+end_src
+  Start localhost
+#+begin_src bash
+  php -S localhost:8000
+#+end_src
+*NOTE*: Keep terminal running to track all requests going to web-server.
 ** Integration Test format
+  
 ** Future goals
+- Consistent dark mode between pages
+- Merge all html files with corresponding php
+  - This will help with testing
+- Clean up HTML code
+  - Unclosed tags
+  - Dedicated CSS for all web pages
+- Functioning download button in download.php
+  - Goal: user retrieves 7zip file from webpage via php
+
 
 * Issues
 

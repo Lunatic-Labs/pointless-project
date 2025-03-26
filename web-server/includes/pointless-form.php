@@ -1,4 +1,5 @@
 <?php
+// integrated with index.php delete when no longer needed
 $usr_fname = "";
 $usr_lname = "";
 $usr_email = "";
@@ -12,8 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // invalid email error
     if (filter_var($usr_email, FILTER_VALIDATE_EMAIL) === false) {
-    $error = "!! INVALID EMAIL !! Please enter a vaild email..."
-    }; elseif
+        $error = "!! INVALID EMAIL !! Please enter a vaild email...";
+    }
     
     // duplicate email in csv error check
     $file = fopen(filename: './contact-data.csv', mode:'r');
