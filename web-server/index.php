@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         fclose(stream: $file_open);
         $success = true;
     }
-    header("Location: ../download.html");
+    header("Location: ../download.php");
 }
 ?>
 

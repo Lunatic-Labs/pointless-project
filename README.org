@@ -817,6 +817,7 @@ Scales =img= by =scale= and returns a new =Image=.
 
 * Web Server
 ** Description
+The main goals of the webpage are puzzle download, user registration, and user tracking. New users are to put their info into the first page
 
 ** How to start
   Download php-cli
@@ -836,13 +837,14 @@ Scales =img= by =scale= and returns a new =Image=.
   
 ** Future goals
 - Consistent dark mode between pages
-- Merge all html files with corresponding php
+- Merge all HTML files with corresponding php
   - This will help with testing
 - Clean up HTML code
   - Unclosed tags
   - Dedicated CSS for all web pages
 - Functioning download button in download.php
   - Goal: user retrieves 7zip file from webpage via php
+- Login page for registered users
 
 
 * Issues

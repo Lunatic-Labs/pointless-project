@@ -2,13 +2,16 @@
 cd ~/Desktop/pointless-project/web-server
 touch ./integrated-tests/output.txt
 
-cp ./includes/contact-data.csv ./integrated-tests/output.csv
+# Send POST request to index.php
+wget --post-data "fname=j&lname=j&email=j@j.com" http://localhost:8000/index.php -O ./integrated-tests/output.txt
 
-wget --post-data 'usr_fname=j&usr_lname=j&usr_email=j@j.com' http://localhost:8000/index.php -O ./integrated-tests/output.txt
+# Check for if input went through
+if ! grep 'j,j,j@j.com' ./includes/contact-data.csv; then
+    echo 'Error: input not received'
+else
+    echo 'Input received. No errors.'
+fi
 
-# Before vs After
-diff -y ./integrated-tests/output.txt download.html # webpage
-diff -y ./integrated-tests/output.csv ./includes/contact-data.csv 
-
-rm ./integrated-tests/output.csv
+# Delete wget output and remove test data from csv
 rm ./integrated-tests/output.txt
+sed -i '$d' ./includes/contact-data.csv
