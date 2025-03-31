@@ -834,7 +834,22 @@ The main goals of the webpage are puzzle download, user registration, and user t
 #+end_src
 *NOTE*: Keep terminal running to track all requests going to web-server.
 ** Integration Test format
-  
+*** Description
+Tests for the webpages will use bash scripting and are found in the integrated-tests directory.
+Naming format:
+  test-/FeatureBeingTested/-/webpage/.sh
+Testing format:
+#+begin_src bash
+  #!/bin/bash
+  cd ~/Desktop/pointless-project/web-server
+  touch ./integrated-tests/output.txt
+
+  # run wget to run action on URL whether it be a GET or POST request and output that to output.txt
+
+  # if-else statements to find desired outcomes using '! grep'
+
+  # delete output.txt (rm ./integrated-tests/output.txt) and any edits to csv (sed -i '$d' ./includes/contact-data.csv)
+#+end_src
 ** Future goals
 - Consistent dark mode between pages
 - Merge all HTML files with corresponding php
