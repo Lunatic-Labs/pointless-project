@@ -840,7 +840,7 @@ where they can submit the hidden tokens and update their level in the csv file v
 *** Description
 Tests for the webpages will use bash scripting and are found in the integrated-tests directory.
 **** Naming format:
-- test-/FeatureBeingTested/-/webpage/.sh
+- test- =FeatureBeingTested= - =webpage= .sh
 **** Testing format:
 #+begin_src bash
   #!/bin/bash
