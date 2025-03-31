@@ -821,7 +821,10 @@ The main goals of the webpage are puzzle download, user registration, and user t
 New users are to put their info into the first page, which is saved to a csv file. (Each new user will have a default level of 0)
 User downloads the puzzle via php and plays offline. In order to level up, user is to log in to a separate page
 where they can submit the hidden tokens and update their level in the csv file via POST request.
+
+#+CAPTION: Webpage User Flow UML
 [[./imgs/webpage-uml.png]]
+
 ** How to start
   Download php-cli
 #+begin_src bash
