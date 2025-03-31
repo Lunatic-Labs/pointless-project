@@ -836,9 +836,9 @@ The main goals of the webpage are puzzle download, user registration, and user t
 ** Integration Test format
 *** Description
 Tests for the webpages will use bash scripting and are found in the integrated-tests directory.
-Naming format:
-  test-/FeatureBeingTested/-/webpage/.sh
-Testing format:
+**** Naming format:
+- test-/FeatureBeingTested/-/webpage/.sh
+**** Testing format:
 #+begin_src bash
   #!/bin/bash
   cd ~/Desktop/pointless-project/web-server
