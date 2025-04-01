@@ -12,6 +12,7 @@ bool based_intro_puzzle_test()
   std::string header_content = file_contents("../html-txt/resources/header.txt");
   std::string footer_content = file_contents("../html-txt/resources/footer.txt");
   std::string token = "speedy maze";
+  std::string important_content = "To represent this structure in text form, we can simply pretend it is a number";
   int seed = seed_gen("HelloHi@gmail.com");
   size_t found;
 
@@ -24,6 +25,8 @@ bool based_intro_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(token);
   assert(found != std::string::npos);
+  found = test.contents_html.find(important_content);
+  assert(found != std::string::npos);
 
   test = based_intro_puzzle_create(5);
   assert(test.password == "CD7A2F54");
@@ -32,6 +35,8 @@ bool based_intro_puzzle_test()
   found = test.contents_html.find(footer_content);
   assert(found != std::string::npos);
   found = test.contents_html.find(token);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(important_content);
   assert(found != std::string::npos);
 
   test = based_intro_puzzle_create(10);
@@ -42,6 +47,8 @@ bool based_intro_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(token);
   assert(found != std::string::npos);
+  found = test.contents_html.find(important_content);
+  assert(found != std::string::npos);
   
   test = based_intro_puzzle_create(15);
   assert(test.password == "46FB9265");
@@ -51,6 +58,8 @@ bool based_intro_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(token);
   assert(found != std::string::npos);
+  found = test.contents_html.find(important_content);
+  assert(found != std::string::npos);
 
   test = based_intro_puzzle_create(seed);
   assert(test.password == "282FDC75");
@@ -59,6 +68,8 @@ bool based_intro_puzzle_test()
   found = test.contents_html.find(footer_content);
   assert(found != std::string::npos);
   found = test.contents_html.find(token);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(important_content);
   assert(found != std::string::npos);
   std::cout << "based intro puzzle test successful\n" << std::endl;
 

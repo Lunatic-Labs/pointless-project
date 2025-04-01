@@ -2,12 +2,12 @@
 
 std::string file_contents(std::string file_dir) {
     std::string html_content;
-    std::ifstream header_file(file_dir);
-    if (header_file.is_open()) {
+    std::ifstream fp(file_dir);
+    if (fp.is_open()) {
       std::stringstream buffer;
-      buffer << header_file.rdbuf();
+      buffer << fp.rdbuf();
       html_content = buffer.str();
-      header_file.close();
+      fp.close();
     } else {
       std::cerr << "Unable to open file header.txt" << std::endl;
     }
