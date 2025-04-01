@@ -856,6 +856,21 @@ Tests for the webpages will use bash scripting and are found in the integrated-t
 
   # delete output.txt (rm ./integrated-tests/output.txt) and any edits to csv (sed -i '$d' ./includes/contact-data.csv)
 #+end_src
+*NOTE*: Whenever running tests that manipulate =contact-data.csv= in any way, shape, or form, be sure to include the following bash code.
+#+begin_src bash
+  # Placed at beginning of test Create a copy of orignal data for verification
+  cp ./includes/contact-data.csv ./integrated-tests/original-data.csv
+
+  # ..... test body .......
+
+  
+  # Check integrity of contact-data.csv 
+  if diff ./includes/contact-data.csv ./integrated-tests/original-data.csv; then
+      echo 'Changes to contact-data.csv?: No, data is intact.'
+  else
+      echo 'Changes to contact-data.csv?: !!contact-data.csv compromised!! Check for changes!!'
+  fi
+#+end_src
 ** Future goals
 - Consistent dark mode between pages
 - Merge all HTML files with corresponding php

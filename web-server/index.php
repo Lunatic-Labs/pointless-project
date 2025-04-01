@@ -3,7 +3,8 @@ $usr_fname = "";
 $usr_lname = "";
 $usr_email = "";
 $error = "";
-$success = false;
+$email_valid = true;
+$no_duplicate = true;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usr_fname = htmlspecialchars(string: $_POST["fname"]);
@@ -13,7 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // invalid email error *fix; not showing up
     if (filter_var($usr_email, FILTER_VALIDATE_EMAIL) === false) {
         $error = "!! INVALID EMAIL !! Please enter a vaild email...";
-    } elseif ($success == false){
+        $email_valid = false;
+    } else {
         // duplicate email in csv error check *fix; not showing up
         $file = fopen(filename: './includes/contact-data.csv', mode:'r');
         fgetcsv(stream: $file); //skips first line in csv
@@ -22,11 +24,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $email = $line[2];
             if ($usr_email == $email) {
                 $error = "!! DUPLICATE EMAIL !! Please enter a different email...";
+                $no_duplicate = false;
+                break;
             }
             $line = fgetcsv($file);
         };
         fclose($file);
-    } else {
+    };
+
+    if ($email_valid && $no_duplicate){
         $formdata = array(
         "fname"=> $usr_fname,
         "lname"=> $usr_lname,
@@ -37,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // puts data into csv and closes connection
         fputcsv(stream: $file_open, fields: $formdata);
         fclose(stream: $file_open);
-        $success = true;
         header("Location: ../download.php");
     }
 }
