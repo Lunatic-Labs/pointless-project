@@ -11,7 +11,6 @@ if ! grep 'j,j,j@j.com' ./includes/contact-data.csv; then
     echo 'Error: input not received'
 else
     echo 'Input received. No errors.'
-    sed -i '$d' ./includes/contact-data.csv
 fi
 
 # Check integrity of contact-data.csv 
