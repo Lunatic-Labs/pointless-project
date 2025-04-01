@@ -817,7 +817,13 @@ Scales =img= by =scale= and returns a new =Image=.
 
 * Web Server
 ** Description
-The main goals of the webpage are puzzle download, user registration, and user tracking. New users are to put their info into the first page
+The main goals of the webpage are puzzle download, user registration, and user tracking. 
+New users are to put their info into the first page, which is saved to a csv file. (Each new user will have a default level of 0)
+User downloads the puzzle via php and plays offline. In order to level up, user is to log in to a separate page
+where they can submit the hidden tokens and update their level in the csv file via POST request.
+
+#+CAPTION: Webpage User Flow UML
+[[./imgs/webpage-uml.png]]
 
 ** How to start
   Download php-cli
@@ -834,7 +840,22 @@ The main goals of the webpage are puzzle download, user registration, and user t
 #+end_src
 *NOTE*: Keep terminal running to track all requests going to web-server.
 ** Integration Test format
-  
+*** Description
+Tests for the webpages will use bash scripting and are found in the integrated-tests directory.
+**** Naming format:
+- test- =FeatureBeingTested= - =webpage= .sh
+**** Testing format:
+#+begin_src bash
+  #!/bin/bash
+  cd ~/Desktop/pointless-project/web-server
+  touch ./integrated-tests/output.txt
+
+  # run wget to run action on URL whether it be a GET or POST request and output that to output.txt
+
+  # if-else statements to find desired outcomes using '! grep'
+
+  # delete output.txt (rm ./integrated-tests/output.txt) and any edits to csv (sed -i '$d' ./includes/contact-data.csv)
+#+end_src
 ** Future goals
 - Consistent dark mode between pages
 - Merge all HTML files with corresponding php
@@ -845,6 +866,9 @@ The main goals of the webpage are puzzle download, user registration, and user t
 - Functioning download button in download.php
   - Goal: user retrieves 7zip file from webpage via php
 - Login page for registered users
+- Default level zero for new users
+  - Currently, index.php only records first and last name and email
+  - User is to increase level everytime a token found in the puzzle is submitted
 
 
 * Issues
