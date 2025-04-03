@@ -1,6 +1,6 @@
 #!/bin/bash
 cd ~/Desktop/pointless-project/web-server
-touch ./integrated-tests/output.txt
+touch ./integrated-tests/output_$current_datetime.txt
 
 # GET to retrieve index page and put into txt file
 wget http://localhost:8000/index.php -O ./integrated-tests/output.txt
@@ -15,8 +15,7 @@ elif ! grep -q '<input type="text" id="email" name="email" required>' ./integrat
 elif ! grep -q '<button type="submit">Submit</button>' ./integrated-tests/output.txt; then
     echo 'Error: No submit button.'
 else
+    # Delete wget output, if successful
     echo 'No Errors. Elements present!'
+    rm ./integrated-tests/output_$current_datetime.txt
 fi
-
-# Delete wget output
-rm ./integrated-tests/output.txt
