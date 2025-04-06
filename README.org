@@ -133,7 +133,7 @@ Each puzzle's generated HTML page (=instructions.html=) has a specific structure
 | Body (.desc.txt)   |
 | Footer (generated) |
 
-The HTML /Header/ and /Footer/ are located in =src/resources/= and do
+The HTML /Header/ and /Footer/ are located in =puzzle-code/html-txt/resources/= and do
 not need to be touched (unless changes are needed).
 
 Below is a UML diagram of how a puzzle gets created.
