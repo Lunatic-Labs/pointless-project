@@ -848,18 +848,18 @@ Tests for the webpages will use bash scripting and are found in the integrated-t
 #+begin_src bash
   #!/bin/bash
   cd ~/Desktop/pointless-project/web-server
-  touch ./integrated-tests/output.txt
+  touch ./integrated-tests/output_$current_datetime.txt
 
   # run wget to run action on URL whether it be a GET or POST request and output that to output.txt
 
   # if-else statements to find desired outcomes using '! grep'
 
-  # delete output.txt (rm ./integrated-tests/output.txt) and any edits to csv (sed -i '$d' ./includes/contact-data.csv)
+  # delete output.txt (rm ./integrated-tests/output_$current_datetime.txt) and any edits to csv (sed -i '$d' ./includes/contact-data.csv)
 #+end_src
 *NOTE*: Whenever running tests that manipulate =contact-data.csv= in any way, shape, or form, be sure to include the following bash code.
 #+begin_src bash
   # Placed at beginning of test Create a copy of orignal data for verification
-  cp ./includes/contact-data.csv ./integrated-tests/original-data.csv
+  cp ./includes/contact-data.csv ./integrated-tests/original-data_$current_datetime.csv
 
   # ..... test body .......
 
@@ -867,6 +867,7 @@ Tests for the webpages will use bash scripting and are found in the integrated-t
   # Check integrity of contact-data.csv 
   if diff ./includes/contact-data.csv ./integrated-tests/original-data.csv; then
       echo 'Changes to contact-data.csv?: No, data is intact.'
+      rm ./integrated-tests/original-data_$current_datetime.csv
   else
       echo 'Changes to contact-data.csv?: !!contact-data.csv compromised!! Check for changes!!'
   fi
