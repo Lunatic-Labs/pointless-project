@@ -872,6 +872,11 @@ Tests for the webpages will use bash scripting and are found in the integrated-t
       echo 'Changes to contact-data.csv?: !!contact-data.csv compromised!! Check for changes!!'
   fi
 #+end_src
+
+** Sandbox directory
+This directory is to be used for testing any new code or methods, so as not to interfere with any of the
+main code. Feel free to delete any files in this directory if needed.
+
 ** Future goals
 - Consistent dark mode between pages
 - Merge all HTML files with corresponding php
