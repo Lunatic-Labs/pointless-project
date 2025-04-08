@@ -7,9 +7,12 @@
 
 struct Puzzle {
   // The filepath to the appropriate directory
+  // The content of the instruction.html pages
   // that contains all of the information needed
   // for the puzzle.
   std::string contents_fp;
+
+  std::string contents_html;
 
   std::string password;
 

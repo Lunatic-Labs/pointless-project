@@ -109,7 +109,7 @@ struct Svg {
 
   Svg(float w, float h) : width(w), height(h) {}
 
-  std::string build(void);
+  std::string build(bool border);
 
   template <class Shape>
   inline void add_shape(Shape shape) {

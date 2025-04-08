@@ -118,7 +118,7 @@ std::string Svg::Circle::make() const
           " fill=" + QUOTES(fill) + "  />";
 }
 
-std::string Svg::build(void) {
+std::string Svg::build(bool border) {
   std::string header = "<svg width=" + QUOTEF(width) +
                         "height=" + QUOTEF(height) +
                         "xmlns=" + QUOTES(xmlns) +
@@ -127,6 +127,9 @@ std::string Svg::build(void) {
   std::string body = "";
   for (auto &line : lines) {
     body += line + "\n";
+  }
+  if (border) {
+    body += "<rect x=\"0\" y=\"0\" width='100%' height='100%' stroke='black' stroke-width='5px' fill='none' />";
   }
   body += "</svg>\n";
   return header + body;

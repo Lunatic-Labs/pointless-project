@@ -25,10 +25,10 @@ static long mutable_seed;
 
 int not_root(int x, const int root)
 {
-  if(x == root) {
-    if(x + 10 > ROOT_MAX) {
+  if (x == root) {
+    if (x + 10 > ROOT_MAX) {
       x -= 10;
-    }else {
+    } else {
       x += 10;
     }
   }
@@ -52,10 +52,10 @@ std::string addition(std::string path, const int root)
 
   std::string text;
   std::string dir;
-  if((b & 1) == 1) {
+  if ((b & 1) == 1) {
     text = "if " + std::to_string(a) + " + " + std::to_string(b) + " = x, then go right\nelse, go left";
     dir = "r";
-  }else {
+  } else {
     text = "if " + std::to_string(a) + " + " + std::to_string(c) + " = x, then go right\nelse, go left";
     dir = "l";
   }
@@ -78,10 +78,10 @@ std::string subtraction(std::string path, const int root)
 
   std::string text;
   std::string dir;
-  if((b & 1) == 1) {
+  if ((b & 1) == 1) {
     text = "if " + std::to_string(b) + " - " + std::to_string(a) + " = x, then go right\nelse, go left";
     dir = "r";
-  }else {
+  } else {
     text = "if " + std::to_string(c) + " - " + std::to_string(a) + " = x, then go right\nelse, go left";
     dir = "l";
   }
@@ -104,10 +104,10 @@ std::string multiplication(std::string path, const int root)
 
   std::string text;
   std::string dir;
-  if((a & 1) == 1) {
+  if ((a & 1) == 1) {
     text = "if " + std::to_string(a) + " * " + std::to_string(b) + " = x, then go right\nelse, go left";
     dir = "r";
-  }else {
+  } else {
     text = "if " + std::to_string(a) + " * " + std::to_string(d) + " = x, then go right\nelse, go left";
     dir = "l";
   }
@@ -130,10 +130,10 @@ std::string division(std::string path, const int root)
 
   std::string text;
   std::string dir;
-  if((a & 1) == 1) {
+  if ((a & 1) == 1) {
     text = "if " + std::to_string(b) + " / " + std::to_string(a) + " = x, then go right\nelse, go left";
     dir = "r";
-  }else {
+  } else {
     text = "if " + std::to_string(c) + " / " + std::to_string(a) + " = x, then go right\nelse, go left";
     dir = "l";
   }
@@ -155,10 +155,10 @@ std::string square_root(std::string path, const int root)
 
   std::string text;
   std::string dir;
-  if((b & 1) == 1) {
+  if ((b & 1) == 1) {
     text = "if √" + std::to_string(a) + " = x, then go right\nelse, go left";
     dir = "r";
-  }else {
+  } else {
     text = "if √" + std::to_string(b) + " = x, then go right\nelse, go left";
     dir = "l";
   }
@@ -176,11 +176,11 @@ std::string expression(std::string path, const int root)
   double z;
   std::string symbols[4];
 
-  if((rng & 1) == 1) {
+  if ((rng & 1) == 1) {
     a = sqrt(root);
     t = sqrt(rng);
     symbols[0] = "√";
-  }else {
+  } else {
     a = root;
     t = rng;
     symbols[0] = "0";
@@ -191,11 +191,11 @@ std::string expression(std::string path, const int root)
   rng = utils_rng_roll(50, 200, mutable_seed);
   b = rng;
   u = rng;
-  if((rng & 1) == 1) {
+  if ((rng & 1) == 1) {
     c = add(a, b);
     v = add(t,u);
     symbols[1] = " + ";
-  }else {
+  } else {
     c = sub(a, b);
     v = sub(t,u);
     symbols[1] = " - ";
@@ -206,11 +206,11 @@ std::string expression(std::string path, const int root)
   rng = utils_rng_roll(1, 50, mutable_seed);
   d = rng;
   w = rng;
-  if((rng & 1) == 1) {
+  if ((rng & 1) == 1) {
     e = sub(c, d);
     x = sub(v,w);
     symbols[2] = " - ";
-  }else {
+  } else {
     e = add(c, d);
     x = add(v,w);
     symbols[2] = " + ";
@@ -221,11 +221,11 @@ std::string expression(std::string path, const int root)
   rng = utils_rng_roll(1, 50, mutable_seed);
   f = rng;
   y = rng;
-  if((rng & 1) == 1) {
+  if ((rng & 1) == 1) {
     g = multiply(b, f);
     z = multiply(u,y);
     symbols[3] = " x ";
-  }else {
+  } else {
     g = divide(b,f);
     z = multiply(u,y);
     symbols[3] = " / ";
@@ -235,14 +235,14 @@ std::string expression(std::string path, const int root)
 
   std::string text;
   std::string dir;
-  if(symbols[0] == "0") {
+  if (symbols[0] == "0") {
     text = "if (" + std::to_string((rng & 1) == 1? e:x) + symbols[2] + std::to_string((rng & 1) == 1? d:w) + ")" + symbols[1] + "(" + std::to_string((rng & 1) == 1? g:z) + symbols[3] + std::to_string((rng & 1) == 1? f:y) + ") = x, then go right";
     text += "\nelse, then go left";
   } else {
     text = "if √((" + std::to_string((rng & 1) == 1? e:x) + symbols[2] + std::to_string((rng & 1) == 1? d:w) + ")" + symbols[1] + "(" + std::to_string((rng & 1) == 1? g:z) + symbols[3] + std::to_string((rng & 1) == 1? f:y) + ")) = x, then go right";
     text += "\nelse, then go left";
   }
-  if((rng & 1) == 1) {
+  if ((rng & 1) == 1) {
     dir = "r";
   } else {
     dir ="l";
@@ -256,9 +256,9 @@ std::string comparison(std::string path, const int root)
   int comp = utils_rng_roll(10, 100, mutable_seed);
   std::string text = "if x > " + std::to_string(comp) + ", then go right\nelse, go left";
   std::string dir;
-  if(root > comp) {
+  if (root > comp) {
     dir = "r";
-  }else {
+  } else {
     dir = "l";
   }
   utils_generate_file(path + "/Comparison.txt", text);
@@ -269,10 +269,10 @@ std::string to_hex(int num)
 {
   char hex[3];
   int i = 0;
-  while(num != 0) {
+  while (num != 0) {
     int temp = num % 16;
 
-    if(temp < 10) {
+    if (temp < 10) {
       hex[i] = temp + 48;
     } else {
       hex[i] = temp + 55;
@@ -282,7 +282,7 @@ std::string to_hex(int num)
     num /= 16;
   }
   std::string hexnum;
-  for(int j = i-1; j >= 0; j--) {
+  for (int j = i-1; j >= 0; j--) {
     hexnum += hex[j];
   }
 
@@ -298,10 +298,10 @@ std::string hexadecimal(std::string path, const int root)
 
   std::string text;
   std::string dir;
-  if((a & 1) == 1) {
+  if ((a & 1) == 1) {
     text = "if " + ans + " is hexadecimal for x, then go right\nelse, go left";
     dir = "r";
-  }else {
+  } else {
     text = "if " + hex + " is hexadecimal for x, then go right\nelse, go left";
     dir = "l";
   }
@@ -311,15 +311,15 @@ std::string hexadecimal(std::string path, const int root)
 
 static void create_dirs(std::string path, int depth, std::string dir, const int root, bool correct)
 {
-  if(fail_safe++ > 9000) {
+  if (fail_safe++ > 9000) {
     std::cout << "HIT FAIL SAFE\n";
     return;
   }
-  if(depth < -10) {
+  if (depth < -10) {
     std::cout << "Error: depth < -10" << std::endl;
     return;
   }
-  if(depth < 0) {
+  if (depth < 0) {
    int rng = utils_rng_roll(1000000,9000000, mutable_seed);
    utils_generate_file(path + "/ID.txt", std::to_string(rng));
    if(correct) {
@@ -331,10 +331,10 @@ static void create_dirs(std::string path, int depth, std::string dir, const int 
   utils_mkdir(path);
 
   std::string correct_path;
-  if(depth > 0) {
+  if (depth > 0) {
     ++mutable_seed;
     int rng = 8/*utils_rng_roll(1, 8, mutable_seed)*/;
-    switch(rng) {
+    switch (rng) {
       case 1:
         correct_path = comparison(path, root);
         break;
@@ -365,15 +365,15 @@ static void create_dirs(std::string path, int depth, std::string dir, const int 
     }
   }
   
-  if(correct_path == "r" && correct){
+  if (correct_path == "r" && correct) {
     password_path += correct_path;
     create_dirs(path, depth - 1, "/left", root, false);
     create_dirs(path, depth - 1, "/right", root, true);
-  }else if(correct_path == "l" && correct){
+  }else if (correct_path == "l" && correct) {
     password_path += correct_path;
     create_dirs(path, depth - 1, "/left", root, true);
     create_dirs(path, depth - 1, "/right", root, false);
-  }else if(correct == false) {
+  }else if (correct == false) {
     create_dirs(path, depth - 1, "/left", root, false);
     create_dirs(path, depth - 1, "/right", root, false);
   }else {
@@ -383,14 +383,16 @@ static void create_dirs(std::string path, int depth, std::string dir, const int 
 
 Puzzle bst_puzzle_create(long seed)
 {
+  if (password_path != "") {  // For automatic testing
+    password_path.clear();
+    fail_safe = 0;
+  }
   mutable_seed = seed;
   const int root = utils_rng_roll(ROOT_MIN,ROOT_MAX,seed);
   const size_t depth = 10;
 
-  create_dirs("./files-bst", depth, "/tree", root, true);
-
-  std::string html_body = utils_html_printf("BST Puzzle", "./files-bst/.desc.txt", { std::to_string(root) });
-  utils_generate_file("./files-bst/instructions.html", html_body);
-
-  return {"files-bst", std::to_string(password), " Path: " + password_path};
+  create_dirs("../html-txt/files-bst", depth, "/tree", root, true);
+  std::string html_body = utils_html_printf("BST Puzzle", "../html-txt/files-bst/.desc.txt", { std::to_string(root) });
+  utils_generate_file("../html-txt/files-bst/instructions.html", html_body);
+  return {"../html-txt/files-bst", html_body, std::to_string(password), " Path: " + password_path};
 }

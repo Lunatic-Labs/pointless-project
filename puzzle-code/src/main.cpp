@@ -80,7 +80,9 @@ int main(int argc, char **argv)
   };
 
   for (auto &puzzle : puzzles) {
-    std::printf("%-15s Password: %s", puzzle.contents_fp.substr(6).c_str(), puzzle.password.c_str());
+    std::string puzzle_name = puzzle.contents_fp;
+    puzzle_name.erase(puzzle_name.begin(), puzzle_name.begin()+12);
+    std::printf("%-15s Password: %s", puzzle_name.substr(6).c_str(), puzzle.password.c_str());
     if (puzzle.extra_info) {
       std::printf(" %s", puzzle.extra_info->c_str());
     }

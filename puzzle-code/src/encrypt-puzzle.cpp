@@ -138,8 +138,7 @@ Puzzle encrypt_puzzle_create(long seed)
   }
   std::vector<std::string> instructions { word, encrypt_steps };
 
-  std::string html_body = utils_html_printf("Encrypt", "./files-encrypt/.desc.txt", instructions);
-  utils_generate_file("./files-encrypt/instructions.html", html_body);
-
-  return {"files-encrypt", words[word_idx], {}};
+  std::string html_body = utils_html_printf("Encrypt", "../html-txt/files-encrypt/.desc.txt", instructions);
+  utils_generate_file("../html-txt/files-encrypt/instructions.html", html_body);
+  return {"../html-txt/files-encrypt", html_body, words[word_idx], {}};
 }

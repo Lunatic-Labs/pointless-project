@@ -8,6 +8,15 @@
 
 #define MAX_HEX_ANS_LEN 8
 
+/*
+* File: based-intro-puzzle.cpp
+* Author: Jordan Hasulube
+* Contact: jdhasulube@mail.lipscomb.edu
+* Date: 10/2/2024
+* Description:
+*  Lightbox
+*/
+
 static std::string solve(int num)
 {
   std::stringstream ss;
@@ -79,8 +88,7 @@ Puzzle based_intro_puzzle_create(long seed)
 
   values.push_back(create_table(base, len, num));
 
-  std::string html_content = utils_html_printf("Base Intro Puzzle", "./files-based-intro/.desc.txt", values);
-  utils_generate_file("./files-based-intro/instructions.html", html_content);
-
-  return Puzzle{"files-based-intro", solve(num), {}};
+  std::string html_content = utils_html_printf("Base Intro Puzzle", "../html-txt/files-based-intro/.desc.txt", values);
+  utils_generate_file("../html-txt/files-based-intro/instructions.html", html_content);
+  return Puzzle{"../html-txt/files-based-intro", html_content, solve(num), {}};
 }
