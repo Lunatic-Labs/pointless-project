@@ -823,7 +823,7 @@ User downloads the puzzle via php and plays offline. In order to level up, user 
 where they can submit the hidden tokens and update their level in the csv file via POST request.
 
 #+CAPTION: Webpage User Flow UML
-[[./imgs/webpage-uml.png]]
+[[./imgs/Pointless_UMLs-Webpage.jpg]]
 
 ** How to start
   Download php-cli
