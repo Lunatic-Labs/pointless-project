@@ -6,7 +6,7 @@ touch ./integrated-tests/output_$current_datetime.txt
 cp ./includes/contact-data.csv ./integrated-tests/original-data_$current_datetime.csv
 
 # Send POST request to index.php
-wget --post-data "fname=j&lname=j&email=j@j.com" http://localhost:8000/index.php -O ./integrated-tests/output$current_datetime.txt
+wget --post-data "fname=j&lname=j&email=j@j.com" http://localhost:8000/index.php -O ./integrated-tests/output_$current_datetime.txt
 
 # Check for if input went through, delete output txt if successful
 if ! grep 'j,j,j@j.com' ./includes/contact-data.csv; then
