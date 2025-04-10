@@ -1,0 +1,52 @@
+#theme-btn {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #596AFF;
+}
+
+#theme-btn:hover {
+    color: #BB86FC;
+}
+
+.changeTheme {
+    background: #1D1E22;
+    color: #eee;
+}
+
+.maindiv {
+    display: flex;
+    flex-direction: column;
+    height: 95vh;
+}
+
+.title {
+    font-size: 72px;
+    font-weight: bold;
+    color: #331E54;
+    text-shadow: 4px 4px 0 #F4AA00;
+}
+
+.imagen {
+    height: 9rem;
+    padding-left: 28px;
+}
+
+.container {
+    width: 80%;
+    margin: -4px auto 0;
+    /* This makes the bison stand on the box. We were cookin bro.*/
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.container ul {
+    text-align: center;
+    list-style-position: inside;
+}
+
+.container p {
+    max-width: 60%;
+    margin: 10px auto;
+}
