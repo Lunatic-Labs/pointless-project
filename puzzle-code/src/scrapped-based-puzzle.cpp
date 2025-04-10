@@ -113,7 +113,7 @@ void values_create(const std::vector<int> bases, strvec_t &values, long seed)
   }
 }
 
-Puzzle rematch_based_puzzle_create(long seed)
+Puzzle based_puzzle_create(long seed)
 {
   std::vector<int> bases, solved; 
   strvec_t values;
@@ -154,13 +154,11 @@ Puzzle rematch_based_puzzle_create(long seed)
   values.push_back(std::to_string(key));
 
   FLAGS |= (NO_HDR | NO_FTR);
-
-  std::string html_content = utils_html_printf("Base Puzzle Rematch", "./files-scrapped-based/.desc.txt", values);
-  utils_generate_file("./files-scrapped-based/instructions.html", html_content);
+  std::string html_content = utils_html_printf("Base Puzzle Rematch", "../html-txt/files-scrapped-based/.desc.txt", values);
+  utils_generate_file("../html-txt/files-scrapped-based/instructions.html", html_content);
 
   FLAGS &= ~(NO_HDR | NO_FTR);
-
-  return Puzzle{"files-scrapped-based", values.back(), {}};
+  return Puzzle{"files-scrapped-based", html_content, values.back(), {}};
 }
 
 /*
@@ -178,7 +176,3 @@ Puzzle rematch_based_puzzle_create(long seed)
 *    Symbols: |, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
 *    Example:  |+= is 1684 in decimal.
 */
-
-
-
-

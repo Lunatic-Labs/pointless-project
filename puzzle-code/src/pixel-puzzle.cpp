@@ -48,16 +48,15 @@ Puzzle pixel_puzzle_create(long seed)
     }
     delim_values.push_back(std::to_string(prod));
   }
+  std::string answer = delim_values.back();
 
   // Give the bison a grid
   FLAGS |= BISON_GRID;
-  std::string html = utils_html_printf("Pixel Puzzle", "./files-pixel/.desc.txt", {delim_values}); 
+  std::string html = utils_html_printf("Pixel Puzzle", "../html-txt/files-pixel/.desc.txt", {delim_values});
 
   // Disable it so later ones don't have it.
   FLAGS &= ~(BISON_GRID);
 
-  utils_generate_file("./files-pixel/instructions.html", html);
-  std::string answer = delim_values.back();
-
-  return {"files-pixel", std::move(answer), {}};
+  utils_generate_file("../html-txt/files-pixel/instructions.html", html);
+  return {"../html-txt/files-pixel", html, std::move(answer), {}};
 }

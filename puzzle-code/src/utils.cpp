@@ -33,7 +33,7 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
   // Get the header content.
   char c;
   std::string header_content;
-  std::string header_path = "./resources/header.txt";
+  std::string header_path = "../html-txt/resources/header.txt";
 
   struct stat buf;
   if(FLAGS & NO_HDR) {
@@ -64,7 +64,7 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
   if(FLAGS & NO_FTR) {
     footer_content = "";
   } else {
-    std::string footer_path = "./resources/footer.txt";
+    std::string footer_path = "../html-txt/resources/footer.txt";
 
     if (stat(footer_path.c_str(), &buf) != 0) {
       throw("Can not open " + footer_path + ": No such file");
@@ -199,8 +199,12 @@ void utils_zip_files(filepath_t out_file_name,
     zip_source_t *src = zip_source_file(zip_file, file_names[i].c_str(), 0, 0);
 
     // Strip the path from the file name
+    size_t found = file_names[i].find("html-txt/");
+    if (found != std::string::npos) {
+      file_names[i].erase(file_names[i].begin(), file_names[i].begin()+12);
+    }
     std::string::size_type pos = file_names[i].find("/");
-
+    
     // Checking whether or not there is a dotfile after the first slash
     if(file_names[i][pos + 1] == '.') {
       // stripping that dotfile from the path
