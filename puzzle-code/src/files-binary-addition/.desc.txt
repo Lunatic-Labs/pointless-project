@@ -1,0 +1,69 @@
+<p>So you have beaten the last puzzle, good job!</p>
+
+<p>Your <b>golden</b> robot has been shut down, its energy reserves depleted. But its journey isn’t over yet. Solve this problem to reactivate the robot, allowing it to move once again. However, this time its movements aren’t just steps forward—they are part of a hidden message.</p>
+
+<p>As the robot awakens, it begins to move in a deliberate, rhythmic pattern, each step encoding clues essential to the journey. Solve the puzzle to decipher the meaning behind its movements and unlock the path forward. Only by interpreting this <i>message in motion</i> can you guide the robot closer to the elusive MacGuffin.</p>
+
+<style>
+.state_purple {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-color: #FF00FF;
+}
+.state_red {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-color: red;
+}
+.state_green {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-color: #00FF00;
+}
+
+ul {
+  text-align: left;
+  font-size: 32px;
+}
+
+</style>
+
+<!-- ↑←→↖↗↘ ↙ -->
+<ul>
+  <li><span class="state_red"></span>E:↓A</li>
+  <li><span class="state_green"></span>E:↓B</li>
+  <li><span class="state_purple"></span>E:↓↓<span class="state_red"></span>↑↑STOP</li>
+  <li><span class="state_red"></span>A:↓<span class="state_red"></span> ↑↖E</li>
+  <li><span class="state_green"></span>A:↓<span class="state_green"></span>↑↖E</li>
+  <li><span class="state_red"></span>B:↓<span class="state_green"></span>↑↖E</li>
+  <li><span class="state_green"></span>B:↓<span class="state_red"></span>↑↖C</li>
+  <li><span class="state_red"></span>C:↓B</li>
+  <li><span class="state_green"></span>C:↓D</li>
+  <li><span class="state_purple"></span>C:↓↓<span class="state_green"></span>↑↑STOP</li>
+  <li><span class="state_red"></span>D:↓<span class="state_red"></span>↑↖C</li>
+  <li><span class="state_green"></span>D:↓<span class="state_green"></span>↑↖C</li>
+</ul>
+<style>
+  body {
+    text-align: center;
+  }
+  .center-div {
+    display: inline-block;
+    text-align: left;
+  }
+</style>
+
+<style>
+svg {
+  border: 5px solid #222;
+}
+</style>
+
+<div style="width:50%; margin:0 auto;">
+  %DELIM
+</div>
+
+<p><b>What is the secret message that is produced?</b></p>

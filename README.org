@@ -834,6 +834,82 @@ Scales =img= by =scale= and returns a new =Image=.
 
 *NOTE*: This function is extremely slow as it runs in $O(n^4)$ time.
 
+* Web Server
+** Description
+The main goals of the webpage are puzzle download, user registration, and user tracking. 
+New users are to put their info into the first page, which is saved to a csv file. (Each new user will have a default level of 0)
+User downloads the puzzle via php and plays offline. In order to level up, user is to log in to a separate page
+where they can submit the hidden tokens and update their level in the csv file via POST request.
+
+#+CAPTION: Webpage User Flow UML
+[[./imgs/Pointless_UMLs-Webpage.jpg]]
+
+** How to start
+  Download php-cli
+#+begin_src bash
+  sudo apt-install php-cli
+#+end_src
+  Change directories to /web-server/
+#+begin_src bash
+  cd ./pointless-project/web-server
+#+end_src
+  Start localhost
+#+begin_src bash
+  php -S localhost:8000
+#+end_src
+*NOTE*: Keep terminal running to track all requests going to web-server.
+** Integration Test format
+*** Description
+Tests for the webpages will use bash scripting and are found in the integrated-tests directory.
+**** Naming format:
+- test- =FeatureBeingTested= - =webpage= .sh
+**** Testing format:
+#+begin_src bash
+  #!/bin/bash
+  cd ~/Desktop/pointless-project/web-server
+  touch ./integrated-tests/output_$current_datetime.txt
+
+  # run wget to run action on URL whether it be a GET or POST request and output that to output.txt
+
+  # if-else statements to find desired outcomes using '! grep'
+
+  # delete output.txt (rm ./integrated-tests/output_$current_datetime.txt) and any edits to csv (sed -i '$d' ./includes/contact-data.csv)
+#+end_src
+*NOTE*: Whenever running tests that manipulate =contact-data.csv= in any way, shape, or form, be sure to include the following bash code.
+#+begin_src bash
+  # Placed at beginning of test Create a copy of orignal data for verification
+  cp ./includes/contact-data.csv ./integrated-tests/original-data_$current_datetime.csv
+
+  # ..... test body .......
+
+  
+  # Check integrity of contact-data.csv 
+  if diff ./includes/contact-data.csv ./integrated-tests/original-data.csv; then
+      echo 'Changes to contact-data.csv?: No, data is intact.'
+      rm ./integrated-tests/original-data_$current_datetime.csv
+  else
+      echo 'Changes to contact-data.csv?: !!contact-data.csv compromised!! Check for changes!!'
+  fi
+#+end_src
+
+** Sandbox directory
+This directory is to be used for testing any new code or methods, so as not to interfere with any of the
+main code. Feel free to delete any files in this directory if needed.
+
+** Future goals
+- Consistent dark mode between pages
+- Merge all HTML files with corresponding php
+  - This will help with testing
+- Clean up HTML code
+  - Unclosed tags
+  - Dedicated CSS for all web pages
+- Functioning download button in download.php
+  - Goal: user retrieves 7zip file from webpage via php
+- Login page for registered users
+- Default level zero for new users
+  - Currently, index.php only records first and last name and email
+  - User is to increase level everytime a token found in the puzzle is submitted
+
 * Automated Tests
 
 Go into the =test/= directory:
@@ -1021,3 +1097,5 @@ Mekeal Brown - /mtbrown@mail.lipscomb.edu/ [[https://github.com/mekealbrown][Git
 Steven Yassa - /seyassa@mail.lipscomb.edu/ Github
 
 Michael Hernandez-Lara - /mahernandezlara@mail.lipscomb.edu/ Github
+
+John Tabelisma - /jmtabelisma@mail.lipscomb.edu/ [[https://github.com/johntable][Github]]

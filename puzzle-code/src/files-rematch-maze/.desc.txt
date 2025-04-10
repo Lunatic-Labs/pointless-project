@@ -1,0 +1,265 @@
+<p>
+  Welcome, weary traveler! You've stumbled upon a digital labyrinth waiting to challenge your wit and cunning. <br/>
+  This maze holds secrets known only to the ancient Oracle—a timeless, mysterious force that dwells within the <i><u><b>console</b></u></i> itself.<br/>
+  As you navigate the twists and turns of these virtual corridors, the only guidance will come from your keystrokes and the Oracle’s cryptic wisdom.<br/><br/>
+
+  You vaguely recall that typing <code>instructions</code> into the <i><u><b>console</b></u></i> may summon the Oracle’s insight and set you on the correct path forward. Tread carefully, as the Oracle reveals its secrets only to those brave enough to seek them.
+</p>
+</br>
+
+<div style="width:50%; margin:0 auto;">
+<style>
+    .div_maze {
+        border: 40px solid #000;
+        border-radius: 40px;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: fit-content;
+        max-height: 360px;
+    }
+
+</style>
+<div id="maze1" class="div_maze">
+  %DELIM
+</div>
+
+<div id="maze2" class="div_maze">
+    %DELIM
+</div>
+
+<div id="maze3" class="div_maze">
+  %DELIM
+</div>
+
+<h1 id="ending" />
+
+<script>
+
+ var __AAAAAAAAAAAAA = 543;
+ var __ABAAAAAAAAAAA = 9873;
+ var __AAAAAAAAADAAA = 28347;
+ var __AAAAAAAACAAAA = 5312341;
+ var __AAAAAABAAAAAA = 592746;
+ var __AAAAAASAAAAAA = "Lipscomb";
+ var __AAAAAAAAAXAAA = "Bison";
+ var __AAAAAAAAANAAA = "University";
+ var __AAAASAAAAAAAA = "foo bar baz";
+ var __AAAAAAZAAAAAA = "hello world";
+ var __AAAAAAAAABAAA = "USA";
+ var __AAAAAAAAAAAsA = 241;
+ var __AAAAAAAAAAAAA = 543234;
+ var __AAAAAAAAAAAeA = 902817;
+ var __AAAAAAAAAAA2A = "Turner and Zach were here.";
+ var __AAAAAAAAA4AAA = "qwerty";
+
+ var __maze1 = [%DELIM];
+
+ var __maze2 = [%DELIM];
+
+ var __maze3 = [%DELIM];
+
+ var __mazes = [__maze1, __maze2, __maze3];
+
+ var __qwertyuiopasdfhjklzxcvbnm = %DELIM;
+ var __qwertyuiopasdfhjklzzcvbnm = %DELIM;
+
+ var pixel_size = 40;
+
+ var __idx = 0;
+ var __cur_maze = __mazes[__idx];
+ var __x = 0;
+ var __y = __maze1.length - 1;
+ var __has_key = false;
+ var __has_battery = false;
+
+ update_player_positions()
+
+ function update_player_positions() {
+    let players = document.getElementsByClassName("player");
+    for (let i = 0; i < players.length; i += 1) {
+        players[i].cx.baseVal.value = __x*pixel_size+(pixel_size/2);
+        players[i].cy.baseVal.value = __y*pixel_size+(pixel_size/2);
+    }
+ }
+
+ function instructions() {
+    let s = `u(x), d(x), l(x) and r(x): Moves you x*2 tiles in the direction.
+descend_stairs(): Descend to the next maze if you are on a brown tile.
+ascend_stairs() : Ascend to the last maze if you are on a green tile.
+pickup()        : Picks up an item if you are a pink tile.
+exit()          : Escapes the maze if you are on the yellow tile`;
+
+    return s;
+ }
+
+ var instructions = instructions();
+
+ function pickup_item() {
+    if (__cur_maze[__y][__x] === 6 && !__has_key) {
+        __has_key = true;
+        document.getElementsByClassName(__y + "." + __x)[__idx].setAttribute("fill", "#C8C8FF");
+        return "you picked up a key!";
+    } else if (__cur_maze[__y][__x] === 6 && __has_key) {
+        return "you already have the key!";
+    } else if (__cur_maze[__y][__x] === 7 && !__has_battery) {
+        document.getElementsByClassName(__y + "." + __x)[__idx].setAttribute("fill", "#C8C8FF");
+        __has_battery = true;
+        return "you picked up a battery!";
+    } else if (__cur_maze[__y][__x] === 7 && __has_battery) {
+        return "you already have the battery!";
+    }
+    return "you are not on an item!";
+ }
+
+ function exit() {
+    let on_exit = __cur_maze[__y][__x] === 3;
+    let no_key = !__has_key;
+    let no_battery = !__has_battery;
+    let has_key_and_battery = __has_key && __has_battery;
+
+    if (!on_exit) {
+        return "you are not on the door!";
+    }
+    if (has_key_and_battery) {
+        __hide_maze("maze1");
+        let s = "you win! Here is your password: ";
+        s += "\n" + __qwertyuiopasdfhjklzxcvbnm ^ __qwertyuiopasdfhjklzzcvbnm;
+        document.getElementById("ending").textContent = s;
+        return s;
+    }
+    if (no_key && no_battery) {
+        return "you do not have enough power to open the door and the door seems locked! Maybe search around for a key and a source of power";
+    }
+    if (no_key) {
+        return "the door is locked! maybe search around for a key?";
+    }
+    if (no_battery) {
+        return "you do not have enough power to open the door! I wonder if a battery is somewhere?";
+    }
+    return "you are not on the door!";
+ }
+
+ function ascend_stairs() {
+    if (__cur_maze[__y][__x] === 5) {
+        __prev_maze();
+        return "you climbed the stairs!";
+    }
+    return "you are not on stairs!";
+ }
+
+ function descend_stairs() {
+    if (__cur_maze[__y][__x] === 4) {
+        __next_maze();
+        return "you descended the stairs!";
+    }
+    return "you are not on stairs!";
+ }
+
+ function check_boundary(dx, dy) {
+    try {
+        for (var i = 0; i < dx; i++) {
+            if (__cur_maze[__y][__x + i] === 0) {
+                return false;
+            }
+        }
+        for (var i = 0; i > dx; i--) {
+            if (__cur_maze[__y][__x + i] === 0) {
+                return false;
+            }
+        }
+        for (var i = 0; i < dy; i++) {
+            if (__cur_maze[__y + i][__x] === 0) {
+                return false;
+            }
+        }
+        for (var i = 0; i > dy; i--) {
+            if (__cur_maze[__y + i][__x] === 0) {
+                return false;
+            }
+        }
+    } catch (e) {
+        return false;
+    }
+     var newX = __x + dx;
+     var newY = __y + dy;
+     if (newX >= 0 && newX < __cur_maze.length && newY >= 0 && newY < __cur_maze[0].length && __cur_maze[newY][newX] !== 0) {
+        return true;
+     } else {
+        return false;
+     }
+ }
+
+ function u(stride = 1) {
+     if (check_boundary(0, -stride*2)) {
+         __y -= stride*2;
+         update_player_positions()
+         return "you moved up";
+     }
+     return "you hit a wall!";
+ }
+
+ function d(stride = 1) {
+     if (check_boundary(0, stride*2)) {
+         __y += stride*2;
+         update_player_positions()
+         return "you moved down";
+     }
+     return "you hit a wall!";
+ }
+
+ function r(stride = 1) {
+     if (check_boundary(stride*2, 0)) {
+         __x += stride*2;
+         update_player_positions()
+         return "you moved right";
+     }
+     return "you hit a wall!";
+ }
+
+ function l(stride = 1) {
+     if (check_boundary(-stride*2, 0)) {
+         __x -= stride*2;
+         update_player_positions()
+         return "you moved left";
+     }
+     return "you hit a wall!";
+ }
+
+ function __hide_maze(id) {
+    var div = document.getElementById(id);
+    div.style.display = "none";
+ }
+
+ function __show_maze(id) {
+    var div = document.getElementById(id);
+    div.style.display = "block";
+ }
+
+ function __next_maze() {
+    if (__idx === __mazes.length - 1) {
+        return "no more mazes!";
+    }
+    __idx = __idx+1;
+    __cur_maze = __mazes[__idx];
+    __hide_maze("maze1");
+    __hide_maze("maze2");
+    __hide_maze("maze3");
+    __show_maze("maze" + (__idx + 1));
+ }
+
+ function __prev_maze() {
+    if (__idx === 0) {
+        return "no more mazes!";
+    }
+    __idx = __idx-1;
+    __cur_maze = __mazes[__idx];
+    __hide_maze("maze1");
+    __hide_maze("maze2");
+    __hide_maze("maze3");
+    __show_maze("maze" + (__idx + 1));
+ }
+
+ __hide_maze("maze2");
+ __hide_maze("maze3");
+
+</script>

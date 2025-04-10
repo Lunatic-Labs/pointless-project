@@ -1,0 +1,163 @@
+<style>
+.state_purple {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background-color: #D200C8;
+}
+
+.state_gold {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background-color: #C8CD00;
+}
+
+.state_blue {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background-color: #0064C8;
+}
+
+.red_circle {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: red;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.green_circle {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: green;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.bullet {
+  list-style-type: disc;
+}
+</style>
+
+<ul>
+<! PURPLE  OR > 
+
+  <li class="bullet">
+    <span class="state_purple"></span>
+    <span class="red_circle"></span>
+    <span class="red_circle"></span>
+    <b> =  </b>
+    <span class="red_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_purple"></span>
+    <span class="red_circle"></span>
+    <span class="green_circle"></span>
+    <b> =  </b>
+    <span class="green_circle"></span>
+  </li>
+    <li class="bullet">
+    <span class="state_purple"></span>
+    <span class="green_circle"></span>
+    <span class="red_circle"></span>
+    <b> =  </b>
+    <span class="green_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_purple"></span>
+    <span class="green_circle"></span>
+    <span class="green_circle"></span>
+    <b> =  </b>
+    <span class="green_circle"></span>
+  </li>
+
+  <! GOLD  AND > 
+
+  <li class="bullet">
+    <span class="state_gold"></span>
+    <span class="red_circle"></span>
+    <span class="red_circle"></span>
+    <b> =  </b>
+    <span class="red_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_gold"></span>
+    <span class="red_circle"></span>
+    <span class="green_circle"></span>
+    <b> =  </b>
+    <span class="red_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_gold"></span>
+    <span class="green_circle"></span>
+    <span class="red_circle"></span>
+    <b> =  </b>
+    <span class="red_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_gold"></span>
+    <span class="green_circle"></span>
+    <span class="green_circle"></span>
+    <b> =  </b>
+    <span class="green_circle"></span>
+  </li>
+
+  <! BLUE  XOR > 
+
+  <li class="bullet">
+    <span class="state_blue"></span>
+    <span class="red_circle"></span>
+    <span class="red_circle"></span>
+    <b> =  </b>
+    <span class="red_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_blue"></span>
+    <span class="red_circle"></span>
+    <span class="green_circle"></span>
+    <b> =  </b>
+    <span class="green_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_blue"></span>
+    <span class="green_circle"></span>
+    <span class="red_circle"></span>
+    <b> =  </b>
+    <span class="green_circle"></span>
+  </li>
+  <li class="bullet">
+    <span class="state_blue"></span>
+    <span class="green_circle"></span>
+    <span class="green_circle"></span>
+    <b> =  </b>
+    <span class="red_circle"></span>
+  </li>
+</ul>
+
+<p>The line of blocks represents a <b>queue</b>. Your task is to calculate answers step by step, following these instructions:</p>
+
+<ul>
+  <li>Always take the <b>first two circles</b> from the queue to calculate the next value.</li>
+  <li>Once an answer is calculated, add it to the <b>stack</b>—a growing "Tower of Wisdom."</li>
+  <li>After each calculation, remove the two circles you used from the queue.</li>
+  <li>Place the calculated answer at the <b>end</b> of the queue.</li>
+  <li>Repeat this process until the queue is empty.</li>
+</ul>
+
+<p>When all calculations are complete, the <b>stack</b> will contain the final "Tower of Wisdom." The value at the <b>top of the stack</b> will reveal the solution to the puzzle.</p>
+
+<p><i>"Each calculation is a building block, forming a Tower of Wisdom. As you calculate, the tower grows higher, layer by layer, unveiling its secrets. Only when the tower is complete will its pinnacle reveal the answer you seek."</i></p>
+
+<p><br></br></p>
+
+%DELIM
+
+<p><br></br></p>
+
+%DELIM
+
+<p><b>What is the secret message that is produced?</b></p>

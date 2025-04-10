@@ -1,0 +1,8 @@
+
+You are trying to find your way towards the MacGuffin, but you lost your map!
+You will need to look at the mathmatical street signs to find your way to x.
+<br />
+The <i>x</i> that you are looking for is: <b>%DELIM</b>
+<br />
+To figure out which way to go at the intersections, use your <i>x</i> in the mathmatical expressions on the street signs.
+The password to move on to the next challenge will be at your destination.

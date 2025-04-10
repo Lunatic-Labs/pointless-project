@@ -43,7 +43,6 @@ static std::string create_rematch_password_files(std::vector<Puzzle> &puzzles, l
 Puzzle rematch_puzzle_inst(long seed)
 {
   (void)seed;
-
   std::string html_content = utils_html_printf("Rematch Instructions", "../html-txt/files-rematch/.desc.txt", {});
   utils_generate_file("../html-txt/files-rematch/instructions.html", html_content);
   return {"../html-txt/files-rematch", html_content, "", {}};

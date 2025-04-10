@@ -1,0 +1,151 @@
+<style>
+.number {
+    border-collapse: separate;
+    border-spacing: 0;
+    background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20231029/pngtree-elegant-brown-wood-background-with-glossy-textured-plywood-image_13737889.png');
+    background-size: cover;
+    background-position: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.number th, .number td {
+    border: 1.5px solid black;
+    padding: 5px;
+    text-align: left;
+    position: relative;
+    color: rgb(0, 0, 0);
+}
+
+.number tr:last-child td {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+p, h4 {
+    text-align: center;
+}
+</style>
+
+
+<p>
+    Hello, codebreaker. Before you lies a light box, a cryptic structure designed to hold hidden meanings. Each light in this box represents part of an encrypted sequence, a cipher waiting to be unlocked.
+</p>
+<p>
+    Today, you’ll be working with this light box. Each light box has rows and columns, with lights in each cell that symbolize encrypted values in a hidden code.
+    The height (number of rows) of a light box is called its <b>base</b>, and the number of columns is called its length.
+    Each column of the box must have exactly one light on. If a light on the bottom row is on, it lights up red, signaling that
+    this column’s value is zero. All other lights light up green, indicating a non-zero encrypted value for their column.
+</p>
+<p>
+    In the first column (on the left), each light from the bottom
+    increases in value by one. The bottom light is equal to 0, the next to 1, the next to 2, etc. With each successive column, the lights
+    increment by the maximum value of the previous column + 1, instead of just 1. This means that with this structure, you can represent every
+    possible integer.
+</p>
+<h4>The following light box of base 3 and length 3 represents the number 7</h4>
+
+<table class='number'>
+    <tbody>
+        <tr>
+            <td style='color: rgb(141, 255, 141);'>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td style='color: rgb(141, 255, 141);'>⦿</td>
+            <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td style='color: rgb(255, 0, 0);'>⦿</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>To represent this structure in text form, we can simply pretend it is a number, and that each column is a numbers place. For example,
+    the previous structure could be represented as 210(notice the smallest number place is on the left). If a light on the light box is too high to represent its value with a single digit number 0-9,
+    you can simply resort to using capital letters of the alphabet starting from "A" for every subsequent number. For example, the 11th light of the first column would be of value 10, 
+    but since 10 cant be represented by a single digit, that column would be represented by the letter "A". You can assume that the light box will never have a base large enough to cause you to run out
+    of letters in the alphabet.
+</p>
+
+<h4>The following structure of base 11 and length 4 would be represented as A400</h4>
+
+<table class='number'>
+    <tbody>
+        <tr>
+            <td style='color: rgb(141, 255, 141);'>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td style='color: rgb(141, 255, 141);'>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td style='color: rgb(255, 0, 0);'>⦿</td>
+            <td style='color: rgb(255, 0, 0);'>⦿</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    Now, using this encrypted structure, determine the encoded cipher for the following light box with a base of 16 and length of 8.
+</p>
+
+%DELIM
