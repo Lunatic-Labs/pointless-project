@@ -1,11 +1,3 @@
-FName,LName,Email
-John,Tabelisma,jmtabelisma@gmail.com
-Michael,Hernandez,mhwdmkw@mail.lipscomb.edu
-hom,dsa,free@mail.com
-e,e,e@e.com
-q,q,q@q.com
-asdnj,sandjk,nfjsa@m.com
-m,m,m@m.com
-jfeiwo,wljfel,nfnew@mcil.vom
-i,i,i@msil.com
-t,t,t@t.com
+FName,LName,Email,Token
+e,e,e@e.com,"n\a"
+j,j,j@j.com,"n\a"

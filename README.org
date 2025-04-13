@@ -900,15 +900,10 @@ main code. Feel free to delete any files in this directory if needed.
 - Consistent dark mode between pages
 - Merge all HTML files with corresponding php
   - This will help with testing
-- Clean up HTML code
-  - Unclosed tags
-  - Dedicated CSS for all web pages
 - Functioning download button in download.php
   - Goal: user retrieves 7zip file from webpage via php
 - Login page for registered users
-- Default level zero for new users
-  - Currently, index.php only records first and last name and email
-  - User is to increase level everytime a token found in the puzzle is submitted
+- Token Submission page for registered users
 
 * Automated Tests
 
