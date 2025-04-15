@@ -861,7 +861,7 @@ where they can submit the hidden tokens and update their level in the csv file v
 ** Integration Test format
 *** Description
 Tests for the webpages will use bash scripting and are found in the integrated-tests directory.
-*NOTE*: Always run these tests in the integrated-tests directory. This is to make sure that the =cd ..= command makes the current working directory (cwd) =web-server=.
+- *NOTE*: Always run these tests in the integrated-tests directory. This is to make sure that the =cd ..= command makes the current working directory (cwd) =web-server=.
 **** Naming format:
 - test- =FeatureBeingTested= - =webpage= .sh
 **** Testing format:
