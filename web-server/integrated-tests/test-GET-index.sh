@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ~/Desktop/pointless-project/web-server
+cd ..
 current_datetime=$(date +"%Y-%m-%d_%H:%M:%S")
 touch ./integrated-tests/output_$current_datetime.txt
 

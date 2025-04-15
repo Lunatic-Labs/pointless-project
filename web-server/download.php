@@ -15,7 +15,7 @@
     <div style="display:flex; align-items:center; justify-content: center;">
         <div class="title">Pointless Challenge</div>
         <div class="imagen">
-            <img src="./bison.svg" alt="LU_Bison">                   
+            <object data="bison.svg" alt="LU_Bison"></object>                    
         </div>
     </div>
     <script> //script for dark mode
@@ -31,7 +31,7 @@
     </script>
     <div class="content">
         <div class="container"><h2 style="text-align:center">The Pointless Challenge.</h2>
-            <div class="warning">!!The Pointless Puzzles can only be played on Windows OS!!</div>
+            <div class="warning">!!The Pointless Challenge can only be played on Windows OS!!</div>
             <p style="text-align:center">
             Before you can use the Pointless Puzzle zip, <strong>you need to download <a target="_blank" rel="noopener noreferrer" href="https://www.7-zip.org/">7-Zip.</a></strong><br>
             Regular zip openers cannot properly open the pointless project,<br>

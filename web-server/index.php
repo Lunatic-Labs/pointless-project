@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div style="display:flex; align-items:center; justify-content: center;">
         <div class="title">Pointless Challenge</div>
         <div class="imagen">
-            <img src="./bison.svg" alt="LU_Bison">           
+            <object data="bison.svg" alt="LU_Bison"></object>           
         </div>
     </div>
     <script> //script for dark mode

@@ -861,12 +861,17 @@ where they can submit the hidden tokens and update their level in the csv file v
 ** Integration Test format
 *** Description
 Tests for the webpages will use bash scripting and are found in the integrated-tests directory.
+*NOTE*: Always run these tests in the integrated-tests directory. This is to make sure that the 
+#+begin_src bash
+  cd ..
+#+end_src 
+puts the current working directory (cwd) web-server
 **** Naming format:
 - test- =FeatureBeingTested= - =webpage= .sh
 **** Testing format:
 #+begin_src bash
   #!/bin/bash
-  cd ~/Desktop/pointless-project/web-server
+  cd ..
   touch ./integrated-tests/output_$current_datetime.txt
 
   # run wget to run action on URL whether it be a GET or POST request and output that to output.txt
