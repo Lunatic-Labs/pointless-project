@@ -40,9 +40,7 @@
             <strong>so please download 7-Zip before opening the Pointless zip file.</strong></p>
         </div>
         <div class="container">
-            <form action=download.php method="post">
-                <button class="button">Pointless Download</button>
-            </form>
+            <a href="./sandbox/dummy.zip" download="dummy.zip">Pointless Download</a>
         </div>  
     </div>
 </body>
