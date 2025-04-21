@@ -863,7 +863,7 @@ where they can submit the hidden tokens and update their level in the csv file v
 Tests for the webpages will use bash scripting and are found in the integrated-tests directory.
 - *NOTE*: Always run these tests in the integrated-tests directory. This is to make sure that the =cd ..= command makes the current working directory (cwd) =web-server=.
 **** Naming format:
-- test- =FeatureBeingTested= - =webpage= .sh
+- test- =webpage= - =FeatureBeingTested= .sh
 **** Testing format:
 #+begin_src bash
   #!/bin/bash
@@ -899,12 +899,10 @@ main code. Feel free to delete any files in this directory if needed.
 
 ** Future goals
 - Consistent dark mode between pages
-- Merge all HTML files with corresponding php
-  - This will help with testing
 - Functioning download button in download.php
   - Goal: user retrieves 7zip file from webpage via php
-- Login page for registered users
-- Token Submission page for registered users
+    - This is where you connect the web-server code with the puzzle-code.
+    - What's on the current page is just a demo.
 
 * Automated Tests
 

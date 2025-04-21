@@ -24,5 +24,5 @@ else
     echo 'Changes to contact-data.csv?: !!contact-data.csv compromised!! Check for changes!!'
 fi
 
-# Delet output txt
+# Delete output txt
 rm ./integrated-tests/output_$current_datetime.txt
