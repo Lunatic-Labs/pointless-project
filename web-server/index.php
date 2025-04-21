@@ -12,12 +12,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usr_lname = htmlspecialchars(string: $_POST["lname"]);
     $usr_email = htmlspecialchars(string: $_POST["email"]);
 
-    // invalid email error *fix; not showing up
+    // invalid email error
     if (filter_var($usr_email, FILTER_VALIDATE_EMAIL) === false) {
         $error = "!! INVALID EMAIL !! Please enter a vaild email...";
         $email_valid = false;
     } else {
-        // duplicate email in csv error check *fix; not showing up
+        // duplicate email in csv error check
         $file = fopen(filename: './includes/contact-data.csv', mode:'r');
         fgetcsv(stream: $file); //skips first line in csv
         $line = fgetcsv(stream: $file);
@@ -57,14 +57,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pointless Challenge</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="includes/styles.css">
 </head>
 <body>
     <div id="theme-btn" class="far fa-moon"></div>
     <div style="display:flex; align-items:center; justify-content: center;">
-        <div class="title">Pointless Challenge</div>
+        <div class="title">
+            Pointless Challenge
+        </div>
         <div class="imagen">
-            <object data="bison.svg" alt="LU_Bison"></object>           
+            <object data="includes/bison.svg" alt="LU_Bison"></object>           
         </div>
     </div>
     <script> //script for dark mode
@@ -83,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         Please register your email, so we can get you to the download page.<br>
         Already registered? Login <a href="./login.php">here</a>.
         <?php if ($error): ?>
-        <div class="error"><?php echo $error; ?></div>
+            <div class="error"><?php echo $error; ?></div>
         <?php endif; ?>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="stringForm"> 
             <label for="fname">First Name:</label>

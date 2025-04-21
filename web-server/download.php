@@ -8,14 +8,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pointless Challenge</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="includes/styles.css">
 </head>
 <body>
 <div id="theme-btn" class="far fa-moon"></div>
     <div style="display:flex; align-items:center; justify-content: center;">
-        <div class="title">Pointless Challenge</div>
+        <div class="title">
+            Pointless Challenge
+        </div>
         <div class="imagen">
-            <object data="bison.svg" alt="LU_Bison"></object>                    
+            <object data="includes/bison.svg" alt="LU_Bison"></object>                    
         </div>
     </div>
     <script> //script for dark mode
@@ -38,7 +40,9 @@
             <strong>so please download 7-Zip before opening the Pointless zip file.</strong></p>
         </div>
         <div class="container">
-            <button class="button">Pointless Download</button>
+            <form action=download.php method="post">
+                <button class="button">Pointless Download</button>
+            </form>
         </div>  
     </div>
 </body>

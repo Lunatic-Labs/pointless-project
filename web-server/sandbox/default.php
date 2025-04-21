@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pointless Challenge</title>
-    <link rel="stylesheet" href="includes/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="theme-btn" class="far fa-moon"></div>
@@ -17,7 +17,7 @@
             Pointless Challenge
         </div>
         <div class="imagen">
-            <object data="includes/bison.svg" alt="LU_Bison"></object>         
+            <object data="bison.svg" alt="LU_Bison"></object>         
         </div>
     </div>
     <script> //script for dark mode
@@ -31,13 +31,6 @@
                 }
             }
     </script>
-    <div class="container">
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="stringForm"> 
-            <label for="token">Token:</label>
-            <input type="text" id="token" name="token" required>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
 </body>
 <footer>
     <div style="text-align:center; margin-top: 34.5px;"><p>Dr. Towell - dtowell@lipscomb.edu</p></div>
