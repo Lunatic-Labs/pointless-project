@@ -7,7 +7,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pointless Challenge</title>
+    <title>
+        Pointless Challenge
+    </title>
     <link rel="stylesheet" href="includes/styles.css">
 </head>
 <body>
@@ -33,9 +35,13 @@
     </script>
     <div class="container">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="stringForm"> 
-            <label for="token">Token:</label>
+            <label for="token">
+                Token:
+            </label>
             <input type="text" id="token" name="token" required>
-            <button type="submit">Submit</button>
+            <button type="submit">
+                Submit
+            </button>
         </form>
     </div>
 </body>

@@ -7,7 +7,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pointless Challenge</title>
+    <title>
+        Pointless Challenge
+    </title>
     <link rel="stylesheet" href="includes/styles.css">
 </head>
 <body>
@@ -35,9 +37,10 @@
         <div class="container"><h2 style="text-align:center">The Pointless Challenge.</h2>
             <div class="warning">!!The Pointless Challenge can only be played on Windows OS!!</div>
             <p style="text-align:center">
-            Before you can use the Pointless Puzzle zip, <strong>you need to download <a target="_blank" rel="noopener noreferrer" href="https://www.7-zip.org/">7-Zip.</a></strong><br>
-            Regular zip openers cannot properly open the pointless project,<br>
-            <strong>so please download 7-Zip before opening the Pointless zip file.</strong></p>
+                Before you can use the Pointless Puzzle zip, <strong>you need to download <a target="_blank" rel="noopener noreferrer" href="https://www.7-zip.org/">7-Zip.</a></strong><br>
+                Regular zip openers cannot properly open the pointless project,<br>
+                <strong>so please download 7-Zip before opening the Pointless zip file.</strong>
+            </p>
         </div>
         <div class="container">
             <a href="./sandbox/dummy.zip" download="dummy.zip">Pointless Download</a>

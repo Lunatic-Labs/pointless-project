@@ -56,7 +56,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pointless Challenge</title>
+    <title>
+        Pointless Challenge
+    </title>
     <link rel="stylesheet" href="includes/styles.css">
 </head>
 <body>
@@ -80,24 +82,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
     </script>
-    <div class="container"><h2 style="text-align:center">The Pointless Challenge.</h2><p style="text-align:center">
-        Hi, welcome to the Pointless Project!<br> 
-        Please register your email, so we can get you to the download page.<br>
-        Already registered? Login <a href="./login.php">here</a>.
+    <div class="container"><h2 style="text-align:center">The Pointless Challenge.</h2>
+        <p style="text-align:center">
+            Hi, welcome to the Pointless Project!<br> 
+            Please register your email, so we can get you to the download page.<br>
+            Already registered? Login <a href="./login.php">here</a>.
+        </p>
         <?php if ($error): ?>
-            <div class="error"><?php echo $error; ?></div>
+            <div class="error">
+                <?php echo $error; ?>
+            </div>
         <?php endif; ?>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="stringForm"> 
-            <label for="fname">First Name:</label>
+            <label for="fname">
+                First Name:
+            </label>
             <input type="text" id="fname" name="fname" required>
             
-            <label for="lname">Last Name:</label>
+            <label for="lname">
+                Last Name:
+            </label>
             <input type="text" id="lname" name="lname" required>
             
-            <label for="email">Email:</label>
+            <label for="email">
+                Email:
+            </label>
             <input type="text" id="email" name="email" required>
             
-            <button type="submit">Submit</button>
+            <button type="submit">
+                Submit
+            </button>
         </form>
     </div>
 </body>

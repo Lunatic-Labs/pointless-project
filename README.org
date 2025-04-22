@@ -868,18 +868,18 @@ Tests for the webpages will use bash scripting and are found in the integrated-t
 #+begin_src bash
   #!/bin/bash
   cd ..
-  touch ./integrated-tests/<name-of-test>_output_$current_datetime.txt
+  touch ./integrated-tests/<name-of-test>-output-$cdt.txt
 
   # run wget to run action on URL whether it be a GET or POST request and output that to output.txt
 
   # if-else statements to find desired outcomes using '! grep'
 
-  # delete output.txt (rm ./integrated-tests/<name-of-test>_output_$current_datetime.txt) and any edits to csv (sed -i '$d' ./includes/contact-data.csv)
+  # delete output.txt (rm ./integrated-tests/<name-of-test>-output-$cdt.txt) and any edits to csv (sed -i '$d' ./includes/contact-data.csv)
 #+end_src
 *NOTE*: Whenever running tests that manipulate =contact-data.csv= in any way, shape, or form, be sure to include the following bash code.
 #+begin_src bash
   # Placed at beginning of test Create a copy of orignal data for verification
-  cp ./includes/contact-data.csv ./integrated-tests/original-data_$current_datetime.csv
+  cp ./includes/contact-data.csv ./integrated-tests/original-data-$cdt.csv
 
   # ..... test body .......
 
