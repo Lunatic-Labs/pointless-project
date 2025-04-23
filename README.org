@@ -861,24 +861,25 @@ where they can submit the hidden tokens and update their level in the csv file v
 ** Integration Test format
 *** Description
 Tests for the webpages will use bash scripting and are found in the integrated-tests directory.
+- *NOTE*: Always run these tests in the integrated-tests directory. This is to make sure that the =cd ..= command makes the current working directory (cwd) =web-server=.
 **** Naming format:
-- test- =FeatureBeingTested= - =webpage= .sh
+- test- =webpage= - =FeatureBeingTested= .sh
 **** Testing format:
 #+begin_src bash
   #!/bin/bash
-  cd ~/Desktop/pointless-project/web-server
-  touch ./integrated-tests/output_$current_datetime.txt
+  cd ..
+  touch ./integrated-tests/<name-of-test>-output-$cdt.txt
 
   # run wget to run action on URL whether it be a GET or POST request and output that to output.txt
 
   # if-else statements to find desired outcomes using '! grep'
 
-  # delete output.txt (rm ./integrated-tests/output_$current_datetime.txt) and any edits to csv (sed -i '$d' ./includes/contact-data.csv)
+  # delete output.txt (rm ./integrated-tests/<name-of-test>-output-$cdt.txt) and any edits to csv (sed -i '$d' ./includes/contact-data.csv)
 #+end_src
 *NOTE*: Whenever running tests that manipulate =contact-data.csv= in any way, shape, or form, be sure to include the following bash code.
 #+begin_src bash
   # Placed at beginning of test Create a copy of orignal data for verification
-  cp ./includes/contact-data.csv ./integrated-tests/original-data_$current_datetime.csv
+  cp ./includes/contact-data.csv ./integrated-tests/original-data-$cdt.csv
 
   # ..... test body .......
 
@@ -898,17 +899,10 @@ main code. Feel free to delete any files in this directory if needed.
 
 ** Future goals
 - Consistent dark mode between pages
-- Merge all HTML files with corresponding php
-  - This will help with testing
-- Clean up HTML code
-  - Unclosed tags
-  - Dedicated CSS for all web pages
 - Functioning download button in download.php
   - Goal: user retrieves 7zip file from webpage via php
-- Login page for registered users
-- Default level zero for new users
-  - Currently, index.php only records first and last name and email
-  - User is to increase level everytime a token found in the puzzle is submitted
+    - This is where you connect the web-server code with the puzzle-code.
+    - What's on the current page is just a demo.
 
 * Automated Tests
 

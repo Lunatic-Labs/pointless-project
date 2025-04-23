@@ -13,13 +13,13 @@
     <link rel="stylesheet" href="includes/styles.css">
 </head>
 <body>
-<div id="theme-btn" class="far fa-moon"></div>
+    <div id="theme-btn" class="far fa-moon"></div>
     <div style="display:flex; align-items:center; justify-content: center;">
         <div class="title">
             Pointless Challenge
         </div>
         <div class="imagen">
-            <object data="includes/bison.svg" alt="LU_Bison"></object>                    
+            <object data="includes/bison.svg" alt="LU_Bison"></object>         
         </div>
     </div>
     <script> //script for dark mode
@@ -33,18 +33,16 @@
                 }
             }
     </script>
-    <div class="content">
-        <div class="container"><h2 style="text-align:center">The Pointless Challenge.</h2>
-            <div class="warning">!!The Pointless Challenge can only be played on Windows OS!!</div>
-            <p style="text-align:center">
-                Before you can use the Pointless Puzzle zip, <strong>you need to download <a target="_blank" rel="noopener noreferrer" href="https://www.7-zip.org/">7-Zip.</a></strong><br>
-                Regular zip openers cannot properly open the pointless project,<br>
-                <strong>so please download 7-Zip before opening the Pointless zip file.</strong>
-            </p>
-        </div>
-        <div class="container">
-            <a href="./sandbox/dummy.zip" download="dummy.zip">Pointless Download</a>
-        </div>  
+    <div class="container">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="stringForm"> 
+            <label for="token">
+                Token:
+            </label>
+            <input type="text" id="token" name="token" required>
+            <button type="submit">
+                Submit
+            </button>
+        </form>
     </div>
 </body>
 <footer>
