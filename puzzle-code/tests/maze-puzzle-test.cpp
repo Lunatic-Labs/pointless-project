@@ -16,7 +16,6 @@ bool maze_puzzle_test()
   int seed = seed_gen("HelloHi@gmail.com");
   size_t found;
 
-  std::cout << "starting maze puzzle tests" << std::endl;
   test = maze_puzzle_create(1);
   assert(test.password == "u2r2dldr2u3rd2ruru3l2dluldl2urur5");
   found = test.contents_html.find(header_content);
@@ -71,7 +70,6 @@ bool maze_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(important_content);
   assert(found != std::string::npos);
-  std::cout << "maze puzzle test successful\n" << std::endl;
 
   return true;
 }

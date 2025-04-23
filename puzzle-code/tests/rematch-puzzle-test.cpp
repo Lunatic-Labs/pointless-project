@@ -11,7 +11,6 @@ bool rematch_puzzle_test()
   Puzzle test;
   int seed = seed_gen("HelloHi@gmail.com");
 
-  std::cout << "starting rematch puzzle tests" << std::endl;
   test = rematch_puzzle_create(1);
   assert(test.password == "886538131");
   assert(test.contents_html == "");
@@ -31,7 +30,6 @@ bool rematch_puzzle_test()
   test = rematch_puzzle_create(seed);
   assert(test.password == "756676914");
   assert(test.contents_html == "");
-  std::cout << "rematch puzzle test successful\n" << std::endl;
 
   return true;
 }
