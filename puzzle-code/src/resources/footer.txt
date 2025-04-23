@@ -1,8 +1,0 @@
-
-</div>
-
-<footer>
-<div style="text-align:center; margin-top: 34.5px;"><p>Dr. Towell - dtowell@lipscomb.edu</p></div>
-<footer>
-
-</body>

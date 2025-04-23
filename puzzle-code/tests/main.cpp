@@ -10,7 +10,6 @@ int main()
 {
   FLAGS |= ANS_ONLY;
 
-  std::cout << "\n\nautomated testing starting:\n" << std::endl;
   std::vector<bool> tests = {
     math_puzzle_test(),
     color_puzzle_test(),

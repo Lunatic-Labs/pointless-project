@@ -15,7 +15,6 @@ bool rematch_encrypt_puzzle_test()
   int seed = seed_gen("HelloHi@gmail.com");
   size_t found;
 
-  std::cout << "starting rematch encrypt puzzle tests" << std::endl;
   test = rematch_encrypt_puzzle_create(1);
   assert(test.password == "procedure");
   found = test.contents_html.find(header_content);
@@ -60,7 +59,6 @@ bool rematch_encrypt_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(important_content);
   assert(found != std::string::npos);
-  std::cout << "rematch encrypt puzzle test successful\n" << std::endl;
 
   return true;
 }

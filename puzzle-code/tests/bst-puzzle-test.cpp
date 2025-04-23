@@ -16,7 +16,6 @@ bool bst_puzzle_test()
   int seed = seed_gen("HelloHi@gmail.com");
   size_t found;
 
-  std::cout << "starting BST puzzle tests" << std::endl;
   test = bst_puzzle_create(1);
   assert(test.password == "4299662");
   assert(test.extra_info == " Path: lrlrlrrrll");
@@ -76,7 +75,6 @@ bool bst_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(important_content);
   assert(found != std::string::npos);
-  std::cout << "BST puzzle test successful\n" << std::endl;
 
   return true;
 }

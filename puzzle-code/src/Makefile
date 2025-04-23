@@ -1,4 +1,4 @@
-CFLAGS := -ggdb -pedantic -std=c++17 -Wextra -Wall
+CFLAGS := -ggdb -pedantic -std=c++17 -Wextra -Wall -O0 --coverage -fno-exceptions -fno-inline -fexceptions
 CLINKS := -lzip
 CC := g++
 
@@ -26,6 +26,9 @@ $(OBJDIR):
 
 $(ZIP_DIR):
 	mkdir -p $(ZIP_DIR)
+
+coverage:
+	cd obj && gcov -o . $(addprefix ../, $(filter %.cpp, $(SRCS)))
 
 cleanzip:
 	rm -f ./zipfiles/*

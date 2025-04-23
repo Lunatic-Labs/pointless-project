@@ -16,7 +16,6 @@ bool fin_puzzle_test()
   int seed = seed_gen("HelloHi@gmail.com");
   size_t found;
 
-  std::cout << "starting fin puzzle tests" << std::endl;
   test = fin_puzzle_create(1);
   assert(test.password == "");
   found = test.contents_html.find(header_content);
@@ -71,7 +70,6 @@ bool fin_puzzle_test()
   assert(found != std::string::npos);
   found = test.contents_html.find(token);
   assert(found != std::string::npos);
-  std::cout << "fin puzzle test successful\n" << std::endl;
 
   return true;
 }
