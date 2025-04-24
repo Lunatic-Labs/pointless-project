@@ -3,13 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-04-20 Sat 14:43 -->
+<!-- 2025-04-23 Wed 23:36 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pointless Project [[file:./imgs/messed-up-bison.png]]</title>
+<title>Pointless Project <img src="./imgs/messed-up-bison.png" alt="messed-up-bison.png" /></title>
+<meta name="generator" content="Org mode" />
 <meta name="author" content="Zachary Haskins" />
-<meta name="description" content="Introduction to the Pointless Project" />
-<meta name="generator" content="Org Mode" />
+<meta name="description" content="Introduction to the Pointless Project"
+ />
 <link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/htmlize.css"/>
 <link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/bigblow.css"/>
 <link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/hideshow.css"/>
@@ -41,79 +42,102 @@
              }
 });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
-<div id="content" class="content">
+<div id="content">
 <h1 class="title">Pointless Project <img src="./imgs/messed-up-bison.png" alt="messed-up-bison.png" /></h1>
-<div id="table-of-contents" role="doc-toc">
+<div id="table-of-contents">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
+<div id="text-table-of-contents">
 <ul>
-<li><a href="#orgab19d76">1. Introduction</a></li>
-<li><a href="#org96de036">2. Project Setup</a>
+<li><a href="#orga6be77c">1. Introduction</a></li>
+<li><a href="#org93513ce">2. Project Setup</a>
 <ul>
-<li><a href="#orge8bb986">2.1. Installation</a>
+<li><a href="#orgc60eb13">2.1. Installation</a>
 <ul>
-<li><a href="#orgeff5dde">2.1.1. Linux (<i>recommened</i>)</a></li>
-<li><a href="#orgea39e48">2.1.2. Windows</a></li>
-<li><a href="#org8b6cb0a">2.1.3. Mac</a></li>
+<li><a href="#org51c0cb4">2.1.1. Linux (<i>recommened</i>)</a></li>
+<li><a href="#org1f847c1">2.1.2. Windows</a></li>
+<li><a href="#org50e9a64">2.1.3. Mac</a></li>
 </ul>
 </li>
-<li><a href="#org85493be">2.2. Building</a></li>
+<li><a href="#org83defdb">2.2. Building</a></li>
 </ul>
 </li>
-<li><a href="#org5918a03">3. Puzzle Creation Framework</a></li>
-<li><a href="#org26fc8e6">4. Implementing a New Puzzle</a>
+<li><a href="#orgae9aa65">3. Puzzle Creation Framework</a></li>
+<li><a href="#org04592a9">4. Implementing a New Puzzle</a>
 <ul>
-<li><a href="#org1e3fac9">4.1. Puzzle Resources Directory</a></li>
-<li><a href="#org0652137">4.2. Puzzle Implementation</a></li>
-<li><a href="#org255beca">4.3. Using the Puzzle</a></li>
+<li><a href="#orga2c09f2">4.1. Puzzle Resources Directory</a></li>
+<li><a href="#org3e8050e">4.2. Puzzle Implementation</a></li>
+<li><a href="#org9d8e3fa">4.3. Using the Puzzle</a></li>
 </ul>
 </li>
-<li><a href="#orgf7e2505">5. Current Puzzles</a>
+<li><a href="#orgdd1c96e">5. Current Puzzles</a>
 <ul>
-<li><a href="#orgc620666">5.1. Math</a></li>
-<li><a href="#orge6dcf89">5.2. Color</a></li>
-<li><a href="#org8817320">5.3. Pixel</a></li>
-<li><a href="#orgfa6db66">5.4. Maze</a></li>
-<li><a href="#org92fb4ce">5.5. Encrypt</a></li>
-<li><a href="#org65bf211">5.6. Based</a></li>
-<li><a href="#orgffba3b5">5.7. Rematches</a>
+<li><a href="#org51c0e87">5.1. Math</a></li>
+<li><a href="#org288fd5f">5.2. Color</a></li>
+<li><a href="#orgd89a3ec">5.3. Pixel</a></li>
+<li><a href="#orgba1c24b">5.4. Maze</a></li>
+<li><a href="#orgc567bda">5.5. Encrypt</a></li>
+<li><a href="#orgabffd22">5.6. Intro Base</a></li>
+<li><a href="#org0dd49eb">5.7. Rematches</a>
 <ul>
-<li><a href="#orgb0ef0f7">5.7.1. Maze Rematch</a></li>
-<li><a href="#org055b0a8">5.7.2. Encrypt Rematch</a></li>
+<li><a href="#org50c7a92">5.7.1. Maze Rematch</a></li>
+<li><a href="#orga76c843">5.7.2. Encrypt Rematch</a></li>
+<li><a href="#org4ca0b1e">5.7.3. Based Rematch</a></li>
 </ul>
 </li>
-<li><a href="#orgfabbf1e">5.8. Based Rematch</a></li>
-<li><a href="#org2d5c28b">5.9. AST</a></li>
-<li><a href="#org9381d25">5.10. Graph Paper Robot Puzzles</a>
+<li><a href="#orgb47cc98">5.8. BST</a></li>
+<li><a href="#org55816d6">5.9. Scrapped Based Rematch</a></li>
+<li><a href="#org2589ee8">5.10. Graph Paper Robot Puzzles</a>
 <ul>
-<li><a href="#orge8b562e">5.10.1. Binary Addition (Graph Paper Robot I)</a></li>
-<li><a href="#orge89996f">5.10.2. Logic Gate (Graph Paper Robot II)</a></li>
-<li><a href="#orgd0e49b0">5.10.3. <span class="todo TODO">TODO</span> (Graph Paper Robot III)</a></li>
+<li><a href="#orga53a049">5.10.1. Binary Addition (Graph Paper Robot I)</a></li>
+<li><a href="#orgf9f3176">5.10.2. Logic Gate (Graph Paper Robot II)</a></li>
+<li><a href="#org4819ffa">5.10.3. <span class="todo TODO">TODO</span> (Graph Paper Robot III)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org0ab6c22">6. Utilities</a>
+<li><a href="#orga753946">6. Utilities</a>
 <ul>
-<li><a href="#org90d99e4">6.1. Externs</a></li>
-<li><a href="#org80545d7">6.2. Typedefs</a></li>
-<li><a href="#org6002101">6.3. Macros</a></li>
-<li><a href="#orgbbec265">6.4. Functions</a></li>
+<li><a href="#org3f8e9ec">6.1. Externs</a></li>
+<li><a href="#org7d17167">6.2. Typedefs</a></li>
+<li><a href="#org04afe83">6.3. Macros</a></li>
+<li><a href="#org224a8ba">6.4. Functions</a></li>
 </ul>
 </li>
-<li><a href="#org75e0028">7. Graphics</a>
+<li><a href="#org77a599c">7. Graphics</a>
 <ul>
-<li><a href="#org838c395">7.1. Structs</a></li>
-<li><a href="#orgca89d8c">7.2. Operator Overloads</a></li>
-<li><a href="#orgd9aeed1">7.3. Functions</a></li>
+<li><a href="#orgaa5c328">7.1. Structs</a></li>
+<li><a href="#org00d4dc9">7.2. Operator Overloads</a></li>
+<li><a href="#org725b7ab">7.3. Functions</a></li>
 </ul>
 </li>
-<li><a href="#org8dc02a6">8. Issues</a></li>
-<li><a href="#orgc5916e9">9. <span class="todo TODO">TODO</span> Future Plans</a></li>
-<li><a href="#org30749a4">10. Contact</a></li>
+<li><a href="#orga471eb3">8. Web Server</a>
+<ul>
+<li><a href="#org9842f3d">8.1. Description</a></li>
+<li><a href="#org2c62704">8.2. How to start</a></li>
+<li><a href="#orgff7395e">8.3. Integration Test format</a>
+<ul>
+<li><a href="#org8a43148">8.3.1. Description</a></li>
+</ul>
+</li>
+<li><a href="#orgbec725c">8.4. Sandbox directory</a></li>
+<li><a href="#org484cd99">8.5. Future goals</a></li>
+</ul>
+</li>
+<li><a href="#org7f0dd49">9. Code Coverage</a></li>
+<li><a href="#org19d0cf6">10. Automated Tests</a></li>
+<li><a href="#org91bb83f">11. Implementing New Tests</a>
+<ul>
+<li><a href="#orgb086055">11.1. Test Implementation</a></li>
+<li><a href="#org658ac87">11.2. Using the Test</a></li>
+</ul>
+</li>
+<li><a href="#orgc74e79e">12. Issues</a></li>
+<li><a href="#orgd6ab227">13. <span class="todo TODO">TODO</span> Future Plans</a></li>
+<li><a href="#org23ae220">14. Contact</a></li>
 </ul>
 </div>
 </div>
@@ -122,8 +146,8 @@
 in a much better format.
 </p>
 
-<div id="outline-container-orgab19d76" class="outline-2">
-<h2 id="orgab19d76"><span class="section-number-2">1.</span> Introduction</h2>
+<div id="outline-container-orga6be77c" class="outline-2">
+<h2 id="orga6be77c"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <blockquote>
 <p>
@@ -149,16 +173,16 @@ someone else's "<a href="https://github.com/KanegaeGabriel/synacor-challenge/blo
 </div>
 </div>
 
-<div id="outline-container-org96de036" class="outline-2">
-<h2 id="org96de036"><span class="section-number-2">2.</span> Project Setup</h2>
+<div id="outline-container-org93513ce" class="outline-2">
+<h2 id="org93513ce"><span class="section-number-2">2</span> Project Setup</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orge8bb986" class="outline-3">
-<h3 id="orge8bb986"><span class="section-number-3">2.1.</span> Installation</h3>
+<div id="outline-container-orgc60eb13" class="outline-3">
+<h3 id="orgc60eb13"><span class="section-number-3">2.1</span> Installation</h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
-<div id="outline-container-orgeff5dde" class="outline-4">
-<h4 id="orgeff5dde"><span class="section-number-4">2.1.1.</span> Linux (<i>recommened</i>)</h4>
+<div id="outline-container-org51c0cb4" class="outline-4">
+<h4 id="org51c0cb4"><span class="section-number-4">2.1.1</span> Linux (<i>recommened</i>)</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 For Debian based distributions, run:
@@ -166,7 +190,7 @@ For Debian based distributions, run:
 
 <div class="org-src-container">
 <pre class="src src-bash">sudo apt update
-sudo apt install g++ libboost-all-dev libzip-dev
+sudo apt install g++ libboost-all-dev libzip-dev php-cli gcovr emacs
 </pre>
 </div>
 
@@ -196,8 +220,8 @@ sudo pacman -S file-roller
 </div>
 </div>
 
-<div id="outline-container-orgea39e48" class="outline-4">
-<h4 id="orgea39e48"><span class="section-number-4">2.1.2.</span> Windows</h4>
+<div id="outline-container-org1f847c1" class="outline-4">
+<h4 id="org1f847c1"><span class="section-number-4">2.1.2</span> Windows</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 For windows, we recommend developing with <a href="https://learn.microsoft.com/en-us/windows/wsl/about">WSL</a> (Windows Subsystem for Linux).
@@ -211,8 +235,8 @@ For viewing the zipfiles, we have found that <a href="https://www.7-zip.org/down
 </div>
 </div>
 
-<div id="outline-container-org8b6cb0a" class="outline-4">
-<h4 id="org8b6cb0a"><span class="section-number-4">2.1.3.</span> Mac</h4>
+<div id="outline-container-org50e9a64" class="outline-4">
+<h4 id="org50e9a64"><span class="section-number-4">2.1.3</span> Mac</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <p>
 Unfortunately, we have not been able to get the project built on MacOS. We have
@@ -241,8 +265,8 @@ and have the VM use it, then follow the installation on Linux.
 </div>
 </div>
 
-<div id="outline-container-org85493be" class="outline-3">
-<h3 id="org85493be"><span class="section-number-3">2.2.</span> Building</h3>
+<div id="outline-container-org83defdb" class="outline-3">
+<h3 id="org83defdb"><span class="section-number-3">2.2</span> Building</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 First, clone the repository if not done already:
@@ -256,7 +280,7 @@ First, clone the repository if not done already:
 Go into the <code>src/</code> directory:
 </p>
 <div class="org-src-container">
-<pre class="src src-bash">cd .puzzle-code/src/
+<pre class="src src-bash">cd ./puzzle-code/src/
 </pre>
 </div>
 
@@ -287,8 +311,8 @@ generated. You can now inspect and solve the puzzle(s) by choosing the appropria
 </div>
 </div>
 
-<div id="outline-container-org5918a03" class="outline-2">
-<h2 id="org5918a03"><span class="section-number-2">3.</span> Puzzle Creation Framework</h2>
+<div id="outline-container-orgae9aa65" class="outline-2">
+<h2 id="orgae9aa65"><span class="section-number-2">3</span> Puzzle Creation Framework</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 It is obvious to see that there are a lot of directories in this project, and not all
@@ -339,7 +363,7 @@ Each puzzle's generated HTML page (<code>instructions.html</code>) has a specifi
 </table>
 
 <p>
-The HTML <i>Header</i> and <i>Footer</i> are located in <code>src/resources/</code> and do
+The HTML <i>Header</i> and <i>Footer</i> are located in <code>puzzle-code/html-txt/resources/</code> and do
 not need to be touched (unless changes are needed).
 </p>
 
@@ -348,7 +372,7 @@ Below is a UML diagram of how a puzzle gets created.
 </p>
 
 
-<div id="org03ebb80" class="figure">
+<div class="figure">
 <p><img src="./imgs/puzzle-uml.png" alt="puzzle-uml.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Puzzle Creation UML</p>
@@ -356,8 +380,8 @@ Below is a UML diagram of how a puzzle gets created.
 </div>
 </div>
 
-<div id="outline-container-org26fc8e6" class="outline-2">
-<h2 id="org26fc8e6"><span class="section-number-2">4.</span> Implementing a New Puzzle</h2>
+<div id="outline-container-org04592a9" class="outline-2">
+<h2 id="org04592a9"><span class="section-number-2">4</span> Implementing a New Puzzle</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Implementing a new puzzle is increadibly easy with how we implemented it. Here are the steps
@@ -365,8 +389,8 @@ to take when doing so.
 </p>
 </div>
 
-<div id="outline-container-org1e3fac9" class="outline-3">
-<h3 id="org1e3fac9"><span class="section-number-3">4.1.</span> Puzzle Resources Directory</h3>
+<div id="outline-container-orga2c09f2" class="outline-3">
+<h3 id="orga2c09f2"><span class="section-number-3">4.1</span> Puzzle Resources Directory</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 Start by creating a new directory in <code>src/</code> and name it <code>files-&lt;new puzzle name&gt;</code>.
@@ -396,7 +420,7 @@ where the point(less) of it is to have the user find the <i>n<sup>th</sup></i> n
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 2: </span>Creating <code>src/files-fib/.desc.txt</code></label><pre class="src src-bash">cd ./src/
+<label class="org-src-name"><span class="listing-number">Listing 2: </span>Creating <code>puzzle-code/html-txt/files-fib/.desc.txt</code></label><pre class="src src-bash">cd ./puzzle-code/html-txt/
 mkdir files-fib &amp;&amp; cd files-fib
 echo "What is the &lt;b&gt;%DELIM&lt;/b&gt;th number in the fibonacci sequence?" &gt; .desc.txt
 </pre>
@@ -404,21 +428,21 @@ echo "What is the &lt;b&gt;%DELIM&lt;/b&gt;th number in the fibonacci sequence?"
 </div>
 </div>
 
-<div id="outline-container-org0652137" class="outline-3">
-<h3 id="org0652137"><span class="section-number-3">4.2.</span> Puzzle Implementation</h3>
+<div id="outline-container-org3e8050e" class="outline-3">
+<h3 id="org3e8050e"><span class="section-number-3">4.2</span> Puzzle Implementation</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 Once the above step is done, create a new file called <code>&lt;puzzle name&gt;-puzzle.cpp</code>
-in <code>src/</code> and put the entrypoint of the function that will create the puzzle.
+in <code>puzzle-code/src/</code> and put the entrypoint of the function that will create the puzzle.
 We will also need to include <code>./include/puzzle.h</code> to have access to the <code>Puzzle</code> object.
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 3: </span><code>src/fib-puzzle.cpp</code></label><pre class="src src-c++">#include "./include/puzzle.h"
+<label class="org-src-name"><span class="listing-number">Listing 3: </span><code>puzzle-code/src/fib-puzzle.cpp</code></label><pre class="src src-c++">#include "./include/puzzle.h"
 
 Puzzle fib_puzzle_create(long seed)
 {
-  return {"files-fib", "changeme", {}}; // NOTE: "files-fib" is the puzzle requirements directory from the previous step.
+  return {"../html-txt/files-fib", "", "changeme", {}}; // NOTE: "../html-txt/files-fib" is the puzzle requirements directory from the previous step.
 }
 </pre>
 </div>
@@ -430,9 +454,12 @@ The return value of this function is a <code>Puzzle</code> object. It is defined
 <div class="org-src-container">
 <label class="org-src-name"><span class="listing-number">Listing 4: </span><code>src/include/puzzle.h</code></label><pre class="src src-c++">struct Puzzle {
   // The filepath to the appropriate directory
+  // The content of the instruction.html pages
   // that contains all of the information needed
   // for the puzzle.
   std::string contents_fp;
+
+  std::string contents_html;
 
   std::string password;
 
@@ -447,13 +474,15 @@ So we are returning a new puzzle where
 </p>
 
 <ul class="org-ul">
-<li>requirements = "files-fib"</li>
+<li>requirements = "../html-txt/files-fib"</li>
+<li>html content = ""</li>
 <li>password = "changeme"</li>
 <li>extra info = None</li>
 </ul>
 </blockquote>
 
 <p>
+The <code>html content</code> field is a string for the html content of the puzzle.
 The <code>password</code> field is what will set the password for the next zipfile layer.
 The <code>extra_info</code> field is purely for debugging and is strictly used for the side
 effect of printing when running the application. Nothing that gets put into it will
@@ -465,7 +494,7 @@ Now it's time to actually create the solver for the puzzle. I will create a fib 
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 5: </span>Complete source of <code>src/fib-puzzle.cpp</code></label><pre class="src src-c++">#include "./include/puzzle.h"
+<label class="org-src-name"><span class="listing-number">Listing 5: </span>Complete source of <code>puzzle-code/src/fib-puzzle.cpp</code></label><pre class="src src-c++">#include "./include/puzzle.h"
 #include "./include/utils.h" // utils_rng_roll, utils_html_printf, utils_generate_file
 
 static int fib(int n)
@@ -484,33 +513,33 @@ Puzzle fib_puzzle_create(long seed)
 
   // Generate the HTML content to be displayed to the user
   std::string html_content = utils_html_printf("Fibonacci Sequence",
-                                               "./files-fib/.desc.txt",
-                                               {std::to_string(fibnum)});
+					       "../html-txt/files-fib/.desc.txt",
+					       {std::to_string(fibnum)});
 
   // Create the instructions.html
-  utils_generate_file("./files-fib/instructions.html", html_content);
+  utils_generate_file("../html-txt/files-fib/instructions.html", html_content);
 
   // Finally return the Puzzle object.
-  return {"files-fib", std::to_string(password), {}};
+  return {"../html-txt/files-fib", html_content, std::to_string(password), {}};
 }
 </pre>
 </div>
 
 <p>
-Now that the implementation is done, add the signature of <code>Puzzle fib_puzzle_create(long)</code> into <code>./src/include/puzzle.h</code>.
+Now that the implementation is done, add the signature of <code>Puzzle fib_puzzle_create(long)</code> into <code>.puzzle-code/src/include/puzzle.h</code>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org255beca" class="outline-3">
-<h3 id="org255beca"><span class="section-number-3">4.3.</span> Using the Puzzle</h3>
+<div id="outline-container-org9d8e3fa" class="outline-3">
+<h3 id="org9d8e3fa"><span class="section-number-3">4.3</span> Using the Puzzle</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 In the <code>main</code> function in <code>main.cpp</code>, there is some code that looks like:
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 6: </span>src/main.cpp</label><pre class="src src-c++">std::vector&lt;Puzzle&gt; puzzles = {
+<label class="org-src-name"><span class="listing-number">Listing 6: </span>puzzle-code/src/main.cpp</label><pre class="src src-c++">std::vector&lt;Puzzle&gt; puzzles = {
   math_puzzle_create(seed),
   color_puzzle_create(seed),
   pixel_puzzle_create(seed),
@@ -530,7 +559,7 @@ third puzzle that the user solves, I would do:
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 7: </span>src/main.cpp</label><pre class="src src-c++">std::vector&lt;Puzzle&gt; puzzles = {
+<label class="org-src-name"><span class="listing-number">Listing 7: </span>puzzle-code/src/main.cpp</label><pre class="src src-c++">std::vector&lt;Puzzle&gt; puzzles = {
   math_puzzle_create(seed),
   color_puzzle_create(seed),
   fib_puzzle_create(seed), // Added it here
@@ -551,12 +580,12 @@ Now run <code>make all</code> and these things will happen:
 <blockquote>
 <ul class="org-ul">
 <li>The <code>files-&lt;puzzle name&gt;</code> directories will all generate a file called <code>instructions.html</code>.</li>
-<li><code>./src/zipfiles/</code> will be populated with zipfiles.</li>
+<li><code>.puzzle-code/src/zipfiles/</code> will be populated with zipfiles.</li>
 </ul>
 </blockquote>
 
 <p>
-The entire project will be located in <code>./src/zipfiles/puzzle1.zip</code>, as it contains
+The entire project will be located in <code>.puzzle-code/src/zipfiles/puzzle1.zip</code>, as it contains
 the zipped files <i>puzzle1..puzzleN</i>. The reason why we also generate the other puzzles
 outside of <code>puzzle1.zip</code>, is because it allows for easy testing without having to go through the entire zipfile structure.
 </p>
@@ -564,8 +593,8 @@ outside of <code>puzzle1.zip</code>, is because it allows for easy testing witho
 </div>
 </div>
 
-<div id="outline-container-orgf7e2505" class="outline-2">
-<h2 id="orgf7e2505"><span class="section-number-2">5.</span> Current Puzzles</h2>
+<div id="outline-container-orgdd1c96e" class="outline-2">
+<h2 id="orgdd1c96e"><span class="section-number-2">5</span> Current Puzzles</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 These are the currently implemented puzzles. Each one has three entries.
@@ -577,8 +606,8 @@ These are the currently implemented puzzles. Each one has three entries.
 </ol>
 </div>
 
-<div id="outline-container-orgc620666" class="outline-3">
-<h3 id="orgc620666"><span class="section-number-3">5.1.</span> Math</h3>
+<div id="outline-container-org51c0e87" class="outline-3">
+<h3 id="org51c0e87"><span class="section-number-3">5.1</span> Math</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 <i>Adjustable Variables</i>:
@@ -612,8 +641,8 @@ We prompt the user to solve a very simple math question in the form of \(a\) + \
 </div>
 </div>
 
-<div id="outline-container-orge6dcf89" class="outline-3">
-<h3 id="orge6dcf89"><span class="section-number-3">5.2.</span> Color</h3>
+<div id="outline-container-org288fd5f" class="outline-3">
+<h3 id="org288fd5f"><span class="section-number-3">5.2</span> Color</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 <i>Adjustable Variables</i>: <i>None</i>
@@ -638,8 +667,8 @@ some simple Googling to find <a href="https://teamcolorcodes.com/lipscomb-univer
 </div>
 </div>
 
-<div id="outline-container-org8817320" class="outline-3">
-<h3 id="org8817320"><span class="section-number-3">5.3.</span> Pixel</h3>
+<div id="outline-container-orgd89a3ec" class="outline-3">
+<h3 id="orgd89a3ec"><span class="section-number-3">5.3</span> Pixel</h3>
 <div class="outline-text-3" id="text-5-3">
 <p>
 <i>Adjustable Variables</i>:
@@ -692,8 +721,8 @@ The final row contains three code/number pairs and a question mark. The user mus
 </div>
 </div>
 
-<div id="outline-container-orgfa6db66" class="outline-3">
-<h3 id="orgfa6db66"><span class="section-number-3">5.4.</span> Maze</h3>
+<div id="outline-container-orgba1c24b" class="outline-3">
+<h3 id="orgba1c24b"><span class="section-number-3">5.4</span> Maze</h3>
 <div class="outline-text-3" id="text-5-4">
 <p>
 <i>Adjustable Variables</i>:
@@ -767,37 +796,8 @@ apply the run-length encoding algorithm to it. So the answer would be: <i>u2lr3d
 </div>
 </div>
 
-<div id="outline-container-orgffba3b5" class="outline-3">
-  <h3 id="orgffba3b5"><span class="section-number-3">5.5.</span> Based Intro</h3>
-  <div class="outline-text-3" id="text-5-7">
-    <p>
-      <i>Adjustable Variables</i>:
-    </p>
-    <ul class="org-ul">
-      <li><code>MAX_HEX_ANS_LEN</code></li>
-    </ul>
-    <p>
-      <i>Description</i>
-    </p>
-    
-    <p>
-      The goal of this puzzle is to introduce the player to number bases and base conversion.
-      The puzzle contains a visual representation of numbers with different bases called a lightbox.
-      Using these visual representations of bases, the player must convert a lightbox from base 16
-      to base 10.
-    </p>
-    <p>
-    <i>RNG</i>:
-    </p>
-    <ul class="org-ul">
-    <li>value</li>
-    <li>lightbox placements</li>
-    </ul>
-  </div>
-</div>
-
-<div id="outline-container-org92fb4ce" class="outline-3">
-<h3 id="org92fb4ce"><span class="section-number-3">5.6.</span> Encrypt</h3>
+<div id="outline-container-orgc567bda" class="outline-3">
+<h3 id="orgc567bda"><span class="section-number-3">5.5</span> Encrypt</h3>
 <div class="outline-text-3" id="text-5-5">
 <p>
 <i>Adjustable Variables</i>:
@@ -840,8 +840,39 @@ The following things can happen:
 </div>
 </div>
 
-<div id="outline-container-orgffba3b5" class="outline-3">
-<h3 id="orgffba3b5"><span class="section-number-3">5.7.</span> Rematches</h3>
+<div id="outline-container-orgabffd22" class="outline-3">
+<h3 id="orgabffd22"><span class="section-number-3">5.6</span> Intro Base</h3>
+<div class="outline-text-3" id="text-5-6">
+<p>
+<i>Adjustable Variables</i>:
+</p>
+<ul class="org-ul">
+<li><code>MAX_HEX_ANS_LEN</code></li>
+</ul>
+
+<p>
+<i>Description</i>:
+</p>
+
+<p>
+The goal of this puzzle is to introduce the player to number bases and base conversion.
+The puzzle contains a visual representation of numbers with different bases called a lightbox.
+Using these visual representations of bases, the player must convert a lightbox from base 16
+to base 10.
+</p>
+
+<p>
+<i>RNG</i>:
+</p>
+<ul class="org-ul">
+<li>$num</li>
+<li>lightbox placements</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0dd49eb" class="outline-3">
+<h3 id="org0dd49eb"><span class="section-number-3">5.7</span> Rematches</h3>
 <div class="outline-text-3" id="text-5-7">
 <p>
 The "rematch" puzzles serve as the point in the project where there is a
@@ -852,8 +883,8 @@ rematch section.
 </p>
 </div>
 
-<div id="outline-container-orgb0ef0f7" class="outline-4">
-<h4 id="orgb0ef0f7"><span class="section-number-4">5.7.1.</span> Maze Rematch</h4>
+<div id="outline-container-org50c7a92" class="outline-4">
+<h4 id="org50c7a92"><span class="section-number-4">5.7.1</span> Maze Rematch</h4>
 <div class="outline-text-4" id="text-5-7-1">
 <p>
 <i>Adjustable Variables</i>:
@@ -884,8 +915,8 @@ to the yellow tile. The password is then presented when they type "exit()".
 </div>
 </div>
 
-<div id="outline-container-org055b0a8" class="outline-4">
-<h4 id="org055b0a8"><span class="section-number-4">5.7.2.</span> Encrypt Rematch</h4>
+<div id="outline-container-orga76c843" class="outline-4">
+<h4 id="orga76c843"><span class="section-number-4">5.7.2</span> Encrypt Rematch</h4>
 <div class="outline-text-4" id="text-5-7-2">
 <p>
 <i>Adjustable Variables</i>:
@@ -914,158 +945,93 @@ Once they have figured it out, they must decrypt the password.
 </div>
 </div>
 
-<div id="outline-container-org65bf211" class="outline-3">
-  <h3 id="org65bf211"><span class="section-number-4">5.7.3.</span> Based Rematch</h3>
-  <div class="outline-text-4" id="text-5-7-2">
-  <p>
-  <i>Adjustable Variables</i>:
-  </p>
-  <ul class="org-ul">
-  <li><code>CELLS</code> (<b>must modify table in .desc.txt to match</b>)</li>
-  </ul>
-  
-  <p>
-  <i>Description</i>:
-  </p>
-  
-  <p>
-  The goal of this puzzle is to teach the user about <a href="https://en.wikipedia.org/wiki/Positional_notation#Base_conversion">base conversion</a>.
-  They are given a description of three Pointless-created bases. The actual instructions follow in a story-esque fashion, here they are simplified:
-  </p>
-  <ul class="org-ul">
-  <li>Convert values to base 10</li>
-  <li>Sum them up for each row</li>
-  <li>Convert the sum to base 2</li>
-  <li>Check if LSB is on or off</li>
-  <li>Save the resulting LSB values</li>
-  <li>Take that base 2 number and convert it back to base 10 (the rightmost column)</li>
-  </ul>
-  
-  <p>
-  They are then shown a table with values occupying each cell, except for the right most cell in each row.
-  </p>
-  
-  <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-  
-  
-  <colgroup>
-  <col  class="org-right" />
-  
-  <col  class="org-right" />
-  
-  <col  class="org-right" />
-  
-  <col  class="org-left" />
-  </colgroup>
-  <tbody>
-  <tr>
-  <td class="org-right">24</td>
-  <td class="org-right">F</td>
-  <td class="org-right">3</td>
-  <td class="org-left">?</td>
-  </tr>
-  
-  <tr>
-  <td class="org-right">11</td>
-  <td class="org-right">41</td>
-  <td class="org-right">41</td>
-  <td class="org-left">?</td>
-  </tr>
-  
-  <tr>
-  <td class="org-right">A</td>
-  <td class="org-right">18</td>
-  <td class="org-right">27</td>
-  <td class="org-left">?</td>
-  </tr>
-  
-  <tr>
-  <td class="org-right">35</td>
-  <td class="org-right">F</td>
-  <td class="org-right">E</td>
-  <td class="org-left">?</td>
-  </tr>
-  </tbody>
-  </table>
-  
-  <p>
-  <i>RNG</i>:
-  </p>
-  <ul class="org-ul">
-  <li>The values in each cell</li>
-  </ul>
-  </div>
-  </div>
+<div id="outline-container-org4ca0b1e" class="outline-4">
+<h4 id="org4ca0b1e"><span class="section-number-4">5.7.3</span> Based Rematch</h4>
+<div class="outline-text-4" id="text-5-7-3">
+<p>
+<i>Adjustable Variables</i>:
+</p>
+<ul class="org-ul">
+<li><code>CELLS</code> (<b>must modify table in .desc.txt to match</b>)</li>
+</ul>
 
-<div id="outline-container-org9381d25" class="outline-3">
-  <h3 id="org9381d25"><span class="section-number-3">5.8.</span> Binary Addition (Graph Paper Robot I)</h3>
-  <div class="outline-text-3" id="text-5-10">
-  <p>
-    <i>Adjustable Variables</i>:
-  </p>
-  <ul class="org-ul">
-    <li><code>TAPE_WIDTH</code></li>
-    <li><code>TAPE_HEIGHT</code></li>
-    <li><code>REQ_CARRIES</code></li>
-  </ul>
+<p>
+<i>Description</i>:
+</p>
 
-  <p>
-    <i>Description</i>:
-  </p>
-  
-  <p>
-    The player is presented with a 2x12 grid of (mostly) red \((r)\) and green \((g)\) pixels. The red pixels means 0
-    and green means 1. Then, following the rules in the instructions, the player should color in the correct
-    squares with the correct color. The idea of this puzzle is that the player is actually performing binary addition.
-  </p>
-  
-  <p>
-    <i>RNG</i>: \(r, g\) pixels
-  </p>
+<p>
+The goal of this puzzle is to teach the user about <a href="https://en.wikipedia.org/wiki/Positional_notation#Base_conversion">base conversion</a>.
+They are given a description of three Pointless-created bases. The actual instructions follow in a story-esque fashion, here they are simplified:
+</p>
+<ul class="org-ul">
+<li>Convert values to base 10</li>
+<li>Sum them up for each row</li>
+<li>Convert the sum to base 2</li>
+<li>Check if LSB is on or off</li>
+<li>Save the resulting LSB values</li>
+<li>Take that base 2 number and convert it back to base 10 (the rightmost column)</li>
+</ul>
+
+<p>
+They are then shown a table with values occupying each cell, except for the right most cell in each row.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">24</td>
+<td class="org-right">F</td>
+<td class="org-right">3</td>
+<td class="org-left">?</td>
+</tr>
+
+<tr>
+<td class="org-right">11</td>
+<td class="org-right">41</td>
+<td class="org-right">41</td>
+<td class="org-left">?</td>
+</tr>
+
+<tr>
+<td class="org-right">A</td>
+<td class="org-right">18</td>
+<td class="org-right">27</td>
+<td class="org-left">?</td>
+</tr>
+
+<tr>
+<td class="org-right">35</td>
+<td class="org-right">F</td>
+<td class="org-right">E</td>
+<td class="org-left">?</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<i>RNG</i>:
+</p>
+<ul class="org-ul">
+<li>The values in each cell</li>
+</ul>
+</div>
+</div>
 </div>
 
-
-<div id="outline-container-org9381d25" class="outline-3">
-  <h3 id="org9381d25"><span class="section-number-3">5.9.</span> Logic Gate (Graph Paper Robot II)</h3>
-  <div class="outline-text-3" id="text-5-10">
-
-  <p>
-  <i>Adjustable Variables</i>:
-  </p>
-  <ul class="org-ul">
-  <li><code>enum Gate</code> (<b>needs implementation</b>)</li>
-  <li><code>input length</code> (unimplemented, <b>needs to be a power of 2</b>)</li>
-  </ul>
-  
-  <p>
-  <i>Description</i>:
-  </p>
-  
-  <p>
-    <b>NOTE</b>: This puzzle is currently in development, so the description is sparse on purpose.
-  </p>
-  
-  <p>
-    The player is presented with a grid of colors \((g)\) which are (unknown to the player) logicgates.
-    These logic gates will be read in by the robot as instructions. The first instruction is in bottom left.
-    Then the robot reads to the right, and loops back to the left when it reaches the end. (like reading a book, but bottom to top)
-    There is another robot managing the memory, which are the colored circles \((c)\).
-    When the first robot reads in a gate, the memory robot pops off the two bits on the left.
-    The logic gate is then evaluted with those bits, and the result pushed on the right end of memory.
-  </p>
-  
-  <p>
-  The answer is every evaluation in order.
-  </p>
-  
-  <p>
-    <i>RNG</i>: \(g,c\)
-  </p>
-</div>
-
-<div id="outline-container-org2d5c28b" class="outline-3">
-<h3 id="org2d5c28b"><span class="section-number-3">5.10.</span> BST</h3>
-<div class="outline-text-3" id="text-5-9">
+<div id="outline-container-orgb47cc98" class="outline-3">
+<h3 id="orgb47cc98"><span class="section-number-3">5.8</span> BST</h3>
+<div class="outline-text-3" id="text-5-8">
 <p>
 <i>Adjustable Variables</i>:
 </p>
@@ -1079,20 +1045,22 @@ Once they have figured it out, they must decrypt the password.
 </p>
 
 <p>
-  The player is presented with a root number. The goal is to create a binary search tree (BST), and trace
-  the route from the root node to the destination by solving the expression set with your root number.
+The player is presented with a root number. The goal is to create a binary search tree (BST), and trace
+the route from the root node to the destination by solving the expression set with your root number.
 </p>
 
-<p>These are the possible expressions that can show up with examples:</p>
+<p>
+These are the possible expressions that can show up with examples:
+</p>
 <ul class="org-ul">
 <li>addition: \(a\) + \(b\)</li>
 <li>subtraction: \(a\) - \(b\)</li>
 <li>multiplication: \(a\) * \(b\)</li>
 <li>division: \(a\) / \(b\)</li>
 <li>square root: √(\(a\))</li>
-<li>comparisons: \(a\) > \(b\)</li>
+<li>comparisons: \(a\) &gt; \(b\)</li>
 <li>hexadecimal: FFFFFF</li>
-<li>complex expression: √?((\(a\) (-|+) \(b\)) (+/-) (\(c\) (*|/) \(d\)))</li>
+<li>complex expression: √?((\(a\) -<i>+ \(b\)) +</i>- (\(c\) *||/ \(d\)))</li>
 </ul>
 
 <p>
@@ -1106,71 +1074,150 @@ Once they have figured it out, they must decrypt the password.
 </div>
 </div>
 
-<div id="outline-container-org9381d25" class="outline-3">
-  <h3 id="org9381d25"><span class="section-number-3">5.11.</span> <span class="todo TODO">TODO</span> (Graph Paper Robot III)</h3>
-  <div class="outline-text-3" id="text-5-10">
-  <p>Currently Unimplemented</p>
+<div id="outline-container-org55816d6" class="outline-3">
+<h3 id="org55816d6"><span class="section-number-3">5.9</span> Scrapped Based Rematch</h3>
+<div class="outline-text-3" id="text-5-9">
+<p>
+<i>Adjustable Variables</i>:
+</p>
+<ul class="org-ul">
+<li><code>NUM_VALS</code> (<b>must modify html elements to match</b>)</li>
+<li><code>VAL_SZ</code></li>
+</ul>
 
+<p>
+<i>Description</i>:
+</p>
+
+<p>
+This is a harder version of the <i>Based</i> puzzle that also incorporates sorting. The user is presented with an instructions page outlining the challenge. Hidden on the page are three buttons 
+that, when clicked, enumerate the Pointless-created bases that they will encounter in the actual puzzle.
+</p>
+
+<p>
+The bases:
+</p>
+
+<ul class="org-ul">
+<li><i>Symbolic 8</i>: <code>!, @, #, $, %, ^, &amp;, *</code></li>
+<li><i>Glyphic 16</i>: <code>{, }, [, ], (, ), `, &gt;, a, b, c, d, e, f, g, h</code></li>
+<li><i>Mystic 36</i>: <code>|, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z</code></li>
+</ul>
+
+<p>
+Upon clicking the "Enter" button, they will be brought to the actual puzzle. There are <code>NUM_VALS</code> number of values, each of length <code>VAL_SZ</code>.
+Clicking on these values places them into the container in the center of the page. The user must fill this container with the values sorted from smallest to greatest.
+Doing so correctly will prompt a modal to appear containing the key.
+</p>
+
+<p>
+<i>RNG</i>:
+</p>
+
+<ul class="org-ul">
+<li>The values</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-org055b0a8" class="outline-4">
-  <h3 id="org055b0a8"><span class="section-number-3">5.12.</span> Scrapped Based Rematch</h3>
-  <div class="outline-text-3" id="text-5-6">
-    <p>
-    <i>Adjustable Variables</i>:
-    </p>
-    <ul class="org-ul">
-    <li><code>NUM_VALS</code> (<b>must modify html elements to match</b>)</li>
-    <li><code>VAL_SZ</code></li>
-    </ul>
-    
-    <p>
-    <i>Description</i>:
-    </p>
-    
-    <p>
-    This is a harder version of the <i>Based</i> puzzle that also incorporates sorting. The user is presented with an instructions page outlining the challenge. Hidden on the page are three buttons 
-    that, when clicked, enumerate the Pointless-created bases that they will encounter in the actual puzzle.
-    </p>
-    
-    <p>
-    The bases:
-    </p>
-    
-    <ul class="org-ul">
-    <li><i>Symbolic 8</i>: <code>!, @, #, $, %, ^, &amp;, *</code></li>
-    <li><i>Glyphic 16</i>: <code>{, }, [, ], (, ), `, &gt;, a, b, c, d, e, f, g, h</code></li>
-    <li><i>Mystic 36</i>: <code>|, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z</code></li>
-    </ul>
-    
-    <p>
-    Upon clicking the "Enter" button, they will be brought to the actual puzzle. There are <code>NUM_VALS</code> number of values, each of length <code>VAL_SZ</code>.
-    Clicking on these values places them into the container in the center of the page. The user must fill this container with the values sorted from smallest to greatest.
-    Doing so correctly will prompt a modal to appear containing the key.
-    </p>
-    
-    <p>
-    <i>RNG</i>:
-    </p>
-    
-    <ul class="org-ul">
-    <li>The values</li>
-    </ul>
-  </div>
+<div id="outline-container-org2589ee8" class="outline-3">
+<h3 id="org2589ee8"><span class="section-number-3">5.10</span> Graph Paper Robot Puzzles</h3>
+<div class="outline-text-3" id="text-5-10">
+<p>
+The idea behind this trilogy of paper robot puzzles, is that we want the player to bring out
+a piece of graph paper and something to color the squares with and do this all on paper. We want to
+teach the player about certain topics in the first two paper robot puzzles (state, memory etc.) then
+incorporate those ideas in the last one.
+</p>
 </div>
-  
-<div id="outline-container-org0ab6c22" class="outline-2">
-  <h2 id="org0ab6c22"><span class="section-number-2">6.</span> Utilities</h2>
-  <div class="outline-text-2" id="text-6">
-    <p>
-      Like the name implies, these are very helpful utility functions that are available.
-    </p>
-  </div>
-  
 
-<div id="outline-container-org90d99e4" class="outline-3">
-<h3 id="org90d99e4"><span class="section-number-3">6.1.</span> Externs</h3>
+<div id="outline-container-orga53a049" class="outline-4">
+<h4 id="orga53a049"><span class="section-number-4">5.10.1</span> Binary Addition (Graph Paper Robot I)</h4>
+<div class="outline-text-4" id="text-5-10-1">
+<p>
+<i>Adjustable Variables</i>:
+</p>
+<ul class="org-ul">
+<li><code>TAPE_WIDTH</code></li>
+<li><code>TAPE_HEIGHT</code></li>
+<li><code>REQ_CARRIES</code></li>
+</ul>
+
+<p>
+<i>Description</i>:
+</p>
+
+<p>
+The player is presented with a 2x12 grid of (mostly) red \((r)\) and green \((g)\) pixels. The red pixels means 0
+and green means 1. Then, following the rules in the instructions, the player should color in the correct
+squares with the correct color. The idea of this puzzle is that the player is actually performing binary addition.
+</p>
+
+<p>
+<i>RNG</i>: \(r, g\) pixels
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf9f3176" class="outline-4">
+<h4 id="orgf9f3176"><span class="section-number-4">5.10.2</span> Logic Gate (Graph Paper Robot II)</h4>
+<div class="outline-text-4" id="text-5-10-2">
+<p>
+<i>Adjustable Variables</i>:
+</p>
+<ul class="org-ul">
+<li><code>enum Gate</code> (<b>needs implementation</b>)</li>
+<li><code>input length</code> (unimplemented, <b>needs to be a power of 2</b>)</li>
+</ul>
+
+<p>
+<i>Description</i>:
+</p>
+
+<p>
+<b>NOTE</b>: This puzzle is currently in development, so the description is sparse on purpose.
+</p>
+
+<p>
+The player is presented with a grid of colors \((g)\) which are (unknown to the player) logicgates.
+These logic gates will be read in by the robot as instructions. The first instruction is in bottom left.
+Then the robot reads to the right, and loops back to the left when it reaches the end. (like reading a book, but bottom to top)
+There is another robot managing the memory, which are the colored circles \((c)\).
+When the first robot reads in a gate, the memory robot pops off the two bits on the left.
+The logic gate is then evaluted with those bits, and the result pushed on the right end of memory.
+</p>
+
+<p>
+The answer is every evaluation in order.
+</p>
+
+<p>
+<i>RNG</i>: \(g,c\)
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4819ffa" class="outline-4">
+<h4 id="org4819ffa"><span class="section-number-4">5.10.3</span> <span class="todo TODO">TODO</span> (Graph Paper Robot III)</h4>
+<div class="outline-text-4" id="text-5-10-3">
+<p>
+Currently unimplemented
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga753946" class="outline-2">
+<h2 id="orga753946"><span class="section-number-2">6</span> Utilities</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Like the name implies, these are very helpful utility functions that are available.
+</p>
+</div>
+
+<div id="outline-container-org3f8e9ec" class="outline-3">
+<h3 id="org3f8e9ec"><span class="section-number-3">6.1</span> Externs</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 <code>extern uint32_t FLAGS;</code>
@@ -1178,8 +1225,8 @@ Once they have figured it out, they must decrypt the password.
 </div>
 </div>
 
-<div id="outline-container-org80545d7" class="outline-3">
-<h3 id="org80545d7"><span class="section-number-3">6.2.</span> Typedefs</h3>
+<div id="outline-container-org7d17167" class="outline-3">
+<h3 id="org7d17167"><span class="section-number-3">6.2</span> Typedefs</h3>
 <div class="outline-text-3" id="text-6-2">
 <p>
 <code>typedef std::vector&lt;std::string&gt; strvec_t;</code>
@@ -1191,8 +1238,8 @@ Once they have figured it out, they must decrypt the password.
 </div>
 </div>
 
-<div id="outline-container-org6002101" class="outline-3">
-<h3 id="org6002101"><span class="section-number-3">6.3.</span> Macros</h3>
+<div id="outline-container-org04afe83" class="outline-3">
+<h3 id="org04afe83"><span class="section-number-3">6.3</span> Macros</h3>
 <div class="outline-text-3" id="text-6-3">
 <p>
 <code>ANS_ONLY</code>
@@ -1236,8 +1283,8 @@ Makes the pixelated bison generate with a grid
 </div>
 </div>
 
-<div id="outline-container-orgbbec265" class="outline-3">
-<h3 id="orgbbec265"><span class="section-number-3">6.4.</span> Functions</h3>
+<div id="outline-container-org224a8ba" class="outline-3">
+<h3 id="org224a8ba"><span class="section-number-3">6.4</span> Functions</h3>
 <div class="outline-text-3" id="text-6-4">
 <div class="org-src-container">
 <pre class="src src-c++">void utils_generate_file(filepath_t filepath, std::string output_body);
@@ -1312,16 +1359,16 @@ to calling this function. The same is true for the footer if <code>NO_FTR</code>
 </div>
 </div>
 
-<div id="outline-container-org75e0028" class="outline-2">
-<h2 id="org75e0028"><span class="section-number-2">7.</span> Graphics</h2>
+<div id="outline-container-org77a599c" class="outline-2">
+<h2 id="org77a599c"><span class="section-number-2">7</span> Graphics</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 This section includes a bunch of utility functions dedicated to graphics.
 </p>
 </div>
 
-<div id="outline-container-org838c395" class="outline-3">
-<h3 id="org838c395"><span class="section-number-3">7.1.</span> Structs</h3>
+<div id="outline-container-orgaa5c328" class="outline-3">
+<h3 id="orgaa5c328"><span class="section-number-3">7.1</span> Structs</h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 <code>struct Pixel</code>
@@ -1349,8 +1396,8 @@ This section includes a bunch of utility functions dedicated to graphics.
 </div>
 </div>
 
-<div id="outline-container-orgca89d8c" class="outline-3">
-<h3 id="orgca89d8c"><span class="section-number-3">7.2.</span> Operator Overloads</h3>
+<div id="outline-container-org00d4dc9" class="outline-3">
+<h3 id="org00d4dc9"><span class="section-number-3">7.2</span> Operator Overloads</h3>
 <div class="outline-text-3" id="text-7-2">
 <div class="org-src-container">
 <pre class="src src-c++">Pixel &amp;Image::operator()(size_t i, size_t j);
@@ -1359,8 +1406,8 @@ This section includes a bunch of utility functions dedicated to graphics.
 </div>
 </div>
 
-<div id="outline-container-orgd9aeed1" class="outline-3">
-<h3 id="orgd9aeed1"><span class="section-number-3">7.3.</span> Functions</h3>
+<div id="outline-container-org725b7ab" class="outline-3">
+<h3 id="org725b7ab"><span class="section-number-3">7.3</span> Functions</h3>
 <div class="outline-text-3" id="text-7-3">
 <p>
 <b>NOTE</b>: We have moved away from PPM files and focus more on SVGs.
@@ -1436,10 +1483,10 @@ Returns a string of all shapes in valid SVG format to embed into HTML.
 
 <div class="org-src-container">
 <pre class="src src-c++">Svg::Shape::Rect(float _x, float _y,
-                 float _width, float _height,
-                 std::string _fill,
-                 std::optional&lt;std::string&gt; _stroke = {},
-                 std::optional&lt;std::string&gt; _html_classname = {});
+		 float _width, float _height,
+		 std::string _fill,
+		 std::optional&lt;std::string&gt; _stroke = {},
+		 std::optional&lt;std::string&gt; _html_classname = {});
 </pre>
 </div>
 
@@ -1467,8 +1514,8 @@ to modify it in HTML/JS).
 
 <div class="org-src-container">
 <pre class="src src-c++">Svg::Shape::Circle(float _x, float _y, float _radius, std::string _fill,
-                   std::optional&lt;std::string&gt; _stroke = {},
-                   std::optional&lt;std::string&gt; _html_classname = {});
+		   std::optional&lt;std::string&gt; _stroke = {},
+		   std::optional&lt;std::string&gt; _html_classname = {});
 </pre>
 </div>
 
@@ -1566,34 +1613,420 @@ Scales <code>img</code> by <code>scale</code> and returns a new <code>Image</cod
 </div>
 </div>
 
-<div id="outline-container-org8dc02a6" class="outline-2">
-<h2 id="org8dc02a6"><span class="section-number-2">8.</span> Issues</h2>
+<div id="outline-container-orga471eb3" class="outline-2">
+<h2 id="orga471eb3"><span class="section-number-2">8</span> Web Server</h2>
 <div class="outline-text-2" id="text-8">
+</div>
+<div id="outline-container-org9842f3d" class="outline-3">
+<h3 id="org9842f3d"><span class="section-number-3">8.1</span> Description</h3>
+<div class="outline-text-3" id="text-8-1">
+<p>
+The main goals of the webpage are puzzle download, user registration, and user tracking. 
+New users are to put their info into the first page, which is saved to a csv file. (Each new user will have a default level of 0)
+User downloads the puzzle via php and plays offline. In order to level up, user is to log in to a separate page
+where they can submit the hidden tokens and update their level in the csv file via POST request.
+</p>
+
+
+<div class="figure">
+<p><img src="./imgs/Pointless_UMLs-Webpage.jpg" alt="Pointless_UMLs-Webpage.jpg" />
+</p>
+<p><span class="figure-number">Figure 2: </span>Webpage User Flow UML</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2c62704" class="outline-3">
+<h3 id="org2c62704"><span class="section-number-3">8.2</span> How to start</h3>
+<div class="outline-text-3" id="text-8-2">
+<p>
+Change directories to <code>web-server/</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">cd ./pointless-project/web-server
+</pre>
+</div>
+
+<p>
+Start localhost
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">php -S localhost:8000
+</pre>
+</div>
+
+<p>
+<b>NOTE</b>: Keep terminal running to track all requests going to web-server.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgff7395e" class="outline-3">
+<h3 id="orgff7395e"><span class="section-number-3">8.3</span> Integration Test format</h3>
+<div class="outline-text-3" id="text-8-3">
+</div>
+<div id="outline-container-org8a43148" class="outline-4">
+<h4 id="org8a43148"><span class="section-number-4">8.3.1</span> Description</h4>
+<div class="outline-text-4" id="text-8-3-1">
+<p>
+Tests for the webpages will use bash scripting and are found in the integrated-tests directory.
+</p>
+</div>
+<ol class="org-ol">
+<li><a id="org182207d"></a>Naming format:<br />
+<div class="outline-text-5" id="text-8-3-1-1">
+<ul class="org-ul">
+<li>test- <code>FeatureBeingTested</code> - <code>webpage</code> .sh</li>
+</ul>
+</div>
+</li>
+<li><a id="org7858ed0"></a>Testing format:<br />
+<div class="outline-text-5" id="text-8-3-1-2">
+<div class="org-src-container">
+<pre class="src src-bash">#!/bin/bash
+cd ~/Desktop/pointless-project/web-server
+touch ./integrated-tests/output_$current_datetime.txt
+
+# run wget to run action on URL whether it be a GET or POST request and output that to output.txt
+
+# if-else statements to find desired outcomes using '! grep'
+
+# delete output.txt (rm ./integrated-tests/output_$current_datetime.txt) and any edits to csv (sed -i '$d' ./includes/contact-data.csv)
+</pre>
+</div>
+
+<p>
+<b>NOTE</b>: Whenever running tests that manipulate <code>contact-data.csv</code> in any way, shape, or form, be sure to include the following bash code.
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"># Placed at beginning of test Create a copy of orignal data for verification
+cp ./includes/contact-data.csv ./integrated-tests/original-data_$current_datetime.csv
+
+# ..... test body .......
+
+
+# Check integrity of contact-data.csv 
+if diff ./includes/contact-data.csv ./integrated-tests/original-data.csv; then
+    echo 'Changes to contact-data.csv?: No, data is intact.'
+    rm ./integrated-tests/original-data_$current_datetime.csv
+else
+    echo 'Changes to contact-data.csv?: !!contact-data.csv compromised!! Check for changes!!'
+fi
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgbec725c" class="outline-3">
+<h3 id="orgbec725c"><span class="section-number-3">8.4</span> Sandbox directory</h3>
+<div class="outline-text-3" id="text-8-4">
+<p>
+This directory is to be used for testing any new code or methods, so as not to interfere with any of the
+main code. Feel free to delete any files in this directory if needed.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org484cd99" class="outline-3">
+<h3 id="org484cd99"><span class="section-number-3">8.5</span> Future goals</h3>
+<div class="outline-text-3" id="text-8-5">
+<ul class="org-ul">
+<li>Consistent dark mode between pages</li>
+<li>Merge all HTML files with corresponding php
+<ul class="org-ul">
+<li>This will help with testing</li>
+</ul></li>
+<li>Clean up HTML code
+<ul class="org-ul">
+<li>Unclosed tags</li>
+<li>Dedicated CSS for all web pages</li>
+</ul></li>
+<li>Functioning download button in download.php
+<ul class="org-ul">
+<li>Goal: user retrieves 7zip file from webpage via php</li>
+</ul></li>
+<li>Login page for registered users</li>
+<li>Default level zero for new users
+<ul class="org-ul">
+<li>Currently, index.php only records first and last name and email</li>
+<li>User is to increase level everytime a token found in the puzzle is submitted</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7f0dd49" class="outline-2">
+<h2 id="org7f0dd49"><span class="section-number-2">9</span> Code Coverage</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+Go into the <code>src/</code> directory:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">cd ./puzzle-code/src/
+</pre>
+</div>
+
+<p>
+Then use the <code>Makefile</code> to build the project:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">make &lt;opt&gt;
+</pre>
+</div>
+<blockquote>
+<p>
+where <code>opt</code> is one of:
+</p>
+<ul class="org-ul">
+<li><code>all</code> &rarr; perform all <code>Makefile</code> flags</li>
+<li><code>clean</code> &rarr; removes all object files and all generated zipfiles</li>
+<li><code>cleanzip</code> &rarr; removes all generated zipfiles</li>
+</ul>
+</blockquote>
+
+<p>
+<b>NOTE</b>: <code>main</code> would need to run at least once for the code coverage to work
+</p>
+
+<p>
+Then do:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">make coverage
+</pre>
+</div>
+<blockquote>
+<ul class="org-ul">
+<li><code>coverage</code> &rarr; gives a long list of file names and percentage of lines executed in the terminal</li>
+</ul>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-org19d0cf6" class="outline-2">
+<h2 id="org19d0cf6"><span class="section-number-2">10</span> Automated Tests</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+Go into the <code>test/</code> directory:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">cd ./puzzle-code/test/
+</pre>
+</div>
+
+<p>
+Then use the <code>Makefile</code> to build the project:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">make &lt;opt&gt;
+</pre>
+</div>
+<blockquote>
+<p>
+where <code>opt</code> is one of:
+</p>
+<ul class="org-ul">
+<li><code>all</code> &rarr; perform all <code>Makefile</code> flags and starts the automated testing process</li>
+<li><code>clean</code> &rarr; removes all object files</li>
+</ul>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-org91bb83f" class="outline-2">
+<h2 id="org91bb83f"><span class="section-number-2">11</span> Implementing New Tests</h2>
+<div class="outline-text-2" id="text-11">
+</div>
+<div id="outline-container-orgb086055" class="outline-3">
+<h3 id="orgb086055"><span class="section-number-3">11.1</span> Test Implementation</h3>
+<div class="outline-text-3" id="text-11-1">
+<p>
+Create a new file called <code>&lt;puzzle name&gt;-puzzle-test.cpp</code>
+in <code>test/</code> and put the entrypoint of the function that will create the puzzle.
+We will also need to include <code>../src/include/puzzle.h</code> to have access to the <code>Puzzle</code> object,
+and <code>./include/test.h</code> to have access to the different puzzle test functions.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">#include "./include/test.h"
+#include "./include/file.h"
+#include "../src/include/puzzle.h"
+
+bool fib_puzzle_test()
+{
+  Puzzle test;
+  std::string header_content = file_contents("../html-txt/resources/header.txt");
+  std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  size_t found;
+
+  std::cout &lt;&lt; "starting fib puzzle tests" &lt;&lt; std::endl;
+  // Different assert() tests
+  std::cout &lt;&lt; "fib puzzle test successful\n" &lt;&lt; std::endl;
+
+  return true;
+}
+</pre>
+</div>
+
+<p>
+Now it's time to create an automated test for puzzle. I will create a fib test function to see if the fib function
+works correctly.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;cassert&gt;
+#include "./include/test.h"
+#include "./include/file.h"
+#include "../src/include/puzzle.h"
+#include "../src/include/utils.h"
+
+bool fib_puzzle_test()
+{
+  Puzzle test;
+  std::string header_content = file_contents("../html-txt/resources/header.txt");
+  std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  size_t found;
+
+  std::cout &lt;&lt; "starting fib puzzle tests" &lt;&lt; std::endl;
+  test = fib_puzzle_create(1);
+  assert(test.password == "1");
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+
+  test = fib_puzzle_create(5);
+  assert(test.password == "5");
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+
+  test = fib_puzzle_create(10);
+  assert(test.password == "55");
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+
+  test = fib_puzzle_create(15);
+  assert(test.password == "610");
+  found = test.contents_html.find(header_content);
+  assert(found != std::string::npos);
+  found = test.contents_html.find(footer_content);
+  assert(found != std::string::npos);
+  std::cout &lt;&lt; "fib puzzle test successful\n" &lt;&lt; std::endl;
+
+  return true;
+}
+</pre>
+</div>
+
+<p>
+Now that the implementation is done, add the signature of <code>bool fib_puzzle_test();</code> into <code>./puzzle-code/test/include/test.h</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org658ac87" class="outline-3">
+<h3 id="org658ac87"><span class="section-number-3">11.2</span> Using the Test</h3>
+<div class="outline-text-3" id="text-11-2">
+<p>
+In the <code>main</code> function in <code>main.cpp</code>, there is some code that looks like:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">std::vector&lt;bool&gt; tests = {
+  math_puzzle_test(),
+  color_puzzle_test(),
+  pixel_puzzle_test(),
+  maze_puzzle_test(),
+  based_intro_puzzle_test(),
+  encrypt_puzzle_test(),
+  rematch_puzzle_test(),
+  rematch_maze_puzzle_test(),
+  rematch_encrypt_puzzle_test(),
+  rematch_based_puzzle_test(),
+  binary_addition_puzzle_test(),
+  logicgate_puzzle_test(),
+  bst_puzzle_test(),
+  fin_puzzle_test(),
+};
+</pre>
+</div>
+
+<p>
+Put the new test that was created in the spot that you want it to
+appear in the testing process. For example, if I want it to be the
+third test that the program will test, I would do:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">std::vector&lt;bool&gt; tests = {
+  math_puzzle_test(),
+  color_puzzle_test(),
+  fib_puzzle_test(),  // Added it here
+  pixel_puzzle_test(),
+  maze_puzzle_test(),
+  based_intro_puzzle_test(),
+  encrypt_puzzle_test(),
+  rematch_puzzle_test(),
+  rematch_maze_puzzle_test(),
+  rematch_encrypt_puzzle_test(),
+  rematch_based_puzzle_test(),
+  binary_addition_puzzle_test(),
+  logicgate_puzzle_test(),
+  bst_puzzle_test(),
+  fin_puzzle_test(),
+};
+</pre>
+</div>
+
+<p>
+Now run <code>make all</code> and these things will happen:
+</p>
+
+<blockquote>
+<ul class="org-ul">
+<li>If <code>./puzzle-code/test/obj/</code> is populated, then remove every object file in it.</li>
+<li>The <code>&lt;puzzle name&gt;-puzzle.cpp</code> code will be compiled with the tests.</li>
+<li>Once compiled, the test will run automaticly.</li>
+</ul>
+</blockquote>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc74e79e" class="outline-2">
+<h2 id="orgc74e79e"><span class="section-number-2">12</span> Issues</h2>
+<div class="outline-text-2" id="text-12">
 <ul class="org-ul">
 <li>No support for building on MacOS</li>
-<li>The formatting for the <i>Binary Addition</i> (Graph Paper Robot II) puzzle
-is not formatted correctly</li>
 <li>Issues with accessing the zip files on MacOS and Linux without file-roller. It immediately
 prompts for a password even though it should not.</li>
 <li>There is no storyline.</li>
 <li>The puzzle difficulty does not scale smoothly. The earlier puzzles should be harder.</li>
-<li>The <i>AST</i> puzzle is way to difficult to solve. Even some Computer Science students were unable to solve it.</li>
-<li>The formatting on the <i>AST</i> puzzle is very incorrect.</li>
 <li>The <i>Maze Rematch</i> puzzle needs a better description.</li>
 <li>Missing required "whitty" quotes on all puzzles.</li>
-<li>Need some way of keeping track of the seed in some meta-data in case the student is stuck. Lipscomb needs
-to figure out the seed that they have so help can be offered.</li>
+<li>The rematch puzzles produce "pieces" of the final password, and the user must concat them together. However,
+this does not work if the user decides to do them in a non-linear order. Maybe just add the numbers together?</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgc5916e9" class="outline-2">
-<h2 id="orgc5916e9"><span class="section-number-2">9.</span> <span class="todo TODO">TODO</span> Future Plans</h2>
+<div id="outline-container-orgd6ab227" class="outline-2">
+<h2 id="orgd6ab227"><span class="section-number-2">13</span> <span class="todo TODO">TODO</span> Future Plans</h2>
 </div>
 
-<div id="outline-container-org30749a4" class="outline-2">
-<h2 id="org30749a4"><span class="section-number-2">10.</span> Contact</h2>
-<div class="outline-text-2" id="text-10">
+<div id="outline-container-org23ae220" class="outline-2">
+<h2 id="org23ae220"><span class="section-number-2">14</span> Contact</h2>
+<div class="outline-text-2" id="text-14">
 <p>
 Zachary Haskins - <i>zdhdev@yahoo.com</i> <a href="https://github.com/malloc-nbytes/">Github</a>
 </p>
@@ -1613,13 +2046,21 @@ Steven Yassa - <i>seyassa@mail.lipscomb.edu</i> Github
 <p>
 Jordan Hasulube - <i>jdhasulube@mail.lipscomb.edu</i> <a href="https://github.com/JordanHassy">Github</a>
 </p>
+
+<p>
+Michael Hernandez-Lara - <i>mahernandezlara@mail.lipscomb.edu</i> Github
+</p>
+
+<p>
+John Tabelisma - <i>jmtabelisma@mail.lipscomb.edu</i> <a href="https://github.com/johntable">Github</a>
+</p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zachary Haskins</p>
-<p class="date">Created: 2024-04-20 Sat 14:43</p>
-<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+<p class="date">Created: 2025-04-23 Wed 23:36</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
 </html>

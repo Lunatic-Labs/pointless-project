@@ -39,7 +39,7 @@ For Debian based distributions, run:
 
 #+begin_src bash
   sudo apt update
-  sudo apt install g++ libboost-all-dev libzip-dev
+  sudo apt install g++ libboost-all-dev libzip-dev php-cli gcovr emacs
 #+end_src
 
 You will also need a way to open the zipfiles. We have found the best programs to use
@@ -845,20 +845,21 @@ where they can submit the hidden tokens and update their level in the csv file v
 [[./imgs/Pointless_UMLs-Webpage.jpg]]
 
 ** How to start
-  Download php-cli
-#+begin_src bash
-  sudo apt-install php-cli
-#+end_src
-  Change directories to /web-server/
+
+Change directories to =web-server/=
 #+begin_src bash
   cd ./pointless-project/web-server
 #+end_src
-  Start localhost
+
+Start localhost
 #+begin_src bash
   php -S localhost:8000
 #+end_src
+
 *NOTE*: Keep terminal running to track all requests going to web-server.
+
 ** Integration Test format
+
 *** Description
 Tests for the webpages will use bash scripting and are found in the integrated-tests directory.
 **** Naming format:
@@ -875,6 +876,7 @@ Tests for the webpages will use bash scripting and are found in the integrated-t
 
   # delete output.txt (rm ./integrated-tests/output_$current_datetime.txt) and any edits to csv (sed -i '$d' ./includes/contact-data.csv)
 #+end_src
+
 *NOTE*: Whenever running tests that manipulate =contact-data.csv= in any way, shape, or form, be sure to include the following bash code.
 #+begin_src bash
   # Placed at beginning of test Create a copy of orignal data for verification
@@ -909,6 +911,34 @@ main code. Feel free to delete any files in this directory if needed.
 - Default level zero for new users
   - Currently, index.php only records first and last name and email
   - User is to increase level everytime a token found in the puzzle is submitted
+
+* Code Coverage
+
+Go into the =src/= directory:
+#+begin_src bash
+  cd ./puzzle-code/src/
+#+end_src
+
+Then use the =Makefile= to build the project:
+#+begin_src bash
+  make <opt>
+#+end_src
+#+begin_quote
+where =opt= is one of:
+- =all= \rightarrow perform all =Makefile= flags
+- =clean= \rightarrow removes all object files and all generated zipfiles
+- =cleanzip= \rightarrow removes all generated zipfiles
+#+end_quote
+
+*NOTE*: =main= would need to run at least once for the code coverage to work
+
+Then do:
+#+begin_src bash
+  make coverage
+#+end_src
+#+begin_quote
+- =coverage= \rightarrow gives a long list of file names and percentage of lines executed in the terminal
+#+end_quote
 
 * Automated Tests
 
@@ -1069,18 +1099,12 @@ Now run =make all= and these things will happen:
 * Issues
 
 - No support for building on MacOS
-- The formatting for the /Binary Addition/ (Graph Paper Robot II) puzzle
-  is not formatted correctly
 - Issues with accessing the zip files on MacOS and Linux without file-roller. It immediately
   prompts for a password even though it should not.
 - There is no storyline.
 - The puzzle difficulty does not scale smoothly. The earlier puzzles should be harder.
-- The /AST/ puzzle is way to difficult to solve. Even some Computer Science students were unable to solve it.
-- The formatting on the /AST/ puzzle is very incorrect.
 - The /Maze Rematch/ puzzle needs a better description.
 - Missing required "whitty" quotes on all puzzles.
-- Need some way of keeping track of the seed in some meta-data in case the student is stuck. Lipscomb needs
-  to figure out the seed that they have so help can be offered.
 - The rematch puzzles produce "pieces" of the final password, and the user must concat them together. However,
   this does not work if the user decides to do them in a non-linear order. Maybe just add the numbers together?
 
@@ -1095,6 +1119,8 @@ Turner Austin - /tcaustin@mail.lipscomb.edu/ Github
 Mekeal Brown - /mtbrown@mail.lipscomb.edu/ [[https://github.com/mekealbrown][Github]]
 
 Steven Yassa - /seyassa@mail.lipscomb.edu/ Github
+
+Jordan Hasulube - /jdhasulube@mail.lipscomb.edu/ [[https://github.com/JordanHassy][Github]]
 
 Michael Hernandez-Lara - /mahernandezlara@mail.lipscomb.edu/ Github
 

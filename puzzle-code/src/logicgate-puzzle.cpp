@@ -1,3 +1,12 @@
+/*
+ * File: logicgate-puzzle.cpp
+ * Author: 
+ * Contact: 
+ * Date: 10/2/2024
+ * Description:
+ *  Graph Paper Robot II
+ */
+
 #include <algorithm>
 #include <iostream>
 #include <cmath>
