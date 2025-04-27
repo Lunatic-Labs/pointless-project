@@ -1,0 +1,11 @@
+Tokens:
+	puzzle #1 token: "brute force"
+	puzzle #2 token: "color wheel"
+	puzzle #3 token: "Lou's pixel art"
+	puzzle #4 token: "speedy maze"
+	puzzle #5 token: "alien lightbox"
+	puzzle #6 token: "Dr. Pepper's code"
+	puzzle #7 token: "master key"
+	puzzle #8 token: "adding the colored squares"
+	puzzle #9 token: "queue of logic gates"
+	puzzle #10 token: "pointless journey"

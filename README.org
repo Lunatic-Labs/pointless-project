@@ -951,9 +951,9 @@ where =opt= is one of:
 - =clean= \rightarrow removes all object files
 #+end_quote
 
-* Implementing New Tests
+** Implementing New Tests
 
-** Test Implementation
+*** Test Implementation
 
 Create a new file called =<puzzle name>-puzzle-test.cpp=
 in =test/= and put the entrypoint of the function that will create the puzzle.
@@ -1035,7 +1035,7 @@ bool fib_puzzle_test()
 
 Now that the implementation is done, add the signature of =bool fib_puzzle_test();= into =./puzzle-code/test/include/test.h=.
 
-** Using the Test
+*** Using the Test
 
 In the =main= function in =main.cpp=, there is some code that looks like:
 
@@ -1090,6 +1090,60 @@ Now run =make all= and these things will happen:
 - Once compiled, the test will run automaticly.
 #+end_quote
 
+* Documentations
+
+Documentation for the Pointless Project are reliant on two files:
+- =README.org=
+- =README.html=
+*NOTE*: =OLD-README.md= is currently not in use and out-dated.
+However, only the =README.org= has to be edited.
+
+** Editing =README.org=
+
+These are some of the most important commands in org:
+#+begin_src bash
+=*NOTE*: Important information=
+=* Section Name=
+=** Sub-section Name=
+=*** Sub-section Name=
+=* TODO=
+=#+begin_src <language>=
+=#+end_src=
+=#+begin_quote=
+=#+end_quote=
+#+end_src
+
+Documentation for =.org= files are [[https://orgmode.org/manual/index.html#SEC_Contents][here]].
+
+** Exporting =README.org= File to an .html File
+
+In order to export .org files into .html files, we use emacs.
+To run emacs simply run this into your Linux terminal:
+#+begin_quote bash
+emacs
+#+end_quote
+
+Then set the file location to view the =README.org= file:
+#+begin_quote bash
+C-x C-f ./pointless-project/README.org
+#+end_quote
+
+Then when ready to export, use these commands:
+#+begin_quote bash
+M-x org-export-dispatch h h
+#+end_quote
+
+When closing emacs:
+#+begin_quote bash
+C-x C-c
+#+end_quote
+#+begin_quote
+=M= \rightarrow alt
+=C= \rightarrow ctrl
+=-x= \rightarrow The key needed to be press while holding alt or ctrl.
+#+
+*NOTE*: Any other README files that are not =OLD-README.md=, =README.html= or =README.org= needs to be deleted.
+
 * Issues
 
 - No support for building on MacOS
@@ -1103,6 +1157,11 @@ Now run =make all= and these things will happen:
   this does not work if the user decides to do them in a non-linear order. Maybe just add the numbers together?
 
 * TODO Future Plans
+
+- Design Graph Paper Robot Puzzle III.
+- Have the website comunicate with the puzzle code.
+- Have an automatic emailer that sends emails to Dr. Towell.
+- Have the tokens work with the website, and update the csv file.
 
 * Contact
 
