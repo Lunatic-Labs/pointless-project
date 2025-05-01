@@ -895,6 +895,8 @@ Tests for the webpages will use bash scripting and are found in the integrated-t
   fi
 #+end_src
 
+To run the tests, type =./the-desired-script.sh= into the terminal while in =./web-server/integrated-tests= directory.
+
 ** Sandbox directory
 This directory is to be used for testing any new code or methods, so as not to interfere with any of the
 main code. Feel free to delete any files in this directory if needed.
@@ -1119,29 +1121,29 @@ Documentation for =.org= files are [[https://orgmode.org/manual/index.html#SEC_C
 
 In order to export .org files into .html files, we use emacs.
 To run emacs simply run this into your Linux terminal:
-#+begin_quote bash
+#+begin_src bash
 emacs
-#+end_quote
+#+end_src
 
 Then set the file location to view the =README.org= file:
-#+begin_quote bash
+#+begin_src bash
 C-x C-f ./pointless-project/README.org
-#+end_quote
+#+end_src
 
 Then when ready to export, use these commands:
-#+begin_quote bash
+#+begin_src bash
 M-x org-export-dispatch h h
-#+end_quote
+#+end_src
 
 When closing emacs:
-#+begin_quote bash
+#+begin_src bash
 C-x C-c
-#+end_quote
+#+end_src
 #+begin_quote
-=M= \rightarrow alt
-=C= \rightarrow ctrl
-=-x= \rightarrow The key needed to be press while holding alt or ctrl.
-#+
+- =M= \rightarrow alt
+- =C= \rightarrow ctrl
+- =-x= \rightarrow The key needed to be press while holding alt or ctrl.
+#+end_quote
 *NOTE*: Any other README files that are not =OLD-README.md=, =README.html= or =README.org= needs to be deleted.
 
 * Issues
