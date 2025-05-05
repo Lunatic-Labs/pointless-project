@@ -1,3 +1,12 @@
+/*
+ * File: binary-addition-puzzle.cpp
+ * Author: 
+ * Contact: 
+ * Date: 10/2/2024
+ * Description:
+ *  Graph Paper Robot I
+ */
+
 #include <iostream>
 #include <bitset>
 #include <cmath>
@@ -19,10 +28,11 @@
 #define GOLD {255, 255, 0}    // start
 #define PURPLE {255, 0, 255}  // end
 
+
 std::string create_bin_str(long seed)
 {
   std::string bin;
-  for(size_t i = 0; i < TAPE_WIDTH; ++i) {
+  for (size_t i = 0; i < TAPE_WIDTH; ++i) {
     if (i < (TAPE_WIDTH/2)) {
       bin += '1';
     } else {
