@@ -1,4 +1,5 @@
 <?php
+session_start();
 $usr_email = "";
 $email_valid = true;
 $registered = false;
@@ -29,7 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         fclose($file);
     };
     if ($email_valid && $registered) {
+        $_SESSION["email"] = $usr_email;
         header("Location: ../token-sub.php");
+        exit;
     };
 };
 ?>

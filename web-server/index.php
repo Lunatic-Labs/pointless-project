@@ -1,4 +1,5 @@
 <?php
+session_start();
 $usr_fname = "";
 $usr_lname = "";
 $usr_email = "";
@@ -45,7 +46,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // puts data into csv and closes connection
         fputcsv(stream: $file_open, fields: $formdata);
         fclose(stream: $file_open);
+        $_SESSION["email"] = $usr_email;
         header("Location: ../download.php");
+        exit;
     }
 }
 ?>

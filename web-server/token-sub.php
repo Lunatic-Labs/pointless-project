@@ -43,6 +43,9 @@
                 Submit
             </button>
         </form>
+        <p style="text-align:center">
+            Need your puzzle again? <a href="./download.php">Download it here</a>.
+        </p>
     </div>
 </body>
 <footer>

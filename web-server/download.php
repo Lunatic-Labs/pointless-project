@@ -1,4 +1,25 @@
 <?php
+session_start();
+require_once __DIR__ . '/includes/generate.php';
+
+// Only registered or logged-in players can download their personalized puzzle.
+if (!isset($_SESSION["email"])) {
+    header("Location: ./index.php");
+    exit;
+}
+
+$error = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $zip = pointless_generate_zip($_SESSION["email"], $error);
+    if ($zip !== null) {
+        header("Content-Type: application/zip");
+        header("Content-Disposition: attachment; filename=\"pointless.zip\"");
+        header("Content-Length: " . filesize($zip));
+        readfile($zip);
+        unlink($zip);
+        exit;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +56,6 @@
     </script>
     <div class="content">
         <div class="container"><h2 style="text-align:center">The Pointless Challenge.</h2>
-            <div class="warning">!!The Pointless Challenge can only be played on Windows OS!!</div>
             <p style="text-align:center">
                 Before you can use the Pointless Puzzle zip, <strong>you need to download <a target="_blank" rel="noopener noreferrer" href="https://www.7-zip.org/">7-Zip.</a></strong><br>
                 Regular zip openers cannot properly open the pointless project,<br>
@@ -43,8 +63,17 @@
             </p>
         </div>
         <div class="container">
-            <a href="./sandbox/dummy.zip" download="dummy.zip">Pointless Download</a>
-        </div>  
+            <?php if ($error): ?>
+                <div class="error">
+                    <?php echo $error; ?>
+                </div>
+            <?php endif; ?>
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="downloadForm">
+                <button type="submit">
+                    Pointless Download
+                </button>
+            </form>
+        </div>
     </div>
 </body>
 <footer>
