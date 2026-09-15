@@ -1,4 +1,4 @@
-# Pointless Project ![Pointless bison](imgs/messed-up-bison.png)
+# Pointless Project
 
 A website to generate and distribute puzzles to prospective Lipscomb recruits.
 
@@ -1045,18 +1045,11 @@ To run only some tests, temporarily comment out the others in the `tests` vector
 - No support for building on macOS
 - Issues with accessing the zip files on macOS and Linux without file-roller. It immediately
   prompts for a password even though it should not.
-- There is no storyline.
 - The puzzle difficulty does not scale smoothly. The earlier puzzles should be harder.
 - The *Maze Rematch* puzzle needs a better description.
 - Missing required "witty" quotes on all puzzles.
 - The rematch puzzles produce "pieces" of the final password, and the user must concatenate them together. However,
   this does not work if the user decides to do them in a non-linear order. Maybe just add the numbers together?
-
-### Questionable Items
-
-Things found during cleanup (September 2026) that may be mistakes or leftovers. Each one needs a decision.
-
-None are open.
 
 ## Future Plans
 
