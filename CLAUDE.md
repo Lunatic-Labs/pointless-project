@@ -29,7 +29,7 @@ Tests:
 
 PHP site (`web-server/`):
 - `php -S localhost:8000`. Downloads need `make production` to have been run. The site never runs make. Set `POINTLESS_GENERATOR_DIR` to use a production tree elsewhere, and `POINTLESS_PLAYERS_FILE` to move the player data.
-- Integration tests are bash + wget scripts. Run them from `web-server/integrated-tests/` (they `cd ..`) against a server on port 8000 that uses the default player file, for example `./test-index-GET.sh`. Tests that register players must back up and restore `../data/contact-data.csv`.
+- Tests: `php web-server/tests/run.php [name-substring]` (runs from any directory). It starts its own `php -S` on a free port with a temp players file, a fake generator (`fake_generator($mode)` in `tests/lib.php`), temp sessions, and `TMPDIR`, resets that state before each test, and exits 1 on failure. It never touches `data/` or `production/`. Tests are `test_*` functions in `tests/*-test.php` using `check()` (not `assert()`, which php-cli disables), listed in `$tests` in `tests/run.php`. `test_generate_real_generator` runs `production/src/main` (or `POINTLESS_TEST_GENERATOR_DIR`): skipped without `src/main`, fails if that tree is broken.
 
 ## Architecture
 

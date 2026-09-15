@@ -128,6 +128,7 @@ without having to go through the entire zipfile structure.
 | `puzzle-code/resources/` | Per-puzzle resource directories (`files-<name>/`) and the shared HTML header/footer (`templates/`) |
 | `puzzle-code/production/` | Output of `make production`: the generator the web server runs (not in git) |
 | `web-server/` | The PHP website that registers players and serves downloads |
+| `web-server/tests/` | Automated tests for the website |
 | `data/` | Player data written by the web server (not in git) |
 | `imgs/` | Images used by this README |
 | `ideas/` | **Not production.** Ideas and unfinished or scrapped work, kept for reference (see [ideas/README.md](ideas/README.md)) |
@@ -836,54 +837,38 @@ That directory must contain `src/main` and `resources/`, laid out as `make produ
 Move it **before** pulling this change (`mkdir -p data && mv web-server/includes/contact-data.csv data/`), or `git pull` will delete or refuse to update it.
 Its old `Token` column is harmless. Then run `make production`; downloads fail until it has been built.
 
-### Integration Test Format
+### Web Server Tests
 
-Tests for the webpages use bash scripting and are found in the `integrated-tests` directory.
-
-**NOTE**: Always run these tests from the `integrated-tests` directory. This makes sure that the `cd ..` command makes the current working directory `web-server`.
-
-To run a test, type `./the-desired-script.sh` into the terminal while in `web-server/integrated-tests`.
-
-Naming format: `test-<webpage>-<FeatureBeingTested>.sh`
-
-Testing format:
+The web-server tests are plain PHP (only `php-cli` is needed) and live in `web-server/tests/`. Run them from anywhere:
 
 ```bash
-#!/bin/bash
-cd ..
-cdt=$(date +"%Y-%m-%d_%H:%M:%S")
-touch ./integrated-tests/<name-of-test>-output-$cdt.txt
-
-# run wget to perform a GET or POST request on the URL and write the result to the output file
-
-# if-else statements to find desired outcomes using '! grep'
-
-# delete the output file (rm ./integrated-tests/<name-of-test>-output-$cdt.txt)
+php web-server/tests/run.php          # all tests
+php web-server/tests/run.php login    # only tests whose names contain "login"
 ```
 
-**NOTE**: Tests that register players change the player data file. They assume the server uses the default file
-(`../data/contact-data.csv` from `web-server/`), so don't set `POINTLESS_PLAYERS_FILE` while testing.
-Back the file up at the start of the test and restore it at the end:
+`run.php` starts its own `php -S` on a free port, so no server needs to be running (and one already on port 8000 is not affected).
+The server and tests use a temporary directory for the players file (`POINTLESS_PLAYERS_FILE`), a fake puzzle generator
+(`POINTLESS_GENERATOR_DIR`), PHP sessions, and `TMPDIR`. The real `data/contact-data.csv` and `puzzle-code/production/` are never changed.
+That state is reset before every test. Each test prints `PASS`, `FAIL`, or `SKIP`. If any test fails, the command exits with status 1
+and keeps the temporary directory (including `server.log` and `php-errors.log`); otherwise it removes it.
 
-```bash
-data=../data/contact-data.csv
+| File | Tests |
+|------|-------|
+| `lib.php` | Helpers: `check()`, the test server, `Client` (a browser that keeps the session cookie), the fake generator |
+| `players-test.php` | `includes/players.php`, called directly |
+| `generate-test.php` | `includes/generate.php`, called directly, using the fake generator; `test_generate_real_generator` runs the real one |
+| `index-test.php`, `login-test.php`, `download-test.php` | The pages, over HTTP |
 
-# Placed at beginning of test: back up the player data (it may not exist yet)
-had_data=false
-if [ -f $data ]; then
-    cp $data ./integrated-tests/original-data-$cdt.csv
-    had_data=true
-fi
+The fake generator is a small script written by `fake_generator($mode)`. It records its arguments and working directory,
+then (in mode `ok`) writes a `puzzle1.zip` containing `email=<email>`, so tests can check which player's zip was served.
+Other modes make it fail, write no zip, or be missing.
 
-# ..... test body .......
+`test_generate_real_generator` runs `puzzle-code/production/src/main` (or the tree named by `POINTLESS_TEST_GENERATOR_DIR`)
+and checks that the result is a zip containing `instructions.html` and `puzzle2.zip`. It is skipped if there is no `src/main`,
+and fails if the tree exists but is broken, since downloads would fail too.
 
-# Restore the player data
-if $had_data; then
-    cp ./integrated-tests/original-data-$cdt.csv $data && rm ./integrated-tests/original-data-$cdt.csv
-else
-    rm -f $data
-fi
-```
+To add a test, write a `test_<page>_<feature>()` function in the matching `*-test.php` file using `check($condition, 'what should be true')`,
+and add its name to the `$tests` list in `run.php`. (Use `check()`, not `assert()`: PHP's `assert()` is disabled by default in `php-cli`.)
 
 ### Future Goals
 
@@ -1050,6 +1035,8 @@ To run only some tests, temporarily comment out the others in the `tests` vector
 - Missing required "witty" quotes on all puzzles.
 - The rematch puzzles produce "pieces" of the final password, and the user must concatenate them together. However,
   this does not work if the user decides to do them in a non-linear order. Maybe just add the numbers together?
+- `index.php` and `login.php` apply `htmlspecialchars` to the email *before* validating it, so valid emails containing `'` or `&`
+  (e.g. `o'brien@example.com`) are rejected as invalid. Names are also stored HTML-escaped in the players file.
 
 ## Future Plans
 
