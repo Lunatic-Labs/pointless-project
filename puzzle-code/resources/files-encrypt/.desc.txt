@@ -23,7 +23,7 @@ This next puzzle will knock your socks off! <br />
 
 Dr. Pepper, the eccentric genius, has encrypted a phrase: <br />
 <h4>%DELIM</h4>
-If you want to holst the MacGuffin your must decrypt it to move forward on your journey.<br />
+If you want to hoist the MacGuffin you must decrypt it to move forward on your journey.<br />
 According to his cryptic notes, Dr. Pepper believes only the brightest minds can solve his challenge. Here are the steps he used:
 <div><ul style="font-weight: bold;">
  %DELIM

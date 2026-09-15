@@ -4,12 +4,14 @@
 # directory (src/ or tests/) because resource paths are relative to it, for
 # example ../resources/files-math/.desc.txt. The run and test targets do that.
 #
+# `make test T=bst` runs only the tests whose names contain "bst".
+#
 # `make production` builds an optimized generator without coverage into
 # production/ (src/main plus a clean copy of resources/). The web server runs
 # that copy and never runs make; a person rebuilds it after changing the code.
 
 CXX      := g++
-CXXFLAGS := -ggdb -pedantic -std=c++17 -Wextra -Wall -O0 --coverage -MMD -MP
+CXXFLAGS := -ggdb -pedantic -std=c++17 -Wextra -Wall -Wshadow -O0 --coverage -MMD -MP
 LDFLAGS  := --coverage
 LDLIBS   := -lzip
 
@@ -20,7 +22,7 @@ ZIP_DIR  := src/zipfiles
 
 PROD_DIR      := production
 PROD_BUILD    := $(BUILD)/production
-PROD_CXXFLAGS := -pedantic -std=c++17 -Wextra -Wall -O2 -MMD -MP
+PROD_CXXFLAGS := -pedantic -std=c++17 -Wextra -Wall -Wshadow -O2 -MMD -MP
 PROD_BIN      := $(PROD_BUILD)/main
 
 SRC_OBJS  := $(patsubst %.cpp,$(BUILD)/%.o,$(wildcard src/*.cpp))
@@ -47,7 +49,7 @@ run: build cleanzip
 	cd src && ./main
 
 test: $(TEST_BIN)
-	cd tests && ./main
+	cd tests && ./main $(T)
 
 # Requires `make run` or `make test` to have produced coverage data.
 coverage:
@@ -85,8 +87,10 @@ $(PROD_BUILD)/%.o: src/%.cpp
 $(ZIP_DIR):
 	mkdir -p $@
 
+# Also removes the zips a failed game_zipfiles test may leave in tests/.
 cleanzip:
 	$(call clean-generated,.)
+	rm -rf tests/zipfiles
 
 # Does not remove production/, which a running web server may be using.
 clean: cleanzip

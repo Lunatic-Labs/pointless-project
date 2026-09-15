@@ -4,167 +4,81 @@
  * Contact: zdhdev@yahoo.com, tcaustin@mail.lipscomb.edu
  * Date: 2/4/2024
  * Description:
- *   The user is presented with a generated maze. The goal is to find the 
- *   path from the yellow spot to the end purple spot. The password is the
- *   compressed path from the start to the end ie uudlllr -> u2dl3r.
+ *   The user is presented with a generated maze. The goal is to find the
+ *   path from the gold spot to the purple spot. The password is the
+ *   compressed path from the start to the end, for example uudlllr -> u2dl3r.
  */
 
-#include <iostream>
-#include <vector>
-#include <random>
-#include <climits>
-#include <algorithm>
-#include <set>
+#include <string>
 
+#include "./include/graphics.h"
+#include "./include/maze.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
-#include "./include/graphics.h"
 
-#define MAZE_WALL {0,0,0}
-#define MAZE_PATH {255,255,255}
-#define MAZE_CHECKER_PATH {200,200,255};
+#define MAZE_SIZE 13 // Must be odd. Also hardcoded into files-maze/.desc.txt
 
-#define MAZE_SIZE 13 // Must be an odd number. Also is hardcoded into HTML
-#define PIXEL_IS_BLACK(p) (p.red + p.green + p.blue == 0)
+static constexpr Pixel MAZE_START{255, 255, 0}; // Gold, bottom left
+static constexpr Pixel MAZE_END{255, 0, 255};   // Purple, top right
 
-#define MAZE_END {255, 0, 255};   // Purple
-#define MAZE_START {255, 255, 0}; // Gold
-
-std::set<std::pair<int, int>> visited;
-
-static int shortest_path(Image &maze, int x, int y, int steps, std::string &path, long &seed)
+// Appends one letter (u, d, l, or r) per pixel moved on the way from (row, col) to the top-right
+// cell, never stepping back to (from_row, from_col). Returns whether it got there.
+// A generated maze has no loops, so this finds its only path.
+static bool find_path(const Image &maze, int row, int col, int from_row, int from_col, std::string &path)
 {
-  if (x < 0 || y < 0 || x >= MAZE_SIZE || y >= MAZE_SIZE) {
-    return INT_MAX;
+  if (row == 0 && col == MAZE_SIZE - 1) {
+    return true;
   }
 
-  if (PIXEL_IS_BLACK(maze(x, y))) {
-    return INT_MAX;
-  }
-
-  if (x == 0 && y == MAZE_SIZE-1) {
-    return -1;
-  }
-
-  if (visited.find({x, y}) != visited.end()) {
-    return INT_MAX;
-  }
-
-  visited.insert({x, y});
-
-  int min = INT_MAX;
-  int min_dir = -1;
-  std::vector<std::pair<int, int>> directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-  for (int i = 0; i < 4; i++) {
-    int nx = x + directions[i].first;
-    int ny = y + directions[i].second;
-
-    if (nx < 0 || ny < 0 || nx >= MAZE_SIZE || ny >= MAZE_SIZE) {
+  static const struct { int dr, dc; char letter; } moves[] = {
+    {0, 1, 'r'}, {0, -1, 'l'}, {1, 0, 'd'}, {-1, 0, 'u'},
+  };
+  for (const auto &move : moves) {
+    int r = row + move.dr;
+    int c = col + move.dc;
+    if (r < 0 || c < 0 || r >= MAZE_SIZE || c >= MAZE_SIZE || (r == from_row && c == from_col) || maze_is_wall(maze(r, c))) {
       continue;
     }
-
-    if (PIXEL_IS_BLACK(maze(nx, ny))) {
-      continue;
+    path += move.letter;
+    if (find_path(maze, r, c, row, col, path)) {
+      return true;
     }
-
-    int next = shortest_path(maze, nx, ny, steps+1, path, seed);
-    if (next < min) {
-      min = next;
-      min_dir = i;
-    }
+    path.pop_back();
   }
-
-  if (min_dir == -1) {
-    return INT_MAX;
-  }
-
-  switch (min_dir) {
-    case 0:
-      path += "r";
-      break;
-    case 1:
-      path += "l";
-      break;
-    case 2:
-      path += "d";
-      break;
-    case 3:
-      path += "u";
-      break;
-  }
-
-  return min+1;
+  return false;
 }
 
-static std::string compress_path(std::string &path)
+// Run-length encodes `path`, halving each run because a move from one cell to the next is two
+// pixels: "uuuurr" (two cells up, one right) becomes "u2r".
+static std::string compress_path(const std::string &path)
 {
   std::string compressed;
-  for (size_t i = 0; i < path.size(); i++) {
-    int count = 1;
-    while (i+1 < path.size() && path[i] == path[i+1]) {
-      count++;
-      i++;
+  for (size_t i = 0; i < path.size();) {
+    size_t run = 1;
+    while (i + run < path.size() && path[i + run] == path[i]) {
+      run++;
     }
     compressed += path[i];
-    count /= 2;
-    if (count > 1) {
-      compressed += std::to_string(count);
+    if (run / 2 > 1) {
+      compressed += std::to_string(run / 2);
     }
+    i += run;
   }
   return compressed;
 }
 
-static void randomized_dfs(Image &maze, int x, int y, long &seed)
+Puzzle maze_puzzle_create(seed_t seed)
 {
-  std::vector<std::pair<int, int>> directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-  std::shuffle(directions.begin(), directions.end(), std::default_random_engine(seed));
-  ++seed;
-
-  maze(x, y) = MAZE_CHECKER_PATH;
-  for (auto &dir : directions) {
-    int nx = x + dir.first;
-    int ny = y + dir.second;
-    int fx = x + dir.first*2;
-    int fy = y + dir.second*2;
-
-    // Bounds checking
-    if (fx < 0 || fy < 0 || fx >= MAZE_SIZE || fy >= MAZE_SIZE) {
-      continue;
-    }
-
-    if (PIXEL_IS_BLACK(maze(fx, fy))) {
-      ++seed; // idk why, but this is necessary for better randomness
-      maze(fx, fy) = MAZE_CHECKER_PATH;
-      maze(nx, ny) = MAZE_PATH;
-      randomized_dfs(maze, fx, fy, seed);
-    }
-  }
-}
-
-Puzzle maze_puzzle_create(long seed)
-{
-  Image maze(MAZE_SIZE, MAZE_SIZE);
-  for (size_t i = 0; i < MAZE_SIZE; i++) {
-    for (size_t j = 0; j < MAZE_SIZE; j++) {
-      maze(i,j) = MAZE_WALL;
-    }
-  }
-
-  randomized_dfs(maze, MAZE_SIZE-1, 0, seed);
+  Image maze = maze_generate(MAZE_SIZE, seed);
 
   std::string path;
-  shortest_path(maze, MAZE_SIZE-1, 0, 0, path, seed);
+  find_path(maze, MAZE_SIZE - 1, 0, -1, -1, path);
 
-  std::reverse(path.begin(), path.end());
-  std::string password = compress_path(path);
+  maze(MAZE_SIZE - 1, 0) = MAZE_START;
+  maze(0, MAZE_SIZE - 1) = MAZE_END;
 
-  maze(0, MAZE_SIZE-1) = MAZE_END; //swapped these
-  maze(MAZE_SIZE-1, 0) = MAZE_START;
-
-  Svg svg = graphics_gen_svg_from_image(maze, 20, {}); // Maze size is hardcoded into HTML
-  std::string svg_html = svg.build(0);
-  std::string html_body = utils_html_printf("Maze Puzzle", "../resources/files-maze/.desc.txt", {{svg_html}});
+  std::string svg_html = graphics_gen_svg_from_image(maze, 20, {}).build(false);
+  std::string html_body = utils_html_printf("Maze Puzzle", "../resources/files-maze/.desc.txt", {svg_html});
   utils_generate_file("../resources/files-maze/instructions.html", html_body);
-  visited.clear();  // For automated testing
-  return {"../resources/files-maze", html_body, password, {}};
+  return {"../resources/files-maze", html_body, compress_path(path), {}};
 }

@@ -1,79 +1,54 @@
+/*
+ * File: rematch-puzzle.cpp
+ * Description:
+ *   The rematch: harder versions of the maze, encrypt, and based puzzles. Each is its own zip,
+ *   rematchN.zip, in this puzzle's directory. Rematch N's password unlocks passwordN.txt in its
+ *   zip, which holds a 3-digit number. The three numbers in order are this puzzle's password.
+ */
+
+#include <cstdio>
+#include <string>
+#include <vector>
+
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-#include <iostream>
-#include <string>
-#include <cassert>
+#define REMATCH_DIR "../resources/files-rematch"
 
-static void create_rematch_zipfiles(std::vector<Puzzle> &puzzles)
+Puzzle rematch_puzzle_create(seed_t seed)
 {
-  std::string zipdir = "../resources/files-rematch/";
-  int i = 0;
-
-  for (auto puzzle = puzzles.begin(); puzzle != puzzles.end(); ++puzzle, i++) {
-    if (i != 0) {
-      std::vector<std::string> files = utils_walkdir(puzzle->contents_fp);
-      files.insert(files.begin(), zipdir + ".passwords/password" + std::to_string(i) + ".txt");
-
-      utils_zip_files(std::string(zipdir + "rematch" + std::to_string(i) + ".zip"), files, puzzle->password);
-    }
-  }
-}
-
-static std::string create_rematch_password_files(std::vector<Puzzle> &puzzles, long seed)
-{
-  const std::string password_dir = "../resources/files-rematch/.passwords/";
-  std::string password = "";
-  int i = 0;
-
-  utils_mkdir(password_dir);
-
-  for (auto puzzle = puzzles.begin(); puzzle != puzzles.end(); ++puzzle, i++) {
-    if (i != 0)  {
-      std::string password_part = std::to_string(utils_rng_roll(0, 999, seed));
-      password += password_part;
-      std::string password_fp = password_dir + "password" + std::to_string(i) + ".txt";
-      utils_generate_file(password_fp, password_part);
-    }
-  }
-
-  return password;
-}
-
-Puzzle rematch_puzzle_inst(long seed)
-{
-  (void)seed;
-  std::string html_content = utils_html_printf("Rematch Instructions", "../resources/files-rematch/.desc.txt", {});
-  utils_generate_file("../resources/files-rematch/instructions.html", html_content);
-  return {"../resources/files-rematch", html_content, "", {}};
-}
-
-Puzzle rematch_puzzle_create(long seed)
-{
-  std::vector<Puzzle> puzzles = {
-    rematch_puzzle_inst(seed),
-    rematch_maze_puzzle_create(seed),
-    rematch_encrypt_puzzle_create(seed),
-    rematch_based_puzzle_create(seed),
-    // math_puzzle_create(seed),
-    // math_puzzle_create(seed),
+  const std::vector<Puzzle> rematches = {
+    rematch_maze_puzzle_create(utils_derive_seed(seed, "rematch-maze")),
+    rematch_encrypt_puzzle_create(utils_derive_seed(seed, "rematch-encrypt")),
+    rematch_based_puzzle_create(utils_derive_seed(seed, "rematch-based")),
   };
+  const std::string count = std::to_string(rematches.size());
 
-  std::string password = create_rematch_password_files(puzzles, seed);
-  if (!(FLAGS & ANS_ONLY)) {
-    create_rematch_zipfiles(puzzles);
+  const std::string number_dir = REMATCH_DIR "/.passwords";
+  utils_mkdir(number_dir);
 
-    std::cout << "Rematch:" << std::endl;
-    for (auto &puzzle : puzzles) {
-      // contents_fp is "../resources/files-<name>"
-      std::string puzzle_name = puzzle.contents_fp.substr(puzzle.contents_fp.find("files-") + 6);
-      std::printf("  %-17s Password: %s", puzzle_name.c_str(), puzzle.password.c_str());
-      if (puzzle.extra_info) {
-        std::printf(" %s", puzzle.extra_info->c_str());
-      }
-      std::cout << std::endl;
+  std::string password;
+  std::string extra_info;
+  for (size_t i = 0; i < rematches.size(); i++) {
+    const std::string n = std::to_string(i + 1);
+
+    char number[16];
+    std::snprintf(number, sizeof number, "%03d", utils_rng_roll(0, 999, seed));
+    password += number;
+
+    const std::string number_file = number_dir + "/password" + n + ".txt";
+    utils_generate_file(number_file, "You solved rematch " + n + " of " + count + "! Your number is " + number + ".\n");
+    if (!(FLAGS & ANS_ONLY)) {
+      std::vector<ZipEntry> entries = utils_zip_entries(rematches[i].contents_fp);
+      entries.insert(entries.begin(), ZipEntry{number_file, "password" + n + ".txt", true});
+      utils_zip_files(REMATCH_DIR "/rematch" + n + ".zip", entries, rematches[i].password);
     }
-  }
 
-  return {"../resources/files-rematch", "", password, {}};
+    extra_info += (i == 0 ? "(" : ", ") + std::string("rematch") + n + ": " + rematches[i].password;
+  }
+  extra_info += ")";
+
+  std::string html = utils_html_printf("Rematch Instructions", REMATCH_DIR "/.desc.txt", {});
+  utils_generate_file(REMATCH_DIR "/instructions.html", html);
+  return {REMATCH_DIR, html, password, extra_info};
 }

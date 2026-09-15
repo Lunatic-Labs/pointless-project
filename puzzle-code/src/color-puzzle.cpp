@@ -12,7 +12,7 @@
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-Puzzle color_puzzle_create(long seed)
+Puzzle color_puzzle_create(seed_t seed)
 {
   int rand = utils_rng_roll(0, 1, seed);
   std::string color_hex = rand ? "331E54" : "F4AA00";

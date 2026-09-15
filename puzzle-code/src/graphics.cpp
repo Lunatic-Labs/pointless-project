@@ -1,136 +1,93 @@
-#include <cassert>
-#include <cstdlib>
-#include <stdint.h>
-#include <vector>
-#include <errno.h>
-#include <cstring>
-#include <stdarg.h>
-#include <iostream>
+#include <cstdio>
 
 #include "./include/graphics.h"
 
-std::string graphics_pixel_to_hex(Pixel p)
+// Formats a number for an SVG attribute without trailing zeros: 20, not 20.000000.
+static std::string number(float value)
 {
-  char hex[8];
-  std::sprintf(hex, "#%02X%02X%02X", p.red, p.green, p.blue);
-  return std::string(hex);
+  char buf[32];
+  std::snprintf(buf, sizeof buf, "%g", value);
+  return buf;
 }
 
-Svg graphics_gen_svg_from_image(Image &img, float pixel_size, std::optional<std::string> outline)
+// Returns ` name="value"`.
+static std::string attribute(const std::string &name, const std::string &value)
 {
-  Svg svg(img.width*pixel_size, img.height*pixel_size);
+  return " " + name + "=\"" + value + "\"";
+}
+
+std::string graphics_pixel_to_hex(Pixel p)
+{
+  char hex[16];
+  std::snprintf(hex, sizeof hex, "#%02X%02X%02X", p.red, p.green, p.blue);
+  return hex;
+}
+
+std::string Svg::Shape::common_attributes() const
+{
+  std::string attributes;
+  if (stroke) {
+    attributes += attribute("stroke", *stroke);
+  }
+  if (opacity) {
+    attributes += attribute("opacity", number(*opacity));
+  }
+  if (html_classname) {
+    attributes += attribute("class", *html_classname);
+  }
+  return attributes + attribute("fill", fill);
+}
+
+std::string Svg::Rect::make() const
+{
+  return "<rect"
+    + attribute("x", number(x))
+    + attribute("y", number(y))
+    + attribute("width", number(width))
+    + attribute("height", number(height))
+    + common_attributes()
+    + " />";
+}
+
+std::string Svg::Circle::make() const
+{
+  return "<circle"
+    + attribute("cx", number(x))
+    + attribute("cy", number(y))
+    + attribute("r", number(radius))
+    + common_attributes()
+    + " />";
+}
+
+std::string Svg::build(bool border) const
+{
+  std::string svg = "<svg"
+    + attribute("width", number(width))
+    + attribute("height", number(height))
+    + attribute("xmlns", "http://www.w3.org/2000/svg")
+    + attribute("version", "1.1")
+    + ">\n";
+  for (const std::string &line : lines) {
+    svg += line + "\n";
+  }
+  if (border) {
+    svg += "<rect x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" stroke=\"black\" stroke-width=\"5px\" fill=\"none\" />\n";
+  }
+  return svg + "</svg>\n";
+}
+
+Svg graphics_gen_svg_from_image(const Image &img, float pixel_size, std::optional<std::string> outline)
+{
+  Svg svg(img.width * pixel_size, img.height * pixel_size);
 
   for (size_t i = 0; i < img.height; i++) {
-    for (size_t j = 0; j < img.width; ++j) {
-      Pixel &p = img(i, j);
-      float x = j * pixel_size;
-      float y = i * pixel_size;
-      std::string hex = graphics_pixel_to_hex(p);
-      std::string classname = std::to_string(i) + "." +  std::to_string(j);
-      Svg::Rect rect(x, y, pixel_size, pixel_size, hex, outline, p.alpha, classname);
-      // Svg::Rect rect(x, y, pixel_size, pixel_size, hex, outline, {}, classname);
+    for (size_t j = 0; j < img.width; j++) {
+      const Pixel &p = img(i, j);
+      Svg::Rect rect(j * pixel_size, i * pixel_size, pixel_size, pixel_size, graphics_pixel_to_hex(p),
+                     outline, p.alpha, std::to_string(i) + "." + std::to_string(j));
       svg.add_shape(rect);
     }
   }
 
   return svg;
-}
-
-void graphics_create_ppm(Image &img, const char *filepath)
-{
-  FILE *fp = std::fopen(filepath, "wb");
-  if (!fp) {
-    std::fprintf(stderr, "Error: could not open file %s. Reason: %s\n",
-                 filepath, std::strerror(errno));
-    std::exit(EXIT_FAILURE);
-  }
-
-  auto write_bytes = [&](const char *formatstr, ...) -> void {
-    va_list args;
-    va_start(args, formatstr);
-    if (std::vfprintf(fp, formatstr, args) < 0) {
-      std::fprintf(stderr, "Error: failed to write bytes to file %s. Reason: %s\n",
-                   filepath, std::strerror(errno));
-      std::exit(EXIT_FAILURE);
-    }
-    va_end(args);
-  };
-
-  write_bytes("P6 %d %d 255\n", img.height, img.width);
-
-  for (size_t i = 0; i < img.height; ++i) {
-    for (size_t j = 0; j < img.width; ++j) {
-      Pixel &p = img(i, j);
-      write_bytes("%c%c%c", p.red, p.green, p.blue);
-    }
-  }
-
-  std::fclose(fp);
-}
-
-Image graphics_scale_ppm(Image &img, size_t scale)
-{
-  assert(scale != 0);
-  Image scaled_img = Image{img.height * scale, img.width * scale};
-
-  for (size_t i = 0; i < img.height; i++) {
-    for (size_t j = 0; j < img.width; j++) {
-      Pixel &color = img(i, j);
-      for (size_t k = 0; k < scale; k++) {
-        for (size_t l = 0; l < scale; l++) {
-          scaled_img(i * scale + k, j * scale + l) = color;
-        }
-      }
-    }
-  }
-  return scaled_img;
-}
-
-#define QUOTEF(x) ("\"" + std::to_string(x) + "\"")
-#define QUOTES(s) ("\"" + s + "\"")
-
-std::string Svg::Rect::make() const
-{
-  std::string s = stroke.has_value() ? "stroke=\"" + stroke.value() + "\"" : "";
-  std::string o = opacity.has_value() ? " opacity=\"" + std::to_string(opacity.value()) + "\"" : "";
-  std::string classname = html_classname.has_value() ? " class=\"" + html_classname.value() + "\"" : "";
-  return "<rect x=" + QUOTEF(x) +
-          " y=" + QUOTEF(y) +
-          " width=" + QUOTEF(width) +
-          " height=" + QUOTEF(height) +
-          s +
-          o +
-          classname +
-          " fill=" + QUOTES(fill) + "  />";
-}
-
-std::string Svg::Circle::make() const
-{
-  std::string s = stroke.has_value() ? " stroke=\"" + stroke.value() + "\"" : "";
-  std::string o = opacity.has_value() ? " opacity=\"" + std::to_string(opacity.value()) + "\"" : "";
-  std::string classname = html_classname.has_value() ? " class=\"" + html_classname.value() + "\"" : "";
-  return "<circle cx=" + QUOTEF(x) +
-          " cy=" + QUOTEF(y) +
-          " r=" + QUOTEF(radius) +
-          s +
-          o +
-          classname +
-          " fill=" + QUOTES(fill) + "  />";
-}
-
-std::string Svg::build(bool border) {
-  std::string header = "<svg width=" + QUOTEF(width) +
-                        "height=" + QUOTEF(height) +
-                        "xmlns=" + QUOTES(xmlns) +
-                        "version=" + QUOTES(version)
-                        + ">\n";
-  std::string body = "";
-  for (auto &line : lines) {
-    body += line + "\n";
-  }
-  if (border) {
-    body += "<rect x=\"0\" y=\"0\" width='100%' height='100%' stroke='black' stroke-width='5px' fill='none' />";
-  }
-  body += "</svg>\n";
-  return header + body;
 }

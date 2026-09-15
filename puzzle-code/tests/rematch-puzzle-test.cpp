@@ -1,35 +1,15 @@
-#include <iostream>
-#include <string>
-#include <cassert>
 #include "./include/test.h"
-#include "./include/file.h"
-#include "../src/include/puzzle.h"
-#include "../src/include/utils.h"
 
-bool rematch_puzzle_test()
+// game_zipfiles_test() also unlocks the rematch zips and checks their numbers.
+void rematch_puzzle_test()
 {
-  Puzzle test;
-  long seed = utils_seed_from_email("HelloHi@gmail.com");
-
-  test = rematch_puzzle_create(1);
-  assert(test.password == "886538131");
-  assert(test.contents_html == "");
-
-  test = rematch_puzzle_create(5);
-  assert(test.password == "765616451");
-  assert(test.contents_html == "");
-
-  test = rematch_puzzle_create(10);
-  assert(test.password == "8607698");
-  assert(test.contents_html == "");
-  
-  test = rematch_puzzle_create(15);
-  assert(test.password == "550443168");
-  assert(test.contents_html == "");
-
-  test = rematch_puzzle_create(seed);
-  assert(test.password == "756676914");
-  assert(test.contents_html == "");
-
-  return true;
+  CHECK_PUZZLE(rematch_puzzle_create,
+               {
+                 {1, "465519590", "(rematch1: 1800287, rematch2: lipscomb, rematch3: 216)"},
+                 {5, "618344063", "(rematch1: 7262670, rematch2: theory, rematch3: 136)"},
+                 {10, "466814493", "(rematch1: 6119226, rematch2: theory, rematch3: 95)"},
+                 {15, "941496931", "(rematch1: 9385300, rematch2: theory, rematch3: 65)"},
+                 {test_email_seed(), "104405559", "(rematch1: 8941138, rematch2: languages, rematch3: 12)"},
+               },
+               {"put them together in order"});
 }

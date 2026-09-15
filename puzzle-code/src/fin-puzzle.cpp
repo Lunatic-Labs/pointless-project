@@ -1,7 +1,7 @@
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-Puzzle fin_puzzle_create(long seed)
+Puzzle fin_puzzle_create(seed_t seed)
 {
   (void)seed;
 

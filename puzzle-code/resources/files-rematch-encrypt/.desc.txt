@@ -31,7 +31,7 @@
 
 <p>
   You seemed to struggle on the first encryption puzzle. Because of this, we have decided to give you a freebie
-  by just giving you the password for no strings attachted without encrypting it!
+  by just giving you the password for no strings attached without encrypting it!
 </p>
 
 <div>

@@ -1,0 +1,26 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install -y g++ libzip-dev php-cli
+
+      - name: Puzzle generator tests
+        working-directory: puzzle-code
+        run: make test
+
+      # This checkout's own production tree, so the website's real-generator test runs instead of being skipped.
+      - name: Build the production generator
+        working-directory: puzzle-code
+        run: make production
+
+      - name: Website tests
+        run: php web-server/tests/run.php

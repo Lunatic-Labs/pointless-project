@@ -9,9 +9,17 @@ function pointless_players_file(): string
     return ($file !== false && $file !== '') ? $file : __DIR__ . '/../../data/contact-data.csv';
 }
 
-// Returns whether $email is registered.
+// Returns $email as it is stored and compared: trimmed and lowercased.
+// The puzzle generator's utils_seed_from_email() ignores the same differences.
+function pointless_normalize_email(string $email): string
+{
+    return strtolower(trim($email));
+}
+
+// Returns whether $email is registered, ignoring case and surrounding whitespace.
 function pointless_player_exists(string $email): bool
 {
+    $email = pointless_normalize_email($email);
     $file = @fopen(pointless_players_file(), 'r');
     if ($file === false) {
         return false; // No one has registered yet.
@@ -19,7 +27,7 @@ function pointless_player_exists(string $email): bool
     fgetcsv($file); // Skip the header.
     $found = false;
     while (($line = fgetcsv($file)) !== false) {
-        if (isset($line[2]) && $line[2] === $email) {
+        if (isset($line[2]) && pointless_normalize_email($line[2]) === $email) {
             $found = true;
             break;
         }
@@ -29,7 +37,7 @@ function pointless_player_exists(string $email): bool
 }
 
 // Appends a player, creating the file (and its header) if needed.
-// Returns false on failure.
+// Names are stored as given and the email normalized. Returns false on failure.
 function pointless_add_player(string $fname, string $lname, string $email): bool
 {
     $path = pointless_players_file();
@@ -44,7 +52,7 @@ function pointless_add_player(string $fname, string $lname, string $email): bool
     if (fstat($file)['size'] === 0) {
         fputcsv($file, ['FName', 'LName', 'Email']);
     }
-    $ok = fputcsv($file, [$fname, $lname, $email]) !== false;
+    $ok = fputcsv($file, [$fname, $lname, pointless_normalize_email($email)]) !== false;
     fflush($file);
     flock($file, LOCK_UN);
     fclose($file);

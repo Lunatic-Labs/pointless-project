@@ -124,7 +124,7 @@ exit()          : Escapes the maze if you are on the yellow tile`;
     if (has_key_and_battery) {
         __hide_maze("maze1");
         let s = "you win! Here is your password: ";
-        s += "\n" + __qwertyuiopasdfhjklzxcvbnm ^ __qwertyuiopasdfhjklzzcvbnm;
+        s += "\n" + (__qwertyuiopasdfhjklzxcvbnm ^ __qwertyuiopasdfhjklzzcvbnm);
         document.getElementById("ending").textContent = s;
         return s;
     }

@@ -22,59 +22,11 @@ A website to generate and distribute puzzles to prospective Lipscomb recruits.
 
 ### Installation
 
-#### Linux (*recommended*)
-
 For Debian based distributions, run:
 
 ```bash
 sudo apt update
-sudo apt install g++ libboost-all-dev libzip-dev php-cli gcovr
-```
-
-You will also need a way to open the zipfiles. We have found the best programs to use
-are `file-roller` and `pcmanfm` (or some other file manager such as `nautilus`). But use whatever you see fit.
-
-```bash
-sudo apt update
-sudo apt install file-roller pcmanfm
-```
-
-For Arch based distributions, run:
-
-```bash
-sudo pacman -S gcc boost libzip pcmanfm file-roller
-```
-
-#### Windows
-
-For Windows, we recommend developing with [WSL](https://learn.microsoft.com/en-us/windows/wsl/about) (Windows Subsystem for Linux).
-Please install it if you do not already have it using this [guide](https://learn.microsoft.com/en-us/windows/wsl/install). After that,
-launch WSL and follow the steps for installing on Linux.
-
-For viewing the zipfiles, we have found that [7-zip](https://www.7-zip.org/download.html) works best.
-
-#### Mac
-
-Unfortunately, we have not been able to get the project built on macOS. We have
-decided the best option for Mac users is to use a virtual machine running
-some Linux distribution.
-
-Here are some popular VMs:
-- [QEMU](https://www.qemu.org/) (my favorite but harder to set up)
-- [VirtualBox](https://www.virtualbox.org/) (easiest but slowest)
-- [VMware](https://www.vmware.com/) (high quality but paid)
-
-There are many more out there, so choose whichever one suits you best.
-Once a VM has been chosen, download the ISO for your favorite flavor of Linux,
-have the VM use it, then follow the installation steps for Linux.
-
-*Untested*: earlier versions of this project were built on Apple silicon using Homebrew under the Rosetta 2 Intel emulator:
-
-```bash
-/usr/sbin/softwareupdate --install-rosetta --agree-to-license
-arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-brew install gcc
-arch -x86_64 brew install zlib libzip boost
+sudo apt install g++ libzip-dev php-cli
 ```
 
 ### Building
@@ -95,7 +47,7 @@ make <opt>
 where `opt` is one of:
 - *(none)* or `build`: build the generator, `src/main`
 - `run`: build, remove old zipfiles, and run the generator from `src/`
-- `test`: build and run the automated tests (see [Automated Tests](#automated-tests))
+- `test`: build and run the automated tests; `make test T=<name>` runs only tests whose names contain `<name>` (see [Automated Tests](#automated-tests))
 - `cleanzip`: remove all generated zipfiles and generated puzzle files
 - `clean`: also remove the `build/` directory and both binaries (does not touch `production/`)
 - `coverage`: see [Code Coverage](#code-coverage)
@@ -108,9 +60,9 @@ You can now inspect and solve the puzzle(s) by choosing the appropriate zipfile.
 because all resource paths are relative to it, e.g. `../resources/files-math/.desc.txt`. `make run` and `make test` do this for you.
 
 `./main` accepts the following flags:
-- `-s <seed>`: use the given (nonzero) seed instead of one based on the current time
+- `-s <seed>`: use the given seed (any number) instead of a random one. Without `-s` or `-e`, the random seed is printed so the run can be repeated.
 - `-e <email>`: use the seed for the player with this email (the website does this; see `utils_seed_from_email()`)
-- `-a`: only print the answers; do not generate any zipfiles
+- `-a`: only print the answers (including the rematch puzzles' passwords); do not generate any files
 
 ### Structure of Output
 
@@ -118,6 +70,8 @@ Upon running `./main`, the password for each puzzle is printed and the `zipfiles
 The entire game is `zipfiles/puzzle1.zip`, which contains the nested zipfiles `puzzle2..puzzleN`.
 The other puzzles are also generated outside of `puzzle1.zip` to allow easy testing
 without having to go through the entire zipfile structure.
+
+Each `puzzleN.zip` holds puzzle N's files, unencrypted, and `puzzle{N+1}.zip`, encrypted (AES-256) with puzzle N's password.
 
 ### Repository Layout
 
@@ -130,7 +84,7 @@ without having to go through the entire zipfile structure.
 | `web-server/` | The PHP website that registers players and serves downloads |
 | `web-server/tests/` | Automated tests for the website |
 | `data/` | Player data written by the web server (not in git) |
-| `imgs/` | Images used by this README |
+| `.github/workflows/` | CI: runs both test suites on every push and pull request |
 | `ideas/` | **Not production.** Ideas and unfinished or scrapped work, kept for reference (see [ideas/README.md](ideas/README.md)) |
 
 ## Puzzle Creation Framework
@@ -161,9 +115,14 @@ the footer closes them. `utils_html_printf()` puts the puzzle title in an `<h2>`
 A `.desc.txt` must therefore be an HTML *fragment* with balanced tags: no `<html>`, `<head>`, or `<body>`, and no unclosed or
 extra closing tags, or it will break the page layout around it. `<style>` and `<script>` blocks may appear anywhere in it.
 
-Below is a UML diagram of how a puzzle gets created.
+The game is played offline, so a `.desc.txt` must not *load* anything from the internet (images, scripts, fonts).
+Ordinary links for further reading are fine.
 
-![Puzzle Creation UML](imgs/puzzle-uml.png)
+In short, a puzzle is created like this:
+1. `game_create_puzzles()` in `src/game.cpp` calls `<name>_puzzle_create(seed)` with a seed derived from the player's seed and the puzzle's name.
+2. The puzzle rolls random values with `utils_rng_roll()`, works out the password, and builds its page with `utils_html_printf()`.
+3. It writes `instructions.html` into its resource directory and returns a `Puzzle`.
+4. `game_write_zipfiles()` zips every resource directory, innermost puzzle first.
 
 ## Implementing a New Puzzle
 
@@ -189,6 +148,7 @@ into this `.desc.txt` file, I would do something like:
 ```
 
 It is then the job of C++ to "stringify" the required information to pass to `.desc.txt`.
+There must be exactly one argument for each `%DELIM`; otherwise `utils_html_printf()` throws an error.
 To make the explanation easier to follow, I will make a new puzzle called "fib",
 where the point(less) of it is to have the user find the *n*th number of the Fibonacci sequence.
 
@@ -201,116 +161,75 @@ echo "What is the <b>%DELIM</b>th number in the fibonacci sequence?" > .desc.txt
 ### Puzzle Implementation
 
 Once the above step is done, create a new file called `<puzzle name>-puzzle.cpp`
-in `puzzle-code/src/` and put the entrypoint of the function that will create the puzzle.
-We will also need to include `./include/puzzle.h` to have access to the `Puzzle` object.
+in `puzzle-code/src/`. It includes `./include/puzzle.h` for the `Puzzle` struct and `./include/utils.h` for the utilities.
+
+The function returns a `Puzzle`, defined in `src/include/puzzle.h`:
+
+```cpp
+struct Puzzle {
+  std::string contents_fp;               // The resource directory, "../resources/files-<name>"
+  std::string contents_html;             // The puzzle's instructions.html
+  std::string password;                  // The answer, which unlocks the next puzzle's zip
+  std::optional<std::string> extra_info; // Printed after the password for debugging; never shown to players
+};
+```
+
+Here is the complete puzzle:
 
 ```cpp
 // puzzle-code/src/fib-puzzle.cpp
 #include "./include/puzzle.h"
-
-Puzzle fib_puzzle_create(long seed)
-{
-  return {"../resources/files-fib", "", "changeme", {}}; // NOTE: "../resources/files-fib" is the puzzle resources directory from the previous step.
-}
-```
-
-The return value of this function is a `Puzzle` object. It is defined in `src/include/puzzle.h` as:
-
-```cpp
-struct Puzzle {
-  // The filepath to the appropriate directory
-  // The content of the instruction.html pages
-  // that contains all of the information needed
-  // for the puzzle.
-  std::string contents_fp;
-
-  std::string contents_html;
-
-  std::string password;
-
-  std::optional<std::string> extra_info;
-};
-```
-
-So we are returning a new puzzle where:
-- resources = `"../resources/files-fib"`
-- html content = `""`
-- password = `"changeme"`
-- extra info = None
-
-The `contents_html` field is a string for the HTML content of the puzzle.
-The `password` field is what will set the password for the next zipfile layer.
-The `extra_info` field is purely for debugging and is strictly used for the side
-effect of printing when running the application. Nothing that gets put into it will
-be displayed/used in the final puzzle in the zipfiles.
-
-Now it's time to actually create the solver for the puzzle. I will create a fib function that will find the number.
-
-```cpp
-// Complete source of puzzle-code/src/fib-puzzle.cpp
-#include "./include/puzzle.h"
-#include "./include/utils.h" // utils_rng_roll, utils_html_printf, utils_generate_file
+#include "./include/utils.h"
 
 static int fib(int n)
 {
-  if (n < 2) return n;
-  return fib(n-1) + fib(n-2);
+  return n < 2 ? n : fib(n-1) + fib(n-2);
 }
 
-Puzzle fib_puzzle_create(long seed)
+Puzzle fib_puzzle_create(seed_t seed)
 {
-  // Get a random number in the range 3..=10.
-  int fibnum = utils_rng_roll(3, 10, seed);
+  // Get a random number from 3 to 10.
+  int n = utils_rng_roll(3, 10, seed);
 
-  // Get the solution to the puzzle.
-  int password = fib(fibnum);
+  // Generate the HTML content to be displayed to the user.
+  std::string html_content = utils_html_printf("Fibonacci Sequence", "../resources/files-fib/.desc.txt",
+                                               {std::to_string(n)});
 
-  // Generate the HTML content to be displayed to the user
-  std::string html_content = utils_html_printf("Fibonacci Sequence",
-                                               "../resources/files-fib/.desc.txt",
-                                               {std::to_string(fibnum)});
-
-  // Create the instructions.html
+  // Create the instructions.html.
   utils_generate_file("../resources/files-fib/instructions.html", html_content);
 
-  // Finally return the Puzzle object.
-  return {"../resources/files-fib", html_content, std::to_string(password), {}};
+  return {"../resources/files-fib", html_content, std::to_string(fib(n)), {}};
 }
 ```
 
-Now that the implementation is done, add the signature `Puzzle fib_puzzle_create(long seed);` to `puzzle-code/src/include/puzzle.h`.
+Keep any helper functions `static`, and get every random value from `utils_rng_roll()`, `utils_chance()`, or `utils_shuffle()`
+(not `rand()` or `<random>`), so that every platform generates the same puzzles.
+
+Now add the signature `Puzzle fib_puzzle_create(seed_t seed);` to `puzzle-code/src/include/puzzle.h`.
 No `Makefile` changes are needed; it builds every `.cpp` file in `src/`.
 
 ### Using the Puzzle
 
-In the `main` function in `puzzle-code/src/main.cpp`, there is some code that looks like:
+`game_create_puzzles()` in `puzzle-code/src/game.cpp` lists the puzzles in play order:
 
 ```cpp
-std::vector<Puzzle> puzzles = {
-  math_puzzle_create(seed),
-  color_puzzle_create(seed),
-  pixel_puzzle_create(seed),
-  maze_puzzle_create(seed),
-  based_intro_puzzle_create(seed),
-  encrypt_puzzle_create(seed),
-  rematch_puzzle_create(seed),
-  binary_addition_puzzle_create(seed),
-  logicgate_puzzle_create(seed),
-  bst_puzzle_create(seed),
-  fin_puzzle_create(seed),
+return {
+  math_puzzle_create(utils_derive_seed(seed, "math")),
+  color_puzzle_create(utils_derive_seed(seed, "color")),
+  pixel_puzzle_create(utils_derive_seed(seed, "pixel")),
+  // ...
+  fin_puzzle_create(utils_derive_seed(seed, "fin")),
 };
 ```
 
-Put the new puzzle in the spot where you want it to
-appear in the nested zipfiles. For example, if I want it to be the
-third puzzle that the user solves, I would do:
+Put the new puzzle where you want it to appear in the nested zipfiles. For example, to make it the third puzzle:
 
 ```cpp
-std::vector<Puzzle> puzzles = {
-  math_puzzle_create(seed),
-  color_puzzle_create(seed),
-  fib_puzzle_create(seed), // Added it here
-  pixel_puzzle_create(seed),
+return {
+  math_puzzle_create(utils_derive_seed(seed, "math")),
+  color_puzzle_create(utils_derive_seed(seed, "color")),
+  fib_puzzle_create(utils_derive_seed(seed, "fib")), // Added it here
+  pixel_puzzle_create(utils_derive_seed(seed, "pixel")),
   // ...
 };
 ```
@@ -352,39 +271,44 @@ We prompt the user to solve a very simple math question in the form of $a + b$.
 
 *Description*:
 
-This puzzle asks the user to enter the hex value of one of Lipscomb's colors (purple or yellow).
-The goal of this puzzle is to teach the user about hex values. We hope that the user does
-some simple Googling to find [this website](https://teamcolorcodes.com/lipscomb-university-bisons-color-codes/) to find the colors.
+This puzzle asks the user to enter the hex value of one of Lipscomb's colors (purple or gold).
+The goal of this puzzle is to teach the user about hex values. A player who is online can search for the colors
+(for example on [this website](https://teamcolorcodes.com/lipscomb-university-bisons-color-codes/)); one who is offline
+can find them in the page's source, in the bison in the header.
 
 *RNG*:
-- purple | yellow
+- purple | gold
 
 ### Pixel
 
 *Adjustable Variables*:
-- `MAX_LOOP` (**must change number of html elements to match**)
+- `ROWS` (**must change the number of rows in `.desc.txt` to match**)
+- `BISON_COLORS`: the colors that can be used and their pixel counts (**must match the bison in `templates/header.txt`**; the tests check this)
 
 *Description*:
 
 The goal of this puzzle is to retest the user on their knowledge of [hexadecimal color codes](https://en.wikipedia.org/wiki/Web_colors)
-learned in the "Color" puzzle. The hex codes come directly from the bison SVG included in the page's header.
+learned in the "Color" puzzle. The hex codes come directly from the bison SVG included in the page's header,
+which is drawn with a grid on this page so its pixels can be counted.
 
 The user is shown a hex code along with a number.
 
 - `#331E54 = 66`
 
 The number corresponds to the number of pixels of the given hex code found in the bison SVG.
-Following the first code/number pair, there are two more rows. The first row will contain two hex codes, an "X" denoting multiplication, and a number.
+Following the first code/number pair, there are two more rows. The first row will contain two hex codes, an "×" denoting multiplication, and a number.
 The number is the product of the pixel counts related to the respective hex codes.
 
-- `#F4AA00 X #331E54 = 396`
+- `#F4AA00 × #331E54 = 396`
 
 The final row contains three hex codes and a question mark. The user must find the product.
 
-- `#FFFFFF X #F4AA00 X #000000 = ?`
+- `#FFFFFF × #F4AA00 × #000000 = ?`
+
+The bison's 183 brown pixels are never used, so nobody has to count them.
 
 *RNG*:
-- The order of hex codes in the arithmetic
+- The hex codes in each row
 
 ### Maze
 
@@ -397,7 +321,7 @@ The goal of this puzzle is to teach the user about [run-length encoding](https:/
 This encoding algorithm normally places numbers before the letters, while we expect the numbers to be after.
 We do this because it more closely matches function calls in the form of $f\ x \rightarrow n$.
 
-We randomly generate a maze as an SVG and have the user navigate it using the following rules:
+We randomly generate a maze (`src/maze.cpp`) as an SVG and have the user navigate it from the gold square to the purple square using the following rules:
 
 | Instruction | Direction |
 |-------------|-----------|
@@ -433,37 +357,36 @@ The following things can happen:
 - increase each **fourth** letter alphabetically by $n$.
 
 *RNG*:
-- The instructions used
+- The word, and the order of the steps
 - $i$, $r$, $l$, $j$, $k$, $n$
 
 ### Intro Base
 
 *Adjustable Variables*:
-- `MAX_HEX_ANS_LEN`
+- `BASE` and `LENGTH` (**must match `.desc.txt`**)
 
 *Description*:
 
 The goal of this puzzle is to introduce the player to number bases and base conversion.
-The puzzle contains a visual representation of numbers with different bases called a lightbox.
-Using these visual representations of bases, the player must convert a lightbox from base 16
-to base 10.
+The puzzle contains a visual representation of numbers with different bases called a lightbox:
+one column per digit, with the least significant digit on the left, and one lit light per column.
+The player must write the base-16 lightbox as digits, in the same order (so the answer is the hex number written backwards).
 
 *RNG*:
-- the number
-- lightbox placements
+- the digits (the last one is never 0)
 
 ### Rematches
 
 The "rematch" puzzles serve as the point in the project where there is a
 noticeable difficulty spike. It interrupts the linear nested puzzle format
-by having the user solve three harder versions of previous puzzles. Each one
-of these rematch puzzles gives a piece of the password to advance past this
+by having the user solve three harder versions of previous puzzles, each in its own zip (`rematch1.zip` to `rematch3.zip`).
+Each rematch's password unlocks a file with a 3-digit number; the three numbers in order are the password to advance past this
 rematch section.
 
 #### Maze Rematch
 
 *Adjustable Variables*:
-- `MAZE_SIZE` (**must be an odd number**)
+- `MAZE_SIZE` (**must be an odd number**, and matches the HTML)
 
 *Description*:
 
@@ -471,8 +394,8 @@ This is the harder version of the *Maze* puzzle. We provide cryptic instructions
 with the goal of having them inspect the page and navigate to the console. Once they
 type "instructions" a list of function calls is presented. The user then needs to navigate
 the maze $(M_1)$ using these function calls and must explore two other mazes $(M_2, M_3)$ with items that need to
-be picked up. Once these items are picked up, they then need to go to $M_1$ and go
-to the yellow tile. The password is then presented when they type "exit()".
+be picked up (a key and a battery, on pink tiles). Stairs are brown (down) and green (up). Once these items are picked up, they then need to go to $M_1$ and go
+to the gold tile. The password is then presented when they type "exit()".
 
 *RNG*:
 - $M_1, M_2, M_3$, password
@@ -490,12 +413,12 @@ a textbox on screen and try to figure out the pattern in which the buttons mess 
 Once they have figured it out, they must decrypt the password.
 
 *RNG*:
-- The password
+- The password, the substitution table, and the XOR key
 
 #### Based Rematch
 
 *Adjustable Variables*:
-- `CELLS` (**must modify table in .desc.txt to match**)
+- `ROWS` (**must modify the table in `.desc.txt` to match**)
 
 *Description*:
 
@@ -508,7 +431,7 @@ They are given a description of three Pointless-created bases. The actual instru
 - Save the resulting LSB values
 - Take that base 2 number and convert it back to base 10 (the rightmost column)
 
-They are then shown a table with values occupying each cell, except for the rightmost cell in each row.
+They are then shown a table of eight rows, with values occupying each cell except for the rightmost cell in each row. The first four rows might look like:
 
 |    |    |    |   |
 |---:|---:|---:|---|
@@ -525,26 +448,29 @@ They are then shown a table with values occupying each cell, except for the righ
 *Adjustable Variables*:
 - `ROOT_MIN`
 - `ROOT_MAX`
+- `DEPTH`: the number of signs between the top of the tree and an ID
 
 *Description*:
 
-The player is presented with a root number. The goal is to create a binary search tree (BST), and trace
-the route from the root node to the destination by solving the expression set with your root number.
+The player is given a number $x$ and a tree of directories. Each directory holds a "street sign" (a text file) with a condition on $x$:
+go into `right/` if it is true and `left/` otherwise. At the bottom of the correct path, `ID.txt` holds the password.
 
-These are the possible expressions that can show up, with examples:
-- addition: $a + b$
-- subtraction: $a - b$
-- multiplication: $a * b$
-- division: $a / b$
-- square root: $\sqrt{a}$
-- comparisons: $a > b$
-- hexadecimal: `FFFFFF`
-- complex expression: `√?((a -/+ b) +/- (c *||/ d))`
+These are the possible signs, with examples:
+- comparison: $x > 57$
+- addition: $12 + 38 = x$
+- subtraction: $150 - 100 = x$
+- multiplication: $5 \times 10 = x$
+- division: $250 / 5 = x$
+- square root: $\sqrt{2500} = x$
+- hexadecimal: `32` is $x$ in hexadecimal
+- expression: $\sqrt{((a - b) + (c \times d))} = x$ (with or without the square root, and with $+$ or $-$, and $\times$ or $/$)
+
+Each sign uses whole numbers only, and about half of the "$= x$" signs are true.
 
 *RNG*:
-- root
-- expressions in each path
-- path from root → destination
+- $x$
+- the signs in each directory
+- the IDs, and so the path from the top to the password
 
 ### Graph Paper Robot Puzzles
 
@@ -556,25 +482,25 @@ incorporate those ideas in the last one.
 #### Binary Addition (Graph Paper Robot I)
 
 *Adjustable Variables*:
-- `TAPE_WIDTH`
+- `TAPE_WIDTH`: the number of bits in each number
 - `TAPE_HEIGHT`
-- `REQ_CARRIES`
+- `REQ_CARRIES`: the minimum number of columns where both numbers have a 1
 
 *Description*:
 
-The player is presented with a 2x12 grid of (mostly) red $(r)$ and green $(g)$ pixels. Red pixels mean 0
-and green means 1. Then, following the rules in the instructions, the player should color in the correct
-squares with the correct color. The idea of this puzzle is that the player is actually performing binary addition.
+The player is presented with a grid of 3 rows and 9 columns. The first two rows each hold a 7-bit number in red $(r)$ and green $(g)$ squares
+(red means 0 and green means 1), with a purple square at the left of the first row and a gold square at its right; the third row is empty.
+Following the rules in the instructions, the player colors in squares. The idea of this puzzle is that the player is actually performing binary addition,
+and the answer is the 8-bit sum.
 
 *RNG*:
-- $r$, $g$ pixels
+- $r$, $g$ squares
 
 #### Logic Gate (Graph Paper Robot II)
 
 *Adjustable Variables*:
-- `enum Gate`: the gates that can be rolled (`And`, `Or`, `Xor`; `Nand` and `Nor` are defined but commented out)
-- `binary` in `logicgate_puzzle_create`: the memory input, currently hardcoded to `0011011000101110`
-  (the call that would use the Binary Addition answer instead is commented out)
+- `enum class Gate`: the gates that can be rolled (`And`, `Or`, `Xor`)
+- `MEMORY`: the starting queue, currently `0011011000101110`
 
 *Description*:
 
@@ -594,200 +520,26 @@ Currently unimplemented.
 
 ## Utilities
 
-Like the name implies, these are very helpful utility functions, declared in `puzzle-code/src/include/utils.h`
-and implemented in `utils.cpp`. Feel free to add more.
+The utilities are declared, with comments, in `puzzle-code/src/include/utils.h`. The most important:
 
-### Externs
+- `seed_t`: a player's seed (`uint64_t`).
+- `utils_rng_roll(min, max, seed)`, `utils_chance(percentage, seed)`, `utils_shuffle(items, seed)`: all randomness. They give the same results on every platform.
+  **NOTE**: The seed is modified by every call, so adding, removing, or reordering calls
+  changes every later value (and the expected passwords in the automated tests).
+- `utils_derive_seed(seed, name)`: a separate seed for each puzzle, so puzzles don't share random numbers.
+- `utils_seed_from_email(email)`: a player's seed. It ignores case and surrounding whitespace, like the website. Changing it changes every player's puzzle.
+- `utils_html_printf(title, desc_filepath, args, extra_head)`: builds a puzzle page, replacing each `%DELIM` with the next argument.
+- `utils_generate_file`, `utils_mkdir`, `utils_remove_all`: write files; they do nothing when the `ANS_ONLY` flag (`./main -a`) is set.
+- `utils_walkdir`, `utils_zip_entries`, `utils_zip_files`: list a puzzle's files and zip them.
 
-`extern uint32_t FLAGS;`
-
-### Typedefs
-
-`typedef std::vector<std::string> strvec_t;`
-
-`typedef const std::string filepath_t;`
-
-### Macros
-
-These are bit flags for `FLAGS`.
-
-- `ANS_ONLY`: Disables artifacts from being created
-- `SET_SEED`: Whether or not to use a set seed
-- `NO_HDR`: Makes it so that the header of a puzzle will not be generated
-- `NO_FTR`: Makes it so that the footer of a puzzle will not be generated
-- `BISON_GRID`: Makes the pixelated bison generate with a grid
-
-### Functions
-
-```cpp
-void utils_generate_file(filepath_t filepath, std::string output_body);
-```
-
-Generates a file with the given `output_body`. Will be written to the `filepath`.
-
-```cpp
-int utils_rng_roll(int min, int max, long &seed);
-```
-
-Generates a random number between `min` and `max` inclusive using `seed`.
-
-**NOTE**: The seed is modified by every call, so adding, removing, or reordering calls
-changes every later value (and the expected passwords in the automated tests).
-
-```cpp
-int utils_roll_seed(void);
-```
-
-Rolls a seed using the current time.
-
-```cpp
-long utils_seed_from_email(const std::string &email);
-```
-
-Derives a player's seed from their email. This is the seed the website uses (`./main -e <email>`).
-It can return 0, which `./main` treats as 1.
-
-```cpp
-strvec_t utils_walkdir(filepath_t path);
-```
-
-Returns a vector of strings containing the names of all files in `path`.
-Recursively walks all subdirectories and will ignore all files/dirs that start with `.`.
-
-```cpp
-void utils_zip_files(filepath_t out_file_name, strvec_t file_names, std::string password="");
-```
-
-Zips the given files into a single file `out_file_name` with `file_names` and the password `password`.
-
-```cpp
-std::string utils_file_to_str(filepath_t filepath);
-```
-
-Returns the contents of `filepath` as a string.
-
-```cpp
-std::string utils_html_printf(std::string title, filepath_t desc_filepath, strvec_t args);
-```
-
-Creates an HTML body. All occurrences of `%DELIM` in the text of `desc_filepath` will be
-replaced with the given `args` in order. It is similar to `printf`.
-
-**NOTE**: You can have this function not insert a header if the flag `NO_HDR` is set prior
-to calling this function. The same is true for the footer if `NO_FTR` is set.
+Errors are reported by throwing `std::runtime_error`.
 
 ## Graphics
 
-This section covers the utility functions dedicated to graphics, declared in `puzzle-code/src/include/graphics.h`.
-
-**NOTE**: We have moved away from PPM files and focus more on SVGs.
-
-### Structs
-
-- `struct Pixel`
-- `struct Image`
-- `struct Svg`
-- `struct Svg::Shape`
-- `struct Svg::Shape::Rect` inherits `struct Svg::Shape`
-- `struct Svg::Shape::Circle` inherits `struct Svg::Shape`
-
-### Operator Overloads
-
-```cpp
-Pixel &Image::operator()(size_t i, size_t j);
-```
-
-### Functions
-
-```cpp
-Image(size_t w, size_t h);
-```
-
-Constructor for an `Image`. Sets width and height to `w` and `h` and all pixels to transparent.
-Implemented in `graphics.h`.
-
-```cpp
-Svg(float w, float h);
-```
-
-Constructor for an `Svg`. Sets the width and height to `w` and `h`.
-Implemented in `graphics.h`.
-
-```cpp
-template <class Shape> void Svg::add_shape(Shape shape);
-```
-
-Appends a shape to the SVG. Implemented in `graphics.h`.
-
-```cpp
-std::string Svg::build(void);
-```
-
-Returns a string of all shapes in valid SVG format to embed into HTML. Implemented in `graphics.cpp`.
-
-```cpp
-Svg::Shape::Rect(float _x, float _y,
-                 float _width, float _height,
-                 std::string _fill,
-                 std::optional<std::string> _stroke = {},
-                 std::optional<std::string> _html_classname = {});
-```
-
-Constructor for `Svg::Shape::Rect`. Implemented in `graphics.h`.
-
-Sets the position of the shape to `_x` and `_y`, its width and height to `_width` and `_height`,
-and its color to `_fill`.
-
-Optionally can set `_stroke` (use this if you want a border) and `_html_classname` (if you want
-to modify it in HTML/JS).
-
-```cpp
-Svg::Shape::Circle(float _x, float _y, float _radius, std::string _fill,
-                   std::optional<std::string> _stroke = {},
-                   std::optional<std::string> _html_classname = {});
-```
-
-Constructor for `Svg::Shape::Circle`. Implemented in `graphics.h`.
-
-Sets the position of the shape to `_x` and `_y`, its radius to `_radius`,
-and its color to `_fill`.
-
-Optionally can set `_stroke` (use this if you want a border) and `_html_classname` (if you want
-to modify it in HTML/JS).
-
-```cpp
-std::string Svg::Rect::make() const
-```
-
-Creates an SVG line of a `Rect`. Implemented in `graphics.cpp`.
-
-```cpp
-std::string Svg::Circle::make() const
-```
-
-Creates an SVG line of a `Circle`. Implemented in `graphics.cpp`.
-
-```cpp
-Svg graphics_gen_svg_from_image(Image &img, float pixel_size);
-```
-
-Creates an `Svg` from `img` using the scaling of `pixel_size`.
-
-**NOTE**: all "dead" pixels are set to transparent.
-
-```cpp
-void graphics_create_ppm(Image &img, const char *filepath);
-```
-
-Creates a PPM image from `img` and saves it to `filepath`.
-
-```cpp
-Image graphics_scale_ppm(Image &img, size_t scale);
-```
-
-Scales `img` by `scale` and returns a new `Image`.
-
-**NOTE**: This function is extremely slow as it runs in $O(n^4)$ time.
+`puzzle-code/src/include/graphics.h` declares `Pixel`, `Image` (a grid of pixels, indexed `img(row, column)`),
+and `Svg`, which builds an SVG from `Svg::Rect` and `Svg::Circle` shapes. `graphics_gen_svg_from_image()` turns an `Image`
+into an SVG with one square per pixel, each with the class `"<row>.<column>"` so that JavaScript can find it.
+`puzzle-code/src/include/maze.h` generates the mazes.
 
 ## Web Server
 
@@ -795,16 +547,19 @@ Scales `img` by `scale` and returns a new `Image`.
 
 The main goals of the webpage are puzzle download, user registration, and user tracking.
 New users register on `index.php`. Registered users can log in (`login.php`) to return to the download page.
-All pages share `includes/header.php` and `includes/footer.php`.
+All pages share `includes/header.php`, `includes/footer.php`, and `includes/styles.css`.
 
 Players are saved to `data/contact-data.csv` at the repository root (columns `FName,LName,Email`; see `web-server/includes/players.php`).
 It is outside `web-server/`, so the web server can never serve it, and git ignores it.
 Set `POINTLESS_PLAYERS_FILE` to store it somewhere else.
+Emails are stored trimmed and lowercased, so `Ann@B.com` and `ann@b.com` are the same player (and get the same puzzle).
+Names are stored as typed.
 
 The user downloads the puzzle via PHP and plays offline. `download.php` builds a personalized zip on request (see `web-server/includes/generate.php`).
 It copies `puzzle-code/production/resources/` into a new temporary directory, runs the production generator there with `-e <email>`
 (so the seed comes from `utils_seed_from_email()`), streams `puzzle1.zip`, and deletes the temporary directory.
 The web server never runs `make` and never writes into `puzzle-code/`, and simultaneous downloads don't interfere with each other.
+Each session can download at most once every 10 seconds (`POINTLESS_DOWNLOAD_INTERVAL`).
 
 Tracking progress by having users submit hidden tokens is planned but not implemented (see [ideas/tokens.md](ideas/tokens.md)).
 
@@ -832,10 +587,6 @@ php -S localhost:8000
 
 **NOTE**: To use a production generator in another directory, set `POINTLESS_GENERATOR_DIR` (e.g. `POINTLESS_GENERATOR_DIR=/srv/pointless-production php -S localhost:8000`).
 That directory must contain `src/main` and `resources/`, laid out as `make production` creates them.
-
-**NOTE (upgrading an existing server)**: Player data used to be in `web-server/includes/contact-data.csv`, which was tracked in git.
-Move it **before** pulling this change (`mkdir -p data && mv web-server/includes/contact-data.csv data/`), or `git pull` will delete or refuse to update it.
-Its old `Token` column is harmless. Then run `make production`; downloads fail until it has been built.
 
 ### Web Server Tests
 
@@ -870,10 +621,6 @@ and fails if the tree exists but is broken, since downloads would fail too.
 To add a test, write a `test_<page>_<feature>()` function in the matching `*-test.php` file using `check($condition, 'what should be true')`,
 and add its name to the `$tests` list in `run.php`. (Use `check()`, not `assert()`: PHP's `assert()` is disabled by default in `php-cli`.)
 
-### Future Goals
-
-- Consistent dark mode between pages
-
 ## Code Coverage
 
 The puzzle generator and tests are compiled with `--coverage` (`make production` is not). In `puzzle-code/`, run the generator
@@ -886,146 +633,56 @@ make coverage
 ```
 
 This prints the percentage of lines executed in each source file and writes the `.gcov` files to `puzzle-code/build/src/`.
+If gcov complains about checksums after the code changes a lot, run `make clean` first.
 
 ## Automated Tests
 
 From `puzzle-code/`, run:
 
 ```bash
-make test
+make test         # all tests
+make test T=bst   # only tests whose names contain "bst"
 ```
 
 This compiles the tests together with the generator's code (everything in `src/` except `main.cpp`)
-into `tests/main`, then runs it from `puzzle-code/tests/`.
+into `tests/main`, then runs it from `puzzle-code/tests/`. Each test prints `PASS` or `FAIL` (after the failed checks),
+and the command fails if any test fails. CI runs these tests and the web server tests on every push.
+
+Besides one test per puzzle:
+- `utils` checks the utilities, including pinned values for the RNG and `utils_seed_from_email()`.
+- `seeds` generates games for 200 players and checks that every puzzle has an answer and that players get different puzzles.
+- `game_zipfiles` writes a real game and unlocks it layer by layer with the passwords, as a player would: it follows the BST signs
+  to the ID and unlocks the rematch zips to check their numbers.
+
+The tests run with the `ANS_ONLY` flag, so only `game_zipfiles` writes files (into `resources/` and `tests/zipfiles/`, which it removes).
 
 ### Implementing New Tests
 
-#### Test Implementation
-
-Create a new file called `<puzzle name>-puzzle-test.cpp`
-in `puzzle-code/tests/`. We will need to include `../src/include/puzzle.h` to have access to the `Puzzle` object,
-and `./include/test.h` to have access to the different puzzle test functions.
+Create `<puzzle name>-puzzle-test.cpp` in `puzzle-code/tests/`. Most puzzle tests are a single `CHECK_PUZZLE`,
+which checks the password for each seed, and that the page has the header, the footer, and some text from the description:
 
 ```cpp
 #include "./include/test.h"
-#include "./include/file.h"
-#include "../src/include/puzzle.h"
 
-bool fib_puzzle_test()
+void fib_puzzle_test()
 {
-  Puzzle test;
-  std::string header_content = file_contents("../resources/templates/header.txt");
-  std::string footer_content = file_contents("../resources/templates/footer.txt");
-  size_t found;
-
-  std::cout << "starting fib puzzle tests" << std::endl;
-  // Different assert() tests
-  std::cout << "fib puzzle test successful\n" << std::endl;
-
-  return true;
+  CHECK_PUZZLE(fib_puzzle_create,
+               {{1, "13"}, {5, "5"}, {10, "21"}, {test_email_seed(), "8"}},
+               {"th number in the fibonacci sequence?"});
 }
 ```
 
-Now it's time to create an automated test for the puzzle. I will create a fib test function to see if the fib function
-works correctly. The expected passwords depend on the seed, so run `./main -a -s <seed>` in `puzzle-code/src/` to find them.
+The expected passwords depend on the seed; run `./main -a` in `puzzle-code/src/` to see them, or write the test with
+placeholders and copy the values from the failure messages (after checking that they are right).
+For other checks, use `CHECK(condition)`, `CHECK_EQ(actual, expected)` (for strings), and `CHECK_THROWS(statement)` from `tests/include/test.h`.
+They record a failure and let the test continue.
 
-```cpp
-#include <iostream>
-#include <string>
-#include <cassert>
-#include "./include/test.h"
-#include "./include/file.h"
-#include "../src/include/puzzle.h"
-#include "../src/include/utils.h"
-
-bool fib_puzzle_test()
-{
-  Puzzle test;
-  std::string header_content = file_contents("../resources/templates/header.txt");
-  std::string footer_content = file_contents("../resources/templates/footer.txt");
-  size_t found;
-
-  std::cout << "starting fib puzzle tests" << std::endl;
-  test = fib_puzzle_create(1);
-  assert(test.password == "1");
-  found = test.contents_html.find(header_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(footer_content);
-  assert(found != std::string::npos);
-
-  test = fib_puzzle_create(5);
-  assert(test.password == "5");
-  found = test.contents_html.find(header_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(footer_content);
-  assert(found != std::string::npos);
-
-  test = fib_puzzle_create(10);
-  assert(test.password == "55");
-  found = test.contents_html.find(header_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(footer_content);
-  assert(found != std::string::npos);
-
-  test = fib_puzzle_create(15);
-  assert(test.password == "610");
-  found = test.contents_html.find(header_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(footer_content);
-  assert(found != std::string::npos);
-  std::cout << "fib puzzle test successful\n" << std::endl;
-
-  return true;
-}
-```
-
-Now that the implementation is done, add the signature `bool fib_puzzle_test();` to `puzzle-code/tests/include/test.h`.
-
-#### Using the Test
-
-In the `main` function in `puzzle-code/tests/main.cpp`, there is some code that looks like:
-
-```cpp
-std::vector<bool> tests = {
-  math_puzzle_test(),
-  color_puzzle_test(),
-  pixel_puzzle_test(),
-  maze_puzzle_test(),
-  based_intro_puzzle_test(),
-  encrypt_puzzle_test(),
-  rematch_puzzle_test(),
-  rematch_maze_puzzle_test(),
-  rematch_encrypt_puzzle_test(),
-  rematch_based_puzzle_test(),
-  binary_addition_puzzle_test(),
-  logicgate_puzzle_test(),
-  bst_puzzle_test(),
-  fin_puzzle_test(),
-};
-```
-
-Put the new test in the spot where you want it to
-run in the testing process. For example, if I want it to be the
-third test, I would do:
-
-```cpp
-std::vector<bool> tests = {
-  math_puzzle_test(),
-  color_puzzle_test(),
-  fib_puzzle_test(),  // Added it here
-  pixel_puzzle_test(),
-  // ...
-};
-```
-
-Now run `make test` in `puzzle-code/` and these things will happen:
-- Any changed code (including `<puzzle name>-puzzle.cpp`) is compiled into `puzzle-code/build/`.
-- The tests are linked into `puzzle-code/tests/main`.
-- Once linked, the tests run automatically.
-
-To run only some tests, temporarily comment out the others in the `tests` vector.
+Then declare `void fib_puzzle_test();` in `puzzle-code/tests/include/test.h`, add `{"fib_puzzle", fib_puzzle_test}` to the
+`tests` array in `puzzle-code/tests/main.cpp`, and add the puzzle to `min_different` in `puzzle-code/tests/seeds-test.cpp`.
 
 ## Issues
+
+A backlog of cleanup and improvement tasks is in [ideas/cleanup-tasks.md](ideas/cleanup-tasks.md).
 
 - No support for building on macOS
 - Issues with accessing the zip files on macOS and Linux without file-roller. It immediately
@@ -1033,10 +690,7 @@ To run only some tests, temporarily comment out the others in the `tests` vector
 - The puzzle difficulty does not scale smoothly. The earlier puzzles should be harder.
 - The *Maze Rematch* puzzle needs a better description.
 - Missing required "witty" quotes on all puzzles.
-- The rematch puzzles produce "pieces" of the final password, and the user must concatenate them together. However,
-  this does not work if the user decides to do them in a non-linear order. Maybe just add the numbers together?
-- `index.php` and `login.php` apply `htmlspecialchars` to the email *before* validating it, so valid emails containing `'` or `&`
-  (e.g. `o'brien@example.com`) are rejected as invalid. Names are also stored HTML-escaped in the players file.
+- The *Based Rematch* puzzle is easy to brute force: its answer is an 8-bit number.
 
 ## Future Plans
 

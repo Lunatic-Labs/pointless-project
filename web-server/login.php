@@ -3,16 +3,18 @@ session_start();
 require_once __DIR__ . '/includes/players.php';
 
 $error = "";
+$email = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $usr_email = htmlspecialchars($_POST["email"] ?? "");
+    $email = pointless_normalize_email($_POST["email"] ?? "");
 
-    if (filter_var($usr_email, FILTER_VALIDATE_EMAIL) === false) {
-        $error = "!! INVALID EMAIL !! Please enter a vaild email...";
-    } elseif (!pointless_player_exists($usr_email)) {
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+        $error = "!! INVALID EMAIL !! Please enter a valid email...";
+    } elseif (!pointless_player_exists($email)) {
         $error = "Email not registered. Perhaps you haven't signed up yet? <a href='./index.php'>Click here.</a>";
     } else {
-        $_SESSION["email"] = $usr_email;
+        session_regenerate_id(true);
+        $_SESSION["email"] = $email;
         header("Location: download.php");
         exit;
     }
@@ -20,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 <?php require __DIR__ . '/includes/header.php'; ?>
     <div class="container">
-        <p style="text-align:center">
+        <p>
             This is the login page.<br>
             Enter your email to download your puzzle.
         </p>
@@ -31,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="stringForm">
             <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required>
+            <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" autocomplete="email" required>
             <button type="submit">Submit</button>
         </form>
     </div>

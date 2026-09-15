@@ -29,6 +29,14 @@ function test_players_exists_matches_whole_email(): void
     check(!pointless_player_exists('Ann'), 'names are not emails');
 }
 
+function test_players_normalizes_email(): void
+{
+    check(pointless_normalize_email(" Ann@B.COM\n") === 'ann@b.com', 'emails are trimmed and lowercased');
+    pointless_add_player('Ann', 'Lee', ' Ann@B.com ');
+    check(player_rows()[1][2] === 'ann@b.com', 'the email is stored normalized');
+    check(pointless_player_exists("ANN@b.com\t"), 'lookups ignore case and surrounding whitespace');
+}
+
 function test_players_csv_quoting(): void
 {
     pointless_add_player('Smith, Jr', 'say "hi"', 'q@b.com');

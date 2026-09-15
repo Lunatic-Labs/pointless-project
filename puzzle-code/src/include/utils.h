@@ -1,53 +1,84 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <vector>
-#include <string>
 #include <cstdint>
+#include <string>
+#include <utility>
+#include <vector>
 
-#define BOLD(s) "<b>" + (s) + "</b>"
-
-#define ANS_ONLY 1 << 0
-#define SET_SEED 1 << 1
-#define NO_HDR 1 << 2
-#define NO_FTR 1 << 3
-#define BISON_GRID 1 << 4
+// Bits of FLAGS.
+constexpr uint32_t ANS_ONLY = 1 << 0; // Only compute answers: write no files, directories, or zips.
 extern uint32_t FLAGS;
 
 typedef std::vector<std::string> strvec_t;
 typedef const std::string filepath_t;
 
-// Generates a file with the given body. Will be written to the given filepath.
-void utils_generate_file(filepath_t filepath, std::string output_body);
+// A player's seed. Every random choice in a puzzle comes from it through utils_rng_roll().
+typedef uint64_t seed_t;
 
-// Generates a random number between `min` and `max` using the given seed.
-// NOTE: The seed will be modified.
-int utils_rng_roll(int min, int max, long &seed);
+// Writes `output_body` to `filepath`. Does nothing under ANS_ONLY. Throws std::runtime_error on failure.
+void utils_generate_file(filepath_t filepath, const std::string &output_body);
 
-// Rolls a seed using the current time.
-int utils_roll_seed(void);
-
-// Derives a player's seed from their email. This is the seed the website uses (`./main -e <email>`).
-// NOTE: Can return 0, which `./main` treats as 1.
-long utils_seed_from_email(const std::string &email);
-
-// Returns a vector of strings containing the names of all files in the given directory.
-// Recursively walks all subdirectories.
-// NOTE: Will ignore all files/dirs that start with `.`
-strvec_t utils_walkdir(filepath_t path);
-
-// Zips the given files into a single file with the given name and password.
-void utils_zip_files(filepath_t out_file_name, strvec_t file_names, std::string password="");
-
-// Returns the contents of the given file as a string.
-std::string utils_file_to_str(filepath_t filepath);
-
-// Creates an HTML body. All occurrences of "%DELIM" in the text of `desc_filepath` will be
-// replaced with the given `args` in order. It is similar to `printf`.
-std::string utils_html_printf(std::string title, filepath_t desc_filepath, strvec_t args);
-
+// Creates the directory `filepath` and its parents. Does nothing under ANS_ONLY.
 void utils_mkdir(filepath_t filepath);
 
-int utils_chance(int percentage, long &seed);
+// Removes `filepath` and everything under it, if it exists. Does nothing under ANS_ONLY.
+void utils_remove_all(filepath_t filepath);
+
+// Returns a random number from `min` to `max` (inclusive, in either order) and advances `seed`.
+// The numbers depend only on the seed, not on the platform or compiler.
+// NOTE: Adding, removing, or reordering calls changes every later number.
+int utils_rng_roll(int min, int max, seed_t &seed);
+
+// Returns true `percentage` percent of the time.
+bool utils_chance(int percentage, seed_t &seed);
+
+// Shuffles `items` (a vector or string) using utils_rng_roll().
+template <class T>
+void utils_shuffle(T &items, seed_t &seed)
+{
+  for (size_t i = items.size(); i > 1; --i) {
+    std::swap(items[i - 1], items[utils_rng_roll(0, (int)i - 1, seed)]);
+  }
+}
+
+// Returns a seed for the part of a game named `name`, so that parts made from the same seed don't
+// share random numbers.
+seed_t utils_derive_seed(seed_t seed, const std::string &name);
+
+// Returns an unpredictable seed.
+seed_t utils_roll_seed(void);
+
+// Returns the seed of the player with `email`; this is what `./main -e <email>` (and so the website) uses.
+// Ignores surrounding whitespace and ASCII case, like pointless_normalize_email() in web-server/includes/players.php.
+seed_t utils_seed_from_email(const std::string &email);
+
+// Returns the paths of all files under `path`, recursively, sorted.
+// Skips files and directories whose names start with `.`.
+strvec_t utils_walkdir(filepath_t path);
+
+// A file to put in a zip.
+struct ZipEntry {
+  std::string path;       // The file on disk
+  std::string name;       // Its name in the zip
+  bool encrypted = false; // Whether to encrypt it with the zip's password
+};
+
+// Returns an unencrypted entry for each file under `dir` (see utils_walkdir()), named by its path relative to `dir`.
+std::vector<ZipEntry> utils_zip_entries(filepath_t dir);
+
+// Writes the zip `out_file_name`, replacing any existing file, holding `entries`.
+// Entries marked `encrypted` are encrypted with AES-256 using `password`. Throws std::runtime_error on failure.
+void utils_zip_files(filepath_t out_file_name, const std::vector<ZipEntry> &entries, const std::string &password);
+
+// Returns the contents of `filepath`. Throws std::runtime_error if it can't be read.
+std::string utils_file_to_str(filepath_t filepath);
+
+// Returns a puzzle page: resources/templates/header.txt, then `extra_head` (for example a <style>),
+// `title` in an <h2>, the description in `desc_filepath` with each %DELIM replaced by the next of
+// `args` (in a <section>), and resources/templates/footer.txt.
+// Throws std::runtime_error unless the description has exactly args.size() %DELIMs.
+std::string utils_html_printf(const std::string &title, filepath_t desc_filepath, const strvec_t &args,
+                              const std::string &extra_head = "");
 
 #endif // UTILS_H

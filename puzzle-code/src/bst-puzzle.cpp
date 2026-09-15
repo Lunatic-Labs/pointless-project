@@ -4,395 +4,161 @@
  * Contact: zdhdev@yahoo.com, tcaustin@mail.lipscomb.edu, mahernandezlara@mail.lipscomb.edu
  * Date: 10/2/2024
  * Description:
- *   The user is presented with several generated expression as well as the root variable.
- *   They must create and navigate the binary search tree to find the correct path from the root to the destination.
+ *   The user is given x and a binary tree of directories. Each directory has a "street sign" (a
+ *   text file) with a condition on x: go right if it is true, left if not. The password is in
+ *   ID.txt at the end of the correct path.
  */
 
-#include <iostream>
-#include <algorithm>
-#include <cassert>
+#include <cstdio>
+#include <string>
+#include <vector>
 
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-#define ROOT_MIN 11
+#define ROOT_MIN 11 // The range of x
 #define ROOT_MAX 150
+#define DEPTH 10    // Signs on the way from the top of the tree to an ID
 
-static int fail_safe = 0;
-static int password;
-static std::string password_path;
-static long mutable_seed;
+namespace {
 
-int not_root(int x, const int root)
+// A street sign: the name of its file, its condition, and whether that condition is true for x.
+struct Sign {
+  std::string name;
+  std::string condition;
+  bool right;
+};
+
+std::string str(int n)
 {
-  if (x == root) {
-    if (x + 10 > ROOT_MAX) {
-      x -= 10;
-    } else {
-      x += 10;
+  return std::to_string(n);
+}
+
+// Returns x if `right`, and otherwise some other number from 1 to ROOT_MAX.
+int target(int x, bool right, seed_t &seed)
+{
+  if (right) {
+    return x;
+  }
+  int n = utils_rng_roll(1, ROOT_MAX - 1, seed);
+  return n >= x ? n + 1 : n;
+}
+
+// Returns a sign like "√((E - F) + (C * D)) = x".
+Sign expression_sign(int x, bool right, seed_t &seed)
+{
+  const int v = target(x, right, seed);
+  const bool root = utils_chance(50, seed);
+  const int value = root ? v*v : v;
+
+  // (left) +/- (c * d or c*d / d) = value
+  const int c = utils_rng_roll(1, 12, seed);
+  const int d = utils_rng_roll(1, 12, seed);
+  const bool times = utils_chance(50, seed);
+  const std::string term2 = times ? str(c) + " * " + str(d) : str(c*d) + " / " + str(d);
+  const int term2_value = times ? c*d : c;
+  const bool plus = utils_chance(50, seed) && value > term2_value;
+  const int left = plus ? value - term2_value : value + term2_value;
+
+  // left = e +/- f
+  const int f = utils_rng_roll(1, 50, seed);
+  const bool left_plus = utils_chance(50, seed) && left > f;
+  const std::string term1 = left_plus ? str(left - f) + " + " + str(f) : str(left + f) + " - " + str(f);
+
+  const std::string expression = "(" + term1 + ")" + (plus ? " + " : " - ") + "(" + term2 + ")";
+  return {"Expression", (root ? "√(" + expression + ")" : expression) + " = x", right};
+}
+
+Sign make_sign(int x, seed_t &seed)
+{
+  const bool right = utils_chance(50, seed);
+  switch (utils_rng_roll(1, 8, seed)) {
+    case 1: {
+      int limit = utils_rng_roll(ROOT_MIN - 1, ROOT_MAX - 1, seed);
+      return {"Comparison", "x > " + str(limit), x > limit};
     }
-  }
-
-  return x;
-}
-
-int add(int i, int j)
-{
-  return i - j;
-
-}
-
-std::string addition(std::string path, const int root)
-{
-  int a = utils_rng_roll(10, root-1, mutable_seed);
-  int b = add(root, a);
-  int c = utils_rng_roll(1, ROOT_MAX, mutable_seed);
-  c = not_root(c, root);
-  c = add(c,a);
-
-  std::string text;
-  std::string dir;
-  if ((b & 1) == 1) {
-    text = "if " + std::to_string(a) + " + " + std::to_string(b) + " = x, then go right\nelse, go left";
-    dir = "r";
-  } else {
-    text = "if " + std::to_string(a) + " + " + std::to_string(c) + " = x, then go right\nelse, go left";
-    dir = "l";
-  }
-  utils_generate_file(path + "/Addition.txt", text);
-  return dir;
-}
-
-int sub(int i, int j)
-{
-  return i + j;
-}
-
-std::string subtraction(std::string path, const int root)
-{
-  int a = utils_rng_roll(0, 200, mutable_seed);
-  int b = sub(root,a);
-  int c = utils_rng_roll(1, ROOT_MAX, mutable_seed);
-  c = not_root(c, root);
-  c = sub(c,a);
-
-  std::string text;
-  std::string dir;
-  if ((b & 1) == 1) {
-    text = "if " + std::to_string(b) + " - " + std::to_string(a) + " = x, then go right\nelse, go left";
-    dir = "r";
-  } else {
-    text = "if " + std::to_string(c) + " - " + std::to_string(a) + " = x, then go right\nelse, go left";
-    dir = "l";
-  }
-  utils_generate_file(path + "/Subtraction.txt", text);
-  return dir;
-}
-
-double multiply(int i, int j)
-{
-  return 1.0 * i / j;
-}
-
-std::string multiplication(std::string path, const int root)
-{
-  int a = utils_rng_roll(1, root-1, mutable_seed);
-  double b = multiply(root, a);
-  int c = utils_rng_roll(50, ROOT_MAX, mutable_seed);
-  c = not_root(c, root);
-  double d = multiply(c,a);
-
-  std::string text;
-  std::string dir;
-  if ((a & 1) == 1) {
-    text = "if " + std::to_string(a) + " * " + std::to_string(b) + " = x, then go right\nelse, go left";
-    dir = "r";
-  } else {
-    text = "if " + std::to_string(a) + " * " + std::to_string(d) + " = x, then go right\nelse, go left";
-    dir = "l";
-  }
-  utils_generate_file(path + "/Multiplication.txt", text);
-  return dir;
-}
-
-int divide(int i, int j)
-{
-  return i * j;
-}
-
-std::string division(std::string path, const int root)
-{
-  int a = utils_rng_roll(1, ROOT_MAX, mutable_seed);
-  int b = divide(root, a);
-  int c = utils_rng_roll(1, ROOT_MAX, mutable_seed);
-  c = not_root(c, root);
-  c = divide(c, a);
-
-  std::string text;
-  std::string dir;
-  if ((a & 1) == 1) {
-    text = "if " + std::to_string(b) + " / " + std::to_string(a) + " = x, then go right\nelse, go left";
-    dir = "r";
-  } else {
-    text = "if " + std::to_string(c) + " / " + std::to_string(a) + " = x, then go right\nelse, go left";
-    dir = "l";
-  }
-  utils_generate_file(path + "/Division.txt", text);
-  return dir;
-}
-
-int sqrt(int i)
-{
-  return i * i;
-}
-
-std::string square_root(std::string path, const int root)
-{
-  int a = sqrt(root);
-  int b = utils_rng_roll(1, ROOT_MAX, mutable_seed);
-  b = not_root(b, root);
-  b = sqrt(b);
-
-  std::string text;
-  std::string dir;
-  if ((b & 1) == 1) {
-    text = "if √" + std::to_string(a) + " = x, then go right\nelse, go left";
-    dir = "r";
-  } else {
-    text = "if √" + std::to_string(b) + " = x, then go right\nelse, go left";
-    dir = "l";
-  }
-  utils_generate_file(path + "/Square_Root.txt", text);
-  return dir;
-}
-
-std::string expression(std::string path, const int root)
-{
-  int rng = utils_rng_roll(50, 200, mutable_seed);
-  rng = not_root(rng, root);
-  int a,b,c,d,e,f;  // true answer
-  double g;
-  int t,u,v,w,x,y;  // fake answer
-  double z;
-  std::string symbols[4];
-
-  if ((rng & 1) == 1) {
-    a = sqrt(root);
-    t = sqrt(rng);
-    symbols[0] = "√";
-  } else {
-    a = root;
-    t = rng;
-    symbols[0] = "0";
-  }
-  // √?(a)
-  // √?(t)
-
-  rng = utils_rng_roll(50, 200, mutable_seed);
-  b = rng;
-  u = rng;
-  if ((rng & 1) == 1) {
-    c = add(a, b);
-    v = add(t,u);
-    symbols[1] = " + ";
-  } else {
-    c = sub(a, b);
-    v = sub(t,u);
-    symbols[1] = " - ";
-  }
-  // √?(c +/- b)
-  // √?(v +/- u)
-
-  rng = utils_rng_roll(1, 50, mutable_seed);
-  d = rng;
-  w = rng;
-  if ((rng & 1) == 1) {
-    e = sub(c, d);
-    x = sub(v,w);
-    symbols[2] = " - ";
-  } else {
-    e = add(c, d);
-    x = add(v,w);
-    symbols[2] = " + ";
-  }
-  // √?((e -/+ d) +/- b)
-  // √?((x -/+ w) +/- u)
-
-  rng = utils_rng_roll(1, 50, mutable_seed);
-  f = rng;
-  y = rng;
-  if ((rng & 1) == 1) {
-    g = multiply(b, f);
-    z = multiply(u,y);
-    symbols[3] = " x ";
-  } else {
-    g = divide(b,f);
-    z = multiply(u,y);
-    symbols[3] = " / ";
-  }
-  // √?((e -/+ d) +/- (g *||/ f))
-  // √?((x -/+ w) +/- (z *||/ y))
-
-  std::string text;
-  std::string dir;
-  if (symbols[0] == "0") {
-    text = "if (" + std::to_string((rng & 1) == 1? e:x) + symbols[2] + std::to_string((rng & 1) == 1? d:w) + ")" + symbols[1] + "(" + std::to_string((rng & 1) == 1? g:z) + symbols[3] + std::to_string((rng & 1) == 1? f:y) + ") = x, then go right";
-    text += "\nelse, then go left";
-  } else {
-    text = "if √((" + std::to_string((rng & 1) == 1? e:x) + symbols[2] + std::to_string((rng & 1) == 1? d:w) + ")" + symbols[1] + "(" + std::to_string((rng & 1) == 1? g:z) + symbols[3] + std::to_string((rng & 1) == 1? f:y) + ")) = x, then go right";
-    text += "\nelse, then go left";
-  }
-  if ((rng & 1) == 1) {
-    dir = "r";
-  } else {
-    dir ="l";
-  }
-  utils_generate_file(path + "/Expression.txt", text);
-  return dir;
-}
-
-std::string comparison(std::string path, const int root)
-{
-  int comp = utils_rng_roll(10, 100, mutable_seed);
-  std::string text = "if x > " + std::to_string(comp) + ", then go right\nelse, go left";
-  std::string dir;
-  if (root > comp) {
-    dir = "r";
-  } else {
-    dir = "l";
-  }
-  utils_generate_file(path + "/Comparison.txt", text);
-  return dir;
-}
-
-std::string to_hex(int num)
-{
-  char hex[3];
-  int i = 0;
-  while (num != 0) {
-    int temp = num % 16;
-
-    if (temp < 10) {
-      hex[i] = temp + 48;
-    } else {
-      hex[i] = temp + 55;
+    case 2: {
+      int v = target(x, right, seed);
+      int a = utils_rng_roll(1, v, seed);
+      return {"Addition", str(a) + " + " + str(v - a) + " = x", right};
     }
-    i++;
-
-    num /= 16;
+    case 3: {
+      int v = target(x, right, seed);
+      int a = utils_rng_roll(1, 200, seed);
+      return {"Subtraction", str(v + a) + " - " + str(a) + " = x", right};
+    }
+    case 4: {
+      int v = target(x, right, seed);
+      std::vector<int> divisors;
+      for (int d = 1; d <= v; d++) {
+        if (v % d == 0) {
+          divisors.push_back(d);
+        }
+      }
+      int a = divisors[utils_rng_roll(0, (int)divisors.size() - 1, seed)];
+      return {"Multiplication", str(a) + " * " + str(v / a) + " = x", right};
+    }
+    case 5: {
+      int v = target(x, right, seed);
+      int a = utils_rng_roll(2, 12, seed);
+      return {"Division", str(v*a) + " / " + str(a) + " = x", right};
+    }
+    case 6: {
+      int v = target(x, right, seed);
+      return {"Square_Root", "√" + str(v*v) + " = x", right};
+    }
+    case 7: {
+      char hex[16];
+      std::snprintf(hex, sizeof hex, "%X", target(x, right, seed));
+      return {"Hexadecimal", std::string(hex) + " is x in hexadecimal", right};
+    }
+    default:
+      return expression_sign(x, right, seed);
   }
-  std::string hexnum;
-  for (int j = i-1; j >= 0; j--) {
-    hexnum += hex[j];
-  }
-
-  return hexnum;
 }
 
-std::string hexadecimal(std::string path, const int root)
-{
-  std::string ans = to_hex(root);
-  int a = utils_rng_roll(0, ROOT_MAX, mutable_seed);
-  a = not_root(a, root);
-  std::string hex = to_hex(a);
+struct Tree {
+  int x;
+  seed_t seed;
+  std::string path; // The correct path: l or r for each sign
+  int password = 0;
+};
 
-  std::string text;
-  std::string dir;
-  if ((a & 1) == 1) {
-    text = "if " + ans + " is hexadecimal for x, then go right\nelse, go left";
-    dir = "r";
-  } else {
-    text = "if " + hex + " is hexadecimal for x, then go right\nelse, go left";
-    dir = "l";
-  }
-  utils_generate_file(path + "/Hexadecimal.txt", text);
-  return dir;
-}
-
-static void create_dirs(std::string path, int depth, std::string dir, const int root, bool correct)
+// Creates the directory `dir`. With `depth` 0 it gets an ID.txt; otherwise it gets a sign and
+// left and right subdirectories. `on_path` says whether `dir` is on the correct path.
+void build(Tree &tree, const std::string &dir, int depth, bool on_path)
 {
-  if (fail_safe++ > 9000) {
-    std::cout << "HIT FAIL SAFE\n";
+  utils_mkdir(dir);
+  if (depth == 0) {
+    int id = utils_rng_roll(1000000, 9999999, tree.seed);
+    utils_generate_file(dir + "/ID.txt", str(id));
+    if (on_path) {
+      tree.password = id;
+    }
     return;
   }
-  if (depth < -10) {
-    std::cout << "Error: depth < -10" << std::endl;
-    return;
-  }
-  if (depth < 0) {
-   int rng = utils_rng_roll(1000000,9000000, mutable_seed);
-   utils_generate_file(path + "/ID.txt", std::to_string(rng));
-   if(correct) {
-    password = rng;
-   }
-   return;
-  }
-  path += dir;
-  utils_mkdir(path);
 
-  std::string correct_path;
-  if (depth > 0) {
-    ++mutable_seed;
-    int rng = 8/*utils_rng_roll(1, 8, mutable_seed)*/;
-    switch (rng) {
-      case 1:
-        correct_path = comparison(path, root);
-        break;
-      case 2:
-        correct_path = addition(path, root);
-        break;
-      case 3:
-        correct_path = subtraction(path, root);
-        break;
-      case 4:
-        correct_path = multiplication(path, root);
-        break;
-      case 5:
-        correct_path = division(path, root);
-        break;
-      case 6:
-        correct_path = square_root(path, root);
-        break;
-      case 7:
-        correct_path = hexadecimal(path, root);
-        break;
-      case 8:
-        correct_path = expression(path, root);
-        break;
-      default:
-        std::cout << "Error: invalid case" << std::endl;
-        return;
-    }
+  const Sign sign = make_sign(tree.x, tree.seed);
+  utils_generate_file(dir + "/" + sign.name + ".txt", "if " + sign.condition + ", then go right\nelse, go left");
+  if (on_path) {
+    tree.path += sign.right ? 'r' : 'l';
   }
-  
-  if (correct_path == "r" && correct) {
-    password_path += correct_path;
-    create_dirs(path, depth - 1, "/left", root, false);
-    create_dirs(path, depth - 1, "/right", root, true);
-  }else if (correct_path == "l" && correct) {
-    password_path += correct_path;
-    create_dirs(path, depth - 1, "/left", root, true);
-    create_dirs(path, depth - 1, "/right", root, false);
-  }else if (correct == false) {
-    create_dirs(path, depth - 1, "/left", root, false);
-    create_dirs(path, depth - 1, "/right", root, false);
-  }else {
-    create_dirs(path, depth - 1, "/ID", root, true);
-  }
+  build(tree, dir + "/left", depth - 1, on_path && !sign.right);
+  build(tree, dir + "/right", depth - 1, on_path && sign.right);
 }
 
-Puzzle bst_puzzle_create(long seed)
-{
-  if (password_path != "") {  // For automatic testing
-    password_path.clear();
-    fail_safe = 0;
-  }
-  mutable_seed = seed;
-  const int root = utils_rng_roll(ROOT_MIN,ROOT_MAX,seed);
-  const size_t depth = 10;
+} // namespace
 
-  create_dirs("../resources/files-bst", depth, "/tree", root, true);
-  std::string html_body = utils_html_printf("BST Puzzle", "../resources/files-bst/.desc.txt", { std::to_string(root) });
+Puzzle bst_puzzle_create(seed_t seed)
+{
+  const std::string tree_dir = "../resources/files-bst/tree";
+  const int x = utils_rng_roll(ROOT_MIN, ROOT_MAX, seed);
+  Tree tree{x, seed, "", 0};
+
+  utils_remove_all(tree_dir); // Signs from an earlier run would otherwise be left in the tree.
+  build(tree, tree_dir, DEPTH, true);
+
+  std::string html_body = utils_html_printf("BST Puzzle", "../resources/files-bst/.desc.txt", {str(tree.x)});
   utils_generate_file("../resources/files-bst/instructions.html", html_body);
-  return {"../resources/files-bst", html_body, std::to_string(password), " Path: " + password_path};
+  return {"../resources/files-bst", html_body, str(tree.password), "Path: " + tree.path};
 }

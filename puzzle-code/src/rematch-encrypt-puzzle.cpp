@@ -1,15 +1,16 @@
-#include <cassert>
-#include <iostream>
+/*
+ * File: rematch-encrypt-puzzle.cpp
+ * Description:
+ *   A harder encrypt puzzle. The page runs the password through three "machines" (JavaScript
+ *   functions) and shows the result. The player can try each machine on their own input, work
+ *   out what it does, and undo them. The password is the original word.
+ */
+
+#include <string>
 #include <vector>
-#include <random>
-#include <climits>
-#include <algorithm>
-#include <set>
-#include <algorithm>
 
 #include "./include/puzzle.h"
 #include "./include/utils.h"
-#include "./include/graphics.h"
 
 #define ENCR_WORDS { \
   "lipscomb",        \
@@ -23,58 +24,40 @@
   "binary",          \
 }
 
-std::string generate_sym_tbl(long seed)
+// Returns the entries of a JavaScript object mapping each character to another (a random
+// one-to-one substitution), used by the Goopify machine.
+static std::string substitution_table(seed_t &seed)
 {
-  std::string from = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()-_=+[]{};':<>,./?`~";
-  std::string to   = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()-_=+[]{};':<>,./?`~";
+  const std::string from = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()-_=+[]{};':<>,./?`~";
+  std::string to = from;
+  utils_shuffle(to, seed);
 
-  std::shuffle(to.begin(), to.end(), std::default_random_engine(seed));
-
-  std::string tbl= "";
-  for(size_t i = 0; i < to.length(); i++) {
-    tbl.append("  \"");
-    tbl.append(1, from[i]);
-    tbl.append("\": \"");
-    tbl.append(1, to[i]);
-    tbl.append("\",");
-    tbl += "\n";
+  std::string table;
+  for (size_t i = 0; i < from.size(); i++) {
+    table += "  \"" + std::string(1, from[i]) + "\": \"" + std::string(1, to[i]) + "\",\n";
   }
-
-  return tbl;
+  return table;
 }
 
-std::string str_to_ascii_array(std::string &s, int key)
+// Returns `s` as a JavaScript array of character codes, each XORed with `key`.
+static std::string xored_codes(const std::string &s, int key)
 {
   std::string res = "[";
-  // "{12, 43, 234, 654, 345}"
-  for (auto c : s) {
-    char s[8];
-    sprintf(s, "%d", c^key);
-    res += s;
-    res += ",";
+  for (unsigned char c : s) {
+    res += std::to_string(c ^ key) + ",";
   }
-  res += "]";
-
-  return res;
+  return res + "]";
 }
 
-Puzzle rematch_encrypt_puzzle_create(long seed)
+Puzzle rematch_encrypt_puzzle_create(seed_t seed)
 {
-  std::string words[] = ENCR_WORDS;
-  const int word_idx = utils_rng_roll(0, sizeof(words)/sizeof(*words)-1, seed);
+  const std::vector<std::string> words = ENCR_WORDS;
+  const std::string password = words[utils_rng_roll(0, (int)words.size() - 1, seed)];
+  const std::string table = substitution_table(seed);
+  const int key = utils_rng_roll(100, 250, seed);
 
-  std::string word = words[word_idx];
-
-  std::string password = word;
-  std::string len = "";
-
-  std::string table = generate_sym_tbl(seed);
-
-  int key = utils_rng_roll(100, 250, seed);
-
-  std::string encrypted_password = str_to_ascii_array(password, key);
-  
-  std::string html_body = utils_html_printf("Encrypt puzzle", "../resources/files-rematch-encrypt/.desc.txt", {encrypted_password, std::to_string(key), table});
+  std::string html_body = utils_html_printf("Encrypt Rematch Puzzle", "../resources/files-rematch-encrypt/.desc.txt",
+                                            {xored_codes(password, key), std::to_string(key), table});
   utils_generate_file("../resources/files-rematch-encrypt/instructions.html", html_body);
   return {"../resources/files-rematch-encrypt", html_body, password, {}};
 }

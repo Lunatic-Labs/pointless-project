@@ -1,108 +1,60 @@
-#include <cassert>
-#include <cstdio>
-#include <cstdlib>
-#include <fstream>
-#include <sstream>
-#include <sys/stat.h>
+#include <exception>
 #include <iostream>
 #include <string>
-#include <string.h>
-#include <vector>
-#include <algorithm>
 
+#include "./include/game.h"
 #include "./include/utils.h"
-#include "./include/puzzle.h"
 
 uint32_t FLAGS = 0;
 
-void create_nested_zipfiles(std::vector<Puzzle> &puzzles)
-{
-  const char *zipdir = "zipfiles/puzzle";
-  int i = puzzles.size();
-
-  // Need to go in reverse order to zip the files correctly.
-  for (auto puzzle = puzzles.rbegin(); puzzle != puzzles.rend(); ++puzzle, --i) {
-    std::vector<std::string> files = utils_walkdir(puzzle->contents_fp);
-
-    // Adds the next level of zipped puzzle (technically the previous one because reverse order).
-    if(puzzle != puzzles.rbegin()) {
-      files.insert(files.begin(), zipdir + std::to_string(i+1) + ".zip");
-    }
-    utils_zip_files(std::string(zipdir + std::to_string(i) + ".zip"), files, puzzle->password);
-  }
-}
-
-#include "include/graphics.h"
+static const char *USAGE = "usage: ./main [-a] [-s <seed> | -e <email>]";
 
 int main(int argc, char **argv)
 {
-  long seed = 0;
-  while (argc > 1) {
-    if (strcmp(argv[1], "-a") == 0) {
+  seed_t seed = 0;
+  bool seed_given = false;
+
+  for (int i = 1; i < argc; ++i) {
+    const std::string arg = argv[i];
+    if (arg == "-a") {
       FLAGS |= ANS_ONLY;
-    }
-    else if (strcmp(argv[1], "-s") == 0) {
-      FLAGS |= SET_SEED;
-      --argc;
-      ++argv;
-
-      if (argc < 2 || (seed = atol(argv[1])) == 0) {
-        std::cerr << "Expected <seed> (must be a number)" << std::endl;
+    } else if ((arg == "-s" || arg == "-e") && i + 1 < argc) {
+      const std::string value = argv[++i];
+      seed_given = true;
+      if (arg == "-e") {
+        seed = utils_seed_from_email(value);
+        continue;
+      }
+      size_t used = 0;
+      try {
+        seed = std::stoull(value, &used);
+      } catch (const std::exception &) {
+        used = 0;
+      }
+      if (used == 0 || used != value.size()) {
+        std::cerr << "Expected a number after -s, got: " << value << std::endl;
         return 1;
       }
-    }
-    else if (strcmp(argv[1], "-e") == 0) {
-      FLAGS |= SET_SEED;
-      --argc;
-      ++argv;
-
-      if (argc < 2) {
-        std::cerr << "Expected <email>" << std::endl;
-        return 1;
-      }
-      seed = utils_seed_from_email(argv[1]);
-      if (seed == 0) {
-        seed = 1;
-      }
-    }
-    else {
-      std::cerr << "Unknown flag: " << argv[1] << std::endl;
+    } else {
+      std::cerr << "Unknown or incomplete option: " << arg << "\n" << USAGE << std::endl;
       return 1;
     }
-    --argc;
-    ++argv;
   }
 
-  if ((FLAGS & SET_SEED) == 0) {
+  if (!seed_given) {
     seed = utils_roll_seed();
+    std::cout << "Seed: " << seed << std::endl;
   }
 
-  std::vector<Puzzle> puzzles = {
-    math_puzzle_create(seed),
-    color_puzzle_create(seed),
-    pixel_puzzle_create(seed),
-    maze_puzzle_create(seed),
-    based_intro_puzzle_create(seed),
-    encrypt_puzzle_create(seed),
-    rematch_puzzle_create(seed),
-    binary_addition_puzzle_create(seed),
-    logicgate_puzzle_create(seed),
-    bst_puzzle_create(seed),
-    fin_puzzle_create(seed),
-  };
-
-  for (auto &puzzle : puzzles) {
-    // contents_fp is "../resources/files-<name>"
-    std::string puzzle_name = puzzle.contents_fp.substr(puzzle.contents_fp.find("files-") + 6);
-    std::printf("%-15s Password: %s", puzzle_name.c_str(), puzzle.password.c_str());
-    if (puzzle.extra_info) {
-      std::printf(" %s", puzzle.extra_info->c_str());
+  try {
+    std::vector<Puzzle> puzzles = game_create_puzzles(seed);
+    game_print_passwords(puzzles);
+    if (!(FLAGS & ANS_ONLY)) {
+      game_write_zipfiles(puzzles, "zipfiles");
     }
-    std::cout << std::endl;
-  }
-
-  if (!(FLAGS & ANS_ONLY)) {
-    create_nested_zipfiles(puzzles);
+  } catch (const std::exception &e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    return 1;
   }
 
   return 0;

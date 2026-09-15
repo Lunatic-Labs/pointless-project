@@ -1,150 +1,103 @@
-#include <iostream>
-#include <vector>
-#include <random>
-#include <climits>
-#include <algorithm>
-#include <set>
+/*
+ * File: rematch-maze-puzzle.cpp
+ * Description:
+ *   A harder maze. The page has three mazes, and the player moves by calling JavaScript functions
+ *   in the browser console. They pick up a key in the second maze and a battery in the third, then
+ *   go to the gold exit in the first maze and call exit(), which shows the password.
+ */
 
+#include <string>
+#include <vector>
+
+#include "./include/graphics.h"
+#include "./include/maze.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
-#include "./include/graphics.h"
 
-#define MAZE_WALL {0,0,0}
-#define MAZE_PATH {255,255,255}
-#define MAZE_CHECKER_PATH {200,200,255}; // This color is hard coded into JS as hex
+#define MAZE_SIZE 9 // Must be odd. Also hardcoded into files-rematch-maze/.desc.txt
 
-#define MAZE_SIZE 9 // Must be an odd number. Also is hardcoded into HTML
-#define PIXEL_IS_BLACK(p) (p.red + p.green + p.blue == 0)
+static constexpr Pixel TILE_START{255, 0, 255};  // Purple: where the player starts
+static constexpr Pixel TILE_EXIT{255, 255, 0};   // Gold
+static constexpr Pixel TILE_DOWN{200, 150, 0};   // Brown: stairs down
+static constexpr Pixel TILE_UP{0, 200, 0};       // Green: stairs up
+static constexpr Pixel TILE_ITEM{250, 150, 150}; // Pink
 
-#define MAZE_END {255, 0, 255};   // Purple
-#define MAZE_START {255, 255, 0}; // Gold
-#define MAZE_DOWN {200,150,0};
-#define MAZE_UP {0,200,0};
-#define MAZE_ITEM {250,150,150};
+// The numbers in the mazes' JavaScript arrays. Must match files-rematch-maze/.desc.txt.
+enum Cell {
+  CELL_WALL = 0,
+  CELL_EMPTY = 1,
+  CELL_START = 2,
+  CELL_END = 3,
+  CELL_DESCEND = 4,
+  CELL_ASCEND = 5,
+  CELL_PICKUP_KEY = 6,
+  CELL_PICKUP_BATTERY = 7,
+};
 
-/*** Binary maze macros ***/
-#define AT(i, j) ((i) * MAZE_SIZE + (j))
-#define CELL_WALL 0
-#define CELL_EMPTY 1
-#define CELL_START 2
-#define CELL_END 3
-#define CELL_DESCEND 4
-#define CELL_ASCEND 5
-#define CELL_PICKUP_KEY 6
-#define CELL_PICKUP_BATTERY 7
-
-static void rematch_randomized_dfs(Image &maze, std::vector<int> &binmaze, int x, int y, long &seed)
+// Colors the tile at (row, col) of `maze` and records it in `cells`.
+static void set_tile(Image &maze, std::vector<int> &cells, int row, int col, Pixel color, Cell cell)
 {
-  std::vector<std::pair<int, int>> directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-  std::shuffle(directions.begin(), directions.end(), std::default_random_engine(seed));
-  ++seed;
-
-  maze(x, y) = MAZE_CHECKER_PATH;
-  for (auto &dir : directions) {
-    int nx = x + dir.first;
-    int ny = y + dir.second;
-    int fx = x + dir.first*2;
-    int fy = y + dir.second*2;
-
-    // Bounds checking
-    if (fx < 0 || fy < 0 || fx >= MAZE_SIZE || fy >= MAZE_SIZE) {
-      continue;
-    }
-
-    if (PIXEL_IS_BLACK(maze(fx, fy))) {
-      ++seed; // idk why, but this is necessary for better randomness
-      maze(fx, fy) = MAZE_CHECKER_PATH;
-      maze(nx, ny) = MAZE_PATH;
-      binmaze[AT(fx, fy)] = 1;
-      binmaze[AT(nx, ny)] = 1;
-      rematch_randomized_dfs(maze, binmaze, fx, fy, seed);
-    }
-  }
+  maze(row, col) = color;
+  cells[row*MAZE_SIZE + col] = cell;
 }
 
-static std::string vector_mat_to_str(std::vector<int> &v)
+// Returns `cells` as the rows of a JavaScript array.
+static std::string cells_to_js(const std::vector<int> &cells)
 {
   std::string res = "\n";
-  for (int i = 0; i < MAZE_SIZE; i += 1) {
+  for (int i = 0; i < MAZE_SIZE; i++) {
     res += "    [";
-    for (int j = 0; j < MAZE_SIZE; j += 1) {
-      res += std::to_string(v[i*MAZE_SIZE+j]) + ",";
+    for (int j = 0; j < MAZE_SIZE; j++) {
+      res += std::to_string(cells[i*MAZE_SIZE + j]) + ",";
     }
     res += "],\n";
   }
-  res += "  ";
-  return res;
+  return res + "  ";
 }
 
-Puzzle rematch_maze_puzzle_create(long seed)
+Puzzle rematch_maze_puzzle_create(seed_t seed)
 {
-  std::vector<std::vector<int>> mazes = {};
-  std::vector<std::string> svgs = {};
+  const int password = utils_rng_roll(1000000, 9999999, seed);
+  const int password_key = utils_rng_roll(1000000, 9999999, seed);
 
-  int password = utils_rng_roll(1000000, 9999999, seed);
-  int password_hash = utils_rng_roll(1000000, 9999999, seed);
-  int encrypted_password = password ^ password_hash;
-
+  const int last = MAZE_SIZE - 1;
+  const int middle = MAZE_SIZE / 2;
+  strvec_t svgs;
+  strvec_t arrays;
   for (int i = 0; i < 3; ++i) {
-    Image maze(MAZE_SIZE, MAZE_SIZE);
-    for (size_t i = 0; i < MAZE_SIZE; i++) {
-      for (size_t j = 0; j < MAZE_SIZE; j++) {
-        maze(i,j) = MAZE_WALL;
-      }
+    Image maze = maze_generate(MAZE_SIZE, seed);
+    std::vector<int> cells(maze.pixels.size());
+    for (size_t p = 0; p < cells.size(); p++) {
+      cells[p] = maze_is_wall(maze.pixels[p]) ? CELL_WALL : CELL_EMPTY;
     }
-
-    std::vector<int> binmaze = {};
-    binmaze.resize(MAZE_SIZE*MAZE_SIZE, 0); // Set all to 0
-
-    rematch_randomized_dfs(maze, binmaze, MAZE_SIZE-1, 0, seed);
 
     switch (i) {
-      // Only the first maze should have start and end spots.
-      case 0: {
-        maze(0, MAZE_SIZE-1) = MAZE_START;
-        maze(MAZE_SIZE-1, 0) = MAZE_END;
-        maze(0, 0) = MAZE_DOWN;
-
-        binmaze[AT(MAZE_SIZE-1, 0)] = CELL_START;
-        binmaze[AT(0, MAZE_SIZE-1)] = CELL_END;
-        binmaze[AT(0, 0)] = CELL_DESCEND;
-      } break;
-      case 1: {
-        maze(0, 0) = MAZE_UP;
-        maze(MAZE_SIZE-1, MAZE_SIZE-1) = MAZE_DOWN;
-        maze(MAZE_SIZE/2, MAZE_SIZE/2) = MAZE_ITEM;
-
-        binmaze[AT(0, 0)] = CELL_ASCEND;
-        binmaze[AT(MAZE_SIZE-1, MAZE_SIZE-1)] = CELL_DESCEND;
-        binmaze[AT(MAZE_SIZE/2, MAZE_SIZE/2)] = CELL_PICKUP_KEY;
-      } break;
-      case 2: {
-        maze(MAZE_SIZE-1, MAZE_SIZE-1) = MAZE_UP;
-        maze(MAZE_SIZE/2, MAZE_SIZE/2) = MAZE_ITEM;
-
-        binmaze[AT(MAZE_SIZE-1, MAZE_SIZE-1)] = CELL_ASCEND;
-        binmaze[AT(MAZE_SIZE/2, MAZE_SIZE/2)] = CELL_PICKUP_BATTERY;
-      } break;
+      case 0: // The player starts at the bottom left and exits at the top right.
+        set_tile(maze, cells, last, 0, TILE_START, CELL_START);
+        set_tile(maze, cells, 0, last, TILE_EXIT, CELL_END);
+        set_tile(maze, cells, 0, 0, TILE_DOWN, CELL_DESCEND);
+        break;
+      case 1:
+        set_tile(maze, cells, 0, 0, TILE_UP, CELL_ASCEND);
+        set_tile(maze, cells, last, last, TILE_DOWN, CELL_DESCEND);
+        set_tile(maze, cells, middle, middle, TILE_ITEM, CELL_PICKUP_KEY);
+        break;
+      case 2:
+        set_tile(maze, cells, last, last, TILE_UP, CELL_ASCEND);
+        set_tile(maze, cells, middle, middle, TILE_ITEM, CELL_PICKUP_BATTERY);
+        break;
     }
 
-    Svg svg = graphics_gen_svg_from_image(maze, 40.f, {}); // Maze size is hardcoded into HTML
-    Svg::Circle player(-200.f, -200.f, 15.f, "#F4AA00", "#000000", {}, "player");
-    svg.add_shape(player);
-    std::string svg_html = svg.build(0);
-
-    svgs.push_back(svg_html);
-    mazes.push_back(binmaze);
+    Svg svg = graphics_gen_svg_from_image(maze, 40, {}); // Also hardcoded into the HTML
+    svg.add_shape(Svg::Circle(-200, -200, 15, "#F4AA00", "#000000", {}, "player"));
+    svgs.push_back(svg.build(false));
+    arrays.push_back(cells_to_js(cells));
   }
 
-  std::string binmaze_str1 = vector_mat_to_str(mazes[0]);
-  std::string binmaze_str2 = vector_mat_to_str(mazes[1]);
-  std::string binmaze_str3 = vector_mat_to_str(mazes[2]);
-
-  std::string html_body = utils_html_printf("Maze Rematch Puzzle",
-                                            "../resources/files-rematch-maze/.desc.txt",
-                                            {svgs[0], svgs[1], svgs[2], binmaze_str1, binmaze_str2, binmaze_str3,
-                                            std::to_string(encrypted_password), std::to_string(password_hash)});
-
+  // The page shows (password ^ password_key) ^ password_key when the player escapes.
+  std::string html_body = utils_html_printf("Maze Rematch Puzzle", "../resources/files-rematch-maze/.desc.txt",
+                                            {svgs[0], svgs[1], svgs[2], arrays[0], arrays[1], arrays[2],
+                                             std::to_string(password ^ password_key), std::to_string(password_key)});
   utils_generate_file("../resources/files-rematch-maze/instructions.html", html_body);
   return {"../resources/files-rematch-maze", html_body, std::to_string(password), {}};
 }

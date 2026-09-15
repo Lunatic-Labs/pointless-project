@@ -27,6 +27,7 @@ $tests = [
     'test_players_missing_file',
     'test_players_add_creates_file_and_header',
     'test_players_exists_matches_whole_email',
+    'test_players_normalizes_email',
     'test_players_csv_quoting',
 
     'test_generate_dir_from_env',
@@ -39,17 +40,22 @@ $tests = [
     'test_index_get',
     'test_index_register',
     'test_index_invalid_email',
+    'test_index_email_with_apostrophe',
+    'test_index_requires_names',
     'test_index_duplicate_email',
-    'test_index_escapes_names',
+    'test_index_normalizes_email',
+    'test_index_names_stored_as_typed',
 
     'test_login_get',
     'test_login_registered',
+    'test_login_ignores_case',
     'test_login_unregistered',
     'test_login_invalid_email',
 
     'test_download_requires_session',
     'test_download_zip',
     'test_download_uses_session_email',
+    'test_download_rate_limited',
     'test_download_generator_missing',
     'test_download_generator_fails',
 ];

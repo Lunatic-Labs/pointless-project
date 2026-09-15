@@ -35,6 +35,17 @@ function test_download_uses_session_email(): void
     check($ann->post('download.php')->body === 'email=ann@b.com', 'first player gets their own zip');
 }
 
+function test_download_rate_limited(): void
+{
+    $client = new Client();
+    register($client, 'ann@b.com');
+    check($client->post('download.php')->header('Content-Type') === 'application/zip', 'first download works');
+    $page = $client->post('download.php');
+    check($page->header('Content-Type') !== 'application/zip', 'an immediate second download is refused');
+    check($page->contains('Please wait'), 'says to wait');
+    check(count(generator_runs()) === 1, 'generator runs only once');
+}
+
 function test_download_generator_missing(): void
 {
     fake_generator('missing');

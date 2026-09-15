@@ -1,84 +1,58 @@
-#include <iostream>
+/*
+ * File: rematch-based-puzzle.cpp
+ * Author: Mekeal Brown
+ * Contact: brownmekeal@gmail.com
+ * Date: 2/6/2024
+ * Description:
+ *   The user is told how an alien number system writes numbers in three bases and is shown a
+ *   table of values, three per row. For each row, they convert the values to base 10, sum them,
+ *   and take the sum's least significant bit. The bits, first row first, make a binary number;
+ *   the password is that number in base 10.
+ */
+
+#include <string>
 
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-#define CELLS 24
-#define MAX_RAND 67 //0-42, A-Z(0, 67)
+#define ROWS 8 // Must match the table in files-rematch-based/.desc.txt
+#define VALUES_PER_ROW 3
 
-/*
-* File: rematch-based-puzzle.cpp
-* Author: Mekeal Brown
-* Contact: brownmekeal@gmail.com
-* Date: 2/6/2024
-* Description:
-*  The user is presented told the mappings of three unique bases.
-*  There is a table with values presented in one of the three bases.
-*  They must perform the following steps to solve:
-*   -Convert values to base 10
-*   - Sum them up for each row
-*   -Convert the sum to base 2
-*   -Check if lsb is on or off
-*   -Save the resulting lsb values
-*   -Take that base 2 number and convert it back to base 10
-*   
-*   CHANGES BY JORDAN
-*   This puzzle is a bit too easy to brute force. 
-*/
+// A value in the table and the base it is written in.
+struct Value {
+  std::string text;
+  int base;
+};
 
-
-static int solve(std::vector<std::string> &vals, std::vector<int> &base)
+// Returns a random value, written by the rules in files-rematch-based/.desc.txt:
+// 0 through 20 are base 20, 21 through 42 are base 31, and A through F are base 16.
+static Value random_value(seed_t &seed)
 {
-  int decimalval, items, solution, mask;
-  decimalval = items = solution = 0;
-  mask = 128;
-
-  std::vector<std::string>::iterator it;
-  std::vector<int>::iterator it2;
-  for (it = vals.begin(), it2 = base.begin(); it != vals.end() && it2 != base.end(); ++it, ++it2) {
-    decimalval += std::stoi(*it, nullptr, *it2);
-    ++items;
-    if (items == 3) {
-      if (decimalval & 1) {
-        solution |= mask;
-      }
-      mask >>= 1;
-      decimalval = items = 0;
-    }
+  int n = utils_rng_roll(0, 67, seed);
+  if (n <= 20) {
+    return {std::to_string(n), 20};
   }
-  return solution;
+  if (n <= 42) {
+    return {std::to_string(n), 31};
+  }
+  return {std::string(1, (char)('A' + utils_rng_roll(0, 5, seed))), 16};
 }
 
-Puzzle rematch_based_puzzle_create(long seed)
+Puzzle rematch_based_puzzle_create(seed_t seed)
 {
-  std::vector<std::string> values;
-  std::vector<int> bases;
-
-  for (int i = 0; i < CELLS; i++) {
-    short rand = utils_rng_roll(0, MAX_RAND, seed);
-    if (rand > 42) { // Keep them within hex range of values* Convert values to base 10
-      if (rand > 47) {
-        rand = utils_rng_roll(42, 47, seed);
-      }
-
-      values.push_back(std::string(1, static_cast<char>(rand + 23))); // + 23 to get correct ASCII value
-      bases.push_back(16);
-    } else {
-      int base = 0;
-
-      if (rand >= 0 && rand <= 20) { //0-20 is base 20
-        base = 20;
-      }
-      else if (rand >= 21 && rand <= 42) { //21-42 is base 31
-        base = 31;
-      }
-
-      values.push_back(std::to_string(rand));
-      bases.push_back(base);
+  strvec_t values;
+  int answer = 0;
+  for (int row = 0; row < ROWS; row++) {
+    int sum = 0;
+    for (int i = 0; i < VALUES_PER_ROW; i++) {
+      Value value = random_value(seed);
+      values.push_back(value.text);
+      sum += std::stoi(value.text, nullptr, value.base);
     }
+    answer = (answer << 1) | (sum & 1);
   }
 
   std::string html_content = utils_html_printf("Base Puzzle Rematch", "../resources/files-rematch-based/.desc.txt", values);
   utils_generate_file("../resources/files-rematch-based/instructions.html", html_content);
-  return Puzzle{"../resources/files-rematch-based", html_content, std::to_string(solve(values, bases)), {}};
+  return {"../resources/files-rematch-based", html_content, std::to_string(answer), {}};
 }

@@ -1,75 +1,42 @@
-#include <iostream>
-#include <string>
-#include <cassert>
+#include <map>
+#include <regex>
+
 #include "./include/test.h"
-#include "./include/file.h"
-#include "../src/include/puzzle.h"
-#include "../src/include/utils.h"
 
-bool pixel_puzzle_test()
+void pixel_puzzle_test()
 {
-  Puzzle test;
-  std::string header_content = file_contents("../resources/templates/header.txt");
-  std::string footer_content = file_contents("../resources/templates/footer.txt");
-  std::string token = "color wheel";
-  std::string important_content = "Lou seems a little off today… or maybe it’s you.";
-  long seed = utils_seed_from_email("HelloHi@gmail.com");
-  size_t found;
+  CHECK_PUZZLE(pixel_puzzle_create,
+               {{1, "3960"}, {5, "9900"}, {10, "9900"}, {15, "1800"}, {test_email_seed(), "3960"}},
+               {"color wheel", "Lou seems a little off today… or maybe it’s you."});
 
-  test = pixel_puzzle_create(1);
-  assert(test.password == "5400");
-  found = test.contents_html.find(header_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(footer_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(token);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(important_content);
-  assert(found != std::string::npos);
+  // The pixel counts must match the bison in the header, and the password must be the last row's product.
+  std::map<std::string, int> counts;
+  const std::string header = utils_file_to_str("../resources/templates/header.txt");
+  const std::regex fill("fill=\"(#[0-9A-Fa-f]{6})\"");
+  for (auto it = std::sregex_iterator(header.begin(), header.end(), fill); it != std::sregex_iterator(); ++it) {
+    std::string hex = (*it)[1];
+    for (char &c : hex) {
+      c = (char)toupper((unsigned char)c);
+    }
+    counts[hex]++;
+  }
 
-  test = pixel_puzzle_create(5);
-  assert(test.password == "0");
-  found = test.contents_html.find(header_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(footer_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(token);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(important_content);
-  assert(found != std::string::npos);
-
-  test = pixel_puzzle_create(10);
-  assert(test.password == "360");
-  found = test.contents_html.find(header_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(footer_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(token);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(important_content);
-  assert(found != std::string::npos);
-  
-  test = pixel_puzzle_create(15);
-  assert(test.password == "287496");
-  found = test.contents_html.find(header_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(footer_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(token);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(important_content);
-  assert(found != std::string::npos);
-  
-  test = pixel_puzzle_create(seed);
-  assert(test.password == "0");
-  found = test.contents_html.find(header_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(footer_content);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(token);
-  assert(found != std::string::npos);
-  found = test.contents_html.find(important_content);
-  assert(found != std::string::npos);
-
-  return true;
+  const std::regex row("<li>((?:#[0-9A-F]{6}(?: × )?)+) = ([0-9?]+)</li>");
+  const std::regex color("#[0-9A-F]{6}");
+  for (seed_t seed = 1; seed <= 50; seed++) {
+    const Puzzle puzzle = pixel_puzzle_create(seed);
+    int rows = 0;
+    for (auto it = std::sregex_iterator(puzzle.contents_html.begin(), puzzle.contents_html.end(), row);
+         it != std::sregex_iterator(); ++it, ++rows) {
+      const std::string colors = (*it)[1];
+      const std::string result = (*it)[2];
+      long product = 1;
+      for (auto c = std::sregex_iterator(colors.begin(), colors.end(), color); c != std::sregex_iterator(); ++c) {
+        product *= counts[c->str()];
+      }
+      const std::string what = "row " + std::to_string(rows + 1) + " for seed " + std::to_string(seed);
+      test_check_eq(std::to_string(product), result == "?" ? puzzle.password : result, what, __FILE__, __LINE__);
+    }
+    test_check(rows == 3, "the page for seed " + std::to_string(seed) + " has 3 rows", __FILE__, __LINE__);
+  }
 }

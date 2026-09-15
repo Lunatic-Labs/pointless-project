@@ -16,7 +16,7 @@
 #define MATH_MIN2 40
 #define MATH_MAX2 90
 
-Puzzle math_puzzle_create(long seed)
+Puzzle math_puzzle_create(seed_t seed)
 {
   int a = utils_rng_roll(MATH_MIN1, MATH_MAX1, seed);
   int b = utils_rng_roll(MATH_MIN2, MATH_MAX2, seed);

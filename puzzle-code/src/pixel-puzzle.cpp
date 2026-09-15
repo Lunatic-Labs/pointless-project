@@ -1,62 +1,52 @@
 /*
-* File: rematch-based-puzzle.cpp
-* Author: Mekeal Brown
-* Contact: brownmekeal@gmail.com
-* Date: 2/6/2024
-* Description:
-*  The user is presented with three rows. One row has one hex value,
-*  the second has two, and the third has three. The first two rows are solved.
-*  The third requires the user to solve. The user must count the number of pixels
-*  in the bison svg on the webpage and perform the arithmetic to solve.
-*/
+ * File: pixel-puzzle.cpp
+ * Author: Mekeal Brown
+ * Contact: brownmekeal@gmail.com
+ * Date: 2/6/2024
+ * Description:
+ *   The user is shown three rows of hex color codes: one code, then two, then three. The first
+ *   two rows show how many pixels of each color the bison in the page's header has (multiplied
+ *   together). The password is the product for the third row.
+ */
 
-#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-#define MAX_LOOP 3 // if i can modify the html somehow...
+#define ROWS 3 // Must match the rows in files-pixel/.desc.txt
 
-static int get_pixel_count(const std::string& hexValue) {
-    static std::unordered_map<std::string, int> pixelCounts = {
-        {"#FFFFFF", 2},
-        {"#000000", 30},
-        {"#F4AA00", 6},
-        {"#331E54", 66},
-        {"#D2BB8D", 11},
-        // {"#552D1B", 183} This is brown. We don't want them counting 183 pixels
-    };
+// The colors of the bison in resources/templates/header.txt and how many pixels of each it has.
+// Its 183 brown (#552D1B) pixels are left out so that nobody has to count them.
+static const std::vector<std::pair<std::string, int>> BISON_COLORS = {
+  {"#FFFFFF", 2},
+  {"#000000", 30},
+  {"#F4AA00", 6},
+  {"#331E54", 66},
+  {"#D2BB8D", 11},
+};
 
-    auto it = pixelCounts.find(hexValue);
-    if (it != pixelCounts.end()) {
-        return it->second;
-    }
-    return 0; // not found?? not sure how that could happen
-}
-
-Puzzle pixel_puzzle_create(long seed)
+Puzzle pixel_puzzle_create(seed_t seed)
 {
-  std::vector<std::string> hex_vals = {"#FFFFFF", "#000000", "#F4AA00", "#331E54", "#964B00"};
-  std::vector<std::string> delim_values;
-
-  for (int i = 0; i < MAX_LOOP; i++) {
-    int prod = 1;
-    for (int j = 0; j < i + 1; j++) {
-      int rand = utils_rng_roll(0, hex_vals.size() - 1, seed);
-      delim_values.push_back(hex_vals[rand]);
-      prod *= get_pixel_count(hex_vals[rand]);
+  strvec_t delim_values;
+  int product = 1;
+  for (int row = 1; row <= ROWS; row++) {
+    product = 1;
+    for (int i = 0; i < row; i++) {
+      const auto &[hex, count] = BISON_COLORS[utils_rng_roll(0, (int)BISON_COLORS.size() - 1, seed)];
+      delim_values.push_back(hex);
+      product *= count;
     }
-    delim_values.push_back(std::to_string(prod));
+    // The last row's product is the answer, so the page shows "?" instead.
+    if (row < ROWS) {
+      delim_values.push_back(std::to_string(product));
+    }
   }
-  std::string answer = delim_values.back();
 
-  // Give the bison a grid
-  FLAGS |= BISON_GRID;
-  std::string html = utils_html_printf("Pixel Puzzle", "../resources/files-pixel/.desc.txt", {delim_values});
-
-  // Disable it so later ones don't have it.
-  FLAGS &= ~(BISON_GRID);
-
+  // Outline the bison's pixels so that they can be counted.
+  const std::string grid = "<style> svg{stroke:#000000;} </style>";
+  std::string html = utils_html_printf("Pixel Puzzle", "../resources/files-pixel/.desc.txt", delim_values, grid);
   utils_generate_file("../resources/files-pixel/instructions.html", html);
-  return {"../resources/files-pixel", html, std::move(answer), {}};
+  return {"../resources/files-pixel", html, std::to_string(product), {}};
 }

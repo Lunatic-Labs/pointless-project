@@ -10,8 +10,8 @@
  */
 
 #include <algorithm>
-#include <iostream>
-#include <cassert>
+#include <string>
+#include <vector>
 
 #include "./include/puzzle.h"
 #include "./include/utils.h"
@@ -32,113 +32,96 @@
   "binary_search_tree",    \
 }
 
-#define ENCR_OPS_SHIFT 0
-#define ENCR_OPS_SWAP 1
-#define ENCR_OPS_CHANGE 2
+enum class Op { Shift, Swap, Change };
 
-#define ENCR_OPS {  \
-  ENCR_OPS_CHANGE,  \
-  ENCR_OPS_SWAP,    \
-  ENCR_OPS_SWAP,    \
-  ENCR_OPS_SWAP,    \
-  ENCR_OPS_SHIFT,   \
+// The operations used, once each, in a random order.
+#define ENCR_OPS { \
+  Op::Change,      \
+  Op::Swap,        \
+  Op::Swap,        \
+  Op::Swap,        \
+  Op::Shift,       \
 }
 
 #define ENCR_ROTATIONS_MIN 1 // Must be 1 or greater
 #define ENCR_ROTATIONS_MAX 3
 
-#define ENCR_CHANGE_MIN 1 // Must be 1 or greater
+#define ENCR_CHANGE_MIN 1 // Must be from 1 to 25
 #define ENCR_CHANGE_MAX 3
 
-static void shift(std::string &s, int dir, int n)
+static void shift(std::string &s, bool right, int n)
 {
-  if (dir) {
+  if (right) {
     std::rotate(s.rbegin(), s.rbegin() + n, s.rend());
   } else {
     std::rotate(s.begin(), s.begin() + n, s.end());
   }
 }
 
-static void swap(std::string &s, int a, int b)
-{
-  std::swap(s[a], s[b]);
-}
-
+// Moves every 4th letter (not counting other characters) `n` letters later in the alphabet.
 static void change(std::string &s, int n)
 {
-  assert(n > 0 && n < 27 && "Invalid change");
-  for (size_t i = 0, c = 0; i < s.size(); ++i) {
-    if (isalpha(s[i])) {
-      ++c;
-    }
-    if (c == 4) {
-      s[i] -= 'a';
-      s[i] = (s[i] + n) % 26;
-      s[i] += 'a';
-      c = 0;
+  int letters = 0;
+  for (char &c : s) {
+    if (c >= 'a' && c <= 'z' && ++letters % 4 == 0) {
+      c = 'a' + (c - 'a' + n) % 26;
     }
   }
 }
 
-static std::string num_to_english(int idx) 
+// Returns 1st, 2nd, 3rd, 4th, ..., 11th, 12th, 13th, ..., 21st, ...
+static std::string ordinal(int n)
 {
-  std::string numstr = std::to_string(idx);
-  if (idx%10 == 1) {
-    return numstr + "st";
+  const char *suffix = "th";
+  if (n % 100 < 11 || n % 100 > 13) {
+    switch (n % 10) {
+      case 1: suffix = "st"; break;
+      case 2: suffix = "nd"; break;
+      case 3: suffix = "rd"; break;
+    }
   }
-  if (idx%10 == 2) {
-    return numstr  + "nd";
-  }
-  if (idx%10 == 3) {
-    return numstr + "rd";
-  }
-  return numstr + "th";
+  return std::to_string(n) + suffix;
 }
 
-Puzzle encrypt_puzzle_create(long seed)
+Puzzle encrypt_puzzle_create(seed_t seed)
 {
-  std::string words[] = ENCR_WORDS;
-  const int word_idx = utils_rng_roll(0, sizeof(words)/sizeof(*words)-1, seed);
+  const std::vector<std::string> words = ENCR_WORDS;
+  const std::string password = words[utils_rng_roll(0, (int)words.size() - 1, seed)];
+  std::string word = password;
+  const int last = (int)word.size() - 1;
 
-  std::string word = words[word_idx];
-  size_t len = word.size()-1;
-
-  std::vector<int> ops = ENCR_OPS;
-  std::string encrypt_steps = "";
-
-  for (int i = 0; ops.size(); ++i) {
-    int rng = utils_rng_roll(0, ops.size()-1, seed);
-    encrypt_steps += "<li>";
-    switch (ops[rng]) {
-      case 0: {
-        int dir = utils_rng_roll(0, 1, seed);
+  std::vector<Op> ops = ENCR_OPS;
+  std::string steps;
+  for (int step = 1; !ops.empty(); ++step) {
+    int i = utils_rng_roll(0, (int)ops.size() - 1, seed);
+    steps += "<li>" + std::to_string(step) + ".) ";
+    switch (ops[i]) {
+      case Op::Shift: {
+        bool right = utils_chance(50, seed);
         int rotations = utils_rng_roll(ENCR_ROTATIONS_MIN, ENCR_ROTATIONS_MAX, seed);
-        encrypt_steps += std::to_string(i+1) + ".) Shifted all characters by " + std::to_string(rotations) + " to the " + (dir ? "right" : "left") + ".\n";
-        shift(word, dir, rotations);
+        steps += "Shifted all characters by " + std::to_string(rotations) + " to the " + (right ? "right" : "left") + ".";
+        shift(word, right, rotations);
       } break;
-      case 1: {
-        int idx1 = utils_rng_roll(0, len, seed);
-        int idx2 = utils_rng_roll(0, len, seed);
-        if (idx1 == idx2) { // In the off chance that they are the same.
-          idx2 = (idx2+1) % len;
+      case Op::Swap: {
+        int a = utils_rng_roll(0, last, seed);
+        int b = utils_rng_roll(0, last - 1, seed);
+        if (b >= a) {
+          b++; // So that b != a
         }
-        encrypt_steps += std::to_string(i+1) + ".) Swapped the " + num_to_english(idx1+1) + " and " + num_to_english(idx2+1) + " characters.\n";
-        swap(word, idx1, idx2);
+        steps += "Swapped the " + ordinal(a + 1) + " and " + ordinal(b + 1) + " characters.";
+        std::swap(word[a], word[b]);
       } break;
-      case 2: {
-        int jump_dist = utils_rng_roll(ENCR_CHANGE_MIN, ENCR_CHANGE_MAX, seed);
-        encrypt_steps += std::to_string(i+1) + ".) Alphabetically increased every 4th letter by " + std::to_string(jump_dist) + ", skiping the _ character.\n";
-        change(word, jump_dist);
+      case Op::Change: {
+        int n = utils_rng_roll(ENCR_CHANGE_MIN, ENCR_CHANGE_MAX, seed);
+        steps += "Alphabetically increased every 4th letter by " + std::to_string(n) + ", skipping the _ character.";
+        change(word, n);
       } break;
-      default:
-        assert(false && "Invalid operation");
     }
-    encrypt_steps += "</li>\n";
-    ops.erase(ops.begin() + rng);
+    steps += "</li>\n";
+    ops.erase(ops.begin() + i);
   }
-  std::vector<std::string> instructions { word, encrypt_steps };
 
-  std::string html_body = utils_html_printf("Encrypt", "../resources/files-encrypt/.desc.txt", instructions);
+  std::string html_body = utils_html_printf("Encrypt", "../resources/files-encrypt/.desc.txt", {word, steps});
   utils_generate_file("../resources/files-encrypt/instructions.html", html_body);
-  return {"../resources/files-encrypt", html_body, words[word_idx], {}};
+  return {"../resources/files-encrypt", html_body, password, {}};
 }
