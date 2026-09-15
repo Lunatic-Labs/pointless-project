@@ -52,11 +52,11 @@ Puzzle pixel_puzzle_create(long seed)
 
   // Give the bison a grid
   FLAGS |= BISON_GRID;
-  std::string html = utils_html_printf("Pixel Puzzle", "../html-txt/files-pixel/.desc.txt", {delim_values});
+  std::string html = utils_html_printf("Pixel Puzzle", "../resources/files-pixel/.desc.txt", {delim_values});
 
   // Disable it so later ones don't have it.
   FLAGS &= ~(BISON_GRID);
 
-  utils_generate_file("../html-txt/files-pixel/instructions.html", html);
-  return {"../html-txt/files-pixel", html, std::move(answer), {}};
+  utils_generate_file("../resources/files-pixel/instructions.html", html);
+  return {"../resources/files-pixel", html, std::move(answer), {}};
 }

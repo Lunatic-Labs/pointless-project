@@ -2,9 +2,12 @@
 .number {
     border-collapse: separate;
     border-spacing: 0;
-    background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20231029/pngtree-elegant-brown-wood-background-with-glossy-textured-plywood-image_13737889.png');
-    background-size: cover;
-    background-position: center;
+    /* Wood grain drawn with CSS so the puzzle works offline. */
+    background-color: #a0673a;
+    background-image:
+        repeating-linear-gradient(90deg, rgba(60, 30, 10, 0.18) 0 2px, transparent 2px 9px),
+        repeating-linear-gradient(90deg, rgba(255, 220, 170, 0.10) 0 5px, transparent 5px 23px),
+        linear-gradient(180deg, #b87945, #8a5530);
     margin-left: auto;
     margin-right: auto;
 }

@@ -9,11 +9,11 @@
 bool bst_puzzle_test()
 {
   Puzzle test;
-  std::string header_content = file_contents("../html-txt/resources/header.txt");
-  std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  std::string header_content = file_contents("../resources/templates/header.txt");
+  std::string footer_content = file_contents("../resources/templates/footer.txt");
   std::string token = "queue of logic gates";
   std::string important_content = "You will need to look at the mathmatical street signs to find your way to x.";
-  int seed = seed_gen("HelloHi@gmail.com");
+  long seed = utils_seed_from_email("HelloHi@gmail.com");
   size_t found;
 
   test = bst_puzzle_create(1);

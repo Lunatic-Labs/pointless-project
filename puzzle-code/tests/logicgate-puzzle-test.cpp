@@ -9,11 +9,11 @@
 bool logicgate_puzzle_test()
 {
   Puzzle test;
-  std::string header_content = file_contents("../html-txt/resources/header.txt");
-  std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  std::string header_content = file_contents("../resources/templates/header.txt");
+  std::string footer_content = file_contents("../resources/templates/footer.txt");
   std::string token = "adding the colored squares";
   std::string important_content = "<li>Always take the <b>first two circles</b> from the queue to calculate the next value.</li>";
-  int seed = seed_gen("HelloHi@gmail.com");
+  long seed = utils_seed_from_email("HelloHi@gmail.com");
   size_t found;
 
   test = logicgate_puzzle_create(1);

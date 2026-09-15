@@ -33,7 +33,7 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
   // Get the header content.
   char c;
   std::string header_content;
-  std::string header_path = "../html-txt/resources/header.txt";
+  std::string header_path = "../resources/templates/header.txt";
 
   struct stat buf;
   if(FLAGS & NO_HDR) {
@@ -64,7 +64,7 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
   if(FLAGS & NO_FTR) {
     footer_content = "";
   } else {
-    std::string footer_path = "../html-txt/resources/footer.txt";
+    std::string footer_path = "../resources/templates/footer.txt";
 
     if (stat(footer_path.c_str(), &buf) != 0) {
       throw("Can not open " + footer_path + ": No such file");
@@ -102,21 +102,22 @@ std::string utils_html_printf(std::string title, filepath_t desc_filepath, strve
     ++it;
   }
 
-  //the additional tags are unsightly when using a custom header..ahem..based rematch
+  // Without the header there is no title either, so a custom page can supply its own.
+  // The body is wrapped in a <section>: not a <p>, because descriptions contain block elements,
+  // and not a <div>, because several descriptions style `.container div`.
   std::string content_concatenated;
   if(FLAGS & NO_HDR) {
     content_concatenated = header_content
       + body
-      + "</p>"
       + footer_content;
   } else {
       content_concatenated = header_content
       + "<h2 style=\"text-align:center\">"
       + title
-      + "</h2>"
-      + "<p style=\"text-align:center\">"
+      + "</h2>\n"
+      + "<section style=\"text-align:center\">\n"
       + body
-      + "</p>"
+      + "\n</section>"
       + footer_content;
   }
 
@@ -171,6 +172,17 @@ int utils_roll_seed(void)
   return seed;
 }
 
+long utils_seed_from_email(const std::string &email)
+{
+  long seed = 1;
+  for (size_t i = 0; i < email.length(); i++) {
+    // unsigned char matches PHP's ord(), which the website originally used.
+    seed += ((int)(unsigned char)email[i] - 30) * (long)i;
+    seed %= 10000000;
+  }
+  return seed;
+}
+
 // Description:
 //   Zips a vector of files into a single zip file.
 // Parameters:
@@ -198,10 +210,11 @@ void utils_zip_files(filepath_t out_file_name,
 
     zip_source_t *src = zip_source_file(zip_file, file_names[i].c_str(), 0, 0);
 
-    // Strip the path from the file name
-    size_t found = file_names[i].find("html-txt/");
+    // Strip the path up to and including the resources directory (../resources/)
+    const std::string resource_dir = "resources/";
+    size_t found = file_names[i].find(resource_dir);
     if (found != std::string::npos) {
-      file_names[i].erase(file_names[i].begin(), file_names[i].begin()+12);
+      file_names[i].erase(0, found + resource_dir.size());
     }
     std::string::size_type pos = file_names[i].find("/");
     

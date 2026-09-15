@@ -1,28 +1,16 @@
 <?php
-// Builds a player's personalized Pointless zip by running the C++ puzzle
-// generator in puzzle-code/src. The generator writes to shared paths
-// (zipfiles/ and html-txt/files-*/), so only one run may happen at a time.
+// Builds a player's personalized Pointless zip by running the production puzzle
+// generator. The web server never runs make: a person runs `make production` in
+// puzzle-code/, which creates puzzle-code/production/ (src/main and resources/).
+// That directory is only read. Each download runs the generator in its own
+// temporary copy of resources/, so downloads can't interfere with each other.
 
-// Directory containing the built generator (`main`). Its parent must contain
-// the puzzle-code Makefile, which provides `make cleanzip`.
-// Can be overridden with the POINTLESS_SRC_DIR environment variable.
-function pointless_src_dir(): string
+// Directory created by `make production`.
+// Can be overridden with the POINTLESS_GENERATOR_DIR environment variable.
+function pointless_generator_dir(): string
 {
-    $dir = getenv('POINTLESS_SRC_DIR');
-    return ($dir !== false && $dir !== '') ? $dir : __DIR__ . '/../../puzzle-code/src';
-}
-
-// Derives the puzzle seed from an email.
-// NOTE: must stay in sync with seed_gen() in puzzle-code/tests/file.cpp.
-function pointless_seed(string $email): int
-{
-    $seed = 1;
-    $length = strlen($email);
-    for ($i = 0; $i < $length; $i++) {
-        $seed += (ord($email[$i]) - 30) * $i;
-        $seed %= 10000000;
-    }
-    return $seed;
+    $dir = getenv('POINTLESS_GENERATOR_DIR');
+    return ($dir !== false && $dir !== '') ? $dir : __DIR__ . '/../../puzzle-code/production';
 }
 
 // Runs a command (no shell) in $cwd and returns its exit code.
@@ -40,49 +28,83 @@ function pointless_run(array $cmd, string $cwd, ?string &$output = null): int
     return proc_close($proc);
 }
 
-// Generates the zip for $email and returns the path to a temporary copy,
+// Recursively copies the directory $from to $to (which must not exist).
+function pointless_copy_dir(string $from, string $to): bool
+{
+    $names = scandir($from);
+    if ($names === false || !mkdir($to, 0700)) {
+        return false;
+    }
+    foreach ($names as $name) {
+        if ($name === '.' || $name === '..') {
+            continue;
+        }
+        $ok = is_dir("$from/$name") ? pointless_copy_dir("$from/$name", "$to/$name")
+                                    : copy("$from/$name", "$to/$name");
+        if (!$ok) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Recursively removes $path.
+function pointless_remove_path(string $path): void
+{
+    if (is_link($path) || !is_dir($path)) {
+        @unlink($path);
+        return;
+    }
+    foreach (scandir($path) ?: [] as $name) {
+        if ($name !== '.' && $name !== '..') {
+            pointless_remove_path("$path/$name");
+        }
+    }
+    @rmdir($path);
+}
+
+// Generates the zip for $email and returns the path to a temporary file,
 // which the caller must unlink. Returns null and sets $error on failure.
 function pointless_generate_zip(string $email, ?string &$error = null): ?string
 {
-    $src = pointless_src_dir();
-    if (!is_executable("$src/main")) {
-        error_log("pointless: generator not built at $src/main");
+    $gen = pointless_generator_dir();
+    $main = realpath("$gen/src/main");
+    if ($main === false || !is_executable($main) || !is_dir("$gen/resources")) {
+        error_log("pointless: no production generator in $gen (run `make production` in puzzle-code/)");
         $error = "The puzzle generator is not available. Please try again later.";
         return null;
     }
 
-    // ./main rejects a seed of 0.
-    $seed = pointless_seed($email) ?: 1;
-
-    $lock = fopen(sys_get_temp_dir() . '/pointless-generate.lock', 'c');
-    if ($lock === false || !flock($lock, LOCK_EX)) {
-        $error = "Could not start puzzle generation. Please try again.";
+    // The generator reads and writes ../resources/ and zipfiles/ relative to its
+    // working directory, so give it a private tree laid out like production/.
+    $work = tempnam(sys_get_temp_dir(), 'pointless-');
+    if ($work === false || !unlink($work) || !mkdir("$work/src/zipfiles", 0700, true)) {
+        error_log("pointless: could not create a work directory");
+        $error = "Puzzle generation failed. Please try again later.";
         return null;
     }
 
     try {
-        // utils_zip_files() adds to existing zips, so stale output must be removed first.
-        if (pointless_run(['make', '-C', '..', 'cleanzip'], $src, $output) !== 0
-            || pointless_run(['./main', '-s', (string)$seed], $src, $output) !== 0) {
+        $output = '';
+        if (!pointless_copy_dir("$gen/resources", "$work/resources")
+            || pointless_run([$main, '-e', $email], "$work/src", $output) !== 0) {
             error_log("pointless: generation failed: $output");
             $error = "Puzzle generation failed. Please try again later.";
             return null;
         }
 
-        $tmp = tempnam(sys_get_temp_dir(), 'pointless-');
-        if ($tmp === false || !copy("$src/zipfiles/puzzle1.zip", $tmp)) {
-            if ($tmp !== false) {
-                unlink($tmp);
+        $zip = tempnam(sys_get_temp_dir(), 'pointless-zip-');
+        if ($zip === false || !rename("$work/src/zipfiles/puzzle1.zip", $zip)) {
+            if ($zip !== false) {
+                unlink($zip);
             }
-            error_log("pointless: could not copy $src/zipfiles/puzzle1.zip");
+            error_log("pointless: generator did not produce puzzle1.zip");
             $error = "Puzzle generation failed. Please try again later.";
             return null;
         }
-        return $tmp;
+        return $zip;
     } finally {
         // Don't leave the generated puzzles (and their passwords) on disk.
-        pointless_run(['make', '-C', '..', 'cleanzip'], $src);
-        flock($lock, LOCK_UN);
-        fclose($lock);
+        pointless_remove_path($work);
     }
 }

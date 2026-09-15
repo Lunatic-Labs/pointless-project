@@ -150,7 +150,7 @@ Puzzle logicgate_puzzle_create(long seed)
   std::string password = "";
   std::for_each(answers.begin(), answers.end(), [&](bool b) { password += std::to_string(b); });
 
-  std::string html_content = utils_html_printf("Graph Paper Robot PT II", "../html-txt/files-logicgate/.desc.txt", {svg.build(0), mem_svg.build(0)});
-  utils_generate_file("../html-txt/files-logicgate/instructions.html", html_content);
-  return {"../html-txt/files-logicgate", html_content, password, {}};
+  std::string html_content = utils_html_printf("Graph Paper Robot PT II", "../resources/files-logicgate/.desc.txt", {svg.build(0), mem_svg.build(0)});
+  utils_generate_file("../resources/files-logicgate/instructions.html", html_content);
+  return {"../resources/files-logicgate", html_content, password, {}};
 }

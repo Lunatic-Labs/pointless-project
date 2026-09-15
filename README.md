@@ -97,17 +97,19 @@ where `opt` is one of:
 - `run`: build, remove old zipfiles, and run the generator from `src/`
 - `test`: build and run the automated tests (see [Automated Tests](#automated-tests))
 - `cleanzip`: remove all generated zipfiles and generated puzzle files
-- `clean`: also remove the `build/` directory and both binaries
+- `clean`: also remove the `build/` directory and both binaries (does not touch `production/`)
 - `coverage`: see [Code Coverage](#code-coverage)
+- `production`: build an optimized generator (no debug info or coverage) into `puzzle-code/production/` for the web server (see [How to Start](#how-to-start))
 
 Object files go in `puzzle-code/build/`. Zipfiles are generated in `puzzle-code/src/zipfiles/`.
 You can now inspect and solve the puzzle(s) by choosing the appropriate zipfile.
 
 **NOTE**: The generator must be run from `puzzle-code/src/` (and the tests from `puzzle-code/tests/`),
-because all resource paths are relative to it, e.g. `../html-txt/files-math/.desc.txt`. `make run` and `make test` do this for you.
+because all resource paths are relative to it, e.g. `../resources/files-math/.desc.txt`. `make run` and `make test` do this for you.
 
 `./main` accepts the following flags:
 - `-s <seed>`: use the given (nonzero) seed instead of one based on the current time
+- `-e <email>`: use the seed for the player with this email (the website does this; see `utils_seed_from_email()`)
 - `-a`: only print the answers; do not generate any zipfiles
 
 ### Structure of Output
@@ -123,8 +125,10 @@ without having to go through the entire zipfile structure.
 |------|----------|
 | `puzzle-code/src/` | The C++ puzzle generator |
 | `puzzle-code/tests/` | Automated tests for the generator |
-| `puzzle-code/html-txt/` | Per-puzzle resource directories (`files-<name>/`) and the shared HTML header/footer (`resources/`) |
+| `puzzle-code/resources/` | Per-puzzle resource directories (`files-<name>/`) and the shared HTML header/footer (`templates/`) |
+| `puzzle-code/production/` | Output of `make production`: the generator the web server runs (not in git) |
 | `web-server/` | The PHP website that registers players and serves downloads |
+| `data/` | Player data written by the web server (not in git) |
 | `imgs/` | Images used by this README |
 | `ideas/` | **Not production.** Ideas and unfinished or scrapped work, kept for reference (see [ideas/README.md](ideas/README.md)) |
 
@@ -134,7 +138,7 @@ There are a lot of directories in this project, and not all
 of them contain code. In fact, most of these directories contain the necessary resources
 for their respective puzzle.
 
-Any directory in `puzzle-code/html-txt/` that starts with `files-` is a resource directory. It contains (at least) the `.desc.txt`
+Any directory in `puzzle-code/resources/` that starts with `files-` is a resource directory. It contains (at least) the `.desc.txt`
 for its puzzle, as well as any supporting files that the puzzle needs (other HTML files, images, etc).
 
 > **Any support files that are prefixed with `.` will not be included in the zipped-up
@@ -149,8 +153,12 @@ Each puzzle's generated HTML page (`instructions.html`) has a specific structure
 | Body (.desc.txt)   |
 | Footer (generated) |
 
-The HTML *Header* and *Footer* are located in `puzzle-code/html-txt/resources/` and do
-not need to be touched (unless changes are needed).
+The HTML *Header* and *Footer* are located in `puzzle-code/resources/templates/` and do
+not need to be touched (unless changes are needed). The header opens the page, `<body>`, and the `content` and `container` divs;
+the footer closes them. `utils_html_printf()` puts the puzzle title in an `<h2>` and wraps the body in a `<section>`.
+
+A `.desc.txt` must therefore be an HTML *fragment* with balanced tags: no `<html>`, `<head>`, or `<body>`, and no unclosed or
+extra closing tags, or it will break the page layout around it. `<style>` and `<script>` blocks may appear anywhere in it.
 
 Below is a UML diagram of how a puzzle gets created.
 
@@ -163,7 +171,7 @@ to take when doing so.
 
 ### Puzzle Resources Directory
 
-Start by creating a new directory in `puzzle-code/html-txt/` and name it `files-<new puzzle name>`.
+Start by creating a new directory in `puzzle-code/resources/` and name it `files-<new puzzle name>`.
 Then inside of there, create a new file called `.desc.txt`. This is where the instructions,
 hints, and other info about the puzzle are stored. Everything in this file will be put into an HTML file,
 so make sure that it follows the HTML rules.
@@ -184,7 +192,7 @@ To make the explanation easier to follow, I will make a new puzzle called "fib",
 where the point(less) of it is to have the user find the *n*th number of the Fibonacci sequence.
 
 ```bash
-cd ./puzzle-code/html-txt/
+cd ./puzzle-code/resources/
 mkdir files-fib && cd files-fib
 echo "What is the <b>%DELIM</b>th number in the fibonacci sequence?" > .desc.txt
 ```
@@ -201,7 +209,7 @@ We will also need to include `./include/puzzle.h` to have access to the `Puzzle`
 
 Puzzle fib_puzzle_create(long seed)
 {
-  return {"../html-txt/files-fib", "", "changeme", {}}; // NOTE: "../html-txt/files-fib" is the puzzle resources directory from the previous step.
+  return {"../resources/files-fib", "", "changeme", {}}; // NOTE: "../resources/files-fib" is the puzzle resources directory from the previous step.
 }
 ```
 
@@ -224,7 +232,7 @@ struct Puzzle {
 ```
 
 So we are returning a new puzzle where:
-- resources = `"../html-txt/files-fib"`
+- resources = `"../resources/files-fib"`
 - html content = `""`
 - password = `"changeme"`
 - extra info = None
@@ -258,14 +266,14 @@ Puzzle fib_puzzle_create(long seed)
 
   // Generate the HTML content to be displayed to the user
   std::string html_content = utils_html_printf("Fibonacci Sequence",
-                                               "../html-txt/files-fib/.desc.txt",
+                                               "../resources/files-fib/.desc.txt",
                                                {std::to_string(fibnum)});
 
   // Create the instructions.html
-  utils_generate_file("../html-txt/files-fib/instructions.html", html_content);
+  utils_generate_file("../resources/files-fib/instructions.html", html_content);
 
   // Finally return the Puzzle object.
-  return {"../html-txt/files-fib", html_content, std::to_string(password), {}};
+  return {"../resources/files-fib", html_content, std::to_string(password), {}};
 }
 ```
 
@@ -563,24 +571,21 @@ squares with the correct color. The idea of this puzzle is that the player is ac
 #### Logic Gate (Graph Paper Robot II)
 
 *Adjustable Variables*:
-- `enum Gate` (**needs implementation**)
-- `input length` (unimplemented, **needs to be a power of 2**)
+- `enum Gate`: the gates that can be rolled (`And`, `Or`, `Xor`; `Nand` and `Nor` are defined but commented out)
+- `binary` in `logicgate_puzzle_create`: the memory input, currently hardcoded to `0011011000101110`
+  (the call that would use the Binary Addition answer instead is commented out)
 
 *Description*:
 
-**NOTE**: This puzzle is currently in development, so the description is sparse on purpose.
+The player is shown a row of colored squares $(g)$, which are logic gates (purple = OR, gold = AND, blue = XOR;
+the description gives each gate's truth table), and a row of red and green circles $(c)$, which is the memory queue (red = 0, green = 1).
+For each gate in order, the player takes the first two circles from the queue, evaluates the gate on them,
+and puts the result at the end of the queue. This repeats until one circle is left.
 
-The player is presented with a grid of colors $(g)$ which are (unknown to the player) logic gates.
-These logic gates will be read in by the robot as instructions. The first instruction is in the bottom left.
-Then the robot reads to the right, and loops back to the left when it reaches the end (like reading a book, but bottom to top).
-There is another robot managing the memory, which are the colored circles $(c)$.
-When the first robot reads in a gate, the memory robot pops off the two bits on the left.
-The logic gate is then evaluated with those bits, and the result is pushed on the right end of memory.
-
-The answer is every evaluation in order.
+The answer is every result in order (15 bits for the 16-bit input).
 
 *RNG*:
-- $g$, $c$
+- $g$ (the memory $c$ is fixed)
 
 #### TODO: Graph Paper Robot III
 
@@ -633,6 +638,13 @@ int utils_roll_seed(void);
 ```
 
 Rolls a seed using the current time.
+
+```cpp
+long utils_seed_from_email(const std::string &email);
+```
+
+Derives a player's seed from their email. This is the seed the website uses (`./main -e <email>`).
+It can return 0, which `./main` treats as 1.
 
 ```cpp
 strvec_t utils_walkdir(filepath_t path);
@@ -781,42 +793,48 @@ Scales `img` by `scale` and returns a new `Image`.
 ### Description
 
 The main goals of the webpage are puzzle download, user registration, and user tracking.
-New users put their info into the first page, which is saved to a CSV file (each new user has a default level of 0).
-The user downloads the puzzle via PHP and plays offline. `download.php` builds a personalized zip on request by running the
-puzzle generator (`puzzle-code/src/main -s <seed>`), where the seed is derived from the user's email using the same
-formula as `seed_gen()` in `puzzle-code/tests/file.cpp` (see `web-server/includes/generate.php`).
-Registered users can log in (`login.php`) to return to the download page.
+New users register on `index.php`. Registered users can log in (`login.php`) to return to the download page.
+All pages share `includes/header.php` and `includes/footer.php`.
+
+Players are saved to `data/contact-data.csv` at the repository root (columns `FName,LName,Email`; see `web-server/includes/players.php`).
+It is outside `web-server/`, so the web server can never serve it, and git ignores it.
+Set `POINTLESS_PLAYERS_FILE` to store it somewhere else.
+
+The user downloads the puzzle via PHP and plays offline. `download.php` builds a personalized zip on request (see `web-server/includes/generate.php`).
+It copies `puzzle-code/production/resources/` into a new temporary directory, runs the production generator there with `-e <email>`
+(so the seed comes from `utils_seed_from_email()`), streams `puzzle1.zip`, and deletes the temporary directory.
+The web server never runs `make` and never writes into `puzzle-code/`, and simultaneous downloads don't interfere with each other.
 
 Tracking progress by having users submit hidden tokens is planned but not implemented (see [ideas/tokens.md](ideas/tokens.md)).
-The UML diagram below predates that decision.
-
-![Webpage User Flow UML](imgs/Pointless_UMLs-Webpage.jpg)
 
 ### How to Start
 
-Change directories to `web-server/`:
+A person builds the production generator: once, and again whenever the puzzle code or resources change.
+Run `make test` first.
 
 ```bash
-cd ./pointless-project/web-server
+cd ./pointless-project/puzzle-code
+make production
 ```
 
-The download page runs the puzzle generator, so build it first (see [Building](#building)). `make` must also be
-installed on the server, since every download runs `make cleanzip` in `puzzle-code/`.
+This replaces `puzzle-code/production/` with an optimized `src/main` and a clean copy of `resources/`.
+Because it is a separate copy, later `make run`, `make test`, and `make clean` don't affect the site.
+
+Start localhost from `web-server/`:
 
 ```bash
-make -C ../puzzle-code
-```
-
-Start localhost:
-
-```bash
+cd ../web-server
 php -S localhost:8000
 ```
 
 **NOTE**: Keep the terminal running to track all requests going to the web server.
 
-**NOTE**: To use a generator in a different directory, set `POINTLESS_SRC_DIR` (e.g. `POINTLESS_SRC_DIR=/path/to/puzzle-code/src php -S localhost:8000`).
-The directory above it must contain the `puzzle-code` `Makefile`.
+**NOTE**: To use a production generator in another directory, set `POINTLESS_GENERATOR_DIR` (e.g. `POINTLESS_GENERATOR_DIR=/srv/pointless-production php -S localhost:8000`).
+That directory must contain `src/main` and `resources/`, laid out as `make production` creates them.
+
+**NOTE (upgrading an existing server)**: Player data used to be in `web-server/includes/contact-data.csv`, which was tracked in git.
+Move it **before** pulling this change (`mkdir -p data && mv web-server/includes/contact-data.csv data/`), or `git pull` will delete or refuse to update it.
+Its old `Token` column is harmless. Then run `make production`; downloads fail until it has been built.
 
 ### Integration Test Format
 
@@ -840,23 +858,30 @@ touch ./integrated-tests/<name-of-test>-output-$cdt.txt
 
 # if-else statements to find desired outcomes using '! grep'
 
-# delete the output file (rm ./integrated-tests/<name-of-test>-output-$cdt.txt) and any edits to the csv (sed -i '$d' ./includes/contact-data.csv)
+# delete the output file (rm ./integrated-tests/<name-of-test>-output-$cdt.txt)
 ```
 
-**NOTE**: Whenever running tests that manipulate `contact-data.csv` in any way, shape, or form, be sure to include the following bash code.
+**NOTE**: Tests that register players change the player data file. They assume the server uses the default file
+(`../data/contact-data.csv` from `web-server/`), so don't set `POINTLESS_PLAYERS_FILE` while testing.
+Back the file up at the start of the test and restore it at the end:
 
 ```bash
-# Placed at beginning of test: create a copy of the original data for verification
-cp ./includes/contact-data.csv ./integrated-tests/original-data-$cdt.csv
+data=../data/contact-data.csv
+
+# Placed at beginning of test: back up the player data (it may not exist yet)
+had_data=false
+if [ -f $data ]; then
+    cp $data ./integrated-tests/original-data-$cdt.csv
+    had_data=true
+fi
 
 # ..... test body .......
 
-# Check integrity of contact-data.csv
-if diff ./includes/contact-data.csv ./integrated-tests/original-data-$cdt.csv; then
-    echo 'Changes to contact-data.csv?: No, data is intact.'
-    rm ./integrated-tests/original-data-$cdt.csv
+# Restore the player data
+if $had_data; then
+    cp ./integrated-tests/original-data-$cdt.csv $data && rm ./integrated-tests/original-data-$cdt.csv
 else
-    echo 'Changes to contact-data.csv?: !!contact-data.csv compromised!! Check for changes!!'
+    rm -f $data
 fi
 ```
 
@@ -866,7 +891,7 @@ fi
 
 ## Code Coverage
 
-The puzzle generator and tests are compiled with `--coverage`. In `puzzle-code/`, run the generator
+The puzzle generator and tests are compiled with `--coverage` (`make production` is not). In `puzzle-code/`, run the generator
 or the tests at least once so there is coverage data, then run `make coverage`:
 
 ```bash
@@ -904,8 +929,8 @@ and `./include/test.h` to have access to the different puzzle test functions.
 bool fib_puzzle_test()
 {
   Puzzle test;
-  std::string header_content = file_contents("../html-txt/resources/header.txt");
-  std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  std::string header_content = file_contents("../resources/templates/header.txt");
+  std::string footer_content = file_contents("../resources/templates/footer.txt");
   size_t found;
 
   std::cout << "starting fib puzzle tests" << std::endl;
@@ -931,8 +956,8 @@ works correctly. The expected passwords depend on the seed, so run `./main -a -s
 bool fib_puzzle_test()
 {
   Puzzle test;
-  std::string header_content = file_contents("../html-txt/resources/header.txt");
-  std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  std::string header_content = file_contents("../resources/templates/header.txt");
+  std::string footer_content = file_contents("../resources/templates/footer.txt");
   size_t found;
 
   std::cout << "starting fib puzzle tests" << std::endl;
@@ -1031,24 +1056,7 @@ To run only some tests, temporarily comment out the others in the `tests` vector
 
 Things found during cleanup (September 2026) that may be mistakes or leftovers. Each one needs a decision.
 
-- **`html-txt/files-fin/fat-fat-bison.png` is unused but shipped.** The Fin puzzle's `.desc.txt` does not reference it.
-  Its name doesn't start with `.`, so it is still zipped into the last puzzle. Is it a deliberate easter egg or a leftover?
-- **The Fin puzzle needs the internet.** Its `.desc.txt` loads an image from `png.pngtree.com`, which breaks
-  "the ability to play completely offline" and hotlinks a third-party site.
-- **Player data is tracked in git and publicly downloadable.** `web-server/includes/contact-data.csv` holds names and emails.
-  When the site is served from `web-server/`, anyone can fetch `/includes/contact-data.csv`.
-- **The `Token` column in `contact-data.csv` is unused.** `index.php` writes `n\a` for every player (see [ideas/tokens.md](ideas/tokens.md)).
-- **The Logic Gate puzzle is in the game** even though its description says "currently in development".
-- **The production generator is a debug build.** It is always compiled with `-O0 --coverage`, including when the web server
-  runs it, and each run tries to write `.gcda` coverage files into `puzzle-code/build/`.
-- **The seed formula lives in test code.** `seed_gen()` is in `puzzle-code/tests/file.cpp`, but the copy that players actually get
-  is `pointless_seed()` in `web-server/includes/generate.php`. The generator cannot derive a seed from an email itself.
-- **`puzzle-code/html-txt/` is a misleading name.** It holds per-puzzle resources (including images) and templates.
-  Renaming it means changing hardcoded paths in every puzzle, the tests, and the `Makefile`.
-- **The page header is duplicated across PHP pages.** `index.php`, `login.php`, and `download.php` each contain their own copy of
-  the header and dark-mode script, and they load Font Awesome from a CDN.
-- **The UML diagrams in `imgs/` may be out of date.** They were not reviewed during cleanup.
-- **`.gitignore` patterns match everywhere.** `main` and `instructions*` match files of those names at any depth.
+None are open.
 
 ## Future Plans
 

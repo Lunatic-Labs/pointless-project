@@ -5,7 +5,7 @@ Puzzle fin_puzzle_create(long seed)
 {
   (void)seed;
 
-  std::string html_content = utils_html_printf("Goodbye Pointless", "../html-txt/files-fin/.desc.txt", {});
-  utils_generate_file("../html-txt/files-fin/instructions.html", html_content);
-  return {"../html-txt/files-fin", html_content, "", {}};
+  std::string html_content = utils_html_printf("Goodbye Pointless", "../resources/files-fin/.desc.txt", {});
+  utils_generate_file("../resources/files-fin/instructions.html", html_content);
+  return {"../resources/files-fin", html_content, "", {}};
 }

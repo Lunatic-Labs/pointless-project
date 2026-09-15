@@ -9,11 +9,11 @@
 bool maze_puzzle_test()
 {
   Puzzle test;
-  std::string header_content = file_contents("../html-txt/resources/header.txt");
-  std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  std::string header_content = file_contents("../resources/templates/header.txt");
+  std::string footer_content = file_contents("../resources/templates/footer.txt");
   std::string token = "Lou's pixel art";
   std::string important_content = "For every sequence of the same consecutive letter, compress it by using the letter ";
-  int seed = seed_gen("HelloHi@gmail.com");
+  long seed = utils_seed_from_email("HelloHi@gmail.com");
   size_t found;
 
   test = maze_puzzle_create(1);

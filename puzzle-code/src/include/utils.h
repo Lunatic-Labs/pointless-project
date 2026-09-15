@@ -27,6 +27,10 @@ int utils_rng_roll(int min, int max, long &seed);
 // Rolls a seed using the current time.
 int utils_roll_seed(void);
 
+// Derives a player's seed from their email. This is the seed the website uses (`./main -e <email>`).
+// NOTE: Can return 0, which `./main` treats as 1.
+long utils_seed_from_email(const std::string &email);
+
 // Returns a vector of strings containing the names of all files in the given directory.
 // Recursively walks all subdirectories.
 // NOTE: Will ignore all files/dirs that start with `.`

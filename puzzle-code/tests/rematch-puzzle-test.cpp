@@ -9,7 +9,7 @@
 bool rematch_puzzle_test()
 {
   Puzzle test;
-  int seed = seed_gen("HelloHi@gmail.com");
+  long seed = utils_seed_from_email("HelloHi@gmail.com");
 
   test = rematch_puzzle_create(1);
   assert(test.password == "886538131");

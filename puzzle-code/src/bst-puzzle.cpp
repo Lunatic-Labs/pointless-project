@@ -391,8 +391,8 @@ Puzzle bst_puzzle_create(long seed)
   const int root = utils_rng_roll(ROOT_MIN,ROOT_MAX,seed);
   const size_t depth = 10;
 
-  create_dirs("../html-txt/files-bst", depth, "/tree", root, true);
-  std::string html_body = utils_html_printf("BST Puzzle", "../html-txt/files-bst/.desc.txt", { std::to_string(root) });
-  utils_generate_file("../html-txt/files-bst/instructions.html", html_body);
-  return {"../html-txt/files-bst", html_body, std::to_string(password), " Path: " + password_path};
+  create_dirs("../resources/files-bst", depth, "/tree", root, true);
+  std::string html_body = utils_html_printf("BST Puzzle", "../resources/files-bst/.desc.txt", { std::to_string(root) });
+  utils_generate_file("../resources/files-bst/instructions.html", html_body);
+  return {"../resources/files-bst", html_body, std::to_string(password), " Path: " + password_path};
 }

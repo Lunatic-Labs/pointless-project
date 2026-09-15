@@ -78,7 +78,7 @@ Puzzle rematch_based_puzzle_create(long seed)
     }
   }
 
-  std::string html_content = utils_html_printf("Base Puzzle Rematch", "../html-txt/files-rematch-based/.desc.txt", values);
-  utils_generate_file("../html-txt/files-rematch-based/instructions.html", html_content);
-  return Puzzle{"../html-txt/files-rematch-based", html_content, std::to_string(solve(values, bases)), {}};
+  std::string html_content = utils_html_printf("Base Puzzle Rematch", "../resources/files-rematch-based/.desc.txt", values);
+  utils_generate_file("../resources/files-rematch-based/instructions.html", html_content);
+  return Puzzle{"../resources/files-rematch-based", html_content, std::to_string(solve(values, bases)), {}};
 }

@@ -5,7 +5,7 @@
 
   You vaguely recall that typing <code>instructions</code> into the <i><u><b>console</b></u></i> may summon the Oracle’s insight and set you on the correct path forward. Tread carefully, as the Oracle reveals its secrets only to those brave enough to seek them.
 </p>
-</br>
+<br />
 
 <div style="width:50%; margin:0 auto;">
 <style>
@@ -31,7 +31,8 @@
   %DELIM
 </div>
 
-<h1 id="ending" />
+<h1 id="ending"></h1>
+</div>
 
 <script>
 

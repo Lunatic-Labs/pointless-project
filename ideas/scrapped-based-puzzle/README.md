@@ -25,7 +25,7 @@ Clicking the "Enter" button takes them to the actual puzzle. There are `NUM_VALU
 
 ## Restoring it
 
-1. Move `scrapped-based-puzzle.cpp` back to `puzzle-code/src/` and `files-scrapped-based/` back to `puzzle-code/html-txt/`. The code uses the hardcoded path `../html-txt/files-scrapped-based/`.
+1. Move `scrapped-based-puzzle.cpp` back to `puzzle-code/src/` and `files-scrapped-based/` back to `puzzle-code/resources/`. The code uses the hardcoded path `../resources/files-scrapped-based/`.
 2. Declare `Puzzle based_puzzle_create(long seed);` in `puzzle-code/src/include/puzzle.h`.
 3. Add `based_puzzle_create(seed)` to the puzzle list in `puzzle-code/src/main.cpp`. It used to sit between `encrypt_puzzle_create` and `rematch_puzzle_create`.
 4. Add a test (see "Implementing New Tests" in the main README).

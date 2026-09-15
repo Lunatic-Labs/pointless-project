@@ -2,8 +2,11 @@
     table {
         margin: 20px auto; /* Center the table horizontally */
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add a shadow effect */
-        background-image: url('https://t3.ftcdn.net/jpg/01/36/12/48/360_F_136124808_WWhIcVaUK0boBd4KhFsSittv9HJm7M8T.jpg'); /* Add a background image */
-        background-size: cover; /* Ensure the background image covers the entire table */
+        background-color: #a0673a; /* Wood grain drawn with CSS so the puzzle works offline */
+        background-image:
+            repeating-linear-gradient(90deg, rgba(60, 30, 10, 0.18) 0 2px, transparent 2px 9px),
+            repeating-linear-gradient(90deg, rgba(255, 220, 170, 0.10) 0 5px, transparent 5px 23px),
+            linear-gradient(180deg, #b87945, #8a5530);
         border-radius: 10px;
     }
 
@@ -92,4 +95,3 @@
         </tr>
     </table>
     <p>Hint: The solution will be in base-10</p>
-</div>

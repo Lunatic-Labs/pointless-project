@@ -51,6 +51,20 @@ int main(int argc, char **argv)
         return 1;
       }
     }
+    else if (strcmp(argv[1], "-e") == 0) {
+      FLAGS |= SET_SEED;
+      --argc;
+      ++argv;
+
+      if (argc < 2) {
+        std::cerr << "Expected <email>" << std::endl;
+        return 1;
+      }
+      seed = utils_seed_from_email(argv[1]);
+      if (seed == 0) {
+        seed = 1;
+      }
+    }
     else {
       std::cerr << "Unknown flag: " << argv[1] << std::endl;
       return 1;
@@ -78,9 +92,9 @@ int main(int argc, char **argv)
   };
 
   for (auto &puzzle : puzzles) {
-    std::string puzzle_name = puzzle.contents_fp;
-    puzzle_name.erase(puzzle_name.begin(), puzzle_name.begin()+12);
-    std::printf("%-15s Password: %s", puzzle_name.substr(6).c_str(), puzzle.password.c_str());
+    // contents_fp is "../resources/files-<name>"
+    std::string puzzle_name = puzzle.contents_fp.substr(puzzle.contents_fp.find("files-") + 6);
+    std::printf("%-15s Password: %s", puzzle_name.c_str(), puzzle.password.c_str());
     if (puzzle.extra_info) {
       std::printf(" %s", puzzle.extra_info->c_str());
     }

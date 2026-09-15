@@ -163,8 +163,8 @@ Puzzle maze_puzzle_create(long seed)
 
   Svg svg = graphics_gen_svg_from_image(maze, 20, {}); // Maze size is hardcoded into HTML
   std::string svg_html = svg.build(0);
-  std::string html_body = utils_html_printf("Maze Puzzle", "../html-txt/files-maze/.desc.txt", {{svg_html}});
-  utils_generate_file("../html-txt/files-maze/instructions.html", html_body);
+  std::string html_body = utils_html_printf("Maze Puzzle", "../resources/files-maze/.desc.txt", {{svg_html}});
+  utils_generate_file("../resources/files-maze/instructions.html", html_body);
   visited.clear();  // For automated testing
-  return {"../html-txt/files-maze", html_body, password, {}};
+  return {"../resources/files-maze", html_body, password, {}};
 }

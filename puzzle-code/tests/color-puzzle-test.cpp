@@ -9,11 +9,11 @@
 bool color_puzzle_test()
 {
   Puzzle test;
-  std::string header_content = file_contents("../html-txt/resources/header.txt");
-  std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  std::string header_content = file_contents("../resources/templates/header.txt");
+  std::string footer_content = file_contents("../resources/templates/footer.txt");
   std::string token = "brute force";
   std::string important_content = "When defining a color in hexadecimal, red is the first two numbers, ";
-  int seed = seed_gen("HelloHi@gmail.com");
+  long seed = utils_seed_from_email("HelloHi@gmail.com");
   size_t found;
 
   test = color_puzzle_create(1);

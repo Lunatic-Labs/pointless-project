@@ -29,10 +29,10 @@ li {
 <br>
 <div>
 
-    <p style="font-family:'Courier New', Courier, monospace;"> 
+    <ul style="font-family:'Courier New', Courier, monospace;">
         <li>%DELIM = %DELIM</li>
         <li>%DELIM × %DELIM = %DELIM</li>
         <li>%DELIM × %DELIM × %DELIM = ?</li>
-    </p>
+    </ul>
 </div>
 <p>"Lou seems a little off today… or maybe it’s you. Either way, can you trust what you’re seeing?"</p>

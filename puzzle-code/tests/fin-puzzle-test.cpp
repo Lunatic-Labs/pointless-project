@@ -9,11 +9,11 @@
 bool fin_puzzle_test()
 {
   Puzzle test;
-  std::string header_content = file_contents("../html-txt/resources/header.txt");
-  std::string fin_content = file_contents("../html-txt/files-fin/.desc.txt");
-  std::string footer_content = file_contents("../html-txt/resources/footer.txt");
+  std::string header_content = file_contents("../resources/templates/header.txt");
+  std::string fin_content = file_contents("../resources/files-fin/.desc.txt");
+  std::string footer_content = file_contents("../resources/templates/footer.txt");
   std::string token = "pointless journey";
-  int seed = seed_gen("HelloHi@gmail.com");
+  long seed = utils_seed_from_email("HelloHi@gmail.com");
   size_t found;
 
   test = fin_puzzle_create(1);

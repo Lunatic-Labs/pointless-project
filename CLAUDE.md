@@ -10,15 +10,17 @@ The Pointless Project is a puzzle challenge for pre-college students, inspired b
 
 The C++ code uses g++ with C++17 and needs `libzip` (`sudo apt install g++ libboost-all-dev libzip-dev php-cli gcovr`).
 
-There is a single `puzzle-code/Makefile`; **run make from `puzzle-code/`**. Objects go in `puzzle-code/build/` (with `-MMD` header dependencies). **The binaries must run from their own directory** (`src/` or `tests/`), because all resource paths are relative to it, for example `../html-txt/files-math/.desc.txt`.
+There is a single `puzzle-code/Makefile`; **run make from `puzzle-code/`**. Objects go in `puzzle-code/build/` (with `-MMD` header dependencies). **The binaries must run from their own directory** (`src/` or `tests/`), because all resource paths are relative to it, for example `../resources/files-math/.desc.txt`.
 
 Puzzle generator:
-- `make` / `make build`: builds `src/main` and creates `src/zipfiles/`
+- `make` / `make build`: builds `src/main` (debug, `-O0 --coverage`) and creates `src/zipfiles/`
 - `make run`: builds, runs `cleanzip`, then runs `./main` in `src/`
 - `./main -s <seed>` (in `src/`): uses a fixed, nonzero seed (otherwise the seed comes from the current time)
+- `./main -e <email>` (in `src/`): uses the player's seed from `utils_seed_from_email()`; this is what the website runs
 - `./main -a` (in `src/`): answers only; prints each puzzle's password without writing zips or generated files
-- `make cleanzip`: removes generated zips and generated files under `html-txt/`; `make clean` also removes `build/` and both binaries
+- `make cleanzip`: removes generated zips and generated files under `resources/`; `make clean` also removes `build/` and both binaries (not `production/`)
 - `make coverage`: runs gcov on `src/*.cpp` (requires `make run` or `make test` to have run first)
+- `make production`: builds an optimized generator without coverage (objects in `build/production/`) and replaces `puzzle-code/production/` with `src/main`, an empty `src/zipfiles/`, and a clean copy of `resources/`. Only a person runs this; don't run it as a side effect of other work, since it changes what the live site serves.
 
 Tests:
 - `make test`: builds `tests/main` from `tests/*.cpp` plus every `src/` object except `src/main.o`, then runs it in `tests/`
@@ -26,35 +28,37 @@ Tests:
 - Tests run with `FLAGS |= ANS_ONLY`, so they don't write zips.
 
 PHP site (`web-server/`):
-- `php -S localhost:8000`. Downloads run the generator, so build it first (`make -C ../puzzle-code`; `make` must be installed). Set `POINTLESS_SRC_DIR` to use a generator in a different `src/` directory; its parent must contain the Makefile.
-- Integration tests are bash + wget scripts. Run them from `web-server/integrated-tests/` (they `cd ..`), for example `./test-index-GET.sh`. Tests that modify `includes/contact-data.csv` must back it up and restore it.
+- `php -S localhost:8000`. Downloads need `make production` to have been run. The site never runs make. Set `POINTLESS_GENERATOR_DIR` to use a production tree elsewhere, and `POINTLESS_PLAYERS_FILE` to move the player data.
+- Integration tests are bash + wget scripts. Run them from `web-server/integrated-tests/` (they `cd ..`) against a server on port 8000 that uses the default player file, for example `./test-index-GET.sh`. Tests that register players must back up and restore `../data/contact-data.csv`.
+
 ## Architecture
 
 **Puzzle pipeline.** `src/main.cpp` builds a `std::vector<Puzzle>` by calling each `<name>_puzzle_create(seed)` in play order. It prints every password, then `create_nested_zipfiles` walks the list in reverse. `zipfiles/puzzleN.zip` contains puzzle N's files, is encrypted with puzzle N's password, and (except for the last puzzle) contains `puzzle{N+1}.zip`. `puzzle1.zip` is the full game; the inner zips are also left on disk for easier testing.
 
 **A puzzle** has two parts:
-1. A resource directory `puzzle-code/html-txt/files-<name>/` containing `.desc.txt`, an HTML/JS body with `%DELIM` placeholders, plus any assets. Files and directories starting with `.` are excluded from the zip (see `utils_walkdir`).
-2. `src/<name>-puzzle.cpp`, which rolls random values, calls `utils_html_printf(title, desc_path, {args...})` to substitute `%DELIM` in order and wrap the body with `html-txt/resources/header.txt` and `footer.txt`, writes `instructions.html` with `utils_generate_file`, and returns `Puzzle{contents_fp, contents_html, password, extra_info}`. `extra_info` is only printed for debugging.
+1. A resource directory `puzzle-code/resources/files-<name>/` containing `.desc.txt`, an HTML/JS body with `%DELIM` placeholders, plus any assets. Files and directories starting with `.` are excluded from the zip (see `utils_walkdir`). Resources must not load anything from the internet, because the game is played offline.
+2. `src/<name>-puzzle.cpp`, which rolls random values, calls `utils_html_printf(title, desc_path, {args...})` to substitute `%DELIM` in order, wrap the body in `<section>` (not `<div>`: several descriptions style `.container div`), and surround it with `resources/templates/header.txt` and `footer.txt` (the header opens `<body>` and two divs; the footer closes them, so a `.desc.txt` must be a balanced fragment), writes `instructions.html` with `utils_generate_file`, and returns `Puzzle{contents_fp, contents_html, password, extra_info}`. `extra_info` is only printed for debugging.
 
 To add a puzzle:
 1. Create the resource directory and the `.cpp` file.
 2. Declare `Puzzle <name>_puzzle_create(long)` in `src/include/puzzle.h` and insert the call into the vector in `main.cpp`.
 3. Add `tests/<name>-puzzle-test.cpp`, declare it in `tests/include/test.h`, and list it in `tests/main.cpp`.
 
-The Makefile uses wildcards, so no build changes are needed.
+The Makefile uses wildcards, so no build changes are needed. If the puzzle writes new generated files into `resources/`, add them to `clean-generated` in the Makefile.
 
-**Rematch puzzle.** `rematch-puzzle.cpp` is a composite. It creates the maze, encrypt, and based rematch sub-puzzles, zips each into `html-txt/files-rematch/rematchN.zip` along with a generated password fragment (`.passwords/passwordN.txt`), and returns the concatenated fragments as the password for the next main layer.
+**Rematch puzzle.** `rematch-puzzle.cpp` is a composite. It creates the maze, encrypt, and based rematch sub-puzzles, zips each into `resources/files-rematch/rematchN.zip` along with a generated password fragment (`.passwords/passwordN.txt`), and returns the concatenated fragments as the password for the next main layer.
 
-**Determinism and RNG.** `utils_rng_roll(min, max, long &seed)` reseeds `srand` and mutates the seed on every call. Within a puzzle, adding, removing, or reordering rolls changes every later value. Tests assert exact passwords for specific seeds (for example `math_puzzle_create(1)` → `"75"`), so RNG changes require updating the expected values. The seed a player gets is derived from their email (`seed_gen` in `tests/file.cpp`, mirrored by `pointless_seed` in `web-server/includes/generate.php`; keep them in sync).
+**Determinism and RNG.** `utils_rng_roll(min, max, long &seed)` reseeds `srand` and mutates the seed on every call. Within a puzzle, adding, removing, or reordering rolls changes every later value. Tests assert exact passwords for specific seeds (for example `math_puzzle_create(1)` → `"75"`), so RNG changes require updating the expected values. A player's seed comes from their email via `utils_seed_from_email()` in `src/utils.cpp`, the only copy of the formula. Changing it changes every existing player's puzzle.
 
 **Global flags.** `extern uint32_t FLAGS` (defined in each `main.cpp`) takes bits from `utils.h`: `ANS_ONLY`, `SET_SEED`, `NO_HDR`, `NO_FTR`, and `BISON_GRID`. Some utils, such as `utils_mkdir`, become no-ops under `ANS_ONLY`.
 
 **Graphics.** `src/graphics.{h,cpp}` provides `Image`/`Pixel` and an `Svg` builder with `Rect`/`Circle` shapes. Puzzles embed the SVG strings in their HTML. The project has moved from PPM output to SVG.
 
 **Web.** `web-server/` is plain PHP with no framework or database.
-- `index.php` registers a player by appending to `includes/contact-data.csv`. `login.php` checks that CSV. Both store the email in `$_SESSION["email"]`.
-- `index.php` and `login.php` redirect to `download.php`, which requires that session. On POST it calls `pointless_generate_zip()` in `includes/generate.php`. That function takes a lock (the generator writes to shared `zipfiles/` and `html-txt/` paths), runs `make -C .. cleanzip` and `./main -s <seed>` from `puzzle-code/src`, cleans up again, and streams a temporary copy of `puzzle1.zip`.
-- The `Token` column in `contact-data.csv` is unused. Token submission is only an idea (`ideas/tokens.md`).
+- Pages share `includes/header.php` and `includes/footer.php` (which holds the dark-mode script).
+- `index.php` registers a player and `login.php` checks registration, both through `includes/players.php`. Players are stored in `data/contact-data.csv` at the repository root (outside the web root and ignored by git), with columns `FName,LName,Email`. Both pages store the email in `$_SESSION["email"]`.
+- `index.php` and `login.php` redirect to `download.php`, which requires that session. On POST it calls `pointless_generate_zip()` in `includes/generate.php`. That function copies `puzzle-code/production/resources/` into a new temp directory, runs `production/src/main -e <email>` there, moves out `puzzle1.zip`, and deletes the temp directory. It never writes to `production/`, so it needs no lock.
+- Token submission is only an idea (`ideas/tokens.md`).
 
 ## Non-production material
 

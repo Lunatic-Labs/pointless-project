@@ -89,7 +89,7 @@ Puzzle binary_addition_puzzle_create(long seed)
   // std::string svg = graphics_gen_svg(graph, 20);
   Svg svg = graphics_gen_svg_from_image(graph, 20, {});
   //std::string svg_html = svg.build();
-  std::string html_body = utils_html_printf("Graph Paper Robot", "../html-txt/files-binary-addition/.desc.txt", {svg.build(1)});
-  utils_generate_file("../html-txt/files-binary-addition/instructions.html", html_body);
-  return Puzzle{"../html-txt/files-binary-addition", html_body, sum, {}};
+  std::string html_body = utils_html_printf("Graph Paper Robot", "../resources/files-binary-addition/.desc.txt", {svg.build(1)});
+  utils_generate_file("../resources/files-binary-addition/instructions.html", html_body);
+  return Puzzle{"../resources/files-binary-addition", html_body, sum, {}};
 }

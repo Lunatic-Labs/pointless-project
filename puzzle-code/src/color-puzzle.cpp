@@ -18,7 +18,7 @@ Puzzle color_puzzle_create(long seed)
   std::string color_hex = rand ? "331E54" : "F4AA00";
   std::string color_name = rand ? "Purple" : "Gold";
 
-  std::string html = utils_html_printf("Color Puzzle", "../html-txt/files-color/.desc.txt", {color_hex, color_name});
-  utils_generate_file("../html-txt/files-color/instructions.html", html);
-  return {"../html-txt/files-color", html, color_hex, {}};
+  std::string html = utils_html_printf("Color Puzzle", "../resources/files-color/.desc.txt", {color_hex, color_name});
+  utils_generate_file("../resources/files-color/instructions.html", html);
+  return {"../resources/files-color", html, color_hex, {}};
 }

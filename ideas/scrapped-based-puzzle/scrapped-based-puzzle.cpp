@@ -154,8 +154,8 @@ Puzzle based_puzzle_create(long seed)
   values.push_back(std::to_string(key));
 
   FLAGS |= (NO_HDR | NO_FTR);
-  std::string html_content = utils_html_printf("Base Puzzle Rematch", "../html-txt/files-scrapped-based/.desc.txt", values);
-  utils_generate_file("../html-txt/files-scrapped-based/instructions.html", html_content);
+  std::string html_content = utils_html_printf("Base Puzzle Rematch", "../resources/files-scrapped-based/.desc.txt", values);
+  utils_generate_file("../resources/files-scrapped-based/instructions.html", html_content);
 
   FLAGS &= ~(NO_HDR | NO_FTR);
   return Puzzle{"files-scrapped-based", html_content, values.back(), {}};

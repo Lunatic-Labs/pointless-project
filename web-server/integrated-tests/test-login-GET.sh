@@ -3,8 +3,8 @@ cd ..
 cdt=$(date +"%Y-%m-%d_%H:%M:%S")
 touch ./integrated-tests/test-login-GET-output-$cdt.txt
 
-# GET to retrieve index page and put into txt file
-wget http://localhost:8000/index.php -O ./integrated-tests/test-login-GET-output-$cdt.txt
+# GET to retrieve login page and put into txt file
+wget http://localhost:8000/login.php -O ./integrated-tests/test-login-GET-output-$cdt.txt
 
 # Retreived webpage vs Expetcted webpage
 if ! grep -q '<input type="text" id="email" name="email" required>' ./integrated-tests/test-login-GET-output-$cdt.txt; then

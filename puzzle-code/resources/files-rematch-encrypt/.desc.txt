@@ -35,23 +35,21 @@
 </p>
 
 <div>
-<p>
   <b>Unfortunately...</b>
   <ul>
     <li>We <i>accidentally</i> dropped the password into a <b class="gradient-text">goopifying</b> machine.</li>
     <li>We then took it out and <i>accidentally</i> dropped it into the <b class="multi-color-text">mashing</b> machine.</li>
     <li>And against all odds, somehow, we dropped it in the <u>↔️🌀</u> machine.</li>
   </ul>
-</p>
 </div>
 
 <p>The result of this series of unfortunate events has turned the password into:</p>
-<h3><div id="password"></div></h3>
+<h3 id="password"></h3>
 
 We don't know how to <span style="color: #ff0000">undo</span> it
 nor do we know how they work. All we have are the magic machines that encrypted the password.
 
-<p><b>What is the decrypted password? Surely, you are nearing the end....?</p></p>
+<p><b>What is the decrypted password? Surely, you are nearing the end....?</b></p>
 
 <br />
 

@@ -25,9 +25,9 @@ Dr. Pepper, the eccentric genius, has encrypted a phrase: <br />
 <h4>%DELIM</h4>
 If you want to holst the MacGuffin your must decrypt it to move forward on your journey.<br />
 According to his cryptic notes, Dr. Pepper believes only the brightest minds can solve his challenge. Here are the steps he used:
-<ul>
-<div><b> %DELIM </b></div>
-</ul>
+<div><ul style="font-weight: bold;">
+ %DELIM
+</ul></div>
 
 <h3>What is the decrypted password?</h3>
 
