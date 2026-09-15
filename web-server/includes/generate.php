@@ -3,7 +3,8 @@
 // generator in puzzle-code/src. The generator writes to shared paths
 // (zipfiles/ and html-txt/files-*/), so only one run may happen at a time.
 
-// Directory containing the built generator (`main`) and its Makefile.
+// Directory containing the built generator (`main`). Its parent must contain
+// the puzzle-code Makefile, which provides `make cleanzip`.
 // Can be overridden with the POINTLESS_SRC_DIR environment variable.
 function pointless_src_dir(): string
 {
@@ -61,7 +62,7 @@ function pointless_generate_zip(string $email, ?string &$error = null): ?string
 
     try {
         // utils_zip_files() adds to existing zips, so stale output must be removed first.
-        if (pointless_run(['make', 'cleanzip'], $src, $output) !== 0
+        if (pointless_run(['make', '-C', '..', 'cleanzip'], $src, $output) !== 0
             || pointless_run(['./main', '-s', (string)$seed], $src, $output) !== 0) {
             error_log("pointless: generation failed: $output");
             $error = "Puzzle generation failed. Please try again later.";
@@ -80,7 +81,7 @@ function pointless_generate_zip(string $email, ?string &$error = null): ?string
         return $tmp;
     } finally {
         // Don't leave the generated puzzles (and their passwords) on disk.
-        pointless_run(['make', 'cleanzip'], $src);
+        pointless_run(['make', '-C', '..', 'cleanzip'], $src);
         flock($lock, LOCK_UN);
         fclose($lock);
     }

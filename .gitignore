@@ -35,6 +35,12 @@ instructions*
 *.app
 *.test
 
+# Build output and coverage data (puzzle-code/Makefile)
+build/
+*.gcda
+*.gcno
+*.gcov
+
 .vscode/
 .DS_Store
 AST

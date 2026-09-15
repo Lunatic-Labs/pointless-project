@@ -85,28 +85,26 @@ First, clone the repository if not done already:
 git clone https://www.github.com/Lunatic-Labs/pointless-project.git
 ```
 
-Go into the `puzzle-code/src/` directory (the program must be run from here, since all resource paths are relative to it):
+There is one `Makefile`, in `puzzle-code/`. Run `make` from there:
 
 ```bash
-cd ./puzzle-code/src/
-```
-
-Then use the `Makefile` to build the project:
-
-```bash
+cd ./puzzle-code/
 make <opt>
 ```
 
 where `opt` is one of:
-- *(none)*: build `./main`
-- `all`: build, remove old zipfiles, and run `./main`
-- `clean`: remove all object files and all generated zipfiles
-- `cleanzip`: remove all generated zipfiles
+- *(none)* or `build`: build the generator, `src/main`
+- `run`: build, remove old zipfiles, and run the generator from `src/`
+- `test`: build and run the automated tests (see [Automated Tests](#automated-tests))
+- `cleanzip`: remove all generated zipfiles and generated puzzle files
+- `clean`: also remove the `build/` directory and both binaries
 - `coverage`: see [Code Coverage](#code-coverage)
 
-Building the project will create a directory called `obj` where all object files
-are located, as well as a `zipfiles` directory where all puzzle zipfiles are
-generated. You can now inspect and solve the puzzle(s) by choosing the appropriate zipfile.
+Object files go in `puzzle-code/build/`. Zipfiles are generated in `puzzle-code/src/zipfiles/`.
+You can now inspect and solve the puzzle(s) by choosing the appropriate zipfile.
+
+**NOTE**: The generator must be run from `puzzle-code/src/` (and the tests from `puzzle-code/tests/`),
+because all resource paths are relative to it, e.g. `../html-txt/files-math/.desc.txt`. `make run` and `make test` do this for you.
 
 `./main` accepts the following flags:
 - `-s <seed>`: use the given (nonzero) seed instead of one based on the current time
@@ -118,6 +116,17 @@ Upon running `./main`, the password for each puzzle is printed and the `zipfiles
 The entire game is `zipfiles/puzzle1.zip`, which contains the nested zipfiles `puzzle2..puzzleN`.
 The other puzzles are also generated outside of `puzzle1.zip` to allow easy testing
 without having to go through the entire zipfile structure.
+
+### Repository Layout
+
+| Path | Contents |
+|------|----------|
+| `puzzle-code/src/` | The C++ puzzle generator |
+| `puzzle-code/tests/` | Automated tests for the generator |
+| `puzzle-code/html-txt/` | Per-puzzle resource directories (`files-<name>/`) and the shared HTML header/footer (`resources/`) |
+| `web-server/` | The PHP website that registers players and serves downloads |
+| `imgs/` | Images used by this README |
+| `ideas/` | **Not production.** Ideas and unfinished or scrapped work, kept for reference (see [ideas/README.md](ideas/README.md)) |
 
 ## Puzzle Creation Framework
 
@@ -297,7 +306,7 @@ std::vector<Puzzle> puzzles = {
 };
 ```
 
-Now run `make all` and these things will happen:
+Now run `make run` in `puzzle-code/` and these things will happen:
 - The `files-<puzzle name>` directories will all generate a file called `instructions.html`.
 - `puzzle-code/src/zipfiles/` will be populated with zipfiles.
 
@@ -527,29 +536,6 @@ These are the possible expressions that can show up, with examples:
 - root
 - expressions in each path
 - path from root → destination
-
-### Scrapped Based Rematch
-
-*Adjustable Variables*:
-- `NUM_VALS` (**must modify html elements to match**)
-- `VAL_SZ`
-
-*Description*:
-
-This is a harder version of the *Based* puzzle that also incorporates sorting. The user is presented with an instructions page outlining the challenge. Hidden on the page are three buttons
-that, when clicked, enumerate the Pointless-created bases that they will encounter in the actual puzzle.
-
-The bases:
-- *Symbolic 8*: `!, @, #, $, %, ^, &, *`
-- *Glyphic 16*: ``{, }, [, ], (, ), `, >, a, b, c, d, e, f, g, h``
-- *Mystic 36*: `|, ~, ,, /, ?, *, +, =, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z`
-
-Upon clicking the "Enter" button, they will be brought to the actual puzzle. There are `NUM_VALS` values, each of length `VAL_SZ`.
-Clicking on these values places them into the container in the center of the page. The user must fill this container with the values sorted from smallest to greatest.
-Doing so correctly will prompt a modal to appear containing the key.
-
-*RNG*:
-- The values
 
 ### Graph Paper Robot Puzzles
 
@@ -799,8 +785,10 @@ New users put their info into the first page, which is saved to a CSV file (each
 The user downloads the puzzle via PHP and plays offline. `download.php` builds a personalized zip on request by running the
 puzzle generator (`puzzle-code/src/main -s <seed>`), where the seed is derived from the user's email using the same
 formula as `seed_gen()` in `puzzle-code/tests/file.cpp` (see `web-server/includes/generate.php`).
-In order to level up, the user logs in to a separate page
-where they can submit the hidden tokens and update their level in the CSV file via POST request.
+Registered users can log in (`login.php`) to return to the download page.
+
+Tracking progress by having users submit hidden tokens is planned but not implemented (see [ideas/tokens.md](ideas/tokens.md)).
+The UML diagram below predates that decision.
 
 ![Webpage User Flow UML](imgs/Pointless_UMLs-Webpage.jpg)
 
@@ -813,10 +801,10 @@ cd ./pointless-project/web-server
 ```
 
 The download page runs the puzzle generator, so build it first (see [Building](#building)). `make` must also be
-installed on the server, since every download runs `make cleanzip`.
+installed on the server, since every download runs `make cleanzip` in `puzzle-code/`.
 
 ```bash
-(cd ../puzzle-code/src && make)
+make -C ../puzzle-code
 ```
 
 Start localhost:
@@ -827,7 +815,8 @@ php -S localhost:8000
 
 **NOTE**: Keep the terminal running to track all requests going to the web server.
 
-**NOTE**: To use a generator in a different directory, set `POINTLESS_SRC_DIR` (e.g. `POINTLESS_SRC_DIR=/path/to/src php -S localhost:8000`).
+**NOTE**: To use a generator in a different directory, set `POINTLESS_SRC_DIR` (e.g. `POINTLESS_SRC_DIR=/path/to/puzzle-code/src php -S localhost:8000`).
+The directory above it must contain the `puzzle-code` `Makefile`.
 
 ### Integration Test Format
 
@@ -871,50 +860,33 @@ else
 fi
 ```
 
-### Sandbox Directory
-
-This directory is to be used for testing any new code or methods, so as not to interfere with any of the
-main code. Feel free to delete any files in this directory if needed.
-
 ### Future Goals
 
 - Consistent dark mode between pages
 
 ## Code Coverage
 
-The puzzle generator is compiled with `--coverage`. Go into the `puzzle-code/src/` directory,
-then build and run `./main` at least once (e.g. with `make all`) so there is coverage data:
+The puzzle generator and tests are compiled with `--coverage`. In `puzzle-code/`, run the generator
+or the tests at least once so there is coverage data, then run `make coverage`:
 
 ```bash
-cd ./puzzle-code/src/
-make all
-```
-
-Then do:
-
-```bash
+cd ./puzzle-code/
+make run    # and/or: make test
 make coverage
 ```
 
-This prints a long list of file names and the percentage of lines executed in each.
+This prints the percentage of lines executed in each source file and writes the `.gcov` files to `puzzle-code/build/src/`.
 
 ## Automated Tests
 
-Go into the `puzzle-code/tests/` directory:
+From `puzzle-code/`, run:
 
 ```bash
-cd ./puzzle-code/tests/
+make test
 ```
 
-Then use the `Makefile` to build the project:
-
-```bash
-make <opt>
-```
-
-where `opt` is one of:
-- `all`: remove old object files, build the puzzle code with the tests, and run the automated tests
-- `clean`: remove all object files
+This compiles the tests together with the generator's code (everything in `src/` except `main.cpp`)
+into `tests/main`, then runs it from `puzzle-code/tests/`.
 
 ### Implementing New Tests
 
@@ -1036,10 +1008,10 @@ std::vector<bool> tests = {
 };
 ```
 
-Now run `make all` and these things will happen:
-- Every object file in `puzzle-code/tests/obj/` is removed.
-- The `<puzzle name>-puzzle.cpp` code is compiled with the tests.
-- Once compiled, the tests run automatically.
+Now run `make test` in `puzzle-code/` and these things will happen:
+- Any changed code (including `<puzzle name>-puzzle.cpp`) is compiled into `puzzle-code/build/`.
+- The tests are linked into `puzzle-code/tests/main`.
+- Once linked, the tests run automatically.
 
 To run only some tests, temporarily comment out the others in the `tests` vector.
 
@@ -1055,11 +1027,34 @@ To run only some tests, temporarily comment out the others in the `tests` vector
 - The rematch puzzles produce "pieces" of the final password, and the user must concatenate them together. However,
   this does not work if the user decides to do them in a non-linear order. Maybe just add the numbers together?
 
+### Questionable Items
+
+Things found during cleanup (September 2026) that may be mistakes or leftovers. Each one needs a decision.
+
+- **`html-txt/files-fin/fat-fat-bison.png` is unused but shipped.** The Fin puzzle's `.desc.txt` does not reference it.
+  Its name doesn't start with `.`, so it is still zipped into the last puzzle. Is it a deliberate easter egg or a leftover?
+- **The Fin puzzle needs the internet.** Its `.desc.txt` loads an image from `png.pngtree.com`, which breaks
+  "the ability to play completely offline" and hotlinks a third-party site.
+- **Player data is tracked in git and publicly downloadable.** `web-server/includes/contact-data.csv` holds names and emails.
+  When the site is served from `web-server/`, anyone can fetch `/includes/contact-data.csv`.
+- **The `Token` column in `contact-data.csv` is unused.** `index.php` writes `n\a` for every player (see [ideas/tokens.md](ideas/tokens.md)).
+- **The Logic Gate puzzle is in the game** even though its description says "currently in development".
+- **The production generator is a debug build.** It is always compiled with `-O0 --coverage`, including when the web server
+  runs it, and each run tries to write `.gcda` coverage files into `puzzle-code/build/`.
+- **The seed formula lives in test code.** `seed_gen()` is in `puzzle-code/tests/file.cpp`, but the copy that players actually get
+  is `pointless_seed()` in `web-server/includes/generate.php`. The generator cannot derive a seed from an email itself.
+- **`puzzle-code/html-txt/` is a misleading name.** It holds per-puzzle resources (including images) and templates.
+  Renaming it means changing hardcoded paths in every puzzle, the tests, and the `Makefile`.
+- **The page header is duplicated across PHP pages.** `index.php`, `login.php`, and `download.php` each contain their own copy of
+  the header and dark-mode script, and they load Font Awesome from a CDN.
+- **The UML diagrams in `imgs/` may be out of date.** They were not reviewed during cleanup.
+- **`.gitignore` patterns match everywhere.** `main` and `instructions*` match files of those names at any depth.
+
 ## Future Plans
 
 - Design Graph Paper Robot Puzzle III.
 - Have an automatic emailer that sends emails to Dr. Towell.
-- Have the tokens work with the website, and update the CSV file.
+- Have the tokens work with the website, and update the CSV file (see [ideas/tokens.md](ideas/tokens.md)).
 
 ## Contact
 

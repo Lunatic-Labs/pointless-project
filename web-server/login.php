@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     };
     if ($email_valid && $registered) {
         $_SESSION["email"] = $usr_email;
-        header("Location: ../token-sub.php");
+        header("Location: download.php");
         exit;
     };
 };
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="container">
         <p style="text-align:center">
             This is the login page.<br>
-            Enter your email to access the tokens page.
+            Enter your email to download your puzzle.
         </p>
         <?php if ($error): ?>
             <div class="error">
