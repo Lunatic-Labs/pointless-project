@@ -72,12 +72,16 @@ $(TEST_BIN): $(TEST_OBJS) $(LIB_OBJS)
 $(PROD_BIN): $(PROD_OBJS)
 	$(CXX) -o $@ $^ $(LDLIBS)
 
+# Each object's old coverage data is deleted when it is rebuilt; otherwise the
+# next run prints "libgcov profiling error: ... different checksum".
 $(BUILD)/src/%.o: src/%.cpp
 	@mkdir -p $(@D)
+	@rm -f $(@:.o=.gcda)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(BUILD)/tests/%.o: tests/%.cpp
 	@mkdir -p $(@D)
+	@rm -f $(@:.o=.gcda)
 	$(CXX) $(CXXFLAGS) -Itests/include -c -o $@ $<
 
 $(PROD_BUILD)/%.o: src/%.cpp

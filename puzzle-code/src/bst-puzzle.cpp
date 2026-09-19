@@ -1,7 +1,6 @@
 /*
  * File: bst-puzzle.cpp
  * Author: Zachary Haskins, Turner Austin, Michael Hernandez-Lara
- * Contact: zdhdev@yahoo.com, tcaustin@mail.lipscomb.edu, mahernandezlara@mail.lipscomb.edu
  * Date: 10/2/2024
  * Description:
  *   The user is given x and a binary tree of directories. Each directory has a "street sign" (a

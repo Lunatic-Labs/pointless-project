@@ -1,7 +1,6 @@
 /*
  * File: encrypt-puzzle.cpp
  * Author: Zachary Haskins, Turner Austin
- * Contact: zdhdev@yahoo.com, tcaustin@mail.lipscomb.edu
  * Date: 2/14/2024
  * Description:
  *   The user is presented with a word that has been encrypted using a series of operations.

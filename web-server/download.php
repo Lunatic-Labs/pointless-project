@@ -21,12 +21,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         session_write_close(); // Don't hold the session lock while the generator runs.
         $zip = pointless_generate_zip($_SESSION["email"], $error);
         if ($zip !== null) {
-            header("Content-Type: application/zip");
-            header("Content-Disposition: attachment; filename=\"pointless.zip\"");
-            header("Content-Length: " . filesize($zip));
-            readfile($zip);
+            // Delete the zip before sending it from the open handle: if the player
+            // cancels, PHP stops this script partway and nothing is left behind.
+            $handle = fopen($zip, 'rb');
             unlink($zip);
-            exit;
+            if ($handle !== false) {
+                header("Content-Type: application/zip");
+                header("Content-Disposition: attachment; filename=\"pointless.zip\"");
+                header("Content-Length: " . fstat($handle)['size']);
+                fpassthru($handle);
+                exit;
+            }
+            error_log("pointless: could not open the generated zip");
+            $error = "Puzzle generation failed. Please try again later.";
         }
     }
 }

@@ -8,7 +8,7 @@ $lname = "";
 $email = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Stored as typed; escaped only when shown.
+    // Stored as typed (see pointless_safe_name()); escaped only when shown.
     $fname = trim($_POST["fname"] ?? "");
     $lname = trim($_POST["lname"] ?? "");
     $email = pointless_normalize_email($_POST["email"] ?? "");

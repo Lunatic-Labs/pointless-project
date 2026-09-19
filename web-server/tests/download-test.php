@@ -25,6 +25,19 @@ function test_download_zip(): void
     check(list_tree(tmp_path()) === [], 'nothing is left in TMPDIR');
 }
 
+function test_download_canceled(): void
+{
+    fake_generator('big');
+    $client = new Client();
+    register($client, 'ann@b.com');
+    $client->postAndHangUp('download.php');
+    // php -S finishes the request after the client is gone; give it time.
+    for ($i = 0; $i < 100 && list_tree(tmp_path()) !== []; $i++) {
+        usleep(100000);
+    }
+    check(list_tree(tmp_path()) === [], 'nothing is left in TMPDIR after a canceled download');
+}
+
 function test_download_uses_session_email(): void
 {
     $ann = new Client();

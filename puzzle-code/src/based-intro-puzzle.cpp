@@ -1,7 +1,6 @@
 /*
  * File: based-intro-puzzle.cpp
  * Author: Jordan Hasulube
- * Contact: jdhasulube@mail.lipscomb.edu
  * Date: 10/2/2024
  * Description:
  *   The user is shown a "light box": a number in base 16 with one column per digit (least

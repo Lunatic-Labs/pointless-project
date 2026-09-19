@@ -43,3 +43,13 @@ function test_players_csv_quoting(): void
     check(player_rows()[1] === ['Smith, Jr', 'say "hi"', 'q@b.com'], 'commas and quotes round-trip');
     check(pointless_player_exists('q@b.com'), 'email after a quoted field is found');
 }
+
+function test_players_formula_names(): void
+{
+    foreach (['=1+2', '+1', '-1', '@SUM(A1)', "\tx", "\rx"] as $i => $name) {
+        pointless_add_player($name, 'Lee', "p$i@b.com");
+        check(player_rows()[$i + 1][0] === "'$name", 'formula-like name ' . json_encode($name) . " gets a leading '");
+    }
+    pointless_add_player('Ann', 'O-Neil', 'ann@b.com');
+    check(player_rows()[7] === ['Ann', 'O-Neil', 'ann@b.com'], 'other names are stored as given');
+}

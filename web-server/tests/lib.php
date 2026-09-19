@@ -93,6 +93,7 @@ function list_tree(string $dir): array
 //   'ok'      writes zipfiles/puzzle1.zip containing "email=<email>"
 //   'fail'    exits with status 1
 //   'no-zip'  exits with status 0 without writing a zip
+//   'big'     writes a 64 MB zipfiles/puzzle1.zip, too big to send before a client hangs up
 //   'missing' no src/main at all
 function fake_generator(string $mode = 'ok'): void
 {
@@ -122,6 +123,9 @@ function fake_generator(string $mode = 'ok'): void
         }
         if ($mode === 'ok') {
             file_put_contents('zipfiles/puzzle1.zip', 'email=' . (\$argv[2] ?? ''));
+        }
+        if ($mode === 'big') {
+            file_put_contents('zipfiles/puzzle1.zip', str_repeat('x', 64 << 20));
         }
         PHP;
     file_put_contents("$gen/src/main", $script);
@@ -201,16 +205,37 @@ final class Client
         return $this->request('POST', $path, $fields);
     }
 
+    // Sends an empty POST, reads the start of the response, and disconnects,
+    // like a player who cancels a download.
+    public function postAndHangUp(string $path): void
+    {
+        $host = parse_url(start_server(), PHP_URL_HOST) . ':' . parse_url(start_server(), PHP_URL_PORT);
+        $socket = stream_socket_client("tcp://$host", $errno, $errstr, 30);
+        if ($socket === false) {
+            throw new TestFailure("POST $path: could not connect: $errstr");
+        }
+        $headers = array_merge(["POST /$path HTTP/1.1", "Host: $host", 'Content-Length: 0', 'Connection: close'],
+                               $this->cookieHeaders());
+        fwrite($socket, implode("\r\n", $headers) . "\r\n\r\n");
+        fread($socket, 1024);
+        fclose($socket);
+    }
+
+    private function cookieHeaders(): array
+    {
+        if (!$this->cookies) {
+            return [];
+        }
+        $pairs = [];
+        foreach ($this->cookies as $name => $value) {
+            $pairs[] = "$name=$value";
+        }
+        return ['Cookie: ' . implode('; ', $pairs)];
+    }
+
     private function request(string $method, string $path, ?array $fields): Response
     {
-        $headers = [];
-        if ($this->cookies) {
-            $pairs = [];
-            foreach ($this->cookies as $name => $value) {
-                $pairs[] = "$name=$value";
-            }
-            $headers[] = 'Cookie: ' . implode('; ', $pairs);
-        }
+        $headers = $this->cookieHeaders();
         $options = ['method' => $method, 'follow_location' => 0, 'ignore_errors' => true, 'timeout' => 30];
         if ($fields !== null) {
             $headers[] = 'Content-Type: application/x-www-form-urlencoded';

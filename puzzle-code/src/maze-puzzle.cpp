@@ -1,7 +1,6 @@
 /*
  * File: maze-puzzle.cpp
  * Author: Zachary Haskins, Turner Austin
- * Contact: zdhdev@yahoo.com, tcaustin@mail.lipscomb.edu
  * Date: 2/4/2024
  * Description:
  *   The user is presented with a generated maze. The goal is to find the

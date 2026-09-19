@@ -553,11 +553,19 @@ Players are saved to `data/contact-data.csv` at the repository root (columns `FN
 It is outside `web-server/`, so the web server can never serve it, and git ignores it.
 Set `POINTLESS_PLAYERS_FILE` to store it somewhere else.
 Emails are stored trimmed and lowercased, so `Ann@B.com` and `ann@b.com` are the same player (and get the same puzzle).
-Names are stored as typed.
+Names are stored as typed, except that a name starting with `=`, `+`, `-`, `@`, a tab, or a carriage return gets a leading `'`,
+so a spreadsheet opening the file shows it as text instead of running it as a formula (`pointless_safe_name()`).
+
+**Security decisions** (2026-09-19):
+- **Logging in needs only an email.** Anyone who knows a registered email can download that player's puzzle. This is
+  acceptable: the puzzle isn't secret, and the site stores nothing else about the player.
+- **No CSRF tokens.** The forms have none. The worst a forged form can do is log someone into another player's download page,
+  which the first decision already allows.
 
 The user downloads the puzzle via PHP and plays offline. `download.php` builds a personalized zip on request (see `web-server/includes/generate.php`).
 It copies `puzzle-code/production/resources/` into a new temporary directory, runs the production generator there with `-e <email>`
-(so the seed comes from `utils_seed_from_email()`), streams `puzzle1.zip`, and deletes the temporary directory.
+(so the seed comes from `utils_seed_from_email()`), and deletes the temporary directory. `download.php` then streams `puzzle1.zip`,
+deleting it before sending it, so a canceled download leaves nothing behind.
 The web server never runs `make` and never writes into `puzzle-code/`, and simultaneous downloads don't interfere with each other.
 Each session can download at most once every 10 seconds (`POINTLESS_DOWNLOAD_INTERVAL`).
 
@@ -633,7 +641,7 @@ make coverage
 ```
 
 This prints the percentage of lines executed in each source file and writes the `.gcov` files to `puzzle-code/build/src/`.
-If gcov complains about checksums after the code changes a lot, run `make clean` first.
+Rebuilding an object deletes its old coverage data (`build/**/*.gcda`), so the counts are for the current code only.
 
 ## Automated Tests
 
@@ -726,12 +734,14 @@ A backlog of cleanup and improvement tasks is in [ideas/cleanup-tasks.md](ideas/
 - Have the tokens work with the website, and update the CSV file (see [ideas/tokens.md](ideas/tokens.md)).
 - Put the site on `tools.lipscomb-soc.org` (see [Deployment](#deployment)).
 
-## Contact
+## Contributors
 
-- Zachary Haskins - *zdhdev@yahoo.com* - [GitHub](https://github.com/malloc-nbytes/)
-- Turner Austin - *tcaustin@mail.lipscomb.edu*
-- Mekeal Brown - *mtbrown@mail.lipscomb.edu* - [GitHub](https://github.com/mekealbrown)
-- Steven Yassa - *seyassa@mail.lipscomb.edu*
-- Jordan Hasulube - *jdhasulube@mail.lipscomb.edu* - [GitHub](https://github.com/JordanHassy)
-- Michael Hernandez-Lara - *mahernandezlara@mail.lipscomb.edu*
-- John Tabelisma - *jmtabelisma@mail.lipscomb.edu* - [GitHub](https://github.com/johntable)
+Former student developers:
+
+- Zachary Haskins - [GitHub](https://github.com/malloc-nbytes/)
+- Turner Austin
+- Mekeal Brown - [GitHub](https://github.com/mekealbrown)
+- Steven Yassa
+- Jordan Hasulube - [GitHub](https://github.com/JordanHassy)
+- Michael Hernandez-Lara
+- John Tabelisma - [GitHub](https://github.com/johntable)

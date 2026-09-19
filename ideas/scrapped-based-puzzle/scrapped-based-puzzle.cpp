@@ -23,7 +23,6 @@
 /*
 * File: rematch-based-puzzle.cpp
 * Author: Mekeal Brown
-* Contact: brownmekeal@gmail.com
 * Date: 2/6/2024
 * Description:
 *  The user is presented with an instructions page outlining the puzzle(cryptically).

@@ -44,3 +44,5 @@ The list has 10 entries, but the game now has 11 puzzles (see `puzzle-code/src/m
 - **Where do tokens appear?** In the generated `instructions.html`, in a hidden asset, or only after the puzzle is solved?
 - **Fixed or per-player?** Fixed phrases like the ones above can be shared between players. Per-player tokens could be derived from the seed, as passwords are, but then the website would need to compute them (for example, by running the generator with `-a -e <email>`).
 - **What is a "level"?** The number of tokens submitted, or the highest puzzle reached?
+- **Analytics.** GitHub issue #3 (closed 2026-09-19 and moved here) asked for participation statistics, so that the project's
+  upkeep can be justified. Token submissions would be one source; the players file already gives registrations.

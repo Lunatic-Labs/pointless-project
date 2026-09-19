@@ -29,6 +29,7 @@ $tests = [
     'test_players_exists_matches_whole_email',
     'test_players_normalizes_email',
     'test_players_csv_quoting',
+    'test_players_formula_names',
 
     'test_generate_dir_from_env',
     'test_generate_success',
@@ -54,6 +55,7 @@ $tests = [
 
     'test_download_requires_session',
     'test_download_zip',
+    'test_download_canceled',
     'test_download_uses_session_email',
     'test_download_rate_limited',
     'test_download_generator_missing',

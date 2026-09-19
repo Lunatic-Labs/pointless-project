@@ -1,7 +1,6 @@
 /*
  * File: pixel-puzzle.cpp
  * Author: Mekeal Brown
- * Contact: brownmekeal@gmail.com
  * Date: 2/6/2024
  * Description:
  *   The user is shown three rows of hex color codes: one code, then two, then three. The first

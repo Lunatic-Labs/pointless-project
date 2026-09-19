@@ -8,6 +8,8 @@ To use something from here, move it back into `puzzle-code/` or `web-server/` an
 |------|------------|
 | [cleanup-tasks.md](cleanup-tasks.md) | Cleanup and improvement tasks still open after the September 2026 review (decisions, web server, generator). |
 | [tokens.md](tokens.md) | Plan for hidden per-puzzle tokens that players submit on the website. Never implemented. |
+| [nonogram-qr-puzzle.md](nonogram-qr-puzzle.md) | A puzzle where the player solves a nonogram that draws a QR code. Designed in 2022 (formerly GitHub issues #50, #53-55, #58, #59); never built. |
+| [share-buttons.html](share-buttons.html) | Buttons for sharing the website on X/Twitter and Facebook (from the unmerged `SCRUM-share-buttons` branch, closed PR #107). The links still point at `google.com` placeholders, and the Facebook button loads Facebook's SDK. |
 | [tokens-webpage-uml.jpg](tokens-webpage-uml.jpg) | User-flow diagram of the website with token submission (formerly `imgs/Pointless_UMLs-Webpage.jpg`). Describes the token plan, not the current site. |
 | [scrapped-based-puzzle/](scrapped-based-puzzle/) | A harder Based rematch puzzle (sorting values in made-up bases). Removed from the game; code and resources kept. |
 | [beta-feedback-checklist.md](beta-feedback-checklist.md) | Checklist from a beta playtest (formerly `puzzle-code/src/dr-pepper.cbp`). Most items are done; a few are open. |

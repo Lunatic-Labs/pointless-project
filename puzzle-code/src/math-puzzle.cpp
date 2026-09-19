@@ -1,7 +1,6 @@
 /*
  * File: math-puzzle.cpp
  * Author: Zachary Haskins, Turner Austin
- * Contact: zdhdev@yahoo.com, tcaustin@mail.lipscomb.edu
  * Date: 1/20/2024
  * Description:
  *   The user is presented with two numbers and is asked to add them together,

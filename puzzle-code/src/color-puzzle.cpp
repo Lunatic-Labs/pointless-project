@@ -1,7 +1,6 @@
 /*
  * File: color-puzzle.cpp
  * Author: Zachary Haskins, Turner Austin
- * Contact: zdhdev@yahoo.com, tcaustin@mail.lipscomb.edu
  * Date: 1/27/2024
  * Description:
  *   The user is presented with either the color purple or gold (Lipscomb's colors).

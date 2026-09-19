@@ -1,7 +1,6 @@
 /*
  * File: rematch-based-puzzle.cpp
  * Author: Mekeal Brown
- * Contact: brownmekeal@gmail.com
  * Date: 2/6/2024
  * Description:
  *   The user is told how an alien number system writes numbers in three bases and is shown a

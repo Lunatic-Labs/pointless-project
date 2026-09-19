@@ -36,8 +36,17 @@ function pointless_player_exists(string $email): bool
     return $found;
 }
 
-// Appends a player, creating the file (and its header) if needed.
-// Names are stored as given and the email normalized. Returns false on failure.
+// Returns $name as it is stored. A spreadsheet opening the players file would run
+// a cell that starts with =, +, -, @, tab, or carriage return as a formula, so
+// such names get a leading ' (which spreadsheets show as text). Otherwise unchanged.
+function pointless_safe_name(string $name): string
+{
+    return ($name !== '' && strpos("=+-@\t\r", $name[0]) !== false) ? "'$name" : $name;
+}
+
+// Appends a player, creating the file (and its header) if needed. Names are
+// stored as given except for pointless_safe_name(), and the email normalized.
+// Returns false on failure.
 function pointless_add_player(string $fname, string $lname, string $email): bool
 {
     $path = pointless_players_file();
@@ -52,7 +61,7 @@ function pointless_add_player(string $fname, string $lname, string $email): bool
     if (fstat($file)['size'] === 0) {
         fputcsv($file, ['FName', 'LName', 'Email']);
     }
-    $ok = fputcsv($file, [$fname, $lname, pointless_normalize_email($email)]) !== false;
+    $ok = fputcsv($file, [pointless_safe_name($fname), pointless_safe_name($lname), pointless_normalize_email($email)]) !== false;
     fflush($file);
     flock($file, LOCK_UN);
     fclose($file);
