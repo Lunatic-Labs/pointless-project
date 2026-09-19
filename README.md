@@ -680,6 +680,33 @@ They record a failure and let the test continue.
 Then declare `void fib_puzzle_test();` in `puzzle-code/tests/include/test.h`, add `{"fib_puzzle", fib_puzzle_test}` to the
 `tests` array in `puzzle-code/tests/main.cpp`, and add the puzzle to `min_different` in `puzzle-code/tests/seeds-test.cpp`.
 
+## Deployment
+
+**Not deployed yet.** The site runs only from `php -S` on a developer's
+machine. When it does go live it will share `tools.lipscomb-soc.org` with the
+School of Computing tools site and the edna mailer. That box's arrangement —
+what lives where, and what deploys own which paths — is documented in the
+`dtowell/tools` repo's `readme.md`; read it before putting anything on the
+server.
+
+Three constraints that apply there, all of which this repo already satisfies:
+
+- **The generator is built on the server, not shipped to it.** The CI here
+  runs on `ubuntu-24.04` and the server is 22.04, so a binary built by CI
+  would hit a glibc mismatch. `make production` runs on the server instead.
+- **The player file is runtime state and must live outside the deploy tree.**
+  `data/contact-data.csv` holds real names and emails, it is rewritten while
+  the site runs, and a deploy must never overwrite or expose it.
+  `POINTLESS_PLAYERS_FILE` already makes that a configuration choice.
+- **`puzzle-code/production/` is generated, not published.**
+  `POINTLESS_GENERATOR_DIR` already lets the web server read it from anywhere,
+  so it can live outside the document root.
+
+Deploying should reuse the existing mechanism on that box — `ssh
+ubuntu@tools.lipscomb-soc.org bin/deploy pointless`, which fetches, checks out
+a ref, builds, **runs the tests**, and installs only if they pass — rather
+than inventing a fourth way of getting files onto the server.
+
 ## Issues
 
 A backlog of cleanup and improvement tasks is in [ideas/cleanup-tasks.md](ideas/cleanup-tasks.md).
@@ -697,6 +724,7 @@ A backlog of cleanup and improvement tasks is in [ideas/cleanup-tasks.md](ideas/
 - Design Graph Paper Robot Puzzle III.
 - Have an automatic emailer that sends emails to Dr. Towell.
 - Have the tokens work with the website, and update the CSV file (see [ideas/tokens.md](ideas/tokens.md)).
+- Put the site on `tools.lipscomb-soc.org` (see [Deployment](#deployment)).
 
 ## Contact
 
