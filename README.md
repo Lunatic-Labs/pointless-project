@@ -1,6 +1,7 @@
 # Pointless Project
 
-A website to generate and distribute puzzles to prospective Lipscomb recruits.
+A website to generate and distribute puzzles to prospective Lipscomb recruits, live at
+<https://tools.lipscomb-soc.org/pointless/>.
 
 ## Introduction
 
@@ -692,9 +693,10 @@ Then declare `void fib_puzzle_test();` in `puzzle-code/tests/include/test.h`, ad
 
 ## Deployment
 
-**Ready but not live yet.** The site will share `tools.lipscomb-soc.org` with the School of Computing tools site and the
-edna mailer. That box's arrangement (what lives where, and which deploy owns which path) is documented in the
-`dtowell/tools` repo's `readme.md`, along with the one-time server setup; read it before putting anything on the server.
+The site is live at <https://tools.lipscomb-soc.org/pointless/>. It shares that server with the School of Computing
+tools site and the edna mailer. The server's arrangement (what lives where, and which deploy owns which path) and how to
+set it up from scratch are documented in the `dtowell/tools` repo's `readme.md`; read it before changing anything on
+the server.
 
 To deploy `origin/main`, or any tag, branch, or sha:
 
@@ -743,7 +745,6 @@ A backlog of cleanup and improvement tasks is in [ideas/cleanup-tasks.md](ideas/
 - Design Graph Paper Robot Puzzle III.
 - Have an automatic emailer that sends emails to Dr. Towell.
 - Have the tokens work with the website, and update the CSV file (see [ideas/tokens.md](ideas/tokens.md)).
-- Put the site live on `tools.lipscomb-soc.org` (see [Deployment](#deployment)).
 
 ## Contributors
 
