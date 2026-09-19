@@ -43,6 +43,12 @@ function generator_path(): string
     return test_dir() . '/generator';
 }
 
+// The games directory pointless_games_dir() uses: games/ next to the players file.
+function games_path(): string
+{
+    return test_dir() . '/data/games';
+}
+
 // TMPDIR for the tests and the server, so tests can check that nothing is left behind.
 function tmp_path(): string
 {
@@ -89,8 +95,10 @@ function list_tree(string $dir): array
 }
 
 // Creates a fake production tree (src/main and resources/) laid out like
-// `make production`. $mode selects what src/main does:
-//   'ok'      writes zipfiles/puzzle1.zip containing "email=<email>"
+// `make production`. Like the real one, src/main takes `-s <seed>` or `-e <email>`
+// and prints "Seed: <seed>" and a password line; its seed for an email is crc32(email).
+// $mode selects what else it does:
+//   'ok'      writes zipfiles/puzzle1.zip containing "seed=<seed>"
 //   'fail'    exits with status 1
 //   'no-zip'  exits with status 0 without writing a zip
 //   'big'     writes a 64 MB zipfiles/puzzle1.zip, too big to send before a client hangs up
@@ -117,12 +125,14 @@ function fake_generator(string $mode = 'ok'): void
             'cwd' => getcwd(),
             'has_resources' => is_file('../resources/files-test/.desc.txt'),
         ]) . "\\n", FILE_APPEND);
+        \$seed = \$argv[1] === '-e' ? (string)crc32(\$argv[2]) : \$argv[2];
+        echo "Seed: \$seed\nFake       Password: pw\$seed\n";
         if ($mode === 'fail') {
             fwrite(STDERR, "fake generator failure\\n");
             exit(1);
         }
         if ($mode === 'ok') {
-            file_put_contents('zipfiles/puzzle1.zip', 'email=' . (\$argv[2] ?? ''));
+            file_put_contents('zipfiles/puzzle1.zip', "seed=\$seed");
         }
         if ($mode === 'big') {
             file_put_contents('zipfiles/puzzle1.zip', str_repeat('x', 64 << 20));
@@ -314,4 +324,29 @@ function player_rows(): array
     }
     fclose($file);
     return $rows;
+}
+
+// The Seed column of $email's row in the players file, or null if $email is not there.
+function player_seed(string $email): ?string
+{
+    foreach (array_slice(player_rows(), 1) as $row) {
+        if ($row[2] === $email) {
+            return $row[3] ?? '';
+        }
+    }
+    return null;
+}
+
+// Appends a player row without a seed, like those written before seeds were stored.
+function add_legacy_player(string $fname, string $lname, string $email): void
+{
+    $path = players_path();
+    @mkdir(dirname($path), 0700, true);
+    $new = !is_file($path);
+    $file = fopen($path, 'a');
+    if ($new) {
+        fputcsv($file, ['FName', 'LName', 'Email']);
+    }
+    fputcsv($file, [$fname, $lname, $email]);
+    fclose($file);
 }

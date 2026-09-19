@@ -1,8 +1,8 @@
 <?php
 // Runs the web-server tests: `php web-server/tests/run.php [name-filter]`.
 //
-// Starts its own `php -S` on a free port with a temporary players file,
-// a fake puzzle generator, and a temporary TMPDIR, so it never touches
+// Starts its own `php -S` on a free port with a temporary players file (and
+// games directory next to it), a fake puzzle generator, and a temporary TMPDIR, so it never touches
 // data/contact-data.csv or puzzle-code/production. State is reset before
 // each test. Exits with status 1 if any test fails.
 
@@ -26,6 +26,8 @@ $tests = [
     'test_players_file_from_env',
     'test_players_missing_file',
     'test_players_add_creates_file_and_header',
+    'test_players_random_seed',
+    'test_players_set_seed_for_legacy_player',
     'test_players_exists_matches_whole_email',
     'test_players_normalizes_email',
     'test_players_csv_quoting',
@@ -36,6 +38,10 @@ $tests = [
     'test_generate_missing_generator',
     'test_generate_generator_fails',
     'test_generate_no_zip',
+    'test_generate_player_zip_stored',
+    'test_generate_player_zip_legacy_player',
+    'test_generate_player_zip_unregistered',
+    'test_generate_player_zip_fails',
     'test_generate_real_generator',
 
     'test_index_get',
@@ -57,6 +63,7 @@ $tests = [
     'test_download_requires_session',
     'test_download_zip',
     'test_download_canceled',
+    'test_download_same_file',
     'test_download_uses_session_email',
     'test_download_rate_limited',
     'test_download_generator_missing',

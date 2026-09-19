@@ -20,7 +20,8 @@ function test_download_zip(): void
     check($page->status === 200, "status is 200 (got $page->status)");
     check($page->header('Content-Type') === 'application/zip', 'content type is application/zip');
     check($page->header('Content-Disposition') === 'attachment; filename="pointless.zip"', 'downloads as pointless.zip');
-    check($page->body === 'email=ann@b.com', "body is the player's generated zip");
+    $seed = player_seed('ann@b.com');
+    check($page->body === "seed=$seed", "body is the player's generated zip");
     check((int)$page->header('Content-Length') === strlen($page->body), 'content length matches');
     check(list_tree(tmp_path()) === [], 'nothing is left in TMPDIR');
 }
@@ -36,6 +37,20 @@ function test_download_canceled(): void
         usleep(100000);
     }
     check(list_tree(tmp_path()) === [], 'nothing is left in TMPDIR after a canceled download');
+    $seed = player_seed('ann@b.com');
+    check(filesize(games_path() . "/$seed.zip") === 64 << 20, 'the whole zip is stored');
+}
+
+function test_download_same_file(): void
+{
+    $first = new Client();
+    register($first, 'ann@b.com');
+    $zip = $first->post('download.php')->body;
+    $second = new Client(); // A new session, so the rate limit doesn't apply.
+    $second->post('login.php', ['email' => 'ann@b.com']);
+    check($second->post('download.php')->body === $zip, 'downloading again gives the same file');
+    check(count(generator_runs()) === 1, 'the generator runs only for the first download');
+    check(is_file(games_path() . '/' . player_seed('ann@b.com') . '.zip'), 'the zip stays on the server');
 }
 
 function test_download_uses_session_email(): void
@@ -44,8 +59,8 @@ function test_download_uses_session_email(): void
     register($ann, 'ann@b.com');
     $bo = new Client();
     register($bo, 'bo@b.com');
-    check($bo->post('download.php')->body === 'email=bo@b.com', 'second player gets their own zip');
-    check($ann->post('download.php')->body === 'email=ann@b.com', 'first player gets their own zip');
+    check($bo->post('download.php')->body === 'seed=' . player_seed('bo@b.com'), 'second player gets their own zip');
+    check($ann->post('download.php')->body === 'seed=' . player_seed('ann@b.com'), 'first player gets their own zip');
 }
 
 function test_download_rate_limited(): void

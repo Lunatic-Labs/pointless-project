@@ -18,7 +18,9 @@ function test_index_register(): void
     $page = register($client, 'ann@b.com', 'Ann', 'Lee');
     check($page->status === 302, "status is 302 (got $page->status)");
     check($page->header('Location') === 'download.php', 'redirects to download.php');
-    check(player_rows() === [['FName', 'LName', 'Email'], ['Ann', 'Lee', 'ann@b.com']], 'player is saved');
+    check(count(player_rows()) === 2 && array_slice(player_rows()[1], 0, 3) === ['Ann', 'Lee', 'ann@b.com'], 'player is saved');
+    check(preg_match('/^\d+$/', player_seed('ann@b.com')) === 1, 'player gets a seed');
+    check(generator_runs() === [], 'registering does not run the generator');
 
     $download = $client->get('download.php');
     check($download->status === 200, 'session allows the download page');

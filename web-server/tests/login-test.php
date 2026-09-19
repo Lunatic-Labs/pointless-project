@@ -25,7 +25,7 @@ function test_login_ignores_case(): void
     $client = new Client();
     $page = $client->post('login.php', ['email' => ' ANN@B.com ']);
     check($page->status === 302, "status is 302 (got $page->status)");
-    check($client->post('download.php')->body === 'email=ann@b.com', 'the download uses the normalized email');
+    check($client->post('download.php')->body === 'seed=' . player_seed('ann@b.com'), 'the download uses the normalized email');
 }
 
 function test_login_unregistered(): void

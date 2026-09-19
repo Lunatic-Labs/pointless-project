@@ -61,8 +61,10 @@ You can now inspect and solve the puzzle(s) by choosing the appropriate zipfile.
 because all resource paths are relative to it, e.g. `../resources/files-math/.desc.txt`. `make run` and `make test` do this for you.
 
 `./main` accepts the following flags:
-- `-s <seed>`: use the given seed (any number) instead of a random one. Without `-s` or `-e`, the random seed is printed so the run can be repeated.
-- `-e <email>`: use the seed for the player with this email (the website does this; see `utils_seed_from_email()`)
+- `-s <seed>`: use the given seed (any number) instead of a random one (the website does this with each player's stored seed)
+- `-e <email>`: use the seed from this email (see `utils_seed_from_email()`). The website uses it only for players who registered before seeds were stored.
+
+The first line of output is always `Seed: <seed>`, so a run with a random seed can be repeated; the passwords follow.
 - `-a`: only print the answers (including the rematch puzzles' passwords); do not generate any files
 
 ### Structure of Output
@@ -552,10 +554,13 @@ All pages share `includes/header.php`, `includes/footer.php`, and `includes/styl
 They start their session through `includes/session.php`, which names the cookie `pointless` (HttpOnly, SameSite=Lax)
 so it can't collide with other PHP apps on the same host (see [Deployment](#deployment)).
 
-Players are saved to `data/contact-data.csv` at the repository root (columns `FName,LName,Email`; see `web-server/includes/players.php`).
+Players are saved to `data/contact-data.csv` at the repository root (columns `FName,LName,Email,Seed`; see `web-server/includes/players.php`).
 It is outside `web-server/`, so the web server can never serve it, and git ignores it.
 Set `POINTLESS_PLAYERS_FILE` to store it somewhere else.
-Emails are stored trimmed and lowercased, so `Ann@B.com` and `ann@b.com` are the same player (and get the same puzzle).
+Emails are stored trimmed and lowercased, so `Ann@B.com` and `ann@b.com` are the same player.
+`Seed` is the player's generator seed, chosen at random when they register, and never changed.
+Players who registered before seeds were stored (rows without a `Seed`) keep the game they had: their first download
+runs the generator with `-e <email>` and records the seed it prints.
 Names are stored as typed, except that a name starting with `=`, `+`, `-`, `@`, a tab, or a carriage return gets a leading `'`,
 so a spreadsheet opening the file shows it as text instead of running it as a formula (`pointless_safe_name()`).
 
@@ -565,10 +570,14 @@ so a spreadsheet opening the file shows it as text instead of running it as a fo
 - **No CSRF tokens.** The forms have none. The worst a forged form can do is log someone into another player's download page,
   which the first decision already allows.
 
-The user downloads the puzzle via PHP and plays offline. `download.php` builds a personalized zip on request (see `web-server/includes/generate.php`).
-It copies `puzzle-code/production/resources/` into a new temporary directory, runs the production generator there with `-e <email>`
-(so the seed comes from `utils_seed_from_email()`), and deletes the temporary directory. `download.php` then streams `puzzle1.zip`,
-deleting it before sending it, so a canceled download leaves nothing behind.
+The user downloads the puzzle via PHP and plays offline. Each player's zip is generated once, on their first download,
+and kept permanently, so downloading again gives exactly the same file (see `pointless_player_zip()` in `web-server/includes/generate.php`).
+To generate it, the site copies `puzzle-code/production/resources/` into a new temporary directory, runs the production generator there
+with `-s <seed>`, and deletes the temporary directory. It stores the zip in `data/games/` (the `games/` directory next to the players file)
+as `<seed>.zip`, next to an answer key, `<seed>.txt`: the player's name and email, the date, and the generator's output (the seed and every password).
+For tech support, find the player's seed in the players file and open `games/<seed>.txt`.
+Because the stored zips are kept, rebuilding the generator (`make production`) changes only the games of players who haven't downloaded yet.
+To give a player a new game built from the same seed, delete their `<seed>.zip` and `<seed>.txt`.
 The web server never runs `make` and never writes into `puzzle-code/`, and simultaneous downloads don't interfere with each other.
 Each session can download at most once every 10 seconds (`POINTLESS_DOWNLOAD_INTERVAL`).
 
@@ -609,8 +618,8 @@ php web-server/tests/run.php login    # only tests whose names contain "login"
 ```
 
 `run.php` starts its own `php -S` on a free port, so no server needs to be running (and one already on port 8000 is not affected).
-The server and tests use a temporary directory for the players file (`POINTLESS_PLAYERS_FILE`), a fake puzzle generator
-(`POINTLESS_GENERATOR_DIR`), PHP sessions, and `TMPDIR`. The real `data/contact-data.csv` and `puzzle-code/production/` are never changed.
+The server and tests use a temporary directory for the players file (`POINTLESS_PLAYERS_FILE`) and the games directory next to it, a fake puzzle generator
+(`POINTLESS_GENERATOR_DIR`), PHP sessions, and `TMPDIR`. The real `data/` and `puzzle-code/production/` are never changed.
 That state is reset before every test. Each test prints `PASS`, `FAIL`, or `SKIP`. If any test fails, the command exits with status 1
 and keeps the temporary directory (including `server.log` and `php-errors.log`); otherwise it removes it.
 
@@ -622,7 +631,8 @@ and keeps the temporary directory (including `server.log` and `php-errors.log`);
 | `index-test.php`, `login-test.php`, `download-test.php` | The pages, over HTTP |
 
 The fake generator is a small script written by `fake_generator($mode)`. It records its arguments and working directory,
-then (in mode `ok`) writes a `puzzle1.zip` containing `email=<email>`, so tests can check which player's zip was served.
+prints `Seed: <seed>` and a password line like the real one (its seed for `-e <email>` is `crc32(email)`),
+then (in mode `ok`) writes a `puzzle1.zip` containing `seed=<seed>`, so tests can check which player's zip was served.
 Other modes make it fail, write no zip, or be missing.
 
 `test_generate_real_generator` runs `puzzle-code/production/src/main` (or the tree named by `POINTLESS_TEST_GENERATOR_DIR`)
@@ -715,14 +725,15 @@ On the server:
 /var/www/pointless/releases/<time>-<sha>/web/          web-server/ without tests/  (Apache: Alias /pointless)
 /var/www/pointless/releases/<time>-<sha>/production/   the `make production` tree  (POINTLESS_GENERATOR_DIR)
 /var/lib/pointless/contact-data.csv                   players; www-data, 0700      (POINTLESS_PLAYERS_FILE)
+/var/lib/pointless/games/                             each player's zip and answer key, created next to the players file
 ```
 
 What this repo must keep true for that to work:
 
 - **The generator is built on the server, not shipped to it.** The server is Ubuntu 22.04, so CI tests on 22.04 as
   well as 24.04; a binary built on 24.04 would hit a glibc mismatch there.
-- **The player file is runtime state outside the deploy tree.** It holds real names and emails and is rewritten
-  while the site runs; a deploy never touches it. If Apache's `POINTLESS_PLAYERS_FILE` were missing, players would go
+- **The player file and the games directory are runtime state outside the deploy tree.** They hold real names and
+  emails, and each player's permanent zip, and are written while the site runs; a deploy never touches them. If Apache's `POINTLESS_PLAYERS_FILE` were missing, players would go
   into `data/` inside a release and be lost at the next deploy.
 - **Every page link is relative**, because the site is served under `/pointless/`, not at the root.
 - **The tests must pass on a clean checkout**, with nothing but `g++`, `libzip-dev`, and `php-cli`, since they are the

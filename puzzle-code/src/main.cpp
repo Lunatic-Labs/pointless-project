@@ -43,8 +43,9 @@ int main(int argc, char **argv)
 
   if (!seed_given) {
     seed = utils_roll_seed();
-    std::cout << "Seed: " << seed << std::endl;
   }
+  // Always printed: the website records it for players who registered before seeds were stored.
+  std::cout << "Seed: " << seed << std::endl;
 
   try {
     std::vector<Puzzle> puzzles = game_create_puzzles(seed);

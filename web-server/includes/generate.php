@@ -2,8 +2,12 @@
 // Builds a player's personalized Pointless zip by running the production puzzle
 // generator. The web server never runs make: a person runs `make production` in
 // puzzle-code/, which creates puzzle-code/production/ (src/main and resources/).
-// That directory is only read. Each download runs the generator in its own
-// temporary copy of resources/, so downloads can't interfere with each other.
+// That directory is only read. Each generation runs in its own temporary copy of
+// resources/, so generations can't interfere with each other.
+//
+// Each player's zip is generated once and kept permanently in the games
+// directory, with an answer key, so every download of it is the same file.
+require_once __DIR__ . '/players.php';
 
 // Directory created by `make production`.
 // Can be overridden with the POINTLESS_GENERATOR_DIR environment variable.
@@ -26,6 +30,13 @@ function pointless_run(array $cmd, string $cwd, ?string &$output = null): int
     $output = stream_get_contents($pipes[1]);
     fclose($pipes[1]);
     return proc_close($proc);
+}
+
+// Directory holding each player's zip (<seed>.zip) and answer key (<seed>.txt):
+// games/ next to the players file, so it is outside web-server/ and the deploy tree.
+function pointless_games_dir(): string
+{
+    return dirname(pointless_players_file()) . '/games';
 }
 
 // Recursively copies the directory $from to $to (which must not exist).
@@ -63,10 +74,12 @@ function pointless_remove_path(string $path): void
     @rmdir($path);
 }
 
-// Generates the zip for $email and returns the path to a temporary file,
-// which the caller must unlink. Returns null and sets $error on failure.
-function pointless_generate_zip(string $email, ?string &$error = null): ?string
+// Runs the generator with $args and returns the path to a temporary copy of the
+// puzzle1.zip it wrote, which the caller must unlink. The generator's output (the
+// seed and passwords) is stored in $output. Returns null and sets $error on failure.
+function pointless_generate_zip(array $args, ?string &$output = null, ?string &$error = null): ?string
 {
+    $output = '';
     $gen = pointless_generator_dir();
     $main = realpath("$gen/src/main");
     if ($main === false || !is_executable($main) || !is_dir("$gen/resources")) {
@@ -85,9 +98,8 @@ function pointless_generate_zip(string $email, ?string &$error = null): ?string
     }
 
     try {
-        $output = '';
         if (!pointless_copy_dir("$gen/resources", "$work/resources")
-            || pointless_run([$main, '-e', $email], "$work/src", $output) !== 0) {
+            || pointless_run(array_merge([$main], $args), "$work/src", $output) !== 0) {
             error_log("pointless: generation failed: $output");
             $error = "Puzzle generation failed. Please try again later.";
             return null;
@@ -106,5 +118,71 @@ function pointless_generate_zip(string $email, ?string &$error = null): ?string
     } finally {
         // Don't leave the generated puzzles (and their passwords) on disk.
         pointless_remove_path($work);
+    }
+}
+
+// Copies the file $from to $path atomically (a copy next to $path, then a rename),
+// so no one ever sees a partial file, even if $from is on another file system.
+function pointless_store_file(string $from, string $path): bool
+{
+    $tmp = "$path.tmp-" . getmypid();
+    if (!copy($from, $tmp) || !rename($tmp, $path)) {
+        @unlink($tmp);
+        return false;
+    }
+    return true;
+}
+
+// Returns the path to $email's stored zip, generating it (and its answer key) on
+// the first request. The file is permanent: the caller must not change or delete
+// it. Returns null and sets $error if the player is not registered or generation fails.
+function pointless_player_zip(string $email, ?string &$error = null): ?string
+{
+    $player = pointless_find_player($email);
+    if ($player === null) {
+        error_log("pointless: download for unregistered email $email");
+        $error = "Email not registered. Please register again.";
+        return null;
+    }
+    [$fname, $lname, $email, $seed] = $player;
+    $games = pointless_games_dir();
+    if ($seed !== '' && is_file("$games/$seed.zip")) {
+        return "$games/$seed.zip";
+    }
+
+    // Players who registered before seeds were stored keep the game they had:
+    // the seed from their email, which the generator reports.
+    $output = '';
+    $zip = pointless_generate_zip($seed !== '' ? ['-s', $seed] : ['-e', $email], $output, $error);
+    if ($zip === null) {
+        return null;
+    }
+    try {
+        if ($seed === '') {
+            if (!preg_match('/^Seed: (\d+)$/m', $output, $m) || !pointless_set_player_seed($email, $m[1])) {
+                error_log("pointless: could not record the seed for $email: $output");
+                $error = "Puzzle generation failed. Please try again later.";
+                return null;
+            }
+            $seed = pointless_find_player($email)[3];
+            if (is_file("$games/$seed.zip")) {
+                return "$games/$seed.zip"; // Another download stored it first.
+            }
+        }
+
+        // The answer key is stored first, so a stored zip always has one.
+        $key = "Name: $fname $lname\nEmail: $email\nGenerated: " . date('Y-m-d H:i:s T') . "\n$output";
+        if ((!is_dir($games) && !@mkdir($games, 0700, true) && !is_dir($games))
+            || file_put_contents("$zip.txt", $key) === false
+            || !pointless_store_file("$zip.txt", "$games/$seed.txt")
+            || !pointless_store_file($zip, "$games/$seed.zip")) {
+            error_log("pointless: could not store the game in $games");
+            $error = "Puzzle generation failed. Please try again later.";
+            return null;
+        }
+        return "$games/$seed.zip";
+    } finally {
+        unlink($zip);
+        @unlink("$zip.txt");
     }
 }
