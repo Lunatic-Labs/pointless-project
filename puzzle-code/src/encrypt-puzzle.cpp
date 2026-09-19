@@ -91,9 +91,9 @@ Puzzle encrypt_puzzle_create(seed_t seed)
 
   std::vector<Op> ops = ENCR_OPS;
   std::string steps;
-  for (int step = 1; !ops.empty(); ++step) {
+  while (!ops.empty()) {
     int i = utils_rng_roll(0, (int)ops.size() - 1, seed);
-    steps += "<li>" + std::to_string(step) + ".) ";
+    steps += "<li>";
     switch (ops[i]) {
       case Op::Shift: {
         bool right = utils_chance(50, seed);

@@ -25,6 +25,7 @@
   width: 12px;
   height: 12px;
   background-color: red;
+  outline: 1px solid #000;
   border-radius: 50%;
   margin-right: 5px;
 }
@@ -33,114 +34,50 @@
   display: inline-block;
   width: 12px;
   height: 12px;
-  background-color: green;
+  background-color: #00FF00;
+  outline: 1px solid #000;
   border-radius: 50%;
   margin-right: 5px;
 }
 
-.bullet {
-  list-style-type: disc;
+.red_circle, .green_circle {vertical-align: middle;}
+
+.gate-table {
+  display: inline-table;
+  vertical-align: top;
+  border-collapse: collapse;
+  margin: 0 2em 1em 0;
 }
+.gate-table td {padding: 2px 4px;}
+.gate-table span {vertical-align: middle;}
 </style>
 
-<ul>
-<! PURPLE  OR > 
+<p>You have beaten that last puzzle, and been so graciously awarded 0 points! However, had you tried "adding the colored squares?" Well, that doesn't matter now! What matters now is this new puzzle, and the MacGuffin, in case you had forgotten about it.</p>
 
-  <li class="bullet">
-    <span class="state_purple"></span>
-    <span class="red_circle"></span>
-    <span class="red_circle"></span>
-    <b> =  </b>
-    <span class="red_circle"></span>
-  </li>
-  <li class="bullet">
-    <span class="state_purple"></span>
-    <span class="red_circle"></span>
-    <span class="green_circle"></span>
-    <b> =  </b>
-    <span class="green_circle"></span>
-  </li>
-    <li class="bullet">
-    <span class="state_purple"></span>
-    <span class="green_circle"></span>
-    <span class="red_circle"></span>
-    <b> =  </b>
-    <span class="green_circle"></span>
-  </li>
-  <li class="bullet">
-    <span class="state_purple"></span>
-    <span class="green_circle"></span>
-    <span class="green_circle"></span>
-    <b> =  </b>
-    <span class="green_circle"></span>
-  </li>
+<p>Each colored square is a gate, and here is how each kind of gate combines two circles:</p>
 
-  <! GOLD  AND > 
+<div>
+<table class="gate-table">
+    <tr><td><span class="state_purple"></span></td><td><span class="red_circle"></span><span class="red_circle"></span></td><td>=</td><td><span class="red_circle"></span></td></tr>
+    <tr><td><span class="state_purple"></span></td><td><span class="red_circle"></span><span class="green_circle"></span></td><td>=</td><td><span class="green_circle"></span></td></tr>
+    <tr><td><span class="state_purple"></span></td><td><span class="green_circle"></span><span class="red_circle"></span></td><td>=</td><td><span class="green_circle"></span></td></tr>
+    <tr><td><span class="state_purple"></span></td><td><span class="green_circle"></span><span class="green_circle"></span></td><td>=</td><td><span class="green_circle"></span></td></tr>
+</table>
+<table class="gate-table">
+    <tr><td><span class="state_gold"></span></td><td><span class="red_circle"></span><span class="red_circle"></span></td><td>=</td><td><span class="red_circle"></span></td></tr>
+    <tr><td><span class="state_gold"></span></td><td><span class="red_circle"></span><span class="green_circle"></span></td><td>=</td><td><span class="red_circle"></span></td></tr>
+    <tr><td><span class="state_gold"></span></td><td><span class="green_circle"></span><span class="red_circle"></span></td><td>=</td><td><span class="red_circle"></span></td></tr>
+    <tr><td><span class="state_gold"></span></td><td><span class="green_circle"></span><span class="green_circle"></span></td><td>=</td><td><span class="green_circle"></span></td></tr>
+</table>
+<table class="gate-table">
+    <tr><td><span class="state_blue"></span></td><td><span class="red_circle"></span><span class="red_circle"></span></td><td>=</td><td><span class="red_circle"></span></td></tr>
+    <tr><td><span class="state_blue"></span></td><td><span class="red_circle"></span><span class="green_circle"></span></td><td>=</td><td><span class="green_circle"></span></td></tr>
+    <tr><td><span class="state_blue"></span></td><td><span class="green_circle"></span><span class="red_circle"></span></td><td>=</td><td><span class="green_circle"></span></td></tr>
+    <tr><td><span class="state_blue"></span></td><td><span class="green_circle"></span><span class="green_circle"></span></td><td>=</td><td><span class="red_circle"></span></td></tr>
+</table>
+</div>
 
-  <li class="bullet">
-    <span class="state_gold"></span>
-    <span class="red_circle"></span>
-    <span class="red_circle"></span>
-    <b> =  </b>
-    <span class="red_circle"></span>
-  </li>
-  <li class="bullet">
-    <span class="state_gold"></span>
-    <span class="red_circle"></span>
-    <span class="green_circle"></span>
-    <b> =  </b>
-    <span class="red_circle"></span>
-  </li>
-  <li class="bullet">
-    <span class="state_gold"></span>
-    <span class="green_circle"></span>
-    <span class="red_circle"></span>
-    <b> =  </b>
-    <span class="red_circle"></span>
-  </li>
-  <li class="bullet">
-    <span class="state_gold"></span>
-    <span class="green_circle"></span>
-    <span class="green_circle"></span>
-    <b> =  </b>
-    <span class="green_circle"></span>
-  </li>
-
-  <! BLUE  XOR > 
-
-  <li class="bullet">
-    <span class="state_blue"></span>
-    <span class="red_circle"></span>
-    <span class="red_circle"></span>
-    <b> =  </b>
-    <span class="red_circle"></span>
-  </li>
-  <li class="bullet">
-    <span class="state_blue"></span>
-    <span class="red_circle"></span>
-    <span class="green_circle"></span>
-    <b> =  </b>
-    <span class="green_circle"></span>
-  </li>
-  <li class="bullet">
-    <span class="state_blue"></span>
-    <span class="green_circle"></span>
-    <span class="red_circle"></span>
-    <b> =  </b>
-    <span class="green_circle"></span>
-  </li>
-  <li class="bullet">
-    <span class="state_blue"></span>
-    <span class="green_circle"></span>
-    <span class="green_circle"></span>
-    <b> =  </b>
-    <span class="red_circle"></span>
-  </li>
-</ul>
-
-<p>You have beaten that last puzzle, and been so graciously awarded 0 points! However, had you tried "adding the colored squares?" Well that doesn't matter now! What matters now is this new puzzle, and the MacGuffin, in case you had forgotten about it.</p>
-
-<p>The line of blocks represents a <b>queue</b>. Your task is to calculate answers step by step, following these instructions:</p>
+<p>The line of circles represents a <b>queue</b>. Your task is to calculate answers step by step, following these instructions:</p>
 
 <ul>
   <li>Always take the <b>first two circles</b> from the queue to calculate the next value.</li>
@@ -154,12 +91,12 @@
 
 <p><i>"Each calculation is a building block, forming a Tower of Wisdom. As you calculate, the tower grows higher, layer by layer, unveiling its secrets. Only when the tower is complete will its pinnacle reveal the answer you seek."</i></p>
 
-<p><br></br></p>
-
+<div class="figure">
 %DELIM
+</div>
 
-<p><br></br></p>
-
+<div class="figure">
 %DELIM
+</div>
 
-<p><b>What is the secret message that is produced?</b></p>
+<p class="question">What is the secret message that is produced?</p>

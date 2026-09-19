@@ -31,11 +31,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 <?php require __DIR__ . '/includes/header.php'; ?>
-    <div class="container"><h2>The Pointless Challenge.</h2>
+    <div class="container">
+        <h2>The Pointless Challenge.</h2>
         <p>
-            Hi, welcome to the Pointless Project!<br>
-            Please register your email, so we can get you to the download page.<br>
-            Already registered? Login <a href="./login.php">here</a>.
+            Hi, welcome to the Pointless Project!
+            Please register your email, so we can get you to the download page.
+            Already registered? Log in <a href="./login.php">here</a>.
         </p>
         <?php if ($error): ?>
             <div class="warning">

@@ -121,6 +121,25 @@ extra closing tags, or it will break the page layout around it. `<style>` and `<
 The game is played offline, so a `.desc.txt` must not *load* anything from the internet (images, scripts, fonts).
 Ordinary links for further reading are fine.
 
+#### Page Layout and Style
+
+Pages are **left aligned**, and so is the website (`web-server/includes/styles.css` mirrors the template's
+`.container` rules). The header centers only the banner; a `.desc.txt` should not center text, and should not
+re-center a figure with `margin-left: auto`. Long prose is kept readable by the container's `max-width`, not by
+narrowing paragraphs.
+
+Write ordinary paragraphs in `<p>` and use the three classes the template provides, instead of repeating layout CSS:
+
+| Class       | Use                                                                        |
+|-------------|----------------------------------------------------------------------------|
+| `.callout`  | The dark box holding facts the player needs (an encrypted phrase, a list of steps) |
+| `.figure`   | A maze, table, or SVG on its own line; it scrolls sideways if it is too wide  |
+| `.question` | The bold question at the end of the page                                     |
+
+A `.desc.txt`'s `<style>` block applies to the **whole page**, header included, so every selector in it must be
+scoped to the puzzle's own classes. A bare `body`, `svg`, `table`, or `ul` rule leaks: `body {text-align: center}`
+moves the dark-mode button, and `svg {border: ...}` draws a box around the bison.
+
 In short, a puzzle is created like this:
 1. `game_create_puzzles()` in `src/game.cpp` calls `<name>_puzzle_create(seed)` with a seed derived from the player's seed and the puzzle's name.
 2. The puzzle rolls random values with `utils_rng_roll()`, works out the password, and builds its page with `utils_html_printf()`.
@@ -354,6 +373,8 @@ apply the run-length encoding algorithm to it. So the answer would be: *u2lr3d*.
 This puzzle challenges the user to decrypt the password. We present them with
 a list of steps used to encrypt it, and they must undo it to get the password.
 
+The steps are shown as a numbered list; `encrypt-puzzle.cpp` writes one `<li>` per step and the page numbers them.
+
 The following things can happen:
 - shift all characters by $i$ to either the right $(r)$ or left $(l)$
 - swap the characters at index $j$ and $k$
@@ -395,7 +416,9 @@ rematch section.
 
 This is the harder version of the *Maze* puzzle. We provide cryptic instructions
 with the goal of having them inspect the page and navigate to the console. Once they
-type "instructions" a list of function calls is presented. The user then needs to navigate
+type "instructions" a list of function calls is presented (`u()`, `d()`, `l()`, `r()`, `pickup()`,
+`descend_stairs()`, `ascend_stairs()`, and `exit()`; the names in that list must match the functions the page
+defines). The user then needs to navigate
 the maze $(M_1)$ using these function calls and must explore two other mazes $(M_2, M_3)$ with items that need to
 be picked up (a key and a battery, on pink tiles). Stairs are brown (down) and green (up). Once these items are picked up, they then need to go to $M_1$ and go
 to the gold tile. The password is then presented when they type "exit()".
@@ -512,7 +535,8 @@ the description gives each gate's truth table), and a row of red and green circl
 For each gate in order, the player takes the first two circles from the queue, evaluates the gate on them,
 and puts the result at the end of the queue. This repeats until one circle is left.
 
-The answer is every result in order (15 bits for the 16-bit input).
+The answer is every result in order (15 bits for the 16-bit input). **The page says otherwise** (see
+[Issues](#issues)): it tells the player the answer is "the value at the top of the stack," which is one bit.
 
 *RNG*:
 - $g$ (the memory $c$ is fixed)
@@ -585,7 +609,9 @@ Tracking progress by having users submit hidden tokens is planned but not implem
 
 ### How to Start
 
-A person builds the production generator: once, and again whenever the puzzle code or resources change.
+A person builds the production generator **for local use**: once, and again whenever the puzzle code or resources
+change. Deploying does not need this; `bin/deploy pointless` runs `make test` and `make production` on the server
+(see [Deployment](#deployment)), so the live site is built from the deployed ref, never from this tree.
 Run `make test` first.
 
 ```bash
@@ -594,7 +620,9 @@ make production
 ```
 
 This replaces `puzzle-code/production/` with an optimized `src/main` and a clean copy of `resources/`.
-Because it is a separate copy, later `make run`, `make test`, and `make clean` don't affect the site.
+Because it is a separate copy, later `make run`, `make test`, and `make clean` don't affect it.
+Downloads from a local `php -S` use this tree, and so does `test_generate_real_generator` in the website tests, which
+fails when the tree is stale or broken; nothing else does.
 
 Start localhost from `web-server/`:
 
@@ -750,6 +778,26 @@ A backlog of cleanup and improvement tasks is in [ideas/cleanup-tasks.md](ideas/
 - The *Maze Rematch* puzzle needs a better description.
 - Missing required "witty" quotes on all puzzles.
 - The *Based Rematch* puzzle is easy to brute force: its answer is an 8-bit number.
+
+From a review of the puzzle pages on 2026-09-19 (the wording fixes are in
+[ideas/cleanup-tasks.md](ideas/cleanup-tasks.md)):
+
+- **The *Logic Gate* page describes the wrong answer.** It says the solution is "the value at the top of the stack"
+  (one bit), but the password is every result in order (15 bits). It also says to repeat "until the queue is empty,"
+  while the puzzle stops when one circle is left, and it never says that the queue starts at the right, or that
+  red is 0 and green is 1.
+- **The maze colors don't match their descriptions.** *Maze* calls the start "golden" and the exit "purple," but they
+  are drawn yellow and magenta (`MAZE_START`, `MAZE_END`). *Maze Rematch* calls its magenta start tile "Purple"
+  (`TILE_START`).
+- **The *Maze Rematch* page assumes the player can find the browser console.** Nothing on the page says how to open
+  it, and the players are pre-college students.
+- **The *Based Rematch* rules are hard to follow.** The three overlapping bases (0-20 in base-20, 21-42 in base-31,
+  A-F in base-16) are stated but never demonstrated; one worked row would settle them.
+- **The pages' tone and titles are uneven.** Some are two short lines (*BST*, *Rematch Instructions*) and others are
+  several paragraphs of flavor text (*Graph Paper Robot*, *Base Intro*). Titles mix styles too: "Encrypt",
+  "Base Intro Puzzle", "Graph Paper Robot PT II".
+- **The banner title is nearly unreadable in dark mode.** `.title` is dark purple (`#331E54`) on the dark background,
+  on the puzzle pages and the website both.
 
 ## Future Plans
 

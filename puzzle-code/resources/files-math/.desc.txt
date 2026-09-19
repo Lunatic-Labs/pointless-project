@@ -1,14 +1,10 @@
-Welcome to the Pointless Computing Challenge!
+<p>Welcome to the Pointless Computing Challenge!</p>
 
-This Mission Briefing contains everything you need to complete your personal challenge, however you should feel free to use additional resources, including the whole Internet.
-<br /> <br />
-Your mission, should you choose to accept it, is a classic Fetch Quest involving a lot of puzzles and ultimately the coveted MacGuffin (make sure to keep track of all your points that you will earn).
-<br /> <br />
+<p>This Mission Briefing contains everything you need to complete your personal challenge, but feel free to use other resources, including the whole Internet.</p>
 
-Unfortunately for you, the path to the next puzzle is locked and requires a unique password to gain access to more points.
+<p>Your mission, should you choose to accept it, is a classic Fetch Quest involving a lot of puzzles and, ultimately, the coveted MacGuffin. (Make sure to keep track of all the points you earn.)</p>
 
-The password is the way to access the next zip file.
+<p>Unfortunately for you, the path to the next puzzle is locked. The password is the way to access the next zip file.</p>
 
-<br />
 <h3>For the first challenge...</h3>
-<b>What is %DELIM + %DELIM?</b>
+<p class="question">What is %DELIM + %DELIM?</p>

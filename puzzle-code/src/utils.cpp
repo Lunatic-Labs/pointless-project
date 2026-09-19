@@ -217,8 +217,8 @@ std::string utils_html_printf(const std::string &title, filepath_t desc_filepath
   // and not a <div>, because several descriptions style `.container div`.
   return utils_file_to_str("../resources/templates/header.txt")
     + extra_head
-    + "<h2 style=\"text-align:center\">" + title + "</h2>\n"
-    + "<section style=\"text-align:center\">\n"
+    + "<h2>" + title + "</h2>\n"
+    + "<section>\n"
     + body
     + "\n</section>"
     + utils_file_to_str("../resources/templates/footer.txt");

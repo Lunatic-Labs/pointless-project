@@ -21,7 +21,7 @@ Puzzle generator:
 - `./main -a` (in `src/`): answers only; prints each puzzle's password (and extra info, such as the rematch passwords) without writing zips or generated files
 - `make cleanzip`: removes generated zips and generated files under `resources/` and `tests/zipfiles/`; `make clean` also removes `build/` and both binaries (not `production/`)
 - `make coverage`: runs gcov on `src/*.cpp` (requires `make run` or `make test` to have run first)
-- `make production`: builds an optimized generator without coverage (objects in `build/production/`) and replaces `puzzle-code/production/` with `src/main`, an empty `src/zipfiles/`, and a clean copy of `resources/`. Only a person runs this; don't run it as a side effect of other work, since it changes what the live site serves.
+- `make production`: builds an optimized generator without coverage (objects in `build/production/`) and replaces `puzzle-code/production/` with `src/main`, an empty `src/zipfiles/`, and a clean copy of `resources/`. Only a person runs this; don't run it as a side effect of other work. Deploying does not need it: `bin/deploy pointless` runs `make production` on the server, so the live site is built there. The local tree only serves downloads from a local `php -S` and `test_generate_real_generator`, which fails when that tree is stale.
 
 Tests:
 - `make test`: builds `tests/main` from `tests/*.cpp` plus every `src/` object except `src/main.o`, then runs it in `tests/`. Exits nonzero if any test fails.
@@ -31,7 +31,7 @@ Tests:
 - `seeds_test` checks that 200 players all get answers and different games. Pinned values (`utils_test`, and the expected passwords) must be updated whenever the RNG or a puzzle's rolls change.
 
 PHP site (`web-server/`):
-- `php -S localhost:8000`. Downloads need `make production` to have been run. The site never runs make. Set `POINTLESS_GENERATOR_DIR` to use a production tree elsewhere, and `POINTLESS_PLAYERS_FILE` to move the player data.
+- `php -S localhost:8000`. Local downloads need `make production` to have been run. The site never runs make. Set `POINTLESS_GENERATOR_DIR` to use a production tree elsewhere, and `POINTLESS_PLAYERS_FILE` to move the player data.
 - Tests: `php web-server/tests/run.php [name-substring]` (runs from any directory). It starts its own `php -S` on a free port with a temp players file (and games directory next to it), a fake generator (`fake_generator($mode)` in `tests/lib.php`), temp sessions, and `TMPDIR`, resets that state before each test, and exits 1 on failure. It never touches `data/` or `production/`. Tests are `test_*` functions in `tests/*-test.php` using `check()` (not `assert()`, which php-cli disables), listed in `$tests` in `tests/run.php`. `test_generate_real_generator` runs `production/src/main` (or `POINTLESS_TEST_GENERATOR_DIR`): skipped without `src/main`, fails if that tree is broken.
 
 CI (`.github/workflows/test.yml`) runs `make test`, `make production` (in the CI checkout), and the PHP tests.
@@ -43,6 +43,8 @@ CI (`.github/workflows/test.yml`) runs `make test`, `make production` (in the CI
 **A puzzle** has two parts:
 1. A resource directory `puzzle-code/resources/files-<name>/` containing `.desc.txt`, an HTML/JS body with `%DELIM` placeholders, plus any assets. Files and directories starting with `.` are excluded from the zip (see `utils_walkdir`). Resources must not load anything from the internet, because the game is played offline.
 2. `src/<name>-puzzle.cpp`, which rolls random values, calls `utils_html_printf(title, desc_path, {args...})` (which throws unless there is exactly one arg per `%DELIM`) to build the page: `resources/templates/header.txt`, an optional extra head string, the title, the substituted body in a `<section>` (not `<div>`: several descriptions style `.container div`), and `footer.txt`. The header opens `<body>` and two divs and the footer closes them, so a `.desc.txt` must be a balanced fragment. The puzzle writes `instructions.html` with `utils_generate_file` and returns `Puzzle{contents_fp, contents_html, password, extra_info}`. `extra_info` is only printed for debugging. Keep helper functions `static`.
+
+Pages are left aligned (so is `web-server/includes/styles.css`, which mirrors the template's `.container`): don't center text or re-center figures in a `.desc.txt`. Use the template's `.callout` (dark box of facts), `.figure` (a maze, table, or SVG on its own line), and `.question` (the closing question) instead of repeating layout CSS. A `.desc.txt`'s `<style>` applies to the whole page, so scope every selector to the puzzle's own classes; bare `body`, `svg`, or `table` rules leak into the header.
 
 To add a puzzle:
 1. Create the resource directory and the `.cpp` file.

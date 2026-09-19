@@ -12,14 +12,29 @@
         .imagen {height: 9rem; padding-left: 28px;}
         .container {
             width: 80%;
+            max-width: 52rem;
             margin: -4px auto 0; /* This makes the bison stand on the box. We were cookin bro.*/
-            padding: 20px;
+            padding: 20px 32px;
             border: 1px solid #ccc;
             border-radius: 8px;
-            text-align: center;
+            line-height: 1.45;
         }
-        .container ul {text-align: center; list-style-position: inside;}
-        .container p {max-width: 60%; margin: 10px auto;}
+        .container h2 {margin-top: 0.5em;}
+        .container li {margin: 0.2em 0;}
+        .container code {font-size: 1.05em;}
+        /* A dark box for the facts a puzzle gives the player (the pixel, encrypt, and rematch pages). */
+        .container .callout {
+            width: fit-content;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: 8px 20px;
+            border-radius: 8px;
+            background-color: #331E54;
+            color: rgb(255, 217, 90);
+        }
+        /* A figure (a maze, a light box, a table) goes on its own line, left aligned with the text. */
+        .container .figure {margin: 1em 0; width: fit-content; max-width: 100%; overflow-x: auto;}
+        .container .question {font-weight: bold; margin-top: 1.5em;}
     </style>
 </head>
 <body>

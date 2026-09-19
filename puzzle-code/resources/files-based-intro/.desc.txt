@@ -8,8 +8,7 @@
         repeating-linear-gradient(90deg, rgba(60, 30, 10, 0.18) 0 2px, transparent 2px 9px),
         repeating-linear-gradient(90deg, rgba(255, 220, 170, 0.10) 0 5px, transparent 5px 23px),
         linear-gradient(180deg, #b87945, #8a5530);
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0.5em 0 1em;
 }
 
 .number th, .number td {
@@ -23,15 +22,11 @@
 .number tr:last-child td {
     background-color: rgba(0, 0, 0, 0.4);
 }
-
-p, h4 {
-    text-align: center;
-}
 </style>
 
 
 <p>
-    You have beaten the "speedy maze" and awarded with 0 points! However, we are not done yet. Before you lies a light box, a cryptic structure designed to hold hidden meanings. Each light in this box represents part of an encrypted sequence, a cipher waiting to be unlocked.
+    You have beaten the "speedy maze" and been awarded 0 points! However, we are not done yet. Before you lies a light box, a cryptic structure designed to hold hidden meanings. Each light in this box represents part of an encrypted sequence, a cipher waiting to be unlocked.
 </p>
 <p>
     Today, you’ll be working with this light box. Each light box has rows and columns, with lights in each cell that symbolize encrypted values in a hidden code.
@@ -67,10 +62,10 @@ p, h4 {
     </tbody>
 </table>
 
-<p>To represent this structure in text form, we can simply pretend it is a number, and that each column is a numbers place. For example,
-    the previous structure could be represented as 210(notice the smallest number place is on the left). If a light on the light box is too high to represent its value with a single digit number 0-9,
+<p>To represent this structure in text form, we can simply pretend it is a number, and that each column is a digit's place. For example,
+    the previous structure could be represented as 210 (notice that the smallest place is on the left). If a light on the light box is too high to represent its value with a single digit number 0-9,
     you can simply resort to using capital letters of the alphabet starting from "A" for every subsequent number. For example, the 11th light of the first column would be of value 10, 
-    but since 10 cant be represented by a single digit, that column would be represented by the letter "A". You can assume that the light box will never have a base large enough to cause you to run out
+    but since 10 can't be represented by a single digit, that column would be represented by the letter "A". You can assume that the light box will never have a base large enough to cause you to run out
     of letters in the alphabet.
 </p>
 
@@ -147,8 +142,8 @@ p, h4 {
     </tbody>
 </table>
 
-<p>
-    Now, using this encrypted structure, determine the encoded cipher for the following light box with a base of 16 and length of 8.
+<p class="question">
+    Now, using this encrypted structure, determine the encoded cipher for the following light box with a base of 16 and a length of 8.
 </p>
 
 %DELIM

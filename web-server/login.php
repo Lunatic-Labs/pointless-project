@@ -22,10 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 <?php require __DIR__ . '/includes/header.php'; ?>
     <div class="container">
-        <p>
-            This is the login page.<br>
-            Enter your email to download your puzzle.
-        </p>
+        <h2>Log in</h2>
+        <p>Enter the email you registered with to download your puzzle.</p>
         <?php if ($error): ?>
             <div class="warning">
                 <?php echo $error; ?>

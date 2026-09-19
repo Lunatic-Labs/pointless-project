@@ -1,9 +1,9 @@
-<h2>The MacGuffins was... Chicken!</h2>
-<h2>Winner Winner Chicken Dinner!</h2>
+<h2>The MacGuffin was... chicken!</h2>
+<h2>Winner winner, chicken dinner!</h2>
 
 <div style="font-size: 160px; line-height: 1.2;" role="img" aria-label="Cooked chicken">&#127831;</div>
 
-<h2><b>(ᗒᗨᗕ) °˖✧◝(⁰▿⁰)◜✧˖° (＾▽＾)  (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧</b></h2>
+<p style="font-size: 1.5em;"><b>(ᗒᗨᗕ) °˖✧◝(⁰▿⁰)◜✧˖° (＾▽＾)  (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧</b></p>
 
 <p>Congratulations on completing your entire "pointless journey!"</p>
 <p>We hope that you have learned something (hopefully not pointless information)!</p>

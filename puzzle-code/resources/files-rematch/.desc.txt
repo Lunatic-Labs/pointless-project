@@ -1,3 +1,5 @@
-With "Dr. Pepper's code," and 0 points extra, you have made it to the round of rematches! In here you will complete three puzzles that you have already completed, but a bit remixed. Each time you complete a puzzle, you will be given a number. These numbers will be important to finish the rematch as it will be the <u><b>key</b></u> to your success. When you have all three numbers, put them together in order (rematch 1, then 2, then 3) to get the password.
+<p>With "Dr. Pepper's code" and 0 extra points, you have made it to the round of rematches!</p>
 
-<br />
+<p>Here you will replay three puzzles you have already solved, but a bit remixed. Each time you complete one, you will be given a number. Those numbers are the <b>key</b> to your success.</p>
+
+<p>When you have all three numbers, put them together in order (rematch 1, then 2, then 3) to get the password.</p>

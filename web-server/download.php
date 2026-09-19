@@ -37,8 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 <?php require __DIR__ . '/includes/header.php'; ?>
-    <div class="container"><h2>The Pointless Challenge.</h2></div>
     <div class="container">
+        <h2>The Pointless Challenge.</h2>
+        <p>Your puzzle is ready. The download gives you <code>pointless.zip</code>, the first layer of your personal challenge.</p>
         <?php if ($error): ?>
             <div class="warning">
                 <?php echo $error; ?>

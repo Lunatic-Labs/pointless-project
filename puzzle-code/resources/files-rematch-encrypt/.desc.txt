@@ -1,19 +1,7 @@
 <style>
-  .container div {
-    max-width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-    border: 2px solid #ccc;
-    padding: 8px;
-    border-radius: 8px;
-    background-color: #331E54;
-    color: rgb(255, 217, 90);
-  }
-  .container ul {
-    margin-right: 21px;
-    text-align: left;
-    list-style-position: inside;
-  }
+  .callout ul {margin: 0.5em 0; padding-left: 1.5em;}
+  #password {font-family: 'Courier New', Courier, monospace; font-size: 1.4em;}
+  #output {margin-top: 0.75em; font-family: 'Courier New', Courier, monospace;}
   .gradient-text {
     background: linear-gradient(0deg, #0bd45f, #0fbbff, #ffd30d);
     -webkit-background-clip: text;
@@ -30,11 +18,11 @@
 </style>
 
 <p>
-  You seemed to struggle on the first encryption puzzle. Because of this, we have decided to give you a freebie
-  by just giving you the password for no strings attached without encrypting it!
+  You seemed to struggle on the first encryption puzzle. Because of this, we have decided to give you a freebie:
+  the password, with no strings attached and no encryption!
 </p>
 
-<div>
+<div class="callout">
   <b>Unfortunately...</b>
   <ul>
     <li>We <i>accidentally</i> dropped the password into a <b class="gradient-text">goopifying</b> machine.</li>
@@ -44,21 +32,18 @@
 </div>
 
 <p>The result of this series of unfortunate events has turned the password into:</p>
-<h3 id="password"></h3>
+<p id="password"></p>
 
-We don't know how to <span style="color: #ff0000">undo</span> it
-nor do we know how they work. All we have are the magic machines that encrypted the password.
+<p>We don't know how to <span style="color: #ff0000">undo</span> it, nor do we know how the machines work. All we have are the magic machines that encrypted the password.</p>
 
-<p><b>What is the decrypted password? Surely, you are nearing the end....?</b></p>
+<p class="question">What is the decrypted password? Surely, you are nearing the end...?</p>
 
-<br />
-
+<p>Try the machines here:</p>
 <input type="text" id="inputBox">
 <button onclick="printShifted()" class="multi-color-text">Mash</button>
 <button onclick="printFibmix()">️↔️🌀</button>
 <button onclick="printTableChanged()" class="gradient-text">Goopify</button>
-<p></p>
-<div id="output">Machine Output</div>
+<div id="output" class="callout">Machine output</div>
 
 <script>
 

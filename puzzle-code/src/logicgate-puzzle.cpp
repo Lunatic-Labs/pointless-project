@@ -50,7 +50,7 @@ static Svg gates_svg(const std::vector<Gate> &gates)
   for (size_t i = 0; i < gates.size(); i++) {
     image(0, i) = color(gates[i]);
   }
-  return graphics_gen_svg_from_image(image, 60, "#000000");
+  return graphics_gen_svg_from_image(image, 48, "#000000");
 }
 
 // Returns the queue as a row of circles, with the first bit on the right.

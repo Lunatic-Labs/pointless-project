@@ -64,7 +64,7 @@ static void files_test(const fs::path &dir)
   std::ofstream(desc) << "a %DELIM b %DELIM c";
 
   const std::string page = utils_html_printf("Title", desc, {"one", "two"});
-  CHECK(page.find("<h2 style=\"text-align:center\">Title</h2>") != std::string::npos);
+  CHECK(page.find("<h2>Title</h2>") != std::string::npos);
   CHECK(page.find("a one b two c") != std::string::npos);
   CHECK(page.find(utils_file_to_str("../resources/templates/header.txt")) == 0);
   CHECK_THROWS(utils_html_printf("Title", desc, {"one"}));

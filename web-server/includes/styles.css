@@ -33,27 +33,46 @@
 
 .container {
     width: 80%;
+    max-width: 52rem;
     margin: -4px auto 0;
     /* This makes the bison stand on the box. We were cookin bro.*/
-    padding: 20px;
+    padding: 20px 32px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    text-align: center;
+    line-height: 1.45;
 }
 
-.container ul {
-    text-align: center;
-    list-style-position: inside;
+/* The puzzle pages use the same layout; see puzzle-code/resources/templates/header.txt. */
+.container h2 {
+    margin-top: 0.5em;
 }
 
-.container p {
-    max-width: 60%;
-    margin: 10px auto;
+.container + .container {
+    margin-top: 16px;
+}
+
+form label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+form input {
+    display: block;
+    width: 100%;
+    max-width: 22rem;
+    padding: 6px;
+    font-size: 1em;
+}
+
+form button {
+    margin-top: 16px;
+    padding: 8px 16px;
+    font-size: 1em;
+    cursor: pointer;
 }
 
 .warning {
-    display: flex;
-    align-items: center;
     background-color: #ffcdcd;
     border: 1px solid #ffbaba;
     border-left: 5px solid #ff0707;
