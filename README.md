@@ -548,6 +548,8 @@ into an SVG with one square per pixel, each with the class `"<row>.<column>"` so
 The main goals of the webpage are puzzle download, user registration, and user tracking.
 New users register on `index.php`. Registered users can log in (`login.php`) to return to the download page.
 All pages share `includes/header.php`, `includes/footer.php`, and `includes/styles.css`.
+They start their session through `includes/session.php`, which names the cookie `pointless` (HttpOnly, SameSite=Lax)
+so it can't collide with other PHP apps on the same host (see [Deployment](#deployment)).
 
 Players are saved to `data/contact-data.csv` at the repository root (columns `FName,LName,Email`; see `web-server/includes/players.php`).
 It is outside `web-server/`, so the web server can never serve it, and git ignores it.
@@ -690,30 +692,39 @@ Then declare `void fib_puzzle_test();` in `puzzle-code/tests/include/test.h`, ad
 
 ## Deployment
 
-**Not deployed yet.** The site runs only from `php -S` on a developer's
-machine. When it does go live it will share `tools.lipscomb-soc.org` with the
-School of Computing tools site and the edna mailer. That box's arrangement —
-what lives where, and what deploys own which paths — is documented in the
-`dtowell/tools` repo's `readme.md`; read it before putting anything on the
-server.
+**Ready but not live yet.** The site will share `tools.lipscomb-soc.org` with the School of Computing tools site and the
+edna mailer. That box's arrangement (what lives where, and which deploy owns which path) is documented in the
+`dtowell/tools` repo's `readme.md`, along with the one-time server setup; read it before putting anything on the server.
 
-Three constraints that apply there, all of which this repo already satisfies:
+To deploy `origin/main`, or any tag, branch, or sha:
 
-- **The generator is built on the server, not shipped to it.** The CI here
-  runs on `ubuntu-24.04` and the server is 22.04, so a binary built by CI
-  would hit a glibc mismatch. `make production` runs on the server instead.
-- **The player file is runtime state and must live outside the deploy tree.**
-  `data/contact-data.csv` holds real names and emails, it is rewritten while
-  the site runs, and a deploy must never overwrite or expose it.
-  `POINTLESS_PLAYERS_FILE` already makes that a configuration choice.
-- **`puzzle-code/production/` is generated, not published.**
-  `POINTLESS_GENERATOR_DIR` already lets the web server read it from anywhere,
-  so it can live outside the document root.
+```bash
+ssh ubuntu@tools.lipscomb-soc.org bin/deploy pointless
+ssh ubuntu@tools.lipscomb-soc.org bin/deploy pointless <ref>
+ssh ubuntu@tools.lipscomb-soc.org cat /var/www/pointless/REVISION
+```
 
-Deploying should reuse the existing mechanism on that box — `ssh
-ubuntu@tools.lipscomb-soc.org bin/deploy pointless`, which fetches, checks out
-a ref, builds, **runs the tests**, and installs only if they pass — rather
-than inventing a fourth way of getting files onto the server.
+The script (`deploy/pointless.sh` in the tools repo) checks out the ref in the server's clone, runs `make test`,
+`make production`, and the website tests, and installs only if all of them pass. Rollback is deploying an earlier ref.
+On the server:
+
+```
+/var/www/pointless/current -> releases/<time>-<sha>    switched by rename; the previous release is kept
+/var/www/pointless/releases/<time>-<sha>/web/          web-server/ without tests/  (Apache: Alias /pointless)
+/var/www/pointless/releases/<time>-<sha>/production/   the `make production` tree  (POINTLESS_GENERATOR_DIR)
+/var/lib/pointless/contact-data.csv                   players; www-data, 0700      (POINTLESS_PLAYERS_FILE)
+```
+
+What this repo must keep true for that to work:
+
+- **The generator is built on the server, not shipped to it.** The server is Ubuntu 22.04, so CI tests on 22.04 as
+  well as 24.04; a binary built on 24.04 would hit a glibc mismatch there.
+- **The player file is runtime state outside the deploy tree.** It holds real names and emails and is rewritten
+  while the site runs; a deploy never touches it. If Apache's `POINTLESS_PLAYERS_FILE` were missing, players would go
+  into `data/` inside a release and be lost at the next deploy.
+- **Every page link is relative**, because the site is served under `/pointless/`, not at the root.
+- **The tests must pass on a clean checkout**, with nothing but `g++`, `libzip-dev`, and `php-cli`, since they are the
+  deploy's gate.
 
 ## Issues
 
@@ -732,7 +743,7 @@ A backlog of cleanup and improvement tasks is in [ideas/cleanup-tasks.md](ideas/
 - Design Graph Paper Robot Puzzle III.
 - Have an automatic emailer that sends emails to Dr. Towell.
 - Have the tokens work with the website, and update the CSV file (see [ideas/tokens.md](ideas/tokens.md)).
-- Put the site on `tools.lipscomb-soc.org` (see [Deployment](#deployment)).
+- Put the site live on `tools.lipscomb-soc.org` (see [Deployment](#deployment)).
 
 ## Contributors
 

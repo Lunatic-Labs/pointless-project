@@ -6,7 +6,12 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-24.04
+    # 22.04 matches tools.lipscomb-soc.org (g++ 11, PHP 8.1), where the deploy
+    # builds and tests this repo; 24.04 is what developers are likely to have.
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
 

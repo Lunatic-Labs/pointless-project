@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/includes/generate.php';
 
 // Each download runs the puzzle generator, so a session must wait this many seconds between downloads.

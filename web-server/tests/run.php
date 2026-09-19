@@ -40,6 +40,7 @@ $tests = [
 
     'test_index_get',
     'test_index_register',
+    'test_index_session_cookie',
     'test_index_invalid_email',
     'test_index_email_with_apostrophe',
     'test_index_requires_names',

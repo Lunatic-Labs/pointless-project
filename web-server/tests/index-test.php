@@ -25,6 +25,17 @@ function test_index_register(): void
     check($download->contains('Pointless Download'), 'download page has the download button');
 }
 
+function test_index_session_cookie(): void
+{
+    $page = register(new Client(), 'ann@b.com');
+    $cookies = $page->headers('Set-Cookie');
+    check(count($cookies) >= 1 && str_starts_with($cookies[0], 'pointless='), 'session cookie is named pointless, not PHPSESSID');
+    foreach ($cookies as $cookie) {
+        check(stripos($cookie, 'httponly') !== false, "cookie is HttpOnly ($cookie)");
+        check(stripos($cookie, 'samesite=lax') !== false, "cookie is SameSite=Lax ($cookie)");
+    }
+}
+
 function test_index_invalid_email(): void
 {
     $client = new Client();
