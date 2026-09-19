@@ -68,7 +68,8 @@ struct ZipEntry {
 std::vector<ZipEntry> utils_zip_entries(filepath_t dir);
 
 // Writes the zip `out_file_name`, replacing any existing file, holding `entries`.
-// Entries marked `encrypted` are encrypted with AES-256 using `password`. Throws std::runtime_error on failure.
+// Entries marked `encrypted` are encrypted with traditional PKWARE (ZipCrypto) using `password`, which
+// is weak but opens in the zip tools built into Windows and macOS. Throws std::runtime_error on failure.
 void utils_zip_files(filepath_t out_file_name, const std::vector<ZipEntry> &entries, const std::string &password);
 
 // Returns the contents of `filepath`. Throws std::runtime_error if it can't be read.

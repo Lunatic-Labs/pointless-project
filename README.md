@@ -72,7 +72,7 @@ The entire game is `zipfiles/puzzle1.zip`, which contains the nested zipfiles `p
 The other puzzles are also generated outside of `puzzle1.zip` to allow easy testing
 without having to go through the entire zipfile structure.
 
-Each `puzzleN.zip` holds puzzle N's files, unencrypted, and `puzzle{N+1}.zip`, encrypted (AES-256) with puzzle N's password.
+Each `puzzleN.zip` holds puzzle N's files, unencrypted, and `puzzle{N+1}.zip`, encrypted (traditional PKWARE "ZipCrypto", which is weak but opens with the built-in zip tools on Windows and macOS) with puzzle N's password.
 
 ### Repository Layout
 

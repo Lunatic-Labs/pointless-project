@@ -20,8 +20,9 @@ When doing these:
 ## Web server
 
 - [ ] **The download limit is per session.** A client that drops its cookie can start as many generations as it likes. If that becomes a problem, limit by IP or cache each player's zip.
-- [ ] **Investigate the zip-tool problems.** Each zip is AES-256 and encrypts only the nested zip, not the puzzle's own files. This is probably why the site
-  tells players to install 7-Zip, and why the README "Issues" mention unexpected password prompts. Test with the default tools on Windows, macOS, and Linux.
+- [ ] **Investigate the zip-tool problems.** The zips were AES-256, which Windows' built-in zip support can't open; on 2026-09-19 they were switched to
+  traditional PKWARE (ZipCrypto). Each zip still encrypts only the nested zip, not the puzzle's own files, which may explain the unexpected password prompts in the
+  README "Issues". Test with the default tools on Windows, macOS, and Linux, and drop the site's "install 7-Zip" notice (`download.php`) if it is no longer needed.
 
 ## Generator
 

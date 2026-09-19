@@ -170,7 +170,7 @@ void utils_zip_files(filepath_t out_file_name, const std::vector<ZipEntry> &entr
       zip_source_free(source);
       fail("could not add " + entry.name + " to " + out_file_name);
     }
-    if (entry.encrypted && zip_file_set_encryption(archive, index, ZIP_EM_AES_256, password.c_str()) < 0) {
+    if (entry.encrypted && zip_file_set_encryption(archive, index, ZIP_EM_TRAD_PKWARE, password.c_str()) < 0) {
       fail("could not encrypt " + entry.name + " in " + out_file_name);
     }
   }
