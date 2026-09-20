@@ -31,12 +31,57 @@ std::string game_puzzle_name(const Puzzle &puzzle)
 void game_print_passwords(const std::vector<Puzzle> &puzzles)
 {
   for (const Puzzle &puzzle : puzzles) {
-    std::printf("%-15s Password: %s", game_puzzle_name(puzzle).c_str(), puzzle.password.c_str());
+    std::printf("%-15s Token: %-10s Password: %s", game_puzzle_name(puzzle).c_str(), puzzle.token.c_str(),
+                puzzle.password.c_str());
     if (puzzle.extra_info) {
       std::printf("  %s", puzzle.extra_info->c_str());
     }
     std::printf("\n");
   }
+}
+
+// Returns `s` as the inside of a JSON string. Nothing generated today needs escaping, but a
+// future puzzle whose answer holds a quote or a backslash must not produce invalid JSON.
+static std::string json_escape(const std::string &s)
+{
+  std::string out;
+  for (char c : s) {
+    switch (c) {
+      case '"':  out += "\\\""; break;
+      case '\\': out += "\\\\"; break;
+      case '\n': out += "\\n";  break;
+      case '\r': out += "\\r";  break;
+      case '\t': out += "\\t";  break;
+      default:
+        if ((unsigned char)c < 0x20) {
+          char buf[7];
+          std::snprintf(buf, sizeof buf, "\\u%04x", c);
+          out += buf;
+        } else {
+          out += c;
+        }
+    }
+  }
+  return out;
+}
+
+void game_print_json(seed_t seed, const std::vector<Puzzle> &puzzles)
+{
+  // Flat enough to write by hand, so the generator keeps libzip as its only dependency.
+  std::printf("{\"seed\":\"%llu\",\"puzzles\":[", (unsigned long long)seed);
+  for (size_t n = 1; n <= puzzles.size(); n++) {
+    const Puzzle &puzzle = puzzles[n - 1];
+    std::printf("%s{\"n\":%zu,\"name\":\"%s\",\"password\":\"%s\",\"token\":\"%s\",\"extra\":",
+                n == 1 ? "" : ",", n, json_escape(game_puzzle_name(puzzle)).c_str(),
+                json_escape(puzzle.password).c_str(), json_escape(puzzle.token).c_str());
+    if (puzzle.extra_info) {
+      std::printf("\"%s\"", json_escape(*puzzle.extra_info).c_str());
+    } else {
+      std::printf("null");
+    }
+    std::printf("}");
+  }
+  std::printf("]}\n");
 }
 
 void game_write_zipfiles(const std::vector<Puzzle> &puzzles, const std::string &zipdir)

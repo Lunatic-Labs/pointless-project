@@ -2,6 +2,10 @@
 // Helpers for the web-server tests (see run.php).
 // Needs only php-cli: no PHP extensions, no network access beyond localhost.
 
+// How many layers the fake generator's game has. The last is a fin page with no
+// password, so the game has FAKE_PUZZLES - 1 puzzles to solve, as the real one does.
+const FAKE_PUZZLES = 4;
+
 final class TestFailure extends Exception {}
 
 final class TestSkipped extends Exception {}
@@ -41,6 +45,12 @@ function players_path(): string
 function generator_path(): string
 {
     return test_dir() . '/generator';
+}
+
+// The events file pointless_events_file() uses: events.csv next to the players file.
+function events_path(): string
+{
+    return test_dir() . '/data/events.csv';
 }
 
 // The games directory pointless_games_dir() uses: games/ next to the players file.
@@ -94,9 +104,17 @@ function list_tree(string $dir): array
     return $names;
 }
 
+// The token the fake generator puts on puzzle $n of the game for $seed, so tests
+// can submit one without reading the answer key.
+function fake_token(int $n, string $seed): string
+{
+    return "TOKEN$n$seed";
+}
+
 // Creates a fake production tree (src/main and resources/) laid out like
 // `make production`. Like the real one, src/main takes `-s <seed>` and prints
-// "Seed: <seed>" and a password line.
+// "Seed: <seed>" and a password line, or, with `-j`, the answers as one line of
+// JSON: FAKE_PUZZLES layers, the last of them a fin page with no password.
 // $mode selects what else it does:
 //   'ok'      writes zipfiles/puzzle1.zip containing "seed=<seed>"
 //   'fail'    exits with status 1
@@ -116,17 +134,31 @@ function fake_generator(string $mode = 'ok'): void
     $log = var_export(generator_log_path(), true);
     $mode = var_export($mode, true);
     $php = PHP_BINARY;
+    $layers = FAKE_PUZZLES;
     $script = <<<PHP
         #!$php
         <?php
         // Fake puzzle generator written by web-server/tests/lib.php.
+        const FAKE_PUZZLES = $layers;
         file_put_contents($log, json_encode([
             'args' => array_slice(\$argv, 1),
             'cwd' => getcwd(),
             'has_resources' => is_file('../resources/files-test/.desc.txt'),
         ]) . "\\n", FILE_APPEND);
-        \$seed = \$argv[2];
-        echo "Seed: \$seed\nFake       Password: pw\$seed\n";
+        \$args = array_slice(\$argv, 1);
+        \$seed = \$args[array_search('-s', \$args, true) + 1];
+        if (in_array('-j', \$args, true)) {
+            \$puzzles = [];
+            for (\$n = 1; \$n <= FAKE_PUZZLES; \$n++) {
+                \$last = \$n === FAKE_PUZZLES;
+                \$puzzles[] = ['n' => \$n, 'name' => \$last ? 'fin' : "puzzle\$n",
+                              'password' => \$last ? '' : "pw\$n\$seed",
+                              'token' => "TOKEN\$n\$seed", 'extra' => null];
+            }
+            echo json_encode(['seed' => \$seed, 'puzzles' => \$puzzles]), "\\n";
+        } else {
+            echo "Seed: \$seed\nFake       Password: pw\$seed\n";
+        }
         if ($mode === 'fail') {
             fwrite(STDERR, "fake generator failure\\n");
             exit(1);
@@ -319,6 +351,22 @@ function player_rows(): array
     }
     $rows = [];
     $file = fopen(players_path(), 'r');
+    while (($row = fgetcsv($file)) !== false) {
+        $rows[] = $row;
+    }
+    fclose($file);
+    return $rows;
+}
+
+// Rows of the events file, without the header; [] if it doesn't exist.
+function event_rows(): array
+{
+    if (!is_file(events_path())) {
+        return [];
+    }
+    $rows = [];
+    $file = fopen(events_path(), 'r');
+    fgetcsv($file); // Skip the header.
     while (($row = fgetcsv($file)) !== false) {
         $rows[] = $row;
     }

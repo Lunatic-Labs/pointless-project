@@ -54,8 +54,9 @@ Puzzle based_intro_puzzle_create(seed_t seed)
     password += symbols[digit];
   }
 
+  const std::string token = utils_token(utils_derive_seed(seed, "token"));
   std::string html_content = utils_html_printf("Base Intro Puzzle", "../resources/files-based-intro/.desc.txt",
-                                               {create_table(digits, BASE)});
+                                               {create_table(digits, BASE)}, token);
   utils_generate_file("../resources/files-based-intro/instructions.html", html_content);
-  return {"../resources/files-based-intro", html_content, password, {}};
+  return {"../resources/files-based-intro", html_content, password, token, {}};
 }

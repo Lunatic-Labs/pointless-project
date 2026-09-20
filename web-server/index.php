@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/includes/players.php';
+require_once __DIR__ . '/includes/events.php';
 
 $error = "";
 $fname = "";
@@ -23,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         error_log("pointless: could not write " . pointless_players_file());
         $error = "Registration failed. Please try again later.";
     } else {
+        pointless_log_event("register", $email, "$fname $lname", 0);
         session_regenerate_id(true);
         $_SESSION["email"] = $email;
         header("Location: download.php");

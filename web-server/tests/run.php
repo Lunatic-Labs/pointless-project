@@ -18,6 +18,7 @@ ini_set('error_log', test_dir() . '/php-errors.log');
 
 require_once __DIR__ . '/players-test.php';
 require_once __DIR__ . '/generate-test.php';
+require_once __DIR__ . '/events-test.php';
 require_once __DIR__ . '/index-test.php';
 require_once __DIR__ . '/login-test.php';
 require_once __DIR__ . '/download-test.php';
@@ -38,9 +39,20 @@ $tests = [
     'test_generate_generator_fails',
     'test_generate_no_zip',
     'test_generate_player_zip_stored',
+    'test_generate_player_answers',
     'test_generate_player_zip_unregistered',
     'test_generate_player_zip_fails',
     'test_generate_real_generator',
+
+    'test_events_file_from_env',
+    'test_events_normalize_token',
+    'test_events_log_and_level',
+    'test_events_progress',
+    'test_events_submit_token',
+    'test_events_submit_token_case_and_spaces',
+    'test_events_submit_token_rejected',
+    'test_events_level_never_drops',
+    'test_events_submit_before_download',
 
     'test_index_get',
     'test_index_register',
@@ -66,6 +78,10 @@ $tests = [
     'test_download_rate_limited',
     'test_download_generator_missing',
     'test_download_generator_fails',
+    'test_download_shows_progress',
+    'test_download_bad_token',
+    'test_download_token_rate_limited',
+    'test_download_logs_events',
 ];
 
 $filter = $argv[1] ?? '';

@@ -6,7 +6,10 @@
 // resources/, so generations can't interfere with each other.
 //
 // Each player's zip is generated once and kept permanently in the games
-// directory, with an answer key, so every download of it is the same file.
+// directory, with an answer key, so every download of it is the same file. The
+// answer key holds the tokens that game's pages show, which is the only record of
+// them: they must never be recomputed, since rebuilding the generator would then
+// disagree with the pages a player already has (see ideas/tokens.md).
 require_once __DIR__ . '/players.php';
 
 // Directory created by `make production`.
@@ -32,11 +35,32 @@ function pointless_run(array $cmd, string $cwd, ?string &$output = null): int
     return proc_close($proc);
 }
 
-// Directory holding each player's zip (<seed>.zip) and answer key (<seed>.txt):
+// Directory holding each player's zip (<seed>.zip) and answer key (<seed>.json):
 // games/ next to the players file, so it is outside web-server/ and the deploy tree.
 function pointless_games_dir(): string
 {
     return dirname(pointless_players_file()) . '/games';
+}
+
+// Returns the puzzles of $email's stored answer key, each with its n, name,
+// password, and token, or null if they are not registered or have not downloaded
+// their game yet.
+function pointless_player_answers(string $email): ?array
+{
+    $player = pointless_find_player($email);
+    if ($player === null) {
+        return null;
+    }
+    $key = @file_get_contents(pointless_games_dir() . "/$player[3].json");
+    if ($key === false) {
+        return null;
+    }
+    $data = json_decode($key, true);
+    if (!is_array($data) || !isset($data['puzzles']) || !is_array($data['puzzles'])) {
+        error_log('pointless: unreadable answer key for seed ' . $player[3]);
+        return null;
+    }
+    return $data['puzzles'];
 }
 
 // Recursively copies the directory $from to $to (which must not exist).
@@ -151,16 +175,27 @@ function pointless_player_zip(string $email, ?string &$error = null): ?string
     }
 
     $output = '';
-    $zip = pointless_generate_zip(['-s', $seed], $output, $error);
+    // -j: the answers as JSON, so the tokens can be stored without parsing prose.
+    $zip = pointless_generate_zip(['-s', $seed, '-j'], $output, $error);
     if ($zip === null) {
         return null;
     }
     try {
+        $answers = json_decode($output, true);
+        if (!is_array($answers) || !isset($answers['puzzles'])) {
+            error_log("pointless: generator did not print JSON: $output");
+            $error = "Puzzle generation failed. Please try again later.";
+            return null;
+        }
+        // Pretty-printed, because this is also what tech support reads. The player's
+        // details go first; `+` keeps them and adds the generator's "puzzles".
+        $key = json_encode(['seed' => $seed, 'fname' => $fname, 'lname' => $lname, 'email' => $email,
+                            'generated' => date('Y-m-d H:i:s T')] + $answers,
+                           JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         // The answer key is stored first, so a stored zip always has one.
-        $key = "Name: $fname $lname\nEmail: $email\nGenerated: " . date('Y-m-d H:i:s T') . "\n$output";
         if ((!is_dir($games) && !@mkdir($games, 0700, true) && !is_dir($games))
-            || file_put_contents("$zip.txt", $key) === false
-            || !pointless_store_file("$zip.txt", "$games/$seed.txt")
+            || file_put_contents("$zip.json", $key) === false
+            || !pointless_store_file("$zip.json", "$games/$seed.json")
             || !pointless_store_file($zip, "$games/$seed.zip")) {
             error_log("pointless: could not store the game in $games");
             $error = "Puzzle generation failed. Please try again later.";
@@ -169,6 +204,6 @@ function pointless_player_zip(string $email, ?string &$error = null): ?string
         return "$games/$seed.zip";
     } finally {
         unlink($zip);
-        @unlink("$zip.txt");
+        @unlink("$zip.json");
     }
 }

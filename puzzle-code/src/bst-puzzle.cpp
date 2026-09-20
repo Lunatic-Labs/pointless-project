@@ -157,7 +157,8 @@ Puzzle bst_puzzle_create(seed_t seed)
   utils_remove_all(tree_dir); // Signs from an earlier run would otherwise be left in the tree.
   build(tree, tree_dir, DEPTH, true);
 
-  std::string html_body = utils_html_printf("BST Puzzle", "../resources/files-bst/.desc.txt", {str(tree.x)});
+  const std::string token = utils_token(utils_derive_seed(seed, "token"));
+  std::string html_body = utils_html_printf("BST Puzzle", "../resources/files-bst/.desc.txt", {str(tree.x)}, token);
   utils_generate_file("../resources/files-bst/instructions.html", html_body);
-  return {"../resources/files-bst", html_body, str(tree.password), "Path: " + tree.path};
+  return {"../resources/files-bst", html_body, str(tree.password), token, "Path: " + tree.path};
 }

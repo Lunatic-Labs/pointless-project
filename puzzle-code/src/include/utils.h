@@ -49,6 +49,17 @@ seed_t utils_derive_seed(seed_t seed, const std::string &name);
 // Returns an unpredictable seed.
 seed_t utils_roll_seed(void);
 
+// The characters a token is made of, and how many of them a token has.
+// The alphabet leaves out every pair that is easy to misread in a sans-serif font
+// (0/O/Q, 1/I, 2/Z, 5/S, 6/G, 8/B, U/V), so a player can copy a token off the page by eye.
+extern const std::string TOKEN_ALPHABET;
+constexpr int TOKEN_LENGTH = 8;
+
+// Returns a puzzle page's token: TOKEN_LENGTH characters from TOKEN_ALPHABET, rolled from `seed`.
+// The seed is taken by value, so a puzzle can call utils_token(utils_derive_seed(seed, "token"))
+// without disturbing its own rolls.
+std::string utils_token(seed_t seed);
+
 // Returns the paths of all files under `path`, recursively, sorted.
 // Skips files and directories whose names start with `.`.
 strvec_t utils_walkdir(filepath_t path);
@@ -73,9 +84,10 @@ std::string utils_file_to_str(filepath_t filepath);
 
 // Returns a puzzle page: resources/templates/header.txt, then `extra_head` (for example a <style>),
 // `title` in an <h2>, the description in `desc_filepath` with each %DELIM replaced by the next of
-// `args` (in a <section>), and resources/templates/footer.txt.
+// `args` (in a <section>), `token` in a block of its own (left out when it is empty), and
+// resources/templates/footer.txt.
 // Throws std::runtime_error unless the description has exactly args.size() %DELIMs.
 std::string utils_html_printf(const std::string &title, filepath_t desc_filepath, const strvec_t &args,
-                              const std::string &extra_head = "");
+                              const std::string &token = "", const std::string &extra_head = "");
 
 #endif // UTILS_H

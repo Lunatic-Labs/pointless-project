@@ -45,6 +45,14 @@ void test_puzzle(Puzzle (*create)(seed_t), const std::vector<Expected> &expected
     const std::string seed = "seed " + std::to_string(e.seed);
 
     test_check_eq(puzzle.password, e.password, "password for " + seed, file, line);
+    // Puzzles that are a layer of their own show a token; the rematch sub-puzzles don't.
+    if (!puzzle.token.empty()) {
+      test_check((int)puzzle.token.size() == TOKEN_LENGTH &&
+                 puzzle.token.find_first_not_of(TOKEN_ALPHABET) == std::string::npos,
+                 "token for " + seed + " (\"" + puzzle.token + "\") is a token", file, line);
+      test_check(html.find("<code>" + puzzle.token + "</code>") != std::string::npos,
+                 "page for " + seed + " shows the token " + puzzle.token, file, line);
+    }
     if (e.extra_info) {
       test_check_eq(puzzle.extra_info.value_or("(none)"), *e.extra_info, "extra_info for " + seed, file, line);
     }

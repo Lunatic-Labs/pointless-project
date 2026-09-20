@@ -21,8 +21,9 @@ Puzzle math_puzzle_create(seed_t seed)
   int b = utils_rng_roll(MATH_MIN2, MATH_MAX2, seed);
   int s = a+b;
 
+  const std::string token = utils_token(utils_derive_seed(seed, "token"));
   std::string html_content = utils_html_printf("Hello Pointless", "../resources/files-math/.desc.txt",
-                                                {std::to_string(a), std::to_string(b)});
+                                                {std::to_string(a), std::to_string(b)}, token);
   utils_generate_file("../resources/files-math/instructions.html", html_content);
-  return {"../resources/files-math", html_content, std::to_string(s), {}};
+  return {"../resources/files-math", html_content, std::to_string(s), token, {}};
 }

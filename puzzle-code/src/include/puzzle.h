@@ -17,6 +17,10 @@ struct Puzzle {
   // The answer, which unlocks the next puzzle's zip.
   std::string password;
 
+  // The token shown on the page, which the player submits on the website to record their progress.
+  // Empty for a puzzle whose page is not a layer of its own (the rematch sub-puzzles).
+  std::string token;
+
   // Printed after the password for debugging; never shown to players.
   std::optional<std::string> extra_info;
 };

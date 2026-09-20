@@ -120,7 +120,8 @@ Puzzle encrypt_puzzle_create(seed_t seed)
     ops.erase(ops.begin() + i);
   }
 
-  std::string html_body = utils_html_printf("Encrypt", "../resources/files-encrypt/.desc.txt", {word, steps});
+  const std::string token = utils_token(utils_derive_seed(seed, "token"));
+  std::string html_body = utils_html_printf("Encrypt", "../resources/files-encrypt/.desc.txt", {word, steps}, token);
   utils_generate_file("../resources/files-encrypt/instructions.html", html_body);
-  return {"../resources/files-encrypt", html_body, password, {}};
+  return {"../resources/files-encrypt", html_body, password, token, {}};
 }

@@ -99,5 +99,5 @@ Puzzle rematch_maze_puzzle_create(seed_t seed)
                                             {svgs[0], svgs[1], svgs[2], arrays[0], arrays[1], arrays[2],
                                              std::to_string(password ^ password_key), std::to_string(password_key)});
   utils_generate_file("../resources/files-rematch-maze/instructions.html", html_body);
-  return {"../resources/files-rematch-maze", html_body, std::to_string(password), {}};
+  return {"../resources/files-rematch-maze", html_body, std::to_string(password), "", {}};
 }

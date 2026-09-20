@@ -48,7 +48,8 @@ Puzzle rematch_puzzle_create(seed_t seed)
   }
   extra_info += ")";
 
-  std::string html = utils_html_printf("Rematch Instructions", REMATCH_DIR "/.desc.txt", {});
+  const std::string token = utils_token(utils_derive_seed(seed, "token"));
+  std::string html = utils_html_printf("Rematch Instructions", REMATCH_DIR "/.desc.txt", {}, token);
   utils_generate_file(REMATCH_DIR "/instructions.html", html);
-  return {REMATCH_DIR, html, password, extra_info};
+  return {REMATCH_DIR, html, password, token, extra_info};
 }

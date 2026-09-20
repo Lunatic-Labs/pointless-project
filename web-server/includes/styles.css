@@ -83,6 +83,22 @@ form button {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* Good news, next to .warning: a token accepted, progress recorded. */
+.notice {
+    background-color: #d8f3d8;
+    border: 1px solid #b6e3b6;
+    border-left: 5px solid #1e8a1e;
+    border-radius: 4px;
+    color: #14561a;
+    padding: 12px 16px;
+    margin: 16px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.progress {
+    font-size: 1.1em;
+}
+
 .footer {
     text-align: center;
     margin-top: 34.5px;

@@ -25,6 +25,7 @@ void seeds_test()
 
   std::map<std::string, std::set<std::string>> answers;
   std::set<std::string> games;
+  std::set<std::string> tokens;
   int empty = 0;
   for (size_t i = 0; i < PLAYERS; i++) {
     // Stands in for the random seed the website gives each player at registration.
@@ -37,12 +38,16 @@ void seeds_test()
                    " (got \"" + puzzle.password + "\")", __FILE__, __LINE__);
       }
       answers[name].insert(puzzle.password);
+      tokens.insert(puzzle.token);
       game += puzzle.password + "|";
     }
     games.insert(game);
   }
 
   test_check(games.size() == PLAYERS, "every player gets a different game", __FILE__, __LINE__);
+  // One token per layer, all different: a repeat would credit a player for a puzzle they didn't reach.
+  test_check(tokens.size() == PLAYERS * 11, "no token is repeated, within a game or between players (got " +
+             std::to_string(tokens.size()) + ")", __FILE__, __LINE__);
   for (const auto &[name, min] : min_different) {
     const size_t different = answers[name].size();
     test_check(different >= min, name + " has " + std::to_string(different) + " different answers among " +

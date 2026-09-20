@@ -7,17 +7,20 @@
 
 uint32_t FLAGS = 0;
 
-static const char *USAGE = "usage: ./main [-a] [-s <seed>]";
+static const char *USAGE = "usage: ./main [-a] [-j] [-s <seed>]";
 
 int main(int argc, char **argv)
 {
   seed_t seed = 0;
   bool seed_given = false;
+  bool json = false; // -j: print the answers as JSON instead of as lines for a person to read.
 
   for (int i = 1; i < argc; ++i) {
     const std::string arg = argv[i];
     if (arg == "-a") {
       FLAGS |= ANS_ONLY;
+    } else if (arg == "-j") {
+      json = true;
     } else if (arg == "-s" && i + 1 < argc) {
       const std::string value = argv[++i];
       seed_given = true;
@@ -40,12 +43,19 @@ int main(int argc, char **argv)
   if (!seed_given) {
     seed = utils_roll_seed();
   }
-  // Always printed, so a run with a random seed can be repeated (and the website can parse it).
-  std::cout << "Seed: " << seed << std::endl;
+  // Always printed, so a run with a random seed can be repeated. Under -j the seed is a field of
+  // the JSON object instead, so that the whole of stdout parses as JSON.
+  if (!json) {
+    std::cout << "Seed: " << seed << std::endl;
+  }
 
   try {
     std::vector<Puzzle> puzzles = game_create_puzzles(seed);
-    game_print_passwords(puzzles);
+    if (json) {
+      game_print_json(seed, puzzles);
+    } else {
+      game_print_passwords(puzzles);
+    }
     if (!(FLAGS & ANS_ONLY)) {
       game_write_zipfiles(puzzles, "zipfiles");
     }

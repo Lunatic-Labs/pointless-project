@@ -2,6 +2,7 @@
 #include <climits>
 #include <filesystem>
 #include <fstream>
+#include <set>
 #include <unistd.h>
 
 #include "./include/test.h"
@@ -49,6 +50,30 @@ static void rng_test()
   CHECK(utils_derive_seed(1, "math") == utils_derive_seed(1, "math"));
 }
 
+static void token_test()
+{
+  // Pinned: a player's tokens are frozen in their stored game, so changing these numbers makes
+  // the tokens on already generated pages disagree with the ones a new game would show.
+  CHECK_EQ(utils_token(1), "M4AKKRPE");
+  CHECK_EQ(utils_token(2), "JF979W39");
+  CHECK_EQ(utils_token(1), "M4AKKRPE");
+
+  // Only characters that can't be mistaken for each other: no 0/O/Q, 1/I, 2/Z, 5/S, 6/G, 8/B, or U.
+  CHECK(TOKEN_ALPHABET.find_first_of("01256"
+                                     "BGIOQSUZ") == std::string::npos);
+
+  std::set<std::string> tokens;
+  bool right_shape = true;
+  for (int i = 0; i < 1000; i++) {
+    const std::string token = utils_token(utils_derive_seed(i, "token"));
+    right_shape = right_shape && (int)token.size() == TOKEN_LENGTH
+                  && token.find_first_not_of(TOKEN_ALPHABET) == std::string::npos;
+    tokens.insert(token);
+  }
+  CHECK(right_shape);
+  CHECK(tokens.size() == 1000);
+}
+
 static void files_test(const fs::path &dir)
 {
   const std::string desc = (dir / "desc.txt").string();
@@ -58,6 +83,12 @@ static void files_test(const fs::path &dir)
   CHECK(page.find("<h2>Title</h2>") != std::string::npos);
   CHECK(page.find("a one b two c") != std::string::npos);
   CHECK(page.find(utils_file_to_str("../resources/templates/header.txt")) == 0);
+
+  // The token block is added only when there is a token, and goes after the description.
+  CHECK(page.find("class=\"token\"") == std::string::npos);
+  const std::string with_token = utils_html_printf("Title", desc, {"one", "two"}, "ACDEFHJK");
+  CHECK(with_token.find("<code>ACDEFHJK</code>") != std::string::npos);
+  CHECK(with_token.find("class=\"token\"") > with_token.find("a one b two c"));
   CHECK_THROWS(utils_html_printf("Title", desc, {"one"}));
   CHECK_THROWS(utils_html_printf("Title", desc, {"one", "two", "three"}));
   CHECK_THROWS(utils_file_to_str((dir / "missing.txt").string()));
@@ -81,6 +112,7 @@ static void files_test(const fs::path &dir)
 void utils_test()
 {
   rng_test();
+  token_test();
 
   const fs::path dir = fs::temp_directory_path() / ("pointless-utils-test-" + std::to_string(getpid()));
   fs::create_directories(dir);

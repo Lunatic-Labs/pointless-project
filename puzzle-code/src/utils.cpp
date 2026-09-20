@@ -75,6 +75,17 @@ seed_t utils_derive_seed(seed_t seed, const std::string &name)
   return seed;
 }
 
+const std::string TOKEN_ALPHABET = "ACDEFHJKLMNPRTVWXY3479";
+
+std::string utils_token(seed_t seed)
+{
+  std::string token;
+  for (int i = 0; i < TOKEN_LENGTH; i++) {
+    token += TOKEN_ALPHABET[utils_rng_roll(0, (int)TOKEN_ALPHABET.size() - 1, seed)];
+  }
+  return token;
+}
+
 seed_t utils_roll_seed(void)
 {
   std::random_device device;
@@ -172,7 +183,7 @@ std::string utils_file_to_str(filepath_t filepath)
 }
 
 std::string utils_html_printf(const std::string &title, filepath_t desc_filepath, const strvec_t &args,
-                              const std::string &extra_head)
+                              const std::string &token, const std::string &extra_head)
 {
   const std::string delim = "%DELIM";
   const std::string desc = utils_file_to_str(desc_filepath);
@@ -193,6 +204,14 @@ std::string utils_html_printf(const std::string &title, filepath_t desc_filepath
     throw std::runtime_error(desc_filepath + " has " + std::to_string(used) + " %DELIMs, but " + arg_count + " were given");
   }
 
+  // The token block is the same on every page, so it is built here rather than in each .desc.txt.
+  // Styled by `.container .token` in resources/templates/header.txt.
+  const std::string token_block = token.empty() ? "" :
+    "\n<div class=\"token\">\n"
+    "<p>Your token for this puzzle: <code>" + token + "</code></p>\n"
+    "<p>Type it into the Pointless website to record how far you have come.</p>\n"
+    "</div>";
+
   // The body is wrapped in a <section>: not a <p>, because descriptions contain block elements,
   // and not a <div>, because several descriptions style `.container div`.
   return utils_file_to_str("../resources/templates/header.txt")
@@ -201,5 +220,6 @@ std::string utils_html_printf(const std::string &title, filepath_t desc_filepath
     + "<section>\n"
     + body
     + "\n</section>"
+    + token_block
     + utils_file_to_str("../resources/templates/footer.txt");
 }

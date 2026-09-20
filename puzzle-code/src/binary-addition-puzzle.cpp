@@ -62,7 +62,8 @@ Puzzle binary_addition_puzzle_create(seed_t seed)
   }
 
   std::string svg_html = graphics_gen_svg_from_image(graph, 20, {}).build(true);
-  std::string html_body = utils_html_printf("Graph Paper Robot", "../resources/files-binary-addition/.desc.txt", {svg_html});
+  const std::string token = utils_token(utils_derive_seed(seed, "token"));
+  std::string html_body = utils_html_printf("Graph Paper Robot", "../resources/files-binary-addition/.desc.txt", {svg_html}, token);
   utils_generate_file("../resources/files-binary-addition/instructions.html", html_body);
-  return {"../resources/files-binary-addition", html_body, sum, {}};
+  return {"../resources/files-binary-addition", html_body, sum, token, {}};
 }

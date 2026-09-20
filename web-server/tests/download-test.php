@@ -95,3 +95,57 @@ function test_download_generator_fails(): void
     check($page->contains('Puzzle generation failed'), 'shows the generation failed error');
     check(list_tree(tmp_path()) === [], 'nothing is left in TMPDIR');
 }
+
+function test_download_shows_progress(): void
+{
+    $client = new Client();
+    register($client, 'ann@b.com');
+    $page = $client->get('download.php');
+    check($page->contains('Puzzles solved:'), 'the download page shows the level');
+    check($page->contains('<b>0</b>'), 'a new player has solved nothing, and no total until they download');
+
+    $client->post('download.php');
+    $seed = player_seed('ann@b.com');
+    $page = $client->post('download.php', ['token' => fake_token(3, $seed)]);
+    check($page->contains('Token accepted'), 'a token is accepted');
+    check($page->contains('<b>2 of ' . (FAKE_PUZZLES - 1) . '</b>'), "the page shows the new level out of the game's puzzles");
+    check($page->header('Content-Type') !== 'application/zip', 'submitting a token does not download the zip');
+    check(count(generator_runs()) === 1, 'and does not run the generator again');
+}
+
+function test_download_bad_token(): void
+{
+    $client = new Client();
+    register($client, 'ann@b.com');
+    $client->post('download.php');
+    $page = $client->post('download.php', ['token' => 'NOTATOKEN']);
+    check($page->contains('not one of your tokens'), 'a wrong token is refused');
+    check($page->contains('<b>0 of ' . (FAKE_PUZZLES - 1) . '</b>'), 'the level does not move');
+    $rows = event_rows();
+    check($rows[count($rows) - 1][1] === 'token-bad', 'the attempt is logged');
+}
+
+function test_download_token_rate_limited(): void
+{
+    $client = new Client();
+    register($client, 'ann@b.com');
+    $client->post('download.php');
+    $seed = player_seed('ann@b.com');
+    check($client->post('download.php', ['token' => fake_token(2, $seed)])->contains('Token accepted'), 'the first token works');
+    $page = $client->post('download.php', ['token' => fake_token(3, $seed)]);
+    check($page->contains('Please wait'), 'an immediate second token is refused');
+    check($page->contains('<b>1 of ' . (FAKE_PUZZLES - 1) . '</b>'), 'the refused token does not count');
+    check(count(event_rows()) === 3, 'and is not logged: register, download, and the accepted token only');
+}
+
+function test_download_logs_events(): void
+{
+    $client = new Client();
+    register($client, 'ann@b.com');
+    $client->post('download.php');
+    $rows = event_rows();
+    check(count($rows) === 2, 'registering and downloading are both logged (got ' . count($rows) . ')');
+    check(array_slice($rows[0], 1, 3) === ['register', 'ann@b.com', 'Test Player'], 'registration is logged with the name');
+    check(array_slice($rows[1], 1, 3) === ['download', 'ann@b.com', player_seed('ann@b.com') . '.zip'],
+          'the download is logged with the file served');
+}

@@ -77,7 +77,8 @@ Puzzle maze_puzzle_create(seed_t seed)
   maze(0, MAZE_SIZE - 1) = MAZE_END;
 
   std::string svg_html = graphics_gen_svg_from_image(maze, 20, {}).build(false);
-  std::string html_body = utils_html_printf("Maze Puzzle", "../resources/files-maze/.desc.txt", {svg_html});
+  const std::string token = utils_token(utils_derive_seed(seed, "token"));
+  std::string html_body = utils_html_printf("Maze Puzzle", "../resources/files-maze/.desc.txt", {svg_html}, token);
   utils_generate_file("../resources/files-maze/instructions.html", html_body);
-  return {"../resources/files-maze", html_body, compress_path(path), {}};
+  return {"../resources/files-maze", html_body, compress_path(path), token, {}};
 }

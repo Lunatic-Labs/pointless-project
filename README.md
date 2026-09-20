@@ -63,8 +63,11 @@ because all resource paths are relative to it, e.g. `../resources/files-math/.de
 `./main` accepts the following flags:
 - `-s <seed>`: use the given seed (any number) instead of a random one (the website does this with each player's stored seed)
 
-The first line of output is always `Seed: <seed>`, so a run with a random seed can be repeated; the passwords follow.
+The first line of output is always `Seed: <seed>`, so a run with a random seed can be repeated; the tokens and passwords follow.
 - `-a`: only print the answers (including the rematch puzzles' passwords); do not generate any files
+- `-j`: print the answers as one line of JSON instead, and no `Seed:` line, so that the whole of stdout parses:
+  `{"seed":"...","puzzles":[{"n":1,"name":"math","password":"99","token":"NLYVLFHF","extra":null},...]}`.
+  The website runs the generator this way and keeps the result as the player's answer key (see [Description](#description)).
 
 ### Structure of Output
 
@@ -74,6 +77,21 @@ The other puzzles are also generated outside of `puzzle1.zip` to allow easy test
 without having to go through the entire zipfile structure.
 
 Each `puzzleN.zip` holds puzzle N's files, unencrypted, and `puzzle{N+1}.zip`, encrypted (traditional PKWARE "ZipCrypto", which is weak but opens with the built-in zip tools on Windows and macOS) with puzzle N's password.
+
+### Tokens
+
+Every puzzle page ends with a **token**: eight characters that the player types into the website to record how far
+they have come (see [Description](#description)). `utils_token()` rolls it from a seed derived with the name
+`"token"`, so it costs the puzzle no random numbers and changes no password.
+
+A token is printed plainly on the page, and does not need hiding. Puzzle N's page is inside `puzzleN.zip`, which only
+puzzle N-1's answer opens, so having token N *is* the proof that puzzles 1 through N-1 were solved. Two consequences:
+token 1 proves nothing (it ships unencrypted in the download), and the token on the final `fin` page is the proof
+that the whole game was finished.
+
+The token alphabet is `ACDEFHJKLMNPRTVWXY3479`: uppercase letters and digits with every easily misread pair left out
+(no `0`/`O`/`Q`, `1`/`I`, `2`/`Z`, `5`/`S`, `6`/`G`, `8`/`B`, or `U`), because players copy tokens off the page by eye.
+Eight characters from 22 is about 35 bits, far beyond guessing through a throttled web form.
 
 ### Repository Layout
 
@@ -141,7 +159,7 @@ moves the dark-mode button, and `svg {border: ...}` draws a box around the bison
 
 In short, a puzzle is created like this:
 1. `game_create_puzzles()` in `src/game.cpp` calls `<name>_puzzle_create(seed)` with a seed derived from the player's seed and the puzzle's name.
-2. The puzzle rolls random values with `utils_rng_roll()`, works out the password, and builds its page with `utils_html_printf()`.
+2. The puzzle rolls random values with `utils_rng_roll()`, works out the password, rolls its token with `utils_token()`, and builds its page with `utils_html_printf()`.
 3. It writes `instructions.html` into its resource directory and returns a `Puzzle`.
 4. `game_write_zipfiles()` zips every resource directory, innermost puzzle first.
 
@@ -191,6 +209,7 @@ struct Puzzle {
   std::string contents_fp;               // The resource directory, "../resources/files-<name>"
   std::string contents_html;             // The puzzle's instructions.html
   std::string password;                  // The answer, which unlocks the next puzzle's zip
+  std::string token;                     // The token shown on the page (see Tokens)
   std::optional<std::string> extra_info; // Printed after the password for debugging; never shown to players
 };
 ```
@@ -212,16 +231,23 @@ Puzzle fib_puzzle_create(seed_t seed)
   // Get a random number from 3 to 10.
   int n = utils_rng_roll(3, 10, seed);
 
+  // Roll the page's token. utils_derive_seed() takes the seed by value, so this costs
+  // the puzzle no random numbers of its own.
+  const std::string token = utils_token(utils_derive_seed(seed, "token"));
+
   // Generate the HTML content to be displayed to the user.
   std::string html_content = utils_html_printf("Fibonacci Sequence", "../resources/files-fib/.desc.txt",
-                                               {std::to_string(n)});
+                                               {std::to_string(n)}, token);
 
   // Create the instructions.html.
   utils_generate_file("../resources/files-fib/instructions.html", html_content);
 
-  return {"../resources/files-fib", html_content, std::to_string(fib(n)), {}};
+  return {"../resources/files-fib", html_content, std::to_string(fib(n)), token, {}};
 }
 ```
+
+Every puzzle that is a layer of its own shows a token; the three rematch sub-puzzles share the rematch layer, so
+they pass `""` instead and `utils_html_printf()` leaves the block off their pages.
 
 Keep any helper functions `static`, and get every random value from `utils_rng_roll()`, `utils_chance()`, or `utils_shuffle()`
 (not `rand()` or `<random>`), so that every platform generates the same puzzles.
@@ -553,7 +579,10 @@ The utilities are declared, with comments, in `puzzle-code/src/include/utils.h`.
   **NOTE**: The seed is modified by every call, so adding, removing, or reordering calls
   changes every later value (and the expected passwords in the automated tests).
 - `utils_derive_seed(seed, name)`: a separate seed for each puzzle, so puzzles don't share random numbers.
-- `utils_html_printf(title, desc_filepath, args, extra_head)`: builds a puzzle page, replacing each `%DELIM` with the next argument.
+- `utils_token(seed)`: the token for a puzzle page (see [Tokens](#tokens)). It takes the seed by value, so
+  `utils_token(utils_derive_seed(seed, "token"))` leaves the puzzle's own rolls alone.
+- `utils_html_printf(title, desc_filepath, args, token, extra_head)`: builds a puzzle page, replacing each `%DELIM` with
+  the next argument and adding the token block unless `token` is empty.
 - `utils_generate_file`, `utils_mkdir`, `utils_remove_all`: write files; they do nothing when the `ANS_ONLY` flag (`./main -a`) is set.
 - `utils_walkdir`, `utils_zip_entries`, `utils_zip_files`: list a puzzle's files and zip them.
 
@@ -571,7 +600,8 @@ into an SVG with one square per pixel, each with the class `"<row>.<column>"` so
 ### Description
 
 The main goals of the webpage are puzzle download, user registration, and user tracking.
-New users register on `index.php`. Registered users can log in (`login.php`) to return to the download page.
+New users register on `index.php`. Registered users can log in (`login.php`) to return to the download page,
+where they can also submit tokens and see how far they have come (see [Progress and the event log](#progress-and-the-event-log)).
 All pages share `includes/header.php`, `includes/footer.php`, and `includes/styles.css`.
 They start their session through `includes/session.php`, which names the cookie `pointless` (HttpOnly, SameSite=Lax)
 so it can't collide with other PHP apps on the same host (see [Deployment](#deployment)).
@@ -589,19 +619,46 @@ so a spreadsheet opening the file shows it as text instead of running it as a fo
   acceptable: the puzzle isn't secret, and the site stores nothing else about the player.
 - **No CSRF tokens.** The forms have none. The worst a forged form can do is log someone into another player's download page,
   which the first decision already allows.
+- **Levels are not worth cheating for.** Because logging in needs only an email, anyone who knows a player's email can submit
+  on their behalf — though they would still need that player's own seed-specific tokens. **If levels ever carry prizes,
+  revisit the login decision first.**
 
 The user downloads the puzzle via PHP and plays offline. Each player's zip is generated once, on their first download,
 and kept permanently, so downloading again gives exactly the same file (see `pointless_player_zip()` in `web-server/includes/generate.php`).
 To generate it, the site copies `puzzle-code/production/resources/` into a new temporary directory, runs the production generator there
-with `-s <seed>`, and deletes the temporary directory. It stores the zip in `data/games/` (the `games/` directory next to the players file)
-as `<seed>.zip`, next to an answer key, `<seed>.txt`: the player's name and email, the date, and the generator's output (the seed and every password).
-For tech support, find the player's seed in the players file and open `games/<seed>.txt`.
+with `-s <seed> -j`, and deletes the temporary directory. It stores the zip in `data/games/` (the `games/` directory next to the players file)
+as `<seed>.zip`, next to an answer key, `<seed>.json`: the player's name, email, and seed, the date, and every puzzle's password and token.
+It is pretty-printed, because tech support reads it; find the player's seed in the players file and open `games/<seed>.json`.
 Because the stored zips are kept, rebuilding the generator (`make production`) changes only the games of players who haven't downloaded yet.
-To give a player a new game built from the same seed, delete their `<seed>.zip` and `<seed>.txt`.
+To give a player a new game built from the same seed, delete their `<seed>.zip` and `<seed>.json`.
 The web server never runs `make` and never writes into `puzzle-code/`, and simultaneous downloads don't interfere with each other.
 Each session can download at most once every 10 seconds (`POINTLESS_DOWNLOAD_INTERVAL`).
 
-Tracking progress by having users submit hidden tokens is planned but not implemented (see [ideas/tokens.md](ideas/tokens.md)).
+**NOTE**: After adding tokens, a `puzzle-code/production/` tree built from older code no longer understands `-j`, and every
+download fails. `make production` fixes it; `test_generate_real_generator` in the website tests catches it.
+
+#### Progress and the event log
+
+`download.php` also takes a player's [tokens](#tokens) and shows how far they have come
+(`web-server/includes/events.php`). A submission is compared against the tokens in that player's stored `<seed>.json`,
+which is the only record of them: **they are never recomputed.** A stored game keeps the tokens its pages were generated
+with, so recomputing them after any change to the generator would disagree with the zip the player already has, and every
+submission would start failing. Comparison ignores case, spaces, and hyphens.
+
+A player's **level** is the number of puzzles they have solved. Token N is inside the zip that puzzle N-1's answer opens,
+so accepting token N sets the level to N-1 (and the level never goes down). Token 1 ships in the download and leaves the
+level at 0; the token on the final `fin` page means the whole game was finished.
+
+Events are appended to `data/events.csv` (next to the players file; `POINTLESS_EVENTS_FILE` moves it), with columns
+`Time,Event,Email,Detail,Level`. `Event` is `register`, `download`, `token-ok`, or `token-bad`, and `Level` is the
+player's level *after* the event, so the newest line for an email gives their level directly while the lines underneath
+still reconstruct it. Nothing ever rewrites a line: the file is append-only, like the players file. That is also why
+tokens are not columns in `data/contact-data.csv` — they are created at first download, not at registration, so storing
+them there would mean updating a row after the fact, and would tie the roster's shape to the puzzle count.
+
+Rejected tokens are logged too: they are what a brute-force attempt looks like, and both kinds are participation data.
+A session may submit at most one token every 5 seconds (`POINTLESS_TOKEN_INTERVAL`), which is a different job from the
+download throttle: that one protects the generator from repeated runs, this one protects the record.
 
 ### How to Start
 
@@ -652,16 +709,19 @@ and keeps the temporary directory (including `server.log` and `php-errors.log`);
 | `lib.php` | Helpers: `check()`, the test server, `Client` (a browser that keeps the session cookie), the fake generator |
 | `players-test.php` | `includes/players.php`, called directly |
 | `generate-test.php` | `includes/generate.php`, called directly, using the fake generator; `test_generate_real_generator` runs the real one |
+| `events-test.php` | `includes/events.php`, called directly: the event log, levels, and token submission |
 | `index-test.php`, `login-test.php`, `download-test.php` | The pages, over HTTP |
 
 The fake generator is a small script written by `fake_generator($mode)`. It records its arguments and working directory,
-prints `Seed: <seed>` and a password line like the real one,
+prints `Seed: <seed>` and a password line like the real one (or, with `-j`, a JSON game of `FAKE_PUZZLES` layers whose
+tokens are `fake_token($n, $seed)`),
 then (in mode `ok`) writes a `puzzle1.zip` containing `seed=<seed>`, so tests can check which player's zip was served.
 Other modes make it fail, write no zip, or be missing.
 
 `test_generate_real_generator` runs `puzzle-code/production/src/main` (or the tree named by `POINTLESS_TEST_GENERATOR_DIR`)
-and checks that the result is a zip containing `instructions.html` and `puzzle2.zip`. It is skipped if there is no `src/main`,
-and fails if the tree exists but is broken, since downloads would fail too.
+and checks that the result is a zip containing `instructions.html` and `puzzle2.zip`, and that `-j` prints JSON with a
+different token for every puzzle. It is skipped if there is no `src/main`,
+and fails if the tree exists but is broken or stale, since downloads would fail too.
 
 To add a test, write a `test_<page>_<feature>()` function in the matching `*-test.php` file using `check($condition, 'what should be true')`,
 and add its name to the `$tests` list in `run.php`. (Use `check()`, not `assert()`: PHP's `assert()` is disabled by default in `php-cli`.)
@@ -799,7 +859,9 @@ From a review of the puzzle pages on 2026-09-19 (the wording fixes are in
 
 - Design Graph Paper Robot Puzzle III.
 - Have an automatic emailer that sends emails to Dr. Towell.
-- Have the tokens work with the website, and update the CSV file (see [ideas/tokens.md](ideas/tokens.md)).
+- Recognize players at milestones with more than a number on the download page — an emailer, say. Nothing sends mail today.
+- Report participation: join the roster to each player's level from `data/events.csv` (the log is designed for it;
+  the report is not written). Formerly GitHub issue #3.
 
 ## Contributors
 

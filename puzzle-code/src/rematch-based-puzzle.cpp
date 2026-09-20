@@ -53,5 +53,5 @@ Puzzle rematch_based_puzzle_create(seed_t seed)
 
   std::string html_content = utils_html_printf("Base Puzzle Rematch", "../resources/files-rematch-based/.desc.txt", values);
   utils_generate_file("../resources/files-rematch-based/instructions.html", html_content);
-  return {"../resources/files-rematch-based", html_content, std::to_string(answer), {}};
+  return {"../resources/files-rematch-based", html_content, std::to_string(answer), "", {}};
 }

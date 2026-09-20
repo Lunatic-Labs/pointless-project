@@ -45,7 +45,8 @@ Puzzle pixel_puzzle_create(seed_t seed)
 
   // Outline the bison's pixels so that they can be counted.
   const std::string grid = "<style> svg{stroke:#000000;} </style>";
-  std::string html = utils_html_printf("Pixel Puzzle", "../resources/files-pixel/.desc.txt", delim_values, grid);
+  const std::string token = utils_token(utils_derive_seed(seed, "token"));
+  std::string html = utils_html_printf("Pixel Puzzle", "../resources/files-pixel/.desc.txt", delim_values, token, grid);
   utils_generate_file("../resources/files-pixel/instructions.html", html);
-  return {"../resources/files-pixel", html, std::to_string(product), {}};
+  return {"../resources/files-pixel", html, std::to_string(product), token, {}};
 }

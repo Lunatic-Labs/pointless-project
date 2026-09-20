@@ -35,6 +35,18 @@
         /* A figure (a maze, a light box, a table) goes on its own line, left aligned with the text. */
         .container .figure {margin: 1em 0; width: fit-content; max-width: 100%; overflow-x: auto;}
         .container .question {font-weight: bold; margin-top: 1.5em;}
+        /* The token a player types into the website; utils_html_printf() puts one on every puzzle page. */
+        .container .token {
+            width: fit-content;
+            max-width: 100%;
+            box-sizing: border-box;
+            margin-top: 1.5em;
+            padding: 8px 20px;
+            border: 2px dashed #F4AA00;
+            border-radius: 8px;
+        }
+        .container .token p {margin: 0.35em 0;}
+        .container .token code {font-size: 1.35em; font-weight: bold; letter-spacing: 0.15em;}
     </style>
 </head>
 <body>

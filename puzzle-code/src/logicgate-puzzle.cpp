@@ -83,8 +83,9 @@ Puzzle logicgate_puzzle_create(seed_t seed)
     password += result ? '1' : '0';
   }
 
+  const std::string token = utils_token(utils_derive_seed(seed, "token"));
   std::string html_content = utils_html_printf("Graph Paper Robot PT II", "../resources/files-logicgate/.desc.txt",
-                                               {gates_svg(gates).build(false), memory_svg(memory).build(false)});
+                                               {gates_svg(gates).build(false), memory_svg(memory).build(false)}, token);
   utils_generate_file("../resources/files-logicgate/instructions.html", html_content);
-  return {"../resources/files-logicgate", html_content, password, {}};
+  return {"../resources/files-logicgate", html_content, password, token, {}};
 }

@@ -64,15 +64,42 @@ function test_generate_player_zip_stored(): void
     $zip = pointless_player_zip(' Ann@B.com', $error);
     check($zip === games_path() . "/$seed.zip", "zip is stored as games/<seed>.zip (got $zip, error: $error)");
     check(file_get_contents($zip) === "seed=$seed", "zip is generated from the player's seed");
-    check(generator_runs()[0]['args'] === ['-s', $seed], 'generator gets -s <seed>');
-    $key = file_get_contents(games_path() . "/$seed.txt");
-    check(str_contains($key, "Name: Ann Lee\nEmail: ann@b.com\n"), "answer key names the player (got: $key)");
-    check(str_contains($key, "Seed: $seed\nFake       Password: pw$seed\n"), "answer key has the generator's output (got: $key)");
-    check(list_tree(games_path()) === ["$seed.txt", "$seed.zip"], 'games directory has only the zip and answer key');
+    check(generator_runs()[0]['args'] === ['-s', $seed, '-j'], 'generator gets -s <seed> -j');
+    $raw = file_get_contents(games_path() . "/$seed.json");
+    $key = json_decode($raw, true);
+    check(is_array($key), "answer key is JSON (got: $raw)");
+    check([$key['seed'], $key['fname'], $key['lname'], $key['email']] === [$seed, 'Ann', 'Lee', 'ann@b.com'],
+          "answer key names the player (got: $raw)");
+    check(isset($key['generated']) && $key['generated'] !== '', 'answer key is dated');
+    check(count($key['puzzles']) === FAKE_PUZZLES, "answer key has every puzzle (got: $raw)");
+    check($key['puzzles'][0]['token'] === fake_token(1, $seed), "answer key has the generator's tokens (got: $raw)");
+    check(str_contains($raw, "\n"), 'answer key is pretty-printed, so support can read it');
+    check(list_tree(games_path()) === ["$seed.json", "$seed.zip"], 'games directory has only the zip and answer key');
     check(list_tree(tmp_path()) === [], 'nothing is left in TMPDIR');
 
     check(pointless_player_zip('ann@b.com', $error) === $zip, 'a second request returns the same file');
     check(count(generator_runs()) === 1, 'without running the generator again');
+}
+
+// pointless_player_answers() is how the site reads the tokens back; it must never
+// recompute them, since rebuilding the generator would then disagree with the zip
+// a player already downloaded.
+function test_generate_player_answers(): void
+{
+    pointless_add_player('Ann', 'Lee', 'ann@b.com');
+    check(pointless_player_answers('ann@b.com') === null, 'no answers before the game is generated');
+    check(pointless_player_answers('nobody@b.com') === null, 'no answers for an unregistered email');
+
+    $seed = player_seed('ann@b.com');
+    $error = '';
+    pointless_player_zip('ann@b.com', $error);
+    $answers = pointless_player_answers(' Ann@B.com');
+    check(is_array($answers) && count($answers) === FAKE_PUZZLES, 'the stored answer key is read back');
+    check($answers[1]['token'] === fake_token(2, $seed), "puzzle 2's token is the one in the key");
+    check($answers[FAKE_PUZZLES - 1]['password'] === '', 'the last layer has no password');
+
+    file_put_contents(games_path() . "/$seed.json", 'not json');
+    check(pointless_player_answers('ann@b.com') === null, 'an unreadable answer key gives no answers');
 }
 
 function test_generate_player_zip_unregistered(): void
@@ -120,4 +147,23 @@ function test_generate_real_generator(): void
     check(str_contains($bytes, 'puzzle2.zip'), 'zip contains puzzle2.zip');
     check(str_starts_with($output, "Seed: 1\n"), 'generator prints its seed first');
     check(list_tree(tmp_path()) === [], 'nothing is left in TMPDIR');
+
+    // Downloads run the generator with -j, so a tree built before tokens existed would
+    // store an answer key with no tokens and quietly break every submission.
+    putenv("POINTLESS_GENERATOR_DIR=$dir");
+    try {
+        $zip = pointless_generate_zip(['-s', '1', '-j'], $output, $error);
+    } finally {
+        putenv('POINTLESS_GENERATOR_DIR=' . generator_path());
+    }
+    check($zip !== null, "-j generates a zip too (error: $error)");
+    if ($zip !== null) {
+        unlink($zip);
+    }
+    $answers = json_decode($output, true);
+    check(is_array($answers) && isset($answers['puzzles']), "-j prints nothing but JSON (got: $output)");
+    check(($answers['seed'] ?? '') === '1', 'the JSON holds the seed');
+    $tokens = array_column($answers['puzzles'] ?? [], 'token');
+    check(count($tokens) > 1 && count(array_filter($tokens)) === count($tokens), 'every puzzle has a token');
+    check(count(array_unique($tokens)) === count($tokens), 'the tokens are all different');
 }
