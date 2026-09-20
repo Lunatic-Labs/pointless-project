@@ -62,7 +62,6 @@ because all resource paths are relative to it, e.g. `../resources/files-math/.de
 
 `./main` accepts the following flags:
 - `-s <seed>`: use the given seed (any number) instead of a random one (the website does this with each player's stored seed)
-- `-e <email>`: use the seed from this email (see `utils_seed_from_email()`). The website uses it only for players who registered before seeds were stored.
 
 The first line of output is always `Seed: <seed>`, so a run with a random seed can be repeated; the passwords follow.
 - `-a`: only print the answers (including the rematch puzzles' passwords); do not generate any files
@@ -554,7 +553,6 @@ The utilities are declared, with comments, in `puzzle-code/src/include/utils.h`.
   **NOTE**: The seed is modified by every call, so adding, removing, or reordering calls
   changes every later value (and the expected passwords in the automated tests).
 - `utils_derive_seed(seed, name)`: a separate seed for each puzzle, so puzzles don't share random numbers.
-- `utils_seed_from_email(email)`: a player's seed. It ignores case and surrounding whitespace, like the website. Changing it changes every player's puzzle.
 - `utils_html_printf(title, desc_filepath, args, extra_head)`: builds a puzzle page, replacing each `%DELIM` with the next argument.
 - `utils_generate_file`, `utils_mkdir`, `utils_remove_all`: write files; they do nothing when the `ANS_ONLY` flag (`./main -a`) is set.
 - `utils_walkdir`, `utils_zip_entries`, `utils_zip_files`: list a puzzle's files and zip them.
@@ -583,8 +581,6 @@ It is outside `web-server/`, so the web server can never serve it, and git ignor
 Set `POINTLESS_PLAYERS_FILE` to store it somewhere else.
 Emails are stored trimmed and lowercased, so `Ann@B.com` and `ann@b.com` are the same player.
 `Seed` is the player's generator seed, chosen at random when they register, and never changed.
-Players who registered before seeds were stored (rows without a `Seed`) keep the game they had: their first download
-runs the generator with `-e <email>` and records the seed it prints.
 Names are stored as typed, except that a name starting with `=`, `+`, `-`, `@`, a tab, or a carriage return gets a leading `'`,
 so a spreadsheet opening the file shows it as text instead of running it as a formula (`pointless_safe_name()`).
 
@@ -659,7 +655,7 @@ and keeps the temporary directory (including `server.log` and `php-errors.log`);
 | `index-test.php`, `login-test.php`, `download-test.php` | The pages, over HTTP |
 
 The fake generator is a small script written by `fake_generator($mode)`. It records its arguments and working directory,
-prints `Seed: <seed>` and a password line like the real one (its seed for `-e <email>` is `crc32(email)`),
+prints `Seed: <seed>` and a password line like the real one,
 then (in mode `ok`) writes a `puzzle1.zip` containing `seed=<seed>`, so tests can check which player's zip was served.
 Other modes make it fail, write no zip, or be missing.
 
@@ -698,7 +694,7 @@ into `tests/main`, then runs it from `puzzle-code/tests/`. Each test prints `PAS
 and the command fails if any test fails. CI runs these tests and the web server tests on every push.
 
 Besides one test per puzzle:
-- `utils` checks the utilities, including pinned values for the RNG and `utils_seed_from_email()`.
+- `utils` checks the utilities, including pinned values for the RNG.
 - `seeds` generates games for 200 players and checks that every puzzle has an answer and that players get different puzzles.
 - `game_zipfiles` writes a real game and unlocks it layer by layer with the passwords, as a player would: it follows the BST signs
   to the ID and unlocks the rematch zips to check their numbers.
@@ -716,7 +712,7 @@ which checks the password for each seed, and that the page has the header, the f
 void fib_puzzle_test()
 {
   CHECK_PUZZLE(fib_puzzle_create,
-               {{1, "13"}, {5, "5"}, {10, "21"}, {test_email_seed(), "8"}},
+               {{1, "13"}, {5, "5"}, {10, "21"}, {test_big_seed(), "8"}},
                {"th number in the fibonacci sequence?"});
 }
 ```

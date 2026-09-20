@@ -30,8 +30,8 @@ void test_check_eq(const std::string &actual, const std::string &expected, const
 // The number of failures so far.
 int test_failures(void);
 
-// The seed of an example player, test@example.com.
-seed_t test_email_seed(void);
+// An example of a large seed, like the ones the website gives players.
+seed_t test_big_seed(void);
 
 // What a puzzle should produce for a seed.
 struct Expected {

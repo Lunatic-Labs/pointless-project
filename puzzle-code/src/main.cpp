@@ -7,7 +7,7 @@
 
 uint32_t FLAGS = 0;
 
-static const char *USAGE = "usage: ./main [-a] [-s <seed> | -e <email>]";
+static const char *USAGE = "usage: ./main [-a] [-s <seed>]";
 
 int main(int argc, char **argv)
 {
@@ -18,13 +18,9 @@ int main(int argc, char **argv)
     const std::string arg = argv[i];
     if (arg == "-a") {
       FLAGS |= ANS_ONLY;
-    } else if ((arg == "-s" || arg == "-e") && i + 1 < argc) {
+    } else if (arg == "-s" && i + 1 < argc) {
       const std::string value = argv[++i];
       seed_given = true;
-      if (arg == "-e") {
-        seed = utils_seed_from_email(value);
-        continue;
-      }
       size_t used = 0;
       try {
         seed = std::stoull(value, &used);
@@ -44,7 +40,7 @@ int main(int argc, char **argv)
   if (!seed_given) {
     seed = utils_roll_seed();
   }
-  // Always printed: the website records it for players who registered before seeds were stored.
+  // Always printed, so a run with a random seed can be repeated (and the website can parse it).
   std::cout << "Seed: " << seed << std::endl;
 
   try {

@@ -49,10 +49,6 @@ seed_t utils_derive_seed(seed_t seed, const std::string &name);
 // Returns an unpredictable seed.
 seed_t utils_roll_seed(void);
 
-// Returns the seed of the player with `email`; this is what `./main -e <email>` (and so the website) uses.
-// Ignores surrounding whitespace and ASCII case, like pointless_normalize_email() in web-server/includes/players.php.
-seed_t utils_seed_from_email(const std::string &email);
-
 // Returns the paths of all files under `path`, recursively, sorted.
 // Skips files and directories whose names start with `.`.
 strvec_t utils_walkdir(filepath_t path);

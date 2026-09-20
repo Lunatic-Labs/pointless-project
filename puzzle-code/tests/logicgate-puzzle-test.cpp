@@ -8,7 +8,7 @@ void logicgate_puzzle_test()
                  {5, "011101101001011"},
                  {10, "000101110110011"},
                  {15, "011101000010010"},
-                 {test_email_seed(), "001101010011011"},
+                 {test_big_seed(), "001101010011011"},
                },
                {"adding the colored squares",
                 "<li>Always take the <b>first two circles</b> from the queue to calculate the next value.</li>"});

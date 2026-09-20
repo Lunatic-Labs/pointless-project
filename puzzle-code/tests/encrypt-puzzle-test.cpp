@@ -8,7 +8,7 @@ void encrypt_puzzle_test()
                  {5, "big_o_notation"},
                  {10, "dynamic_programming"},
                  {15, "greedy_algorithms"},
-                 {test_email_seed(), "breadth_first_search"},
+                 {test_big_seed(), "breadth_first_search"},
                },
                {"alien lightbox", "Here are the steps he used:"});
 }

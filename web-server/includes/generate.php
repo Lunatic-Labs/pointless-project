@@ -146,30 +146,16 @@ function pointless_player_zip(string $email, ?string &$error = null): ?string
     }
     [$fname, $lname, $email, $seed] = $player;
     $games = pointless_games_dir();
-    if ($seed !== '' && is_file("$games/$seed.zip")) {
+    if (is_file("$games/$seed.zip")) {
         return "$games/$seed.zip";
     }
 
-    // Players who registered before seeds were stored keep the game they had:
-    // the seed from their email, which the generator reports.
     $output = '';
-    $zip = pointless_generate_zip($seed !== '' ? ['-s', $seed] : ['-e', $email], $output, $error);
+    $zip = pointless_generate_zip(['-s', $seed], $output, $error);
     if ($zip === null) {
         return null;
     }
     try {
-        if ($seed === '') {
-            if (!preg_match('/^Seed: (\d+)$/m', $output, $m) || !pointless_set_player_seed($email, $m[1])) {
-                error_log("pointless: could not record the seed for $email: $output");
-                $error = "Puzzle generation failed. Please try again later.";
-                return null;
-            }
-            $seed = pointless_find_player($email)[3];
-            if (is_file("$games/$seed.zip")) {
-                return "$games/$seed.zip"; // Another download stored it first.
-            }
-        }
-
         // The answer key is stored first, so a stored zip always has one.
         $key = "Name: $fname $lname\nEmail: $email\nGenerated: " . date('Y-m-d H:i:s T') . "\n$output";
         if ((!is_dir($games) && !@mkdir($games, 0700, true) && !is_dir($games))

@@ -81,26 +81,6 @@ seed_t utils_roll_seed(void)
   return ((seed_t)device() << 32) ^ device() ^ (seed_t)std::time(nullptr);
 }
 
-seed_t utils_seed_from_email(const std::string &email)
-{
-  // The characters PHP's trim() removes.
-  const std::string space(" \t\n\r\v\0", 6);
-  size_t begin = email.find_first_not_of(space);
-  size_t end = email.find_last_not_of(space);
-
-  // 64-bit FNV-1a of the lowercased email.
-  seed_t hash = 0xCBF29CE484222325ull;
-  for (size_t i = begin; begin != std::string::npos && i <= end; ++i) {
-    unsigned char c = email[i];
-    if (c >= 'A' && c <= 'Z') {
-      c += 'a' - 'A';
-    }
-    hash ^= c;
-    hash *= 0x100000001B3ull;
-  }
-  return hash;
-}
-
 static bool is_hidden(const fs::path &path)
 {
   return path.filename().string().rfind('.', 0) == 0;

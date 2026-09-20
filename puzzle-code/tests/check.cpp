@@ -27,9 +27,10 @@ int test_failures(void)
   return failures;
 }
 
-seed_t test_email_seed(void)
+seed_t test_big_seed(void)
 {
-  return utils_seed_from_email("test@example.com");
+  // An arbitrary large seed, so the puzzle tests also cover seeds beyond the small ones.
+  return 7482486840424827176ull;
 }
 
 void test_puzzle(Puzzle (*create)(seed_t), const std::vector<Expected> &expected, const strvec_t &snippets,

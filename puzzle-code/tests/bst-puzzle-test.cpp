@@ -9,7 +9,7 @@ void bst_puzzle_test()
                  {5, "5425921", "Path: rlllrlllll"},
                  {10, "4959287", "Path: rrrrrrrlll"},
                  {15, "5471974", "Path: llrrlrrrrr"},
-                 {test_email_seed(), "7775386", "Path: rllllrrlll"},
+                 {test_big_seed(), "7775386", "Path: rllllrrlll"},
                },
                {"queue of logic gates", "You will need to look at the mathematical street signs to find your way to x."});
 }

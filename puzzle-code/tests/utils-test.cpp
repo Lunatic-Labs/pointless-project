@@ -49,15 +49,6 @@ static void rng_test()
   CHECK(utils_derive_seed(1, "math") == utils_derive_seed(1, "math"));
 }
 
-static void email_seed_test()
-{
-  // Pinned, because changing the formula changes every player's puzzle.
-  CHECK_EQ(std::to_string(utils_seed_from_email("test@example.com")), "7482486840424827176");
-  // Like pointless_normalize_email() in web-server/includes/players.php.
-  CHECK(utils_seed_from_email(" \tTest@Example.COM\n") == utils_seed_from_email("test@example.com"));
-  CHECK(utils_seed_from_email("test2@example.com") != utils_seed_from_email("test@example.com"));
-}
-
 static void files_test(const fs::path &dir)
 {
   const std::string desc = (dir / "desc.txt").string();
@@ -90,7 +81,6 @@ static void files_test(const fs::path &dir)
 void utils_test()
 {
   rng_test();
-  email_seed_test();
 
   const fs::path dir = fs::temp_directory_path() / ("pointless-utils-test-" + std::to_string(getpid()));
   fs::create_directories(dir);

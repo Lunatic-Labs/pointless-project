@@ -75,18 +75,6 @@ function test_generate_player_zip_stored(): void
     check(count(generator_runs()) === 1, 'without running the generator again');
 }
 
-function test_generate_player_zip_legacy_player(): void
-{
-    add_legacy_player('Ann', 'Lee', 'ann@b.com');
-    $seed = (string)crc32('ann@b.com'); // The fake generator's seed for this email.
-    $error = '';
-    $zip = pointless_player_zip('ann@b.com', $error);
-    check(generator_runs()[0]['args'] === ['-e', 'ann@b.com'], 'a player without a seed keeps the seed from their email');
-    check(player_seed('ann@b.com') === $seed, 'that seed is recorded');
-    check($zip === games_path() . "/$seed.zip", "zip is stored under that seed (got $zip, error: $error)");
-    check(pointless_player_zip('ann@b.com', $error) === $zip && count(generator_runs()) === 1, 'later requests use the stored zip');
-}
-
 function test_generate_player_zip_unregistered(): void
 {
     $error = '';

@@ -27,12 +27,14 @@ void seeds_test()
   std::set<std::string> games;
   int empty = 0;
   for (size_t i = 0; i < PLAYERS; i++) {
-    const std::string email = "player" + std::to_string(i) + "@example.com";
+    // Stands in for the random seed the website gives each player at registration.
+    const seed_t seed = utils_derive_seed(i, "player");
     std::string game;
-    for (const Puzzle &puzzle : game_create_puzzles(utils_seed_from_email(email))) {
+    for (const Puzzle &puzzle : game_create_puzzles(seed)) {
       const std::string name = game_puzzle_name(puzzle);
       if (name != "fin" && (puzzle.password.empty() || puzzle.password == "0") && ++empty <= 5) {
-        test_check(false, name + " has an answer for " + email + " (got \"" + puzzle.password + "\")", __FILE__, __LINE__);
+        test_check(false, name + " has an answer for seed " + std::to_string(seed) +
+                   " (got \"" + puzzle.password + "\")", __FILE__, __LINE__);
       }
       answers[name].insert(puzzle.password);
       game += puzzle.password + "|";

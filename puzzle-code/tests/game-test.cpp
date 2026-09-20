@@ -292,7 +292,7 @@ void game_zipfiles_test()
   FLAGS &= ~ANS_ONLY;
   std::vector<Puzzle> puzzles;
   try {
-    puzzles = game_create_puzzles(test_email_seed());
+    puzzles = game_create_puzzles(test_big_seed());
     game_write_zipfiles(puzzles, zipdir);
   } catch (...) {
     FLAGS = old_flags;

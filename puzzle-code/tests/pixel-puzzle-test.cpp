@@ -6,7 +6,7 @@
 void pixel_puzzle_test()
 {
   CHECK_PUZZLE(pixel_puzzle_create,
-               {{1, "3960"}, {5, "9900"}, {10, "9900"}, {15, "1800"}, {test_email_seed(), "3960"}},
+               {{1, "3960"}, {5, "9900"}, {10, "9900"}, {15, "1800"}, {test_big_seed(), "3960"}},
                {"color wheel", "Lou seems a little off today… or maybe it’s you."});
 
   // The pixel counts must match the bison in the header, and the password must be the last row's product.
