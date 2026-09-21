@@ -42,35 +42,34 @@ function test_events_log_and_level(): void
 function test_events_progress(): void
 {
     pointless_add_player('Ann', 'Lee', 'ann@b.com');
-    check(pointless_player_progress('ann@b.com') === [0, 0], 'no puzzle count before the game is generated');
+    check(pointless_player_progress('ann@b.com') === [0, 0], 'no page count before the game is generated');
     $error = '';
     pointless_player_zip('ann@b.com', $error);
-    // The last layer is a congratulations page, not a puzzle.
-    check(pointless_player_progress('ann@b.com') === [0, FAKE_PUZZLES - 1], 'the answer key gives the puzzle count');
+    check(pointless_player_progress('ann@b.com') === [0, FAKE_PUZZLES], 'the answer key gives the page count');
 }
 
 function test_events_submit_token(): void
 {
     $seed = player_with_game();
 
-    // Token N is inside the zip that puzzle N-1's answer opens, so it is worth N-1 puzzles.
+    // Token N is inside the zip that puzzle N-1's answer opens, so it proves page N was reached.
     [$ok, $level, $message] = pointless_submit_token('ann@b.com', fake_token(1, $seed));
-    check($ok, "the first token is accepted (got: $message)");
-    check($level === 0, 'but it proves nothing: it ships in the download');
+    check($ok && $level === 1, "the first token counts too (got level $level: $message)");
+    check($message === 'Proof of progress accepted.', "and gets the same message (got: $message)");
     [$ok, $level] = pointless_submit_token('ann@b.com', fake_token(3, $seed));
-    check($ok && $level === 2, "token 3 means two puzzles solved (got level $level)");
+    check($ok && $level === 3, "token 3 means page 3 was reached (got level $level)");
 
-    check(pointless_player_level('ann@b.com') === 2, 'the level is recorded');
+    check(pointless_player_level('ann@b.com') === 3, 'the level is recorded');
     $rows = event_rows();
     check(count($rows) === 2, 'both submissions are logged (got ' . count($rows) . ')');
-    check(array_slice($rows[1], 1) === ['token-ok', 'ann@b.com', fake_token(3, $seed), '2'], 'the row holds the token and the new level');
+    check(array_slice($rows[1], 1) === ['token-ok', 'ann@b.com', fake_token(3, $seed), '3'], 'the row holds the token and the new level');
 }
 
 function test_events_submit_token_case_and_spaces(): void
 {
     $seed = player_with_game();
     [$ok, $level] = pointless_submit_token('Ann@B.com ', ' ' . strtolower(fake_token(2, $seed)) . ' ');
-    check($ok && $level === 1, 'a token is matched however it is typed');
+    check($ok && $level === 2, 'a token is matched however it is typed');
 }
 
 function test_events_submit_token_rejected(): void
@@ -96,12 +95,12 @@ function test_events_level_never_drops(): void
 {
     $seed = player_with_game();
     pointless_submit_token('ann@b.com', fake_token(4, $seed));
-    check(pointless_player_level('ann@b.com') === 3, 'the last token means every puzzle was solved');
+    check(pointless_player_level('ann@b.com') === 4, 'the last token means every page was reached');
     [$ok, $level] = pointless_submit_token('ann@b.com', fake_token(2, $seed));
-    check($ok && $level === 3, 'submitting an earlier token again does not lower the level');
+    check($ok && $level === 4, 'submitting an earlier token again does not lower the level');
     [, $level] = pointless_submit_token('ann@b.com', 'NOTATOKEN');
-    check($level === 3, 'nor does a rejected one');
-    check(event_rows()[2][4] === '3', 'the rejection records the level the player still has');
+    check($level === 4, 'nor does a rejected one');
+    check(event_rows()[2][4] === '4', 'the rejection records the level the player still has');
 }
 
 function test_events_submit_before_download(): void

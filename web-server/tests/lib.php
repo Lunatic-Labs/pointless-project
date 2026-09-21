@@ -345,10 +345,10 @@ function register(Client $client, string $email, string $fname = 'Test', string 
 }
 
 // Signs an already-registered player back in through index.php, the way a returning
-// player does: their email, no names, and an optional token.
-function sign_in(Client $client, string $email, string $token = ''): Response
+// player does: their email and no names.
+function sign_in(Client $client, string $email): Response
 {
-    return $client->post('index.php', ['email' => $email, 'token' => $token]);
+    return $client->post('index.php', ['email' => $email]);
 }
 
 // Rows of the players file, including the header; [] if it doesn't exist.

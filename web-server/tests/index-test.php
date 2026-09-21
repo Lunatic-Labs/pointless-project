@@ -1,6 +1,6 @@
 <?php
 // HTTP tests for index.php, the only way in: it registers new players, signs
-// registered ones back in, and takes an optional token on the way through.
+// registered ones back in. Proofs of progress are taken only by download.php.
 
 function test_index_get(): void
 {
@@ -9,7 +9,7 @@ function test_index_get(): void
     check($page->contains('<input type="email" id="email" name="email" value="" autocomplete="email" required>'), 'has email input');
     check($page->contains('<input type="text" id="fname" name="fname" value="" autocomplete="given-name">'), 'has an optional first name input');
     check($page->contains('<input type="text" id="lname" name="lname" value="" autocomplete="family-name">'), 'has an optional last name input');
-    check($page->contains('<input type="text" id="token" name="token" value="" autocomplete="off" spellcheck="false">'), 'has an optional token input');
+    check(!$page->contains('name="token"'), 'takes no proof of progress');
     check($page->contains('<button type="submit">Submit</button>'), 'has submit button');
     check(!$page->contains('login.php'), 'there is no separate login page to link to');
 }
@@ -23,7 +23,7 @@ function test_index_register(): void
     check(count(player_rows()) === 2 && array_slice(player_rows()[1], 0, 3) === ['Ann', 'Lee', 'ann@b.com'], 'player is saved');
     check(preg_match('/^\d+$/', player_seed('ann@b.com')) === 1, 'player gets a seed');
     check(generator_runs() === [], 'registering does not run the generator');
-    check(count(event_rows()) === 1, 'only the registration is logged: an empty token submits nothing');
+    check(count(event_rows()) === 1, 'only the registration is logged');
 
     $download = $client->get('download.php');
     check($download->status === 200, 'session allows the download page');
@@ -129,53 +129,16 @@ function test_index_returning_player_ignores_case(): void
     check($client->post('download.php')->body === 'seed=' . player_seed('ann@b.com'), 'the download uses the normalized email');
 }
 
-function test_index_token(): void
+function test_index_ignores_token(): void
 {
     $client = new Client();
     register($client, 'ann@b.com');
     $client->post('download.php'); // Generate the game, so there are tokens to match.
     $seed = player_seed('ann@b.com');
 
-    $back = new Client(); // A returning player: email and token in one step.
-    $page = sign_in($back, 'ann@b.com', fake_token(3, $seed));
-    check($page->status === 302, "status is 302 (got $page->status)");
-    check($page->header('Location') === 'download.php', 'a token does not change where the form goes');
-
-    $download = $back->get('download.php');
-    check($download->contains('Proof of progress accepted'), 'the download page reports the token');
-    check($download->contains('<b>2 of ' . (FAKE_PUZZLES - 1) . '</b>'), 'the level went up');
-    check(!$back->get('download.php')->contains('Proof of progress accepted'), 'the message is shown only once');
-    $rows = event_rows();
-    check(array_slice($rows[count($rows) - 1], 1, 3) === ['token-ok', 'ann@b.com', fake_token(3, $seed)], 'the token is logged');
-}
-
-function test_index_bad_token(): void
-{
-    $client = new Client();
-    register($client, 'ann@b.com');
-    $client->post('download.php');
-
     $back = new Client();
-    check(sign_in($back, 'ann@b.com', 'NOTATOKEN')->status === 302, 'a wrong token still signs the player in');
-    $download = $back->get('download.php');
-    check($download->contains('not one of your proofs of progress'), 'the download page says the token is wrong');
-    check($download->contains('<b>0 of ' . (FAKE_PUZZLES - 1) . '</b>'), 'the level does not move');
-    $rows = event_rows();
-    check($rows[count($rows) - 1][1] === 'token-bad', 'the attempt is logged');
-}
-
-function test_index_token_rate_limited(): void
-{
-    $client = new Client();
-    register($client, 'ann@b.com');
-    $client->post('download.php');
-    $seed = player_seed('ann@b.com');
-
-    // One session, so index.php and download.php share the token throttle.
-    check(sign_in($client, 'ann@b.com', fake_token(2, $seed))->status === 302, 'the first token is taken');
-    check($client->get('download.php')->contains('Proof of progress accepted'), 'and accepted');
-    $page = $client->post('download.php', ['token' => fake_token(3, $seed)]);
-    check($page->contains('Please wait'), 'an immediate second token is refused');
-    check($page->contains('<b>1 of ' . (FAKE_PUZZLES - 1) . '</b>'), 'the refused token does not count');
-    check(count(event_rows()) === 3, 'and is not logged: register, download, and the accepted token only');
+    $page = $back->post('index.php', ['email' => 'ann@b.com', 'token' => fake_token(3, $seed)]);
+    check($page->header('Location') === 'download.php', 'a token field does not stop the sign in');
+    check(!$back->get('download.php')->contains('Proof of progress accepted'), 'but it is not submitted');
+    check(count(event_rows()) === 2, 'and not logged: register and download only');
 }

@@ -657,9 +657,8 @@ The main goals of the webpage are puzzle download, user registration, and user t
 `index.php` is the front door and the only way in: an email nobody has used registers a new player, and an email that is
 already registered signs that player back in. There is no separate login page. First and last name are optional, and are
 stored only at registration — the players file is append-only, so names typed on a later visit are ignored.
-The form also takes an optional **token**, so a returning player can report progress in the same step (see
-[Progress and the event log](#progress-and-the-event-log)); it is recorded on the way through, and `download.php` shows
-the result. Either way the player lands on `download.php`, where they can download, submit tokens, and see how far they have come.
+Either way the player lands on `download.php`, where they can download, submit tokens, and see how far they have come
+(see [Progress and the event log](#progress-and-the-event-log)).
 All pages share `includes/header.php`, `includes/footer.php`, and `includes/styles.css`.
 They start their session through `includes/session.php`, which names the cookie `pointless` (HttpOnly, SameSite=Lax)
 so it can't collide with other PHP apps on the same host (see [Deployment](#deployment)).
@@ -698,15 +697,16 @@ download fails. `make production` fixes it; `test_generate_real_generator` in th
 
 #### Progress and the event log
 
-`download.php` (and `index.php`, through its optional token field) takes a player's [tokens](#tokens) and shows how far
+`download.php` takes a player's [tokens](#tokens) and shows how far
 they have come (`web-server/includes/events.php`). A submission is compared against the tokens in that player's stored `<seed>.json`,
 which is the only record of them: **they are never recomputed.** A stored game keeps the tokens its pages were generated
 with, so recomputing them after any change to the generator would disagree with the zip the player already has, and every
 submission would start failing. Comparison ignores case, spaces, and hyphens.
 
-A player's **level** is the number of puzzles they have solved. Token N is inside the zip that puzzle N-1's answer opens,
-so accepting token N sets the level to N-1 (and the level never goes down). Token 1 ships in the download and leaves the
-level at 0; the token on the final `fin` page means the whole game was finished.
+A player's **level** is the highest page they have reached. Token N is inside the zip that puzzle N-1's answer opens,
+so accepting token N sets the level to N (and the level never goes down). Token 1 ships in the download, so it counts
+like any other: level 1 means the player opened the game. The token on the final `fin` page means the whole game was
+finished.
 
 Events are appended to `data/events.csv` (next to the players file; `POINTLESS_EVENTS_FILE` moves it), with columns
 `Time,Event,Email,Detail,Level`. `Event` is `register`, `download`, `token-ok`, or `token-bad`, and `Level` is the
@@ -717,14 +717,22 @@ them there would mean updating a row after the fact, and would tie the roster's 
 
 Rejected tokens are logged too: they are what a brute-force attempt looks like, and both kinds are participation data.
 A session may submit at most one token every 5 seconds (`POINTLESS_TOKEN_INTERVAL`, applied by
-`pointless_submit_token_throttled()`, which both pages that take a token call), which is a different job from the
+`pointless_submit_token_throttled()`), which is a different job from the
 download throttle: that one protects the generator from repeated runs, this one protects the record.
 
-Once the game is downloaded, `download.php` draws the level as a progress bar with one segment per puzzle (solved ones
-filled, the current one outlined) and says which puzzle the player is on. After the first solved puzzle it also offers
-links to post their progress on X, Facebook, LinkedIn, Bluesky, Threads, and Reddit. These are plain share URLs, not the
-sites' SDKs, so the page loads nothing from those sites. They always point at the live site (`POINTLESS_SITE_URL` in
-`download.php`), wherever the page is served from.
+Once the game is downloaded, `download.php` draws the level as a **health bar**: one bar filled in proportion to the
+pages reached (fin page included), deliberately unannotated, so neither the page nor the messages say how many puzzles
+there are or how many are solved (`pointless_health_bar()` in `web-server/includes/progress.php`). Once the player has
+submitted any proof of progress, the first page's included, the progress section (the bar and the proof of progress form, with that form's messages) moves above the download button.
+
+After the first proof of progress the page also offers links to post their progress on X, Facebook, LinkedIn, Bluesky,
+Threads, and Reddit, shown as icons (Simple Icons, CC0, stored as SVGs in `web-server/includes/icons/`). These are
+plain share URLs, not the sites' SDKs, so the page loads nothing from those sites. They
+link to the player's own public page, `share.php?p=<share id>`, which shows their name (or "A player", if they gave none)
+and health bar, and carries `og:` tags so Facebook and LinkedIn previews show the name too. It needs no session, and
+shows neither the email nor the seed: the share id is 16 hex digits of an HMAC of the seed (`pointless_share_id()`),
+permanent because the seed is, and useless for recovering it. The links always point at the live site
+(`POINTLESS_SITE_URL` in `includes/progress.php`), wherever the page is served from.
 
 ### How to Start
 

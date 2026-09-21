@@ -21,6 +21,7 @@ require_once __DIR__ . '/generate-test.php';
 require_once __DIR__ . '/events-test.php';
 require_once __DIR__ . '/index-test.php';
 require_once __DIR__ . '/download-test.php';
+require_once __DIR__ . '/share-test.php';
 require_once __DIR__ . '/health-test.php';
 
 $tests = [
@@ -66,9 +67,7 @@ $tests = [
     'test_index_names_stored_as_typed',
     'test_index_returning_player',
     'test_index_returning_player_ignores_case',
-    'test_index_token',
-    'test_index_bad_token',
-    'test_index_token_rate_limited',
+    'test_index_ignores_token',
 
     'test_download_requires_session',
     'test_download_zip',
@@ -82,8 +81,14 @@ $tests = [
     'test_download_bad_token',
     'test_download_token_rate_limited',
     'test_download_logs_events',
-    'test_download_progress_bar',
+    'test_download_health_bar',
+    'test_download_progress_first',
+    'test_download_messages_by_their_forms',
     'test_download_share_links',
+
+    'test_share_page',
+    'test_share_page_unknown',
+    'test_share_page_names',
 
     'test_health_ok',
     'test_health_players_dir_missing',

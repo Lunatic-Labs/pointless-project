@@ -10,14 +10,14 @@
 //
 // A token is not a secret and is not hidden on its page. It doesn't have to be:
 // puzzle N's page is inside puzzleN.zip, which only puzzle N-1's answer opens, so
-// submitting token N is already proof that puzzles 1..N-1 were solved. Token 1 ships
-// unencrypted in the download and proves nothing, which is why level counts from 0.
+// submitting token N is already proof that the player reached page N. The level is
+// the highest page reached: 0 until the first token (which ships unencrypted in the
+// download, so it proves only that they opened it), and the fin page's at the end.
 require_once __DIR__ . '/generate.php';
 require_once __DIR__ . '/players.php';
 
 // The fewest seconds between one session's token submissions. Tokens are the only
-// record of how far a player got, so guessing at them has to be slow. Both pages
-// that take a token (index.php on the way in, download.php) share this limit.
+// record of how far a player got, so guessing at them has to be slow.
 const POINTLESS_TOKEN_INTERVAL = 5;
 
 // Can be overridden with the POINTLESS_EVENTS_FILE environment variable.
@@ -78,13 +78,12 @@ function pointless_player_level(string $email): int
     return $level;
 }
 
-// Returns $email's [level, puzzles], where puzzles is how many puzzles their game
-// has for them to solve (0 until they have downloaded it).
+// Returns $email's [level, pages], where pages is how many pages (and tokens) their
+// game has, fin page included (0 until they have downloaded it).
 function pointless_player_progress(string $email): array
 {
     $answers = pointless_player_answers($email);
-    // The last layer is a congratulations page, not a puzzle: it has no password.
-    return [pointless_player_level($email), $answers === null ? 0 : count($answers) - 1];
+    return [pointless_player_level($email), $answers === null ? 0 : count($answers)];
 }
 
 // Records $email's submission of $token and returns [accepted, level, message].
@@ -114,15 +113,11 @@ function pointless_submit_token(string $email, string $token): array
         return [false, $level, 'That is not one of your proofs of progress. Check it and try again.'];
     }
 
-    // Token N is inside the zip that puzzle N-1's answer opens, so it proves the N-1
-    // puzzles before it were solved. The level only ever goes up.
-    $level = max($level, $n - 1);
+    // Token N is inside the zip that puzzle N-1's answer opens, so it proves the player
+    // reached page N. The level only ever goes up.
+    $level = max($level, $n);
     pointless_log_event('token-ok', $email, $token, $level);
-    if ($level === 0) {
-        return [true, $level, 'That is the proof of progress from your first page. Solve that puzzle for the next one.'];
-    }
-    $puzzles = $level === 1 ? 'puzzle' : 'puzzles';
-    return [true, $level, "Proof of progress accepted. You have now solved $level $puzzles."];
+    return [true, $level, 'Proof of progress accepted.'];
 }
 
 // pointless_submit_token(), rate limited per session: the caller must have started

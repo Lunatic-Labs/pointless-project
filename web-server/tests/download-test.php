@@ -96,19 +96,24 @@ function test_download_generator_fails(): void
     check(list_tree(tmp_path()) === [], 'nothing is left in TMPDIR');
 }
 
+// The health bar's aria-valuenow for $level of the fake game's pages reached.
+function health(int $level): string
+{
+    return 'aria-valuenow="' . (int)round(100 * $level / FAKE_PUZZLES) . '"';
+}
+
 function test_download_shows_progress(): void
 {
     $client = new Client();
     register($client, 'ann@b.com');
-    $page = $client->get('download.php');
-    check($page->contains('Puzzles solved:'), 'the download page shows the level');
-    check($page->contains('<b>0</b>'), 'a new player has solved nothing, and no total until they download');
+    check(!$client->get('download.php')->contains('health-bar'), 'no health bar before the game is downloaded');
 
     $client->post('download.php');
     $seed = player_seed('ann@b.com');
+    check($client->get('download.php')->contains(health(0)), 'a new player has an empty bar');
     $page = $client->post('download.php', ['token' => fake_token(3, $seed)]);
     check($page->contains('Proof of progress accepted'), 'a token is accepted');
-    check($page->contains('<b>2 of ' . (FAKE_PUZZLES - 1) . '</b>'), "the page shows the new level out of the game's puzzles");
+    check($page->contains(health(3)), 'the bar shows the new level');
     check($page->header('Content-Type') !== 'application/zip', 'submitting a token does not download the zip');
     check(count(generator_runs()) === 1, 'and does not run the generator again');
 }
@@ -120,7 +125,7 @@ function test_download_bad_token(): void
     $client->post('download.php');
     $page = $client->post('download.php', ['token' => 'NOTATOKEN']);
     check($page->contains('not one of your proofs of progress'), 'a wrong token is refused');
-    check($page->contains('<b>0 of ' . (FAKE_PUZZLES - 1) . '</b>'), 'the level does not move');
+    check($page->contains(health(0)), 'the level does not move');
     $rows = event_rows();
     check($rows[count($rows) - 1][1] === 'token-bad', 'the attempt is logged');
 }
@@ -134,7 +139,7 @@ function test_download_token_rate_limited(): void
     check($client->post('download.php', ['token' => fake_token(2, $seed)])->contains('Proof of progress accepted'), 'the first token works');
     $page = $client->post('download.php', ['token' => fake_token(3, $seed)]);
     check($page->contains('Please wait'), 'an immediate second token is refused');
-    check($page->contains('<b>1 of ' . (FAKE_PUZZLES - 1) . '</b>'), 'the refused token does not count');
+    check($page->contains(health(2)), 'the refused token does not count');
     check(count(event_rows()) === 3, 'and is not logged: register, download, and the accepted token only');
 }
 
@@ -150,22 +155,56 @@ function test_download_logs_events(): void
           'the download is logged with the file served');
 }
 
-function test_download_progress_bar(): void
+function test_download_health_bar(): void
 {
     $client = new Client();
     register($client, 'ann@b.com');
-    check(!$client->get('download.php')->contains('progress-bar'), 'no progress bar before the game is downloaded');
-
     $client->post('download.php');
-    $page = $client->get('download.php');
-    check(substr_count($page->body, 'title="Puzzle ') === FAKE_PUZZLES - 1, 'one segment per puzzle');
-    check($page->contains('You are on puzzle <b>1</b>'), 'a new player is on puzzle 1');
-
     $seed = player_seed('ann@b.com');
     $page = $client->post('download.php', ['token' => fake_token(3, $seed)]);
-    check(substr_count($page->body, 'class="solved"') === 2, 'two segments are solved');
-    check($page->contains('aria-valuenow="2"'), 'the bar reports the level');
-    check($page->contains('You are on puzzle <b>3</b>'), 'the player is on the next puzzle');
+    check(substr_count($page->body, 'class="health-bar"') === 1, 'one bar, not one segment per puzzle');
+    foreach (['Puzzle ', 'Puzzles solved', 'of ' . FAKE_PUZZLES, 'of ' . (FAKE_PUZZLES - 1), 'You are on puzzle', 'solved 2'] as $count) {
+        check(!$page->contains($count), "shows no count or total ($count)");
+    }
+
+    $second = new Client(); // A new session, so the token rate limit doesn't apply.
+    sign_in($second, 'ann@b.com');
+    $page = $second->post('download.php', ['token' => fake_token(FAKE_PUZZLES, $seed)]);
+    check($page->contains('aria-valuenow="100"'), 'the fin page\'s token fills the bar');
+    check($page->contains('finished the challenge'), 'and finishes the game');
+}
+
+function test_download_progress_first(): void
+{
+    $client = new Client();
+    register($client, 'ann@b.com');
+    $client->post('download.php');
+    $seed = player_seed('ann@b.com');
+    $page = $client->get('download.php');
+    check(strpos($page->body, 'id="downloadForm"') < strpos($page->body, 'Your Progress'),
+          'with no proof of progress, the download comes first');
+
+    $page = $client->post('download.php', ['token' => fake_token(1, $seed)]);
+    check(strpos($page->body, 'Your Progress') < strpos($page->body, 'id="downloadForm"'),
+          'once the first page\'s proof is in, progress comes first');
+    check($page->contains(health(1)), 'and the bar counts it');
+}
+
+function test_download_messages_by_their_forms(): void
+{
+    $client = new Client();
+    register($client, 'ann@b.com');
+    $client->post('download.php');
+    $page = $client->post('download.php', ['token' => 'NOTATOKEN']);
+    $message = strpos($page->body, 'not one of your proofs of progress');
+    check($message > strpos($page->body, 'Your Progress') && $message < strpos($page->body, 'id="tokenForm"'),
+          'a token message is in the progress section, above its form');
+
+    $page = $client->post('download.php'); // Too soon after the first download.
+    $message = strpos($page->body, 'Please wait');
+    check($message < strpos($page->body, 'id="downloadForm"') && $message > strpos($page->body, 'Pointless Challenge.'),
+          'a download message is by the download button');
+    check($message < strpos($page->body, 'Your Progress'), 'not in the progress section');
 }
 
 function test_download_share_links(): void
@@ -174,24 +213,24 @@ function test_download_share_links(): void
     register($client, 'ann@b.com');
     $client->post('download.php');
     $seed = player_seed('ann@b.com');
-    check(!$client->get('download.php')->contains('Share Your Progress'), 'nothing to share before solving a puzzle');
-    check(!$client->post('download.php', ['token' => fake_token(1, $seed)])->contains('Share Your Progress'),
-          'the first page\'s token solves nothing, so still nothing to share');
-
-    $second = new Client(); // A new session, so the token rate limit doesn't apply.
-    sign_in($second, 'ann@b.com');
-    $page = $second->post('download.php', ['token' => fake_token(2, $seed)]);
-    check($page->contains('Share Your Progress'), 'a solved puzzle can be shared');
-    check($page->contains('solved%201%20of%20' . (FAKE_PUZZLES - 1)), 'the post says how far the player got');
-    check($page->contains('https%3A%2F%2Ftools.lipscomb-soc.org%2Fpointless%2F'), 'links point at the live site');
+    check(!$client->get('download.php')->contains('Share Your Progress'), 'nothing to share before a proof of progress');
+    $page = $client->post('download.php', ['token' => fake_token(1, $seed)]);
+    check($page->contains('Share Your Progress'), 'the first page\'s proof can be shared');
+    check($page->contains('making%20progress'), 'the post says the player is making progress');
+    $id = pointless_share_id($seed);
+    check($page->contains(rawurlencode("https://tools.lipscomb-soc.org/pointless/share.php?p=$id")),
+          "links point at the player's page on the live site");
+    check($page->contains('action="share.php"') && $page->contains("name=\"p\" value=\"$id\""),
+          'a button opens the player\'s own page');
+    check($page->contains('aria-label="Post on Facebook"') && $page->contains('<svg'), 'the links are labeled icons');
+    check(!$page->contains($seed), 'the seed is not shown');
     foreach (['x.com', 'facebook.com', 'linkedin.com', 'bsky.app', 'threads.net', 'reddit.com'] as $site) {
         check($page->contains("https://www.$site/") || $page->contains("https://$site/"), "links to $site");
     }
     check(!$page->contains('connect.facebook.net'), 'loads no social media scripts');
 
-    $third = new Client();
-    sign_in($third, 'ann@b.com');
-    $page = $third->post('download.php', ['token' => fake_token(FAKE_PUZZLES, $seed)]);
-    check($page->contains('finished the challenge'), 'the fin page\'s token finishes the game');
-    check($page->contains('finished%20all%20' . (FAKE_PUZZLES - 1) . '%20puzzles'), 'the post says the game is finished');
+    $second = new Client(); // A new session, so the token rate limit doesn't apply.
+    sign_in($second, 'ann@b.com');
+    $page = $second->post('download.php', ['token' => fake_token(FAKE_PUZZLES, $seed)]);
+    check($page->contains('I%20finished%20the%20Pointless%20Challenge'), 'the post says the game is finished');
 }
