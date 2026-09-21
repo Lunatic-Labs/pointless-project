@@ -10,5 +10,5 @@ void encrypt_puzzle_test()
                  {15, "greedy_algorithms"},
                  {test_big_seed(), "breadth_first_search"},
                },
-               {"alien lightbox", "Here are the steps he used:"});
+               {"a single green bulb rolls loose", "Here are the steps he used:"});
 }

@@ -10,6 +10,6 @@ void logicgate_puzzle_test()
                  {15, "011101000010010"},
                  {test_big_seed(), "001101010011011"},
                },
-               {"adding the colored squares",
+               {"ejects the battery that got it this far",
                 "<li>Always take the <b>first two circles</b> from the queue to calculate the next value.</li>"});
 }

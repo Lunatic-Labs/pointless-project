@@ -1,6 +1,6 @@
-%TITLE Base Puzzle Rematch
+%TITLE Alien Artifact
 <style>
-    table {
+    .alien-cipher {
         margin: 20px 0;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add a shadow effect */
         background-color: #a0673a; /* Wood grain drawn with CSS so the puzzle works offline */
@@ -11,7 +11,7 @@
         border-radius: 10px;
     }
 
-    td {
+    .alien-cipher td {
         width: 70px; /* Set cell width */
         height: 70px; /* Set cell height */
         text-align: center; /* Center text horizontally */
@@ -21,11 +21,10 @@
         text-shadow: 2px 2px 10px #2dcf08;
     }
 </style>
-<!-- TODO(game.md "Continuity nits"): this is the genuinely alien puzzle -- see the TODO in
-         files-based-intro about which light box gets called "alien." The rematch sub-puzzles
-         are unscored and tokenless; if the other two get an acknowledgement of that, match it
-         here rather than awarding points. -->
-    <p>You're a master decrypter! You have been awarded a whopping 0 points. </p>
+    <p>You're a master decrypter! One trial left, and it is the one that is actually alien.</p>
+
+    <p><small>Rematches are unscored. So is everything else.</small></p>
+
     <p>In a far-off galaxy, there exists an advanced alien civilization that uses a peculiar numbering system. This system is based on a combination of base-16, base-20, and base-31, all intertwined. Here's how it works:</p>
 
     <ul>
@@ -49,7 +48,7 @@
 
     <p class="question">Can you crack the code and unveil the hidden message within the artifact?</p>
 
-    <table>
+    <table class="alien-cipher">
         <tr>
             <td>%PARAM</td>
             <td>%PARAM</td>

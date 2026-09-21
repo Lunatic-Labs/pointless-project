@@ -26,8 +26,6 @@ what a page tells the player, so they are decisions, not cleanups. Each one is d
 - [ ] **Help players find the browser console** in *Maze Rematch*, for example "press F12", without giving away that the
   console is where the puzzle lives.
 - [ ] **Add a worked row to *Based Rematch*,** showing one row converted, summed, and reduced to its least significant bit.
-- [ ] **Even out the pages' tone and titles.** Settle on one shape (congratulations, story, rules, question) and one title
-  style; today they range from two lines to several paragraphs, and from "Encrypt" to "Graph Paper Robot PT II".
 - [ ] **Fix the banner title in dark mode.** `.title` is dark purple on the dark background, in `templates/header.html` and
   `web-server/includes/styles.css` both.
 

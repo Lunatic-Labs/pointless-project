@@ -9,6 +9,9 @@
 # `make production` builds an optimized generator without coverage into
 # production/ (src/main plus a clean copy of resources/). The web server runs
 # that copy and never runs make; a person rebuilds it after changing the code.
+#
+# `make test-web` runs the PHP tests against a freshly built production/, and
+# `make test-all` runs both suites, which is what CI does.
 
 CXX      := g++
 CXXFLAGS := -ggdb -pedantic -std=c++17 -Wextra -Wall -Wshadow -O0 --coverage -MMD -MP
@@ -41,15 +44,32 @@ define clean-generated
 	rm -f $(1)/resources/files*/instructions.html
 endef
 
-.PHONY: build run test coverage production cleanzip clean
+.PHONY: build run test test-web test-all coverage production cleanzip clean
 
 build: $(GEN_BIN) | $(ZIP_DIR)
 
 run: build cleanzip
 	cd src && ./main
 
-test: $(TEST_BIN)
+# game_zipfiles_test writes a real game into resources/ and tests/zipfiles/, so the
+# tests start by clearing what an earlier run left there, the same way run does.
+test: $(TEST_BIN) cleanzip
 	cd tests && ./main $(T)
+
+# test_generate_real_generator runs production/src/main against production/resources,
+# so a production/ older than src/ or resources/ fails the suite (or, worse, passes it
+# against last week's puzzles). Rebuilding it first is the whole point of this target.
+# Note that production depends on a rm -rf of production/, so do not run this while a
+# local php -S is serving downloads from that tree.
+test-web: production
+	php ../web-server/tests/run.php $(T)
+
+# Sub-makes rather than prerequisites: under -j the two suites would otherwise race,
+# because test's cleanzip deletes generated files inside resources/ while production
+# is copying that same directory.
+test-all:
+	$(MAKE) test
+	$(MAKE) test-web
 
 # Requires `make run` or `make test` to have produced coverage data.
 coverage:

@@ -1,226 +1,162 @@
-## What's already working
+# The story layer
 
-Three running gags exist and are consistent across all 11 layers:
+How the game's prose fits together, and the rules to keep it consistent when adding or editing a
+puzzle. Everything described here is implemented unless it sits under "Still open."
 
-1. **"0 points"** — awarded on every page, and [files-math/.desc.html](puzzle-code/resources/files-math/.desc.html) sets it up with "Make sure to keep track of all the points you earn." Payoff in [files-fin](puzzle-code/resources/files-fin/.desc.html): "Points earned: 0."
-2. **The MacGuffin** — named in math, encrypt, binary-addition, logicgate, bst, and revealed in fin. The word is already doing the work you're asking about.
-3. **The callback chain** — every page opens by naming the previous puzzle by nickname ("speedy maze", "Lou's pixel art", "queue of logic gates", "alien lightbox", "Dr. Pepper's code"). I verified the chain matches the play order in [game.cpp:9-21](puzzle-code/src/game.cpp#L9-L21). It's unbroken.
+The puzzles themselves are documented in [README.md](README.md) ("Current Puzzles"); this file
+covers only the narrative that wraps them.
 
-What's missing is that gag #3 already contains a fourth gag that never got finished.
+## The page shape
 
-## The one structural change I'd make: finish the Plot Coupon gag
+All eleven main pages follow the same four beats, in this order:
 
-Three pages award a *useless item*, not just points:
+1. **A short congratulation** — two to four words. "Nicely done!", "Keen eyes!", "The tower stands!"
+   Not a sentence about the previous puzzle's mechanics.
+2. **A character hands over the previous puzzle's item**, in one or two sentences of prose. The
+   item must be the row *above* this puzzle's in `ITEMS` (see "The items" below).
+3. **The puzzle's rules**, using the template's `.callout`, `.figure`, and `.question` classes.
+4. **The question**, in `<p class="question">`.
 
-- color → the message `"brute force"`
-- pixel → a `"color wheel"`
-- rematch → the `"master key"`
+Points are *not* mentioned in the prose. The sidebar that `utils_html_printf()` builds carries the
+token, `Points: 0`, and the running inventory, so a page that also writes "you have been awarded 0
+points" says it twice. [files-maze](puzzle-code/resources/files-maze/.desc.html) is the one
+deliberate exception: the robot "idly observes that you have not yet managed to score any points."
 
-None of them is ever used for anything. That's a Plot Coupon, and it's the funniest thing in the game — but it fires only 3 times out of 11, so it reads as inconsistency rather than a bit. Make it fire every layer, keep a running inventory, and cash it all out in the finale.
+The three rematch sub-pages get no sidebar and no token, so they follow the beats loosely and each
+carries one line acknowledging it: *"Rematches are unscored. So is everything else."*
 
-Proposed item per layer (play order):
+## The four running gags
 
-| # | Puzzle | Item awarded |
-|---|--------|--------------|
-| 1 | math | the message "brute force" *(exists)* |
-| 2 | color | a color wheel *(exists)* |
-| 3 | pixel | one slightly used pixel |
-| 4 | maze | a map of somewhere else |
-| 5 | based-intro | a spare bulb (green) |
-| 6 | encrypt | Dr. Pepper's code *(exists)* |
-| 7 | rematch | the master key *(exists)* |
-| 8 | binary-addition | one dead battery |
-| 9 | logicgate | a Tower of Wisdom, flat-pack |
-| 10 | bst | a map — of the maze you already finished |
-| 11 | fin | one (1) chicken |
+1. **"0 points"** — every page's sidebar says `Points: 0`.
+   [files-math](puzzle-code/resources/files-math/.desc.html) sets it up ("since its also a game,
+   we'll keep score too") and [files-fin](puzzle-code/resources/files-fin/.desc.html) pays it off
+   with "Points earned: 0" and "This ties the all-time record."
+2. **The MacGuffin** — named in math, encrypt, binary-addition, logicgate, and bst, and revealed in
+   fin as a chicken. Never explained anywhere, which is the joke.
+3. **The Plot Coupons** — every layer awards a useless item, the sidebar keeps the running
+   inventory, and fin's sidebar prints the final inventory with what each item turned out to be
+   good for (mostly "never used"). [files-rematch](puzzle-code/resources/files-rematch/.desc.html)
+   names the trope outright, because that layer is mechanically a plot-coupon hunt: three
+   fragments, concatenated into one master key.
+4. **"It may help you on your quest"** — the Oracle's line, repeated verbatim whenever an item
+   changes hands.
 
-Two of these do real narrative work for free:
+## The items
 
-- **The map.** [files-bst/.desc.html](puzzle-code/resources/files-bst/.desc.html) already says *"you lost your map!"* — with no map ever having been given. Award a (wrong) map at maze, and that line becomes a payoff instead of a non-sequitur.
-- **The battery.** [files-binary-addition](puzzle-code/resources/files-binary-addition/.desc.html) opens with the robot *"shut down, its energy reserves depleted."* Award a dead battery there and the joke writes itself.
+The list lives in `ITEMS` in [inventory.cpp](puzzle-code/src/inventory.cpp), in play order, and
+`inventory_html()` renders it. An item is awarded for *solving* its puzzle, so it appears in the
+prose and the sidebar of the **next** page. The first page therefore shows no inventory, and the
+last row (the chicken) is never listed — fin hands it over itself.
 
-**Implementation:** hand-write a growing `<div class="callout">` inventory into each `.desc.html`, right under the opening line. Each page already hard-codes its predecessor's name, so hard-coding the list is consistent with how the pages work and needs no C++ change. (The alternative — accumulating a `strvec_t` in `game_create_puzzles` and having `utils_html_printf` inject an inventory block next to the token block, the way [utils.cpp:207-212](puzzle-code/src/utils.cpp#L207-L212) does — is cleaner but touches the signature on all 14 call sites. Only worth it if you expect to reorder puzzles.)
+| # | Puzzle | Item | Handed over by |
+|---|--------|------|----------------|
+| 1 | math | an abacus | an old traveler (the Oracle) |
+| 2 | color | a color wheel | a pixelated bison |
+| 3 | pixel | a slightly used pixel | Eight-bit Lou |
+| 4 | maze | a map of somewhere else | found |
+| 5 | based-intro | a spare bulb (green) | the artifact, powering down |
+| 6 | encrypt | Dr. Pepper's code | Dr. Pepper |
+| 7 | rematch | a master key | forged from the three numbers |
+| 8 | binary-addition | one dead battery | the golden robot |
+| 9 | logicgate | a Tower of Wisdom, flat-pack | the golden robot |
+| 10 | bst | a map of the maze you had already finished | the golden robot |
+| 11 | fin | one (1) chicken | — |
 
-## Per-file suggested text
+Two of these carry real narrative weight: the maze's **wrong map** turns bst's "you lost your map"
+into a payoff instead of a non-sequitur, and the **dead battery** explains why the robot in
+binary-addition shut down. The **master key** is the only item that ever does anything — it opens
+one zip file and then breaks, which binary-addition says out loud.
 
-### files-math — the Call to Adventure
+Adding a puzzle means adding its row to `ITEMS` in the same position as its call in
+`game_create_puzzles`; `inventory_html()` throws for a puzzle with no row.
 
-Replace the Fetch Quest paragraph with an explicit MacGuffin gloss plus the quest rules that set up all three gags:
+## The titles
 
-```html
-<p>Your mission, should you choose to accept it, is a classic <b>Fetch Quest</b>: a lot of
-puzzles, a long journey, and at the end of it the coveted <b>MacGuffin</b>.</p>
+The `%TITLE` first line of each `.desc.html` becomes the page's `<h2>` and its `<title>`. The
+house style is a short trope name: no article, no "Puzzle", two or three words.
 
-<p>You may be wondering what a MacGuffin <i>is</i>. Excellent question. In the movies, nobody
-ever says. It is the briefcase, the falcon, the plans, the ring &mdash; the thing everybody
-wants, whose only job is to make everybody run around. Ours is no different, and we would
-not dream of spoiling it.</p>
+| Page | Title |
+|---|---|
+| [files-math](puzzle-code/resources/files-math/.desc.html) | Call to Adventure |
+| [files-color](puzzle-code/resources/files-color/.desc.html) | Realm of Adventure |
+| [files-pixel](puzzle-code/resources/files-pixel/.desc.html) | Eight-bit Lou |
+| [files-maze](puzzle-code/resources/files-maze/.desc.html) | Labyrinth |
+| [files-based-intro](puzzle-code/resources/files-based-intro/.desc.html) | Mysterious Artifact |
+| [files-encrypt](puzzle-code/resources/files-encrypt/.desc.html) | Eccentric Genius |
+| [files-rematch](puzzle-code/resources/files-rematch/.desc.html) | Plot Coupons |
+| [files-rematch-maze](puzzle-code/resources/files-rematch-maze/.desc.html) | Oracle's Labyrinth |
+| [files-rematch-encrypt](puzzle-code/resources/files-rematch-encrypt/.desc.html) | Dr. Pepper Apologizes |
+| [files-rematch-based](puzzle-code/resources/files-rematch-based/.desc.html) | Alien Artifact |
+| [files-binary-addition](puzzle-code/resources/files-binary-addition/.desc.html) | Companion Reawakens |
+| [files-logicgate](puzzle-code/resources/files-logicgate/.desc.html) | Tower of Wisdom |
+| [files-bst](puzzle-code/resources/files-bst/.desc.html) | Lost Without a Map |
+| [files-fin](puzzle-code/resources/files-fin/.desc.html) | MacGuffin Revealed |
 
-<div class="callout">
-    <p><b>The rules of the quest</b></p>
-    <ul>
-        <li>Each puzzle's answer is the password to the next zip file.</li>
-        <li>Each puzzle awards <b>points</b>. Keep careful track of them.</li>
-        <li>Each puzzle awards an <b>item</b>. It may help you on your quest.</li>
-    </ul>
-</div>
-```
+Note that "Graph Paper Robot I / II" survives in [README.md](README.md) and in the source comments
+of `binary-addition-puzzle.cpp` and `logicgate-puzzle.cpp`. That is the *mechanic's* name, not a
+page title, and it should stay.
 
-Keep the sentence "The password is the way to access the next zip file." verbatim — [math-puzzle-test.cpp:7](puzzle-code/tests/math-puzzle-test.cpp#L7) asserts it.
+## The cast
 
-### files-color — introduce the mentor
+Four characters, each with one job:
 
-"It May Help You on Your Quest" works best as a *character tic*. You already have an Oracle in [files-rematch-maze](puzzle-code/resources/files-rematch-maze/.desc.html); promote it to the recurring Old Person Who Hands You Things, and let the line repeat verbatim on every award.
+- **The Oracle**, an old traveler — the mentor who hands over the useless items, always with the
+  same line. She opens the game in [files-color](puzzle-code/resources/files-color/.desc.html) and
+  turns out to be the voice in the console in
+  [files-rematch-maze](puzzle-code/resources/files-rematch-maze/.desc.html).
+- **The golden robot** — the loyal sidekick. Appears in maze, runs out of power in
+  binary-addition, and hands over the last three items.
+- **Dr. Pepper**, the eccentric genius — the mad scientist. Encrypts the phrase in
+  [files-encrypt](puzzle-code/resources/files-encrypt/.desc.html), and is the one who drops the
+  free password into the goopifying machine in
+  [files-rematch-encrypt](puzzle-code/resources/files-rematch-encrypt/.desc.html).
+- **Eight-bit Lou** — the unreliable narrator, in one line: *"Lou seems a little off today… or
+  maybe it's you?"*
 
-```html
-<p>Congratulations on completing the first challenge! You have been awarded <b>0 points</b>
-and the message <b>"brute force."</b></p>
+Reuse these four rather than adding more.
 
-<p>An old traveler presses it into your hands. "It may help you on your quest," she says, and
-declines to elaborate. Wonder what that could be? Keep it. You are now ready to move on to
-the first real puzzle.</p>
-```
+## Still open
 
-### files-maze — award the wrong map
+- **Website copy.** [index.php](web-server/index.php) is the front door and still reads as a
+  mailing-list signup; it is the natural place to promise a MacGuffin and refuse to say what it is.
+  [download.php](web-server/download.php)'s progress block is the natural home for the points gag's
+  web payoff (a `Points earned: 0` line under "Puzzles solved") and for reframing the token as the
+  only proof this quest issues.
+- **[ideas/storyline-ideas.txt](ideas/storyline-ideas.txt)** holds only an unrelated "Data
+  Syndicate" pitch, in a serious cyber-thriller register that the shipped game never adopted.
+  Either rewrite it to match the game or retire it.
+- Puzzle-level prose problems that are not about the story layer — the *Logic Gate* rules that
+  never say the queue starts at the right, the maze colors whose names disagree with the tiles, the
+  missing "press F12" hint in *Maze Rematch*, the *Based Rematch* rules with no worked row — are
+  tracked in [ideas/cleanup-tasks.md](ideas/cleanup-tasks.md), not here.
 
-```html
-<p>So, you have beaten the "Lou's pixel art" puzzle, good job! You have been awarded
-<b>0 points</b> and <b>a map</b>. The map is of somewhere else. Keep it anyway &mdash; you
-will want a map later, and this will not be it. But there's no time to celebrate.</p>
-```
+## Editing the prose safely
 
-The existing closing line, *"(Sometimes, the only way out is the fastest way. Can you compress the path to escape?)"*, is a good place for the Journey trope's first jab:
+Text-only edits never touch `utils_rng_roll`, so passwords do not move and already-downloaded games
+are unaffected. The one way to break `make test` is the `CHECK_PUZZLE` snippet list: each puzzle's
+test asserts one or two exact strings from its page, to catch a `.desc.html` that stopped being
+rendered at all. Currently asserted, per puzzle:
 
-```html
-<p><i>They say it's the journey that counts. This journey is scored on length, so: no.</i></p>
-```
+| Test | Asserted |
+|---|---|
+| math | `way to access the next puzzle.` |
+| color | `An old traveler hands you an abacus` · `Web colors are defined by three hexadecimal values` |
+| pixel | `color wheel` · `Lou seems a little off today… or maybe it's just you?` |
+| maze | `Eight-bit Lou fades in` · `should be replaced by the letter followed by the number` |
+| based-intro | `Good job encoding those instructions!` · `the artifact below means 5 + 0 + 3&times;49 = 152` |
+| encrypt | `a single green bulb rolls loose` · `Here are the steps he used:` |
+| rematch | `put them together in order` |
+| rematch-maze | `You vaguely recall that typing <code>instructions</code> into the …` |
+| rematch-encrypt | `All we have are the magic machines that encrypted the password.` |
+| rematch-based | the `<li>` explaining base-16 |
+| binary-addition | `master key` · the first robot rule `<li>` |
+| logicgate | `ejects the battery that got it this far` · the first queue-rule `<li>` |
+| bst | `boxes it up flat-packed` · `You will need to look at the mathematical street signs to find your way to x.` |
+| fin | `pointless journey` · `<h2>MacGuffin Revealed</h2>` · the whole `.desc.html` body |
 
-### files-rematch — the literal Plot Coupon page
+Rewriting around one of these is fine; just update the test in the same commit. `fin`'s test embeds
+the whole description, so that page's body is self-updating apart from its title.
 
-This is your driest page and also the one page that is *mechanically* a plot-coupon hunt: three fragments, concatenated into one artifact.
-
-```html
-<p>With "Dr. Pepper's code" and 0 extra points, you have made it to the round of rematches!</p>
-
-<p>Every quest has this part. Three trials, three fragments, one artifact. Scholars call the
-fragments <b>Plot Coupons</b>: collect the full set, mail them in, receive one (1) plot.</p>
-
-<p>Here you will replay three puzzles you have already solved, but a bit remixed. Each one you
-finish gives you a number. When you have all three, put them together in order (rematch 1,
-then 2, then 3) to forge them into the <b>master key</b>.</p>
-
-<p><small>The master key opens exactly one thing, once. Standard for master keys in this
-line of work.</small></p>
-```
-
-That last line sets up binary-addition, where you then add: *"The key has already stopped working."*
-
-### files-bst — the third-act lostness
-
-Keep the sentence `"You will need to look at the mathematical street signs to find your way to x."` exactly — [bst-puzzle-test.cpp:14](puzzle-code/tests/bst-puzzle-test.cpp#L14) asserts it. Change only what's around it:
-
-```html
-<p>Great job, you have completed the "queue of logic gates!" For this you get <b>0 points</b>
-and <b>a map</b> &mdash; a real one this time, of the maze you finished six puzzles ago.</p>
-
-<p>You are closing in on the MacGuffin. You are also lost, because the map you were given is of
-somewhere else and the map you need is gone. This always happens in the third act. You will
-need to look at the mathematical street signs to find your way to x.</p>
-```
-
-### files-fin — where "It's the Journey That Counts" belongs
-
-This is the weakest page relative to its position: it's the punchline slot and currently delivers chicken, kaomoji, and "hope you learned something." Cash in all three gags at once:
-
-```html
-<h3>Final inventory</h3>
-<div class="callout">
-    <ul>
-        <li>the message "brute force" &mdash; never used</li>
-        <li>a color wheel &mdash; never used</li>
-        <li>one slightly used pixel &mdash; never used</li>
-        <li>a map of somewhere else &mdash; never used</li>
-        <li>a spare bulb &mdash; never used</li>
-        <li>Dr. Pepper's code &mdash; never used</li>
-        <li>a master key &mdash; used once, then broke</li>
-        <li>one dead battery &mdash; never used</li>
-        <li>a Tower of Wisdom, flat-pack &mdash; some assembly required</li>
-        <li>a map of the maze you had already finished &mdash; never used</li>
-        <li>one (1) chicken</li>
-    </ul>
-</div>
-
-<p>This is the part where we tell you <b>it's the journey that counts</b>. Please notice that we
-waited to tell you this until <i>after</i> the journey, once there was nothing left in it
-for us.</p>
-
-<p>Still. The base conversion was real. The maze was real. The logic gates, the binary adder,
-the tree of street signs &mdash; all real, all yours now, and not one of them fits in an
-inventory. The chicken was just the excuse to hand them to you.</p>
-
-<h2>Points earned: <b>0</b></h2>
-<p><small>This ties the all-time record.</small></p>
-```
-
-Optional Sequel Hook as the final line: `<p><small>The chicken has been stolen. &mdash; <i>Pointless II</i>, coming whenever.</small></p>`
-
-Keep the substring `pointless journey` intact — [fin-puzzle-test.cpp:7](puzzle-code/tests/fin-puzzle-test.cpp#L7) asserts it (and also asserts the whole `.desc.html` is embedded, so the rest of that file is self-updating).
-
-## Page titles: free trope flavor
-
-The `<h2>` on each page comes from the `%TITLE` first line of the puzzle's `.desc.html`, and they're currently utilitarian — "Color Puzzle", "Encrypt", "BST Puzzle", "Base Intro Puzzle". Each is one line of prose, affects no rolls, and appears in no test. Cheapest high-impact edit in the whole review:
-
-| Description | Current | Suggested |
-|---|---|---|
-| [files-math](puzzle-code/resources/files-math/.desc.html) | Hello Pointless | The Call to Adventure |
-| [files-color](puzzle-code/resources/files-color/.desc.html) | Color Puzzle | The Ordinary World, in Hexadecimal |
-| [files-pixel](puzzle-code/resources/files-pixel/.desc.html) | Pixel Puzzle | Trust Nothing, Especially Lou |
-| [files-maze](puzzle-code/resources/files-maze/.desc.html) | Maze Puzzle | The Labyrinth |
-| [files-based-intro](puzzle-code/resources/files-based-intro/.desc.html) | Base Intro Puzzle | The Cryptic Artifact |
-| [files-encrypt](puzzle-code/resources/files-encrypt/.desc.html) | Encrypt | The Eccentric Genius |
-| [files-rematch](puzzle-code/resources/files-rematch/.desc.html) | Rematch Instructions | Gather the Plot Coupons |
-| [files-binary-addition](puzzle-code/resources/files-binary-addition/.desc.html) | Graph Paper Robot | The Companion Reawakens |
-| [files-logicgate](puzzle-code/resources/files-logicgate/.desc.html) | Graph Paper Robot PT II | The Tower of Wisdom |
-| [files-bst](puzzle-code/resources/files-bst/.desc.html) | BST Puzzle | Lost Without a Map |
-| [files-fin](puzzle-code/resources/files-fin/.desc.html) | Goodbye Pointless | The MacGuffin Revealed |
-
-## Cast: four characters appear once each
-
-You have Lou (pixel), Dr. Pepper (encrypt), the Oracle (rematch-maze), and the golden robot (maze + binary-addition). Only the robot recurs. Cheapest fix is to reuse the existing four rather than invent more:
-
-- **The Oracle** → the mentor who hands over every useless item, always with the same line.
-- **The golden robot** → the Loyal Sidekick. Note that [logicgate](puzzle-code/resources/files-logicgate/.desc.html) is titled "Graph Paper Robot PT II" but its text never mentions the robot at all — that's a free place to bring it back.
-- **Dr. Pepper** → the Mad Scientist. [files-rematch-encrypt](puzzle-code/resources/files-rematch-encrypt/.desc.html) already has his slapstick voice ("we *accidentally* dropped the password into a goopifying machine") without attributing it to him. Attribute it.
-- **Lou** → the Unreliable Narrator, already perfect in one line: *"Lou seems a little off today… or maybe it's you."*
-
-## Continuity nits
-
-- **"alien lightbox"** ([files-encrypt](puzzle-code/resources/files-encrypt/.desc.html)) refers back to based-intro, whose light box isn't alien — it's "a cryptic structure." The *alien* one is [files-rematch-based](puzzle-code/resources/files-rematch-based/.desc.html), which comes later. Either make based-intro's light box explicitly alien, or change the callback. Note the string is asserted at [encrypt-puzzle-test.cpp:12](puzzle-code/tests/encrypt-puzzle-test.cpp#L12), so changing it means updating that line.
-- **"You seemed to struggle on the first encryption puzzle"** ([files-rematch-encrypt](puzzle-code/resources/files-rematch-encrypt/.desc.html)) presumes a failure that may not have happened. Trope-ify it instead: *"The Oracle has reviewed your performance and is concerned. It would like to give you a freebie."*
-- **The rematch sub-puzzles have no "0 points" line** except rematch-based. Since they're also the only pages with no token, that's defensible — but a one-line acknowledgement ("Rematches are unscored. So is everything else.") would keep the voice unbroken.
-- **The rematch-maze key and battery are the only items in the game that actually do something.** Worth a wink there: *"An item that is genuinely required. Savor it."*
-
-## Website copy
-
-[index.php:37-42](web-server/index.php#L37-L42) is the front door and currently reads as a mailing-list signup. Suggest:
-
-```html
-<h2>The Pointless Challenge.</h2>
-<p>
-    At the end of a chain of locked zip files there is a <b>MacGuffin</b>. We will not tell
-    you what it is. That is what makes it a MacGuffin.
-</p>
-<p>
-    Between you and it: eleven puzzles, a number of items you will never need, and exactly
-    <b>0 points</b>. Register your email and we'll send you on your way.
-    Already registered? Log in <a href="./login.php">here</a>.
-</p>
-```
-
-And in [download.php:81-89](web-server/download.php#L81-L89), the progress block is the natural home for the points gag's web payoff — add a second line under "Puzzles solved" reading `Points earned: <b>0</b>`, and reframe the token as quest-proof: *"Every puzzle page shows a token: proof you were there, which is the only kind of proof this quest issues."*
-
-## Before you apply any of this
-
-Text-only edits don't touch `utils_rng_roll`, so no password changes and no reseeding of downloaded games. The only way these edits break `make test` is the `CHECK_PUZZLE` snippet list. The asserted phrases you must preserve (or update in lockstep) are: `speedy maze`, `brute force`, `color wheel`, `master key`, `alien lightbox`, `adding the colored squares`, `Lou's pixel art`, `queue of logic gates`, `pointless journey`, plus the five exact prose sentences in math/color/maze/bst/logicgate tests.
-
-Per CLAUDE.md, narrative changes to a puzzle also mean updating its "Current Puzzles" section in [README.md](README.md#L290), and any new running gag is worth a line in [ideas/storyline-ideas.txt](ideas/storyline-ideas.txt) — which currently holds only an unrelated "Data Syndicate" pitch in a completely different (serious, cyber-thriller) register than the game actually shipped with.
+Per [CLAUDE.md](CLAUDE.md), a change to a puzzle's behavior also means updating its "Current
+Puzzles" section in [README.md](README.md), and anything that looks like a leftover belongs under
+the README's "Issues".

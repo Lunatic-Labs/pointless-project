@@ -9,5 +9,5 @@ void fin_puzzle_test()
 
   CHECK_PUZZLE(fin_puzzle_create,
                {{1, ""}, {5, ""}, {10, ""}, {15, ""}, {test_big_seed(), ""}},
-               {"pointless journey", "<h2>Goodbye Pointless</h2>", body});
+               {"pointless journey", "<h2>MacGuffin Revealed</h2>", body});
 }

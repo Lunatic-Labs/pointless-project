@@ -26,6 +26,10 @@ Puzzle generator:
 Tests:
 - `make test`: builds `tests/main` from `tests/*.cpp` plus every `src/` object except `src/main.o`, then runs it in `tests/`. Exits nonzero if any test fails.
 - `make test T=bst` (or `./main bst` in `tests/`): runs only the tests whose names contain `bst`.
+- `make test` runs `cleanzip` first, so a test run never picks up files an earlier run left in `resources/`.
+- `make test-web` runs `make production` and then the PHP tests against that fresh tree (`T=` filters them too);
+  `make test-all` runs both suites in order, which is what CI does. Do not run either while a local `php -S` is
+  serving downloads, since `make production` deletes and recreates `production/`.
 - Tests are functions listed in the `tests` array in `tests/main.cpp` and declared in `tests/include/test.h`. They use `CHECK`, `CHECK_EQ`, `CHECK_THROWS`, and `CHECK_PUZZLE` (from `test.h`), which record a failure and keep going; don't use `assert`.
 - Tests run with `FLAGS |= ANS_ONLY`, so they don't write files, except `game_zipfiles_test`, which clears it to write a real game (into `../resources/` and `tests/zipfiles/`) and then unlocks every layer, following the BST signs like a player.
 - `seeds_test` checks that 200 players all get answers, different games, and no repeated token. Pinned values (`utils_test`, and the expected passwords) must be updated whenever the RNG or a puzzle's rolls change.

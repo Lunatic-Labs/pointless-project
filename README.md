@@ -49,6 +49,8 @@ where `opt` is one of:
 - *(none)* or `build`: build the generator, `src/main`
 - `run`: build, remove old zipfiles, and run the generator from `src/`
 - `test`: build and run the automated tests; `make test T=<name>` runs only tests whose names contain `<name>` (see [Automated Tests](#automated-tests))
+- `test-web`: rebuild `production/` and run the web server tests against it (see [Web Server Tests](#web-server-tests))
+- `test-all`: run both suites, as CI does
 - `cleanzip`: remove all generated zipfiles and generated puzzle files
 - `clean`: also remove the `build/` directory and both binaries (does not touch `production/`)
 - `coverage`: see [Code Coverage](#code-coverage)
@@ -756,6 +758,10 @@ php web-server/tests/run.php          # all tests
 php web-server/tests/run.php index    # only tests whose names contain "index"
 ```
 
+One test, `test_generate_real_generator`, runs the real generator out of `puzzle-code/production/`, which
+nothing rebuilds on its own; it fails when that copy is older than `src/` or `resources/`. Running the suite
+as `make test-web` (or `make test-all`) from `puzzle-code/` rebuilds `production/` first and avoids that.
+
 `run.php` starts its own `php -S` on a free port, so no server needs to be running (and one already on port 8000 is not affected).
 The server and tests use a temporary directory for the players file (`POINTLESS_PLAYERS_FILE`) and the games directory next to it, a fake puzzle generator
 (`POINTLESS_GENERATOR_DIR`), PHP sessions, and `TMPDIR`. The real `data/` and `puzzle-code/production/` are never changed.
@@ -805,7 +811,11 @@ From `puzzle-code/`, run:
 ```bash
 make test         # all tests
 make test T=bst   # only tests whose names contain "bst"
+make test-all     # these tests and the web server tests
 ```
+
+`make test` clears the zips and generated files an earlier `make run` or test left in `resources/`
+and `tests/zipfiles/` before it starts, so a run never mixes in another game's files.
 
 This compiles the tests together with the generator's code (everything in `src/` except `main.cpp`)
 into `tests/main`, then runs it from `puzzle-code/tests/`. Each test prints `PASS` or `FAIL` (after the failed checks),
@@ -907,9 +917,6 @@ From a review of the puzzle pages on 2026-09-19 (the wording fixes are in
   it, and the players are pre-college students.
 - **The *Based Rematch* rules are hard to follow.** The three overlapping bases (0-20 in base-20, 21-42 in base-31,
   A-F in base-16) are stated but never demonstrated; one worked row would settle them.
-- **The pages' tone and titles are uneven.** Some are two short lines (*BST*, *Rematch Instructions*) and others are
-  several paragraphs of flavor text (*Graph Paper Robot*, *Base Intro*). Titles mix styles too: "Encrypt",
-  "Base Intro Puzzle", "Graph Paper Robot PT II".
 - **The banner title is nearly unreadable in dark mode.** `.title` is dark purple (`#331E54`) on the dark background,
   on the puzzle pages and the website both.
 
