@@ -19,23 +19,39 @@
     justify-content: center;
 }
 
+/* A solid extrusion (stacked 1px shadows) instead of a detached drop shadow. Dark mode swaps
+   face and side, since the purple face vanishes on the dark background. */
 .title {
+    --title-face: #331E54;
+    --title-side: #F4AA00;
+    --title-edge: #B87F00;
     font-size: 72px;
     font-weight: bold;
-    color: #331E54;
-    text-shadow: 4px 4px 0 #F4AA00;
+    color: var(--title-face);
+    text-shadow: 1px 1px 0 var(--title-side), 2px 2px 0 var(--title-side), 3px 3px 0 var(--title-side),
+                 4px 4px 0 var(--title-side), 5px 5px 0 var(--title-edge);
+}
+
+.changeTheme .title {
+    --title-face: #F4AA00;
+    --title-side: #6A45A8;
+    --title-edge: #331E54;
 }
 
 .imagen {
-    height: 9rem;
     padding-left: 28px;
+}
+
+/* A block, so the bison's hooves are its bottom edge (an inline object sits on the text baseline). */
+.imagen object {
+    display: block;
 }
 
 .container {
     width: 80%;
     max-width: 52rem;
-    margin: -4px auto 0;
-    /* This makes the bison stand on the box. We were cookin bro.*/
+    margin: 0 auto;
+    /* The bison stands on the box. */
     padding: 20px 32px;
     border: 1px solid #ccc;
     border-radius: 8px;

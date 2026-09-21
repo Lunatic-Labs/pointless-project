@@ -171,7 +171,7 @@ function test_download_health_bar(): void
     sign_in($second, 'ann@b.com');
     $page = $second->post('download.php', ['token' => fake_token(FAKE_PUZZLES, $seed)]);
     check($page->contains('aria-valuenow="100"'), 'the fin page\'s token fills the bar');
-    check($page->contains('finished the challenge'), 'and finishes the game');
+    check($page->contains('completed the challenge'), 'and finishes the game');
 }
 
 function test_download_progress_first(): void
