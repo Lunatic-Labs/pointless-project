@@ -119,6 +119,7 @@ function fake_token(int $n, string $seed): string
 //   'ok'      writes zipfiles/puzzle1.zip containing "seed=<seed>"
 //   'fail'    exits with status 1
 //   'no-zip'  exits with status 0 without writing a zip
+//   'no-json' ignores -j, like a production tree built before tokens, and writes the zip
 //   'big'     writes a 64 MB zipfiles/puzzle1.zip, too big to send before a client hangs up
 //   'missing' no src/main at all
 function fake_generator(string $mode = 'ok'): void
@@ -147,7 +148,7 @@ function fake_generator(string $mode = 'ok'): void
         ]) . "\\n", FILE_APPEND);
         \$args = array_slice(\$argv, 1);
         \$seed = \$args[array_search('-s', \$args, true) + 1];
-        if (in_array('-j', \$args, true)) {
+        if (in_array('-j', \$args, true) && $mode !== 'no-json') {
             \$puzzles = [];
             for (\$n = 1; \$n <= FAKE_PUZZLES; \$n++) {
                 \$last = \$n === FAKE_PUZZLES;
@@ -163,7 +164,7 @@ function fake_generator(string $mode = 'ok'): void
             fwrite(STDERR, "fake generator failure\\n");
             exit(1);
         }
-        if ($mode === 'ok') {
+        if ($mode === 'ok' || $mode === 'no-json') {
             file_put_contents('zipfiles/puzzle1.zip', "seed=\$seed");
         }
         if ($mode === 'big') {

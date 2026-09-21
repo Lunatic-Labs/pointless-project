@@ -149,3 +149,49 @@ function test_download_logs_events(): void
     check(array_slice($rows[1], 1, 3) === ['download', 'ann@b.com', player_seed('ann@b.com') . '.zip'],
           'the download is logged with the file served');
 }
+
+function test_download_progress_bar(): void
+{
+    $client = new Client();
+    register($client, 'ann@b.com');
+    check(!$client->get('download.php')->contains('progress-bar'), 'no progress bar before the game is downloaded');
+
+    $client->post('download.php');
+    $page = $client->get('download.php');
+    check(substr_count($page->body, 'title="Puzzle ') === FAKE_PUZZLES - 1, 'one segment per puzzle');
+    check($page->contains('You are on puzzle <b>1</b>'), 'a new player is on puzzle 1');
+
+    $seed = player_seed('ann@b.com');
+    $page = $client->post('download.php', ['token' => fake_token(3, $seed)]);
+    check(substr_count($page->body, 'class="solved"') === 2, 'two segments are solved');
+    check($page->contains('aria-valuenow="2"'), 'the bar reports the level');
+    check($page->contains('You are on puzzle <b>3</b>'), 'the player is on the next puzzle');
+}
+
+function test_download_share_links(): void
+{
+    $client = new Client();
+    register($client, 'ann@b.com');
+    $client->post('download.php');
+    $seed = player_seed('ann@b.com');
+    check(!$client->get('download.php')->contains('Share Your Progress'), 'nothing to share before solving a puzzle');
+    check(!$client->post('download.php', ['token' => fake_token(1, $seed)])->contains('Share Your Progress'),
+          'the first page\'s token solves nothing, so still nothing to share');
+
+    $second = new Client(); // A new session, so the token rate limit doesn't apply.
+    sign_in($second, 'ann@b.com');
+    $page = $second->post('download.php', ['token' => fake_token(2, $seed)]);
+    check($page->contains('Share Your Progress'), 'a solved puzzle can be shared');
+    check($page->contains('solved%201%20of%20' . (FAKE_PUZZLES - 1)), 'the post says how far the player got');
+    check($page->contains('https%3A%2F%2Ftools.lipscomb-soc.org%2Fpointless%2F'), 'links point at the live site');
+    foreach (['x.com', 'facebook.com', 'linkedin.com', 'bsky.app', 'threads.net', 'reddit.com'] as $site) {
+        check($page->contains("https://www.$site/") || $page->contains("https://$site/"), "links to $site");
+    }
+    check(!$page->contains('connect.facebook.net'), 'loads no social media scripts');
+
+    $third = new Client();
+    sign_in($third, 'ann@b.com');
+    $page = $third->post('download.php', ['token' => fake_token(FAKE_PUZZLES, $seed)]);
+    check($page->contains('finished the challenge'), 'the fin page\'s token finishes the game');
+    check($page->contains('finished%20all%20' . (FAKE_PUZZLES - 1) . '%20puzzles'), 'the post says the game is finished');
+}

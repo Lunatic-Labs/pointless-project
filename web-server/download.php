@@ -6,6 +6,10 @@ require_once __DIR__ . '/includes/events.php';
 // A player's first download runs the puzzle generator, so a session must wait this many seconds between downloads.
 const POINTLESS_DOWNLOAD_INTERVAL = 10;
 
+// The live site, which share links point at. It is fixed rather than built from the request, so a
+// post made from a test server still sends friends to the real site.
+const POINTLESS_SITE_URL = 'https://tools.lipscomb-soc.org/pointless/';
+
 // Only signed-in players can download their personalized puzzle. (Tokens are
 // throttled too, by POINTLESS_TOKEN_INTERVAL in includes/events.php.)
 if (!isset($_SESSION["email"])) {
@@ -62,6 +66,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["token"])) {
 
 // How far this player has come. $puzzles is 0 until they have downloaded their game.
 [$level, $puzzles] = pointless_player_progress($_SESSION["email"]);
+$finished = $puzzles > 0 && $level >= $puzzles;
+
+// Links for posting a solved puzzle. Plain share URLs, with no SDKs, so the page loads nothing from
+// the sites until the player clicks. Facebook and LinkedIn take only the URL; they read the page.
+$share = [];
+if ($level > 0) {
+    $text = $finished ? "I finished all $puzzles puzzles of the Pointless Challenge!"
+                      : "I have solved $level of $puzzles puzzles in the Pointless Challenge.";
+    $u = rawurlencode(POINTLESS_SITE_URL);
+    $t = rawurlencode($text);
+    $both = rawurlencode($text . ' ' . POINTLESS_SITE_URL);
+    $share = [
+        'X' => "https://x.com/intent/tweet?text=$t&url=$u&hashtags=Pointless,LU",
+        'Facebook' => "https://www.facebook.com/sharer/sharer.php?u=$u",
+        'LinkedIn' => "https://www.linkedin.com/sharing/share-offsite/?url=$u",
+        'Bluesky' => "https://bsky.app/intent/compose?text=$both",
+        'Threads' => "https://www.threads.net/intent/post?text=$both",
+        'Reddit' => "https://www.reddit.com/submit?url=$u&title=$t",
+    ];
+}
 ?>
 <?php require __DIR__ . '/includes/header.php'; ?>
     <div class="container">
@@ -95,6 +119,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["token"])) {
             Puzzles solved:
             <b><?php echo $level; ?><?php echo $puzzles ? " of $puzzles" : ""; ?></b>
         </p>
+        <?php if ($puzzles): ?>
+            <div class="progress-bar" role="progressbar" aria-label="Puzzles solved"
+                 aria-valuemin="0" aria-valuemax="<?php echo $puzzles; ?>" aria-valuenow="<?php echo $level; ?>">
+                <?php for ($n = 1; $n <= $puzzles; $n++): ?>
+                    <span class="<?php echo $n <= $level ? 'solved' : ($n === $level + 1 ? 'current' : ''); ?>"
+                          title="Puzzle <?php echo $n; ?>"></span>
+                <?php endfor; ?>
+            </div>
+            <p class="step">
+                <?php if ($finished): ?>
+                    You have finished the challenge. Congratulations!
+                <?php else: ?>
+                    You are on puzzle <b><?php echo $level + 1; ?></b>.
+                <?php endif; ?>
+            </p>
+        <?php endif; ?>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="tokenForm">
             <label for="token">Proof of progress:</label>
             <input type="text" id="token" name="token" autocomplete="off" spellcheck="false" required>
@@ -102,4 +142,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["token"])) {
             <button type="submit">Submit Proof</button>
         </form>
     </div>
+    <?php if ($share): ?>
+        <div class="container">
+            <h2>Share Your Progress</h2>
+            <p>
+                <?php echo $finished ? "You solved every puzzle." : "You have solved $level of $puzzles puzzles."; ?>
+                Tell your friends, and dare them to catch up.
+            </p>
+            <p class="share">
+                <?php foreach ($share as $site => $url): ?>
+                    <a href="<?php echo htmlspecialchars($url); ?>" target="_blank" rel="noopener noreferrer"><?php echo $site; ?></a>
+                <?php endforeach; ?>
+            </p>
+        </div>
+    <?php endif; ?>
 <?php require __DIR__ . '/includes/footer.php'; ?>

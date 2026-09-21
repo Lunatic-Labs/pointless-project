@@ -720,6 +720,12 @@ A session may submit at most one token every 5 seconds (`POINTLESS_TOKEN_INTERVA
 `pointless_submit_token_throttled()`, which both pages that take a token call), which is a different job from the
 download throttle: that one protects the generator from repeated runs, this one protects the record.
 
+Once the game is downloaded, `download.php` draws the level as a progress bar with one segment per puzzle (solved ones
+filled, the current one outlined) and says which puzzle the player is on. After the first solved puzzle it also offers
+links to post their progress on X, Facebook, LinkedIn, Bluesky, Threads, and Reddit. These are plain share URLs, not the
+sites' SDKs, so the page loads nothing from those sites. They always point at the live site (`POINTLESS_SITE_URL` in
+`download.php`), wherever the page is served from.
+
 ### How to Start
 
 A person builds the production generator **for local use**: once, and again whenever the puzzle code or resources
@@ -887,6 +893,9 @@ What this repo must keep true for that to work:
 - **The player file and the games directory are runtime state outside the deploy tree.** They hold real names and
   emails, and each player's permanent zip, and are written while the site runs; a deploy never touches them. If Apache's `POINTLESS_PLAYERS_FILE` were missing, players would go
   into `data/` inside a release and be lost at the next deploy.
+- **`web-server/health.php` answers `ok`** only when both environment variables are set and name usable paths. The
+  deploy requests it after switching releases and fails if the answer is anything else, so keep it in step with what
+  `includes/` needs from the server, and keep paths out of its output.
 - **Every page link is relative**, because the site is served under `/pointless/`, not at the root.
 - **The tests must pass on a clean checkout**, with nothing but `g++`, `libzip-dev`, and `php-cli`, since they are the
   deploy's gate.

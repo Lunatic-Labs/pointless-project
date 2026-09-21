@@ -21,6 +21,7 @@ require_once __DIR__ . '/generate-test.php';
 require_once __DIR__ . '/events-test.php';
 require_once __DIR__ . '/index-test.php';
 require_once __DIR__ . '/download-test.php';
+require_once __DIR__ . '/health-test.php';
 
 $tests = [
     'test_players_file_from_env',
@@ -37,6 +38,7 @@ $tests = [
     'test_generate_missing_generator',
     'test_generate_generator_fails',
     'test_generate_no_zip',
+    'test_generate_player_zip_no_json',
     'test_generate_player_zip_stored',
     'test_generate_player_answers',
     'test_generate_player_zip_unregistered',
@@ -57,6 +59,7 @@ $tests = [
     'test_index_register',
     'test_index_session_cookie',
     'test_index_invalid_email',
+    'test_index_players_file_unwritable',
     'test_index_email_with_apostrophe',
     'test_index_names_optional',
     'test_index_normalizes_email',
@@ -79,6 +82,13 @@ $tests = [
     'test_download_bad_token',
     'test_download_token_rate_limited',
     'test_download_logs_events',
+    'test_download_progress_bar',
+    'test_download_share_links',
+
+    'test_health_ok',
+    'test_health_players_dir_missing',
+    'test_health_players_file_unwritable',
+    'test_health_generator_missing',
 ];
 
 $filter = $argv[1] ?? '';

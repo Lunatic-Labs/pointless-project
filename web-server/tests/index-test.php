@@ -51,6 +51,23 @@ function test_index_invalid_email(): void
     check($client->get('download.php')->status === 302, 'no session is started');
 }
 
+function test_index_players_file_unwritable(): void
+{
+    if (posix_getuid() === 0) {
+        skip('root can write a read-only directory');
+    }
+    $data = dirname(players_path());
+    mkdir($data, 0500, true);
+    try {
+        $client = new Client();
+        $page = register($client, 'ann@b.com');
+        check($page->contains('Registration failed'), 'shows the registration failed error');
+        check($client->get('download.php')->status === 302, 'no session is started');
+    } finally {
+        chmod($data, 0700); // So reset_state() can delete it.
+    }
+}
+
 function test_index_email_with_apostrophe(): void
 {
     $client = new Client();

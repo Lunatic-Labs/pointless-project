@@ -74,6 +74,7 @@ The Makefile uses wildcards, so no build changes are needed. If the puzzle write
 - By decision, signing in needs only an email and the forms have no CSRF tokens (see README "Web Server").
 - Every puzzle page shows a token (`utils_token()`, eight characters from `TOKEN_ALPHABET`), rolled from a seed derived with the name `"token"` so it costs the puzzle no rolls. `utils_html_printf` renders it at the top of the sidebar; the three rematch sub-puzzles pass `""` and get none. The pages and the website call it a "proof of progress"; the code keeps the name `token`.
 - Tokens are **frozen** in `games/<seed>.json` when a player's game is generated, and never recomputed: a recomputed token would disagree with the zip the player already holds. `download.php` and `index.php` take submissions through `includes/events.php`, which appends `data/events.csv` (`Time,Event,Email,Detail,Level`, append-only) and computes the level as (highest accepted token index) - 1.
+- `health.php` is for the deploy, not players: it answers `ok` (else 503 with reasons, no paths) only if `POINTLESS_PLAYERS_FILE` and `POINTLESS_GENERATOR_DIR` are set and usable.
 - Deployment (README "Deployment") is `bin/deploy pointless` on `tools.lipscomb-soc.org`, defined in the `dtowell/tools` repo: it builds on the server (Ubuntu 22.04, hence the 22.04 CI job), gates on `make test` and the PHP tests, and serves the site under `/pointless/`, so page links must stay relative.
 
 ## Non-production material

@@ -55,12 +55,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             you what it is. That is what makes it a MacGuffin.
         </p>
         <p>
-            A series of puzzles lie before, along the way you will collect items and
+            A series of puzzles lie before you, along the way you will collect items and
             score points. Register your email and we'll send you on your way.
         </p>
         <p>
             Been here before? The same email brings you straight back to your download,
-            and you can report a token while you are at it.
+            and you can report proof of progress while you are at it.
         </p>
         <?php if ($error): ?>
             <div class="warning">

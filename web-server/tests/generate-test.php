@@ -56,6 +56,17 @@ function test_generate_no_zip(): void
     check(list_tree(tmp_path()) === [], 'nothing is left in TMPDIR');
 }
 
+function test_generate_player_zip_no_json(): void
+{
+    fake_generator('no-json');
+    pointless_add_player('Ann', 'Lee', 'ann@b.com');
+    $error = '';
+    check(pointless_player_zip('ann@b.com', $error) === null, 'no zip without an answer key');
+    check(str_contains($error, 'failed'), "error says generation failed (got: $error)");
+    check(!is_dir(games_path()) || list_tree(games_path()) === [], 'nothing is stored');
+    check(list_tree(tmp_path()) === [], 'nothing is left in TMPDIR');
+}
+
 function test_generate_player_zip_stored(): void
 {
     pointless_add_player('Ann', 'Lee', 'ann@b.com');

@@ -99,6 +99,48 @@ form button {
     font-size: 1.1em;
 }
 
+/* One segment per puzzle in download.php's progress bar: solved ones gold, the current one outlined. */
+.progress-bar {
+    display: flex;
+    gap: 4px;
+    max-width: 32rem;
+}
+
+.progress-bar span {
+    flex: 1;
+    height: 16px;
+    border: 2px solid #888;
+    border-radius: 4px;
+}
+
+.progress-bar .solved {
+    background: #F4AA00;
+    border-color: #F4AA00;
+}
+
+.progress-bar .current {
+    border-color: #596AFF;
+}
+
+.share {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.share a {
+    padding: 6px 14px;
+    border-radius: 4px;
+    background: #331E54;
+    color: #fff;
+    text-decoration: none;
+}
+
+.share a:hover,
+.share a:focus {
+    background: #596AFF;
+}
+
 .footer {
     text-align: center;
     margin-top: 34.5px;
