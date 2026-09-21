@@ -19,6 +19,10 @@ function test_share_page(): void
     check($page->contains('<meta property="og:title" content="Ann Lee is taking the Pointless Challenge.">'),
           'so does the preview social media sites show');
     check($page->contains("content=\"https://tools.lipscomb-soc.org/pointless/share.php?p=$id\""), 'og:url is the live page');
+    check($page->contains('<meta property="og:image" content="https://tools.lipscomb-soc.org/pointless/includes/share.png">'),
+          'og:image is the banner, by absolute URL');
+    check($page->contains('<meta name="twitter:card" content="summary_large_image">'), 'X shows the banner large');
+    check(is_file(__DIR__ . '/../includes/share.png'), 'the banner exists');
     check(!$page->contains('health-bar'), 'no health bar before the game is downloaded');
     check(!$page->contains('ann@b.com') && !$page->contains($seed), 'neither the email nor the seed is shown');
 

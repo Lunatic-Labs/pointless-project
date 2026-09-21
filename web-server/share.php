@@ -22,6 +22,11 @@ if ($player === null) {
         'og:title' => $headline,
         'og:description' => 'A chain of puzzles, each one locking the next. How far can you get?',
         'og:url' => pointless_share_url($player[3]),
+        'og:image' => POINTLESS_SITE_URL . 'includes/share.png',
+        'og:image:width' => '1200',
+        'og:image:height' => '630',
+        'og:image:alt' => 'Pointless Challenge, with the pixel-art Lipscomb bison',
+        'twitter:card' => 'summary_large_image',
     ];
 }
 ?>
