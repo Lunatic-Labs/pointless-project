@@ -7,11 +7,11 @@ void pixel_puzzle_test()
 {
   CHECK_PUZZLE(pixel_puzzle_create,
                {{1, "3960"}, {5, "9900"}, {10, "9900"}, {15, "1800"}, {test_big_seed(), "3960"}},
-               {"color wheel", "Lou seems a little off today… or maybe it’s you."});
+               {"color wheel", "Lou seems a little off today… or maybe it’s just you?"});
 
   // The pixel counts must match the bison in the header, and the password must be the last row's product.
   std::map<std::string, int> counts;
-  const std::string header = utils_file_to_str("../resources/templates/header.txt");
+  const std::string header = utils_file_to_str("../resources/templates/header.html");
   const std::regex fill("fill=\"(#[0-9A-Fa-f]{6})\"");
   for (auto it = std::sregex_iterator(header.begin(), header.end(), fill); it != std::sregex_iterator(); ++it) {
     std::string hex = (*it)[1];

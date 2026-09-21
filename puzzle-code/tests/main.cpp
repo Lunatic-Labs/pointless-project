@@ -17,6 +17,7 @@ int main(int argc, char **argv)
     void (*run)(void);
   } tests[] = {
     {"utils", utils_test},
+    {"inventory", inventory_test},
     {"math_puzzle", math_puzzle_test},
     {"color_puzzle", color_puzzle_test},
     {"pixel_puzzle", pixel_puzzle_test},

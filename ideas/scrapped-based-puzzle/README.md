@@ -3,7 +3,7 @@
 This puzzle was removed from the game. The call to it in `puzzle-code/src/main.cpp` had been commented out, and it has no test. It was moved here on 2026-09-14 so that it no longer compiles with the generator.
 
 - `scrapped-based-puzzle.cpp`: defines `Puzzle based_puzzle_create(long seed)` (the declaration was removed from `puzzle.h`)
-- `files-scrapped-based/`: its resource directory (`.desc.txt`)
+- `files-scrapped-based/`: its resource directory (`.desc.html`)
 
 ## Description
 
@@ -28,7 +28,7 @@ Clicking the "Enter" button takes them to the actual puzzle. There are `NUM_VALU
 1. Move `scrapped-based-puzzle.cpp` back to `puzzle-code/src/` and `files-scrapped-based/` back to `puzzle-code/resources/`. The code uses the hardcoded path `../resources/files-scrapped-based/`.
 2. Update it for the generator's current API (it predates the September 2026 cleanup): take `seed_t seed` (and `seed_t &` in helpers) instead of `long`,
    and replace its `NO_HDR`/`NO_FTR` flags, which no longer exist, since `utils_html_printf()` always adds the header and footer
-   (write its second page with `utils_generate_file()` directly). Check that each page gets exactly one argument per `%DELIM`.
+   (write its second page with `utils_generate_file()` directly). Check that each page gets exactly one argument per `%PARAM`.
 3. Declare `Puzzle based_puzzle_create(seed_t seed);` in `puzzle-code/src/include/puzzle.h`.
 4. Add `based_puzzle_create(utils_derive_seed(seed, "based"))` to `game_create_puzzles()` in `puzzle-code/src/game.cpp`. It used to sit between `encrypt_puzzle_create` and `rematch_puzzle_create`.
 5. Add a test (see "Implementing New Tests" in the main README).

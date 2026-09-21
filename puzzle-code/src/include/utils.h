@@ -82,12 +82,13 @@ void utils_zip_files(filepath_t out_file_name, const std::vector<ZipEntry> &entr
 // Returns the contents of `filepath`. Throws std::runtime_error if it can't be read.
 std::string utils_file_to_str(filepath_t filepath);
 
-// Returns a puzzle page: resources/templates/header.txt, then `extra_head` (for example a <style>),
-// `title` in an <h2>, the description in `desc_filepath` with each %DELIM replaced by the next of
-// `args` (in a <section>), `token` in a block of its own (left out when it is empty), and
-// resources/templates/footer.txt.
-// Throws std::runtime_error unless the description has exactly args.size() %DELIMs.
-std::string utils_html_printf(const std::string &title, filepath_t desc_filepath, const strvec_t &args,
-                              const std::string &token = "", const std::string &extra_head = "");
+// Returns a puzzle page: resources/templates/header.html, then a <section> holding the title in an
+// <h2> and the description, then `inventory` (see inventory_html()) and `token`, each in a block of
+// its own and each left out when it is empty, and resources/templates/footer.html.
+// `desc_filepath` holds the whole page in one file: its first line is "%TITLE <title>" and the rest
+// is the body, with each %PARAM replaced by the next of `args`.
+// Throws std::runtime_error without that first line, or unless the body has exactly args.size() %PARAMs.
+std::string utils_html_printf(filepath_t desc_filepath, const strvec_t &args, const std::string &token = "",
+                              const std::string &inventory = "");
 
 #endif // UTILS_H

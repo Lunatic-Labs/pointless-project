@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "./include/inventory.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
@@ -49,7 +50,7 @@ Puzzle rematch_puzzle_create(seed_t seed)
   extra_info += ")";
 
   const std::string token = utils_token(utils_derive_seed(seed, "token"));
-  std::string html = utils_html_printf("Rematch Instructions", REMATCH_DIR "/.desc.txt", {}, token);
+  std::string html = utils_html_printf(REMATCH_DIR "/.desc.html", {}, token, inventory_html("rematch"));
   utils_generate_file(REMATCH_DIR "/instructions.html", html);
   return {REMATCH_DIR, html, password, token, extra_info};
 }

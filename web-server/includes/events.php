@@ -15,6 +15,11 @@
 require_once __DIR__ . '/generate.php';
 require_once __DIR__ . '/players.php';
 
+// The fewest seconds between one session's token submissions. Tokens are the only
+// record of how far a player got, so guessing at them has to be slow. Both pages
+// that take a token (index.php on the way in, download.php) share this limit.
+const POINTLESS_TOKEN_INTERVAL = 5;
+
 // Can be overridden with the POINTLESS_EVENTS_FILE environment variable.
 function pointless_events_file(): string
 {
@@ -94,7 +99,7 @@ function pointless_submit_token(string $email, string $token): array
     $answers = pointless_player_answers($email);
     if ($answers === null) {
         // Nothing to compare against, so this isn't a wrong answer; don't log it as one.
-        return [false, $level, 'Download your puzzle first. Every puzzle page in it shows a token.'];
+        return [false, $level, 'Download your puzzle first. Every puzzle page in it shows a proof of progress.'];
     }
 
     $n = 0;
@@ -106,7 +111,7 @@ function pointless_submit_token(string $email, string $token): array
     }
     if ($n === 0) {
         pointless_log_event('token-bad', $email, $token, $level);
-        return [false, $level, 'That is not one of your tokens. Check it and try again.'];
+        return [false, $level, 'That is not one of your proofs of progress. Check it and try again.'];
     }
 
     // Token N is inside the zip that puzzle N-1's answer opens, so it proves the N-1
@@ -114,8 +119,25 @@ function pointless_submit_token(string $email, string $token): array
     $level = max($level, $n - 1);
     pointless_log_event('token-ok', $email, $token, $level);
     if ($level === 0) {
-        return [true, $level, 'That is the token from your first page. Solve that puzzle for the next one.'];
+        return [true, $level, 'That is the proof of progress from your first page. Solve that puzzle for the next one.'];
     }
     $puzzles = $level === 1 ? 'puzzle' : 'puzzles';
-    return [true, $level, "Token accepted. You have now solved $level $puzzles."];
+    return [true, $level, "Proof of progress accepted. You have now solved $level $puzzles."];
+}
+
+// pointless_submit_token(), rate limited per session: the caller must have started
+// one (includes/session.php). Returns [accepted, message]; an empty $token submits
+// nothing and gives an empty message, so a page can offer the field as optional.
+function pointless_submit_token_throttled(string $email, string $token): array
+{
+    if (pointless_normalize_token($token) === '') {
+        return [false, ''];
+    }
+    $wait = ($_SESSION['last_token'] ?? 0) + POINTLESS_TOKEN_INTERVAL - time();
+    if ($wait > 0) {
+        return [false, "Please wait $wait more second" . ($wait === 1 ? '' : 's') . ' before submitting another proof of progress.'];
+    }
+    $_SESSION['last_token'] = time();
+    [$accepted, , $message] = pointless_submit_token($email, $token);
+    return [$accepted, $message];
 }

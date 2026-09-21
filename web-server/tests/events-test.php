@@ -78,7 +78,7 @@ function test_events_submit_token_rejected(): void
     $seed = player_with_game();
     [$ok, $level, $message] = pointless_submit_token('ann@b.com', 'NOTATOKEN');
     check(!$ok && $level === 0, 'a wrong token is rejected');
-    check(str_contains($message, 'not one of your tokens'), "the message says so (got: $message)");
+    check(str_contains($message, 'not one of your proofs of progress'), "the message says so (got: $message)");
     [$ok] = pointless_submit_token('ann@b.com', '');
     check(!$ok, 'an empty token is rejected');
 

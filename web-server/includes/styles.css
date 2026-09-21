@@ -42,7 +42,7 @@
     line-height: 1.45;
 }
 
-/* The puzzle pages use the same layout; see puzzle-code/resources/templates/header.txt. */
+/* The puzzle pages use the same layout; see puzzle-code/resources/templates/header.html. */
 .container h2 {
     margin-top: 0.5em;
 }

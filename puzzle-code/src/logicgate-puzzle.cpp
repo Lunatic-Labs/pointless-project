@@ -11,12 +11,13 @@
 #include <vector>
 
 #include "./include/graphics.h"
+#include "./include/inventory.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
 #define MEMORY "0011011000101110" // The starting queue
 
-// Colors. The gate colors must match files-logicgate/.desc.txt.
+// Colors. The gate colors must match files-logicgate/.desc.html.
 static constexpr Pixel OFF{255, 0, 0};   // Red circle: 0
 static constexpr Pixel ON{0, 255, 0};    // Green circle: 1
 static constexpr Pixel AND{200, 205, 0}; // Gold square
@@ -84,8 +85,9 @@ Puzzle logicgate_puzzle_create(seed_t seed)
   }
 
   const std::string token = utils_token(utils_derive_seed(seed, "token"));
-  std::string html_content = utils_html_printf("Graph Paper Robot PT II", "../resources/files-logicgate/.desc.txt",
-                                               {gates_svg(gates).build(false), memory_svg(memory).build(false)}, token);
+  std::string html_content = utils_html_printf("../resources/files-logicgate/.desc.html",
+                                               {gates_svg(gates).build(false), memory_svg(memory).build(false)},
+                                               token, inventory_html("logicgate"));
   utils_generate_file("../resources/files-logicgate/instructions.html", html_content);
   return {"../resources/files-logicgate", html_content, password, token, {}};
 }

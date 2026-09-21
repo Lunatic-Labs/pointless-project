@@ -58,7 +58,7 @@ Object files go in `puzzle-code/build/`. Zipfiles are generated in `puzzle-code/
 You can now inspect and solve the puzzle(s) by choosing the appropriate zipfile.
 
 **NOTE**: The generator must be run from `puzzle-code/src/` (and the tests from `puzzle-code/tests/`),
-because all resource paths are relative to it, e.g. `../resources/files-math/.desc.txt`. `make run` and `make test` do this for you.
+because all resource paths are relative to it, e.g. `../resources/files-math/.desc.html`. `make run` and `make test` do this for you.
 
 `./main` accepts the following flags:
 - `-s <seed>`: use the given seed (any number) instead of a random one (the website does this with each player's stored seed)
@@ -80,9 +80,10 @@ Each `puzzleN.zip` holds puzzle N's files, unencrypted, and `puzzle{N+1}.zip`, e
 
 ### Tokens
 
-Every puzzle page ends with a **token**: eight characters that the player types into the website to record how far
-they have come (see [Description](#description)). `utils_token()` rolls it from a seed derived with the name
-`"token"`, so it costs the puzzle no random numbers and changes no password.
+Every puzzle page carries a **token**: eight characters that the player types into the website to record how far
+they have come (see [Description](#description)). The pages and the website call it a **proof of progress**; the code
+keeps the shorter name. `utils_token()` rolls it from a seed derived with the name `"token"`, so it costs the puzzle
+no random numbers and changes no password. It is the first thing in the page's [sidebar](#sidebar).
 
 A token is printed plainly on the page, and does not need hiding. Puzzle N's page is inside `puzzleN.zip`, which only
 puzzle N-1's answer opens, so having token N *is* the proof that puzzles 1 through N-1 were solved. Two consequences:
@@ -92,6 +93,37 @@ that the whole game was finished.
 The token alphabet is `ACDEFHJKLMNPRTVWXY3479`: uppercase letters and digits with every easily misread pair left out
 (no `0`/`O`/`Q`, `1`/`I`, `2`/`Z`, `5`/`S`, `6`/`G`, `8`/`B`, or `U`), because players copy tokens off the page by eye.
 Eight characters from 22 is about 35 bits, far beyond guessing through a throttled web form.
+
+### Sidebar
+
+Every page that is a layer of its own is two columns: the puzzle on the left, and on the right a boxed sidebar with
+everything the player has to show for the game so far. `utils_html_printf()` builds it, in this order:
+
+1. the page's proof of progress (the [token](#tokens)),
+2. `Points: 0`, which is the score for the whole game and the point of the title, and
+3. the [inventory](#inventory), when there is one.
+
+The three rematch sub-puzzles pass no token and get no sidebar at all. Below 60rem of window the two columns become
+one, with the sidebar under the puzzle. `.container .layout` and `.container .sidebar` in
+`resources/templates/header.html` style it.
+
+### Inventory
+
+Every puzzle also awards the player one **useless item**, which the next page's prose hands over and which every page
+after that keeps listing at the bottom of its [sidebar](#sidebar). Nothing in the game ever uses an item: the joke is
+the running list, which pays off in the final inventory on the `fin` page, the only one that also says what each item
+turned out to be good for ("a master key — used once, then broke").
+
+The list is not written into the `.desc.html` files. `inventory_html(name)` in `src/inventory.cpp` builds it from one
+table, `ITEMS`, which holds each puzzle's name, its item, and its fate, in play order; a page passes its own name and
+gets the items awarded by the puzzles *before* it. An item is the reward for solving its puzzle, so no page lists its
+own: the first page shows no inventory at all, and the chicken in the last row is the MacGuffin the `fin` page hands
+over itself, so it heads no later page and is never listed. The three rematch sub-puzzles pass nothing and show no
+inventory, the same way they show no token.
+
+`ITEMS` is a second list of the puzzles in play order, so it has to be kept in step with `game_create_puzzles()`
+by hand. `inventory_html()` throws if it is given a puzzle that is not in `ITEMS`, so a new puzzle that forgets to
+add one fails loudly the first time the generator runs, rather than quietly skipping the gag.
 
 ### Repository Layout
 
@@ -113,8 +145,11 @@ There are a lot of directories in this project, and not all
 of them contain code. In fact, most of these directories contain the necessary resources
 for their respective puzzle.
 
-Any directory in `puzzle-code/resources/` that starts with `files-` is a resource directory. It contains (at least) the `.desc.txt`
+Any directory in `puzzle-code/resources/` that starts with `files-` is a resource directory. It contains (at least) the `.desc.html`
 for its puzzle, as well as any supporting files that the puzzle needs (other HTML files, images, etc).
+
+A `.desc.html` holds the whole of a page's words. Its **first line** is the page title, written as `%TITLE <title>`;
+everything after that first line is the body. The C++ never names the title.
 
 > **Any support files that are prefixed with `.` will not be included in the zipped-up
 > puzzle. Files that do not have this prefix will be included in the zipfile.** Subdirectories are
@@ -122,26 +157,32 @@ for its puzzle, as well as any supporting files that the puzzle needs (other HTM
 
 Each puzzle's generated HTML page (`instructions.html`) has a specific structure:
 
-| instructions.html  |
-|--------------------|
-| Header (generated) |
-| Body (.desc.txt)   |
-| Footer (generated) |
+| instructions.html          |
+|----------------------------|
+| Header (generated)         |
+| Title + body (.desc.html)  |
+| Footer (generated)         |
 
 The HTML *Header* and *Footer* are located in `puzzle-code/resources/templates/` and do
 not need to be touched (unless changes are needed). The header opens the page, `<body>`, and the `content` and `container` divs;
-the footer closes them. `utils_html_printf()` puts the puzzle title in an `<h2>` and wraps the body in a `<section>`.
+the footer closes them. `utils_html_printf()` wraps the page in a `<section>`, with the `%TITLE` line rendered as the `<h2>`
+that heads it and the body following.
 
-A `.desc.txt` must therefore be an HTML *fragment* with balanced tags: no `<html>`, `<head>`, or `<body>`, and no unclosed or
+The page's title is used twice. `header.html` has a `%TITLE` placeholder in its `<title>` element, so each puzzle's
+browser tab names itself instead of every tab reading "Pointless Challenge"; the wording around it
+(`%TITLE &mdash; Pointless Challenge`) is edited in the template, not in C++. A `<title>` holds text rather than markup,
+so the title is escaped there — the `<h2>` keeps it exactly as written.
+
+A `.desc.html`'s body must therefore be an HTML *fragment* with balanced tags: no `<html>`, `<head>`, or `<body>`, and no unclosed or
 extra closing tags, or it will break the page layout around it. `<style>` and `<script>` blocks may appear anywhere in it.
 
-The game is played offline, so a `.desc.txt` must not *load* anything from the internet (images, scripts, fonts).
+The game is played offline, so a `.desc.html` must not *load* anything from the internet (images, scripts, fonts).
 Ordinary links for further reading are fine.
 
 #### Page Layout and Style
 
 Pages are **left aligned**, and so is the website (`web-server/includes/styles.css` mirrors the template's
-`.container` rules). The header centers only the banner; a `.desc.txt` should not center text, and should not
+`.container` rules). The header centers only the banner; a `.desc.html` should not center text, and should not
 re-center a figure with `margin-left: auto`. Long prose is kept readable by the container's `max-width`, not by
 narrowing paragraphs.
 
@@ -153,9 +194,11 @@ Write ordinary paragraphs in `<p>` and use the three classes the template provid
 | `.figure`   | A maze, table, or SVG on its own line; it scrolls sideways if it is too wide  |
 | `.question` | The bold question at the end of the page                                     |
 
-A `.desc.txt`'s `<style>` block applies to the **whole page**, header included, so every selector in it must be
+A `.desc.html`'s `<style>` block applies to the **whole page**, header included, so every selector in it must be
 scoped to the puzzle's own classes. A bare `body`, `svg`, `table`, or `ul` rule leaks: `body {text-align: center}`
 moves the dark-mode button, and `svg {border: ...}` draws a box around the bison.
+The one deliberate exception is `files-pixel/.desc.html`, whose bare `svg {stroke: #000000}` outlines the bison on
+purpose so its pixels can be counted; it says so in a comment.
 
 In short, a puzzle is created like this:
 1. `game_create_puzzles()` in `src/game.cpp` calls `<name>_puzzle_create(seed)` with a seed derived from the player's seed and the puzzle's name.
@@ -171,30 +214,31 @@ to take when doing so.
 ### Puzzle Resources Directory
 
 Start by creating a new directory in `puzzle-code/resources/` and name it `files-<new puzzle name>`.
-Then inside of there, create a new file called `.desc.txt`. This is where the instructions,
-hints, and other info about the puzzle are stored. Everything in this file will be put into an HTML file,
-so make sure that it follows the HTML rules.
+Then inside of there, create a new file called `.desc.html`. This is where the title, instructions,
+hints, and other info about the puzzle are stored. Its first line must be `%TITLE <title>`; everything after
+that line will be put into an HTML file, so make sure that it follows the HTML rules.
 
-In order to transfer information easily from C++ to HTML/JavaScript, we use a special delimiter in this file,
-namely `%DELIM`. For example, if I need to pass a password and an array that is generated in C++
-into this `.desc.txt` file, I would do something like:
+In order to transfer information easily from C++ to HTML/JavaScript, we use a special placeholder in this file,
+namely `%PARAM`. For example, if I need to pass a password and an array that is generated in C++
+into this `.desc.html` file, I would do something like:
 
 ```html
 <script>
-  let password = %DELIM;
-  let array = [%DELIM];
+  let password = %PARAM;
+  let array = [%PARAM];
 </script>
 ```
 
-It is then the job of C++ to "stringify" the required information to pass to `.desc.txt`.
-There must be exactly one argument for each `%DELIM`; otherwise `utils_html_printf()` throws an error.
+It is then the job of C++ to "stringify" the required information to pass to `.desc.html`.
+There must be exactly one argument for each `%PARAM`; otherwise `utils_html_printf()` throws an error.
 To make the explanation easier to follow, I will make a new puzzle called "fib",
 where the point(less) of it is to have the user find the *n*th number of the Fibonacci sequence.
 
 ```bash
 cd ./puzzle-code/resources/
 mkdir files-fib && cd files-fib
-echo "What is the <b>%DELIM</b>th number in the fibonacci sequence?" > .desc.txt
+printf '%s\n' "%TITLE Fibonacci Sequence" \
+       "What is the <b>%PARAM</b>th number in the fibonacci sequence?" > .desc.html
 ```
 
 ### Puzzle Implementation
@@ -218,6 +262,7 @@ Here is the complete puzzle:
 
 ```cpp
 // puzzle-code/src/fib-puzzle.cpp
+#include "./include/inventory.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
@@ -235,9 +280,10 @@ Puzzle fib_puzzle_create(seed_t seed)
   // the puzzle no random numbers of its own.
   const std::string token = utils_token(utils_derive_seed(seed, "token"));
 
-  // Generate the HTML content to be displayed to the user.
-  std::string html_content = utils_html_printf("Fibonacci Sequence", "../resources/files-fib/.desc.txt",
-                                               {std::to_string(n)}, token);
+  // Generate the HTML content to be displayed to the user. The page's title is the %TITLE line
+  // of the .desc.html, so it is not named here.
+  std::string html_content = utils_html_printf("../resources/files-fib/.desc.html", {std::to_string(n)},
+                                               token, inventory_html("fib"));
 
   // Create the instructions.html.
   utils_generate_file("../resources/files-fib/instructions.html", html_content);
@@ -246,8 +292,11 @@ Puzzle fib_puzzle_create(seed_t seed)
 }
 ```
 
-Every puzzle that is a layer of its own shows a token; the three rematch sub-puzzles share the rematch layer, so
-they pass `""` instead and `utils_html_printf()` leaves the block off their pages.
+Every puzzle that is a layer of its own shows a [sidebar](#sidebar) with a token and an inventory; the three rematch
+sub-puzzles share the rematch layer, so they pass `""` for both and `utils_html_printf()` leaves the sidebar off their
+pages.
+A puzzle that shows an inventory must have a row in `ITEMS` in `src/inventory.cpp` (see [Inventory](#inventory)),
+or `inventory_html()` throws.
 
 Keep any helper functions `static`, and get every random value from `utils_rng_roll()`, `utils_chance()`, or `utils_shuffle()`
 (not `rand()` or `<random>`), so that every platform generates the same puzzles.
@@ -329,8 +378,8 @@ can find them in the page's source, in the bison in the header.
 ### Pixel
 
 *Adjustable Variables*:
-- `ROWS` (**must change the number of rows in `.desc.txt` to match**)
-- `BISON_COLORS`: the colors that can be used and their pixel counts (**must match the bison in `templates/header.txt`**; the tests check this)
+- `ROWS` (**must change the number of rows in `.desc.html` to match**)
+- `BISON_COLORS`: the colors that can be used and their pixel counts (**must match the bison in `templates/header.html`**; the tests check this)
 
 *Description*:
 
@@ -412,14 +461,15 @@ The following things can happen:
 ### Intro Base
 
 *Adjustable Variables*:
-- `BASE` and `LENGTH` (**must match `.desc.txt`**)
+- `BASE` and `LENGTH` (**must match `.desc.html`**)
 
 *Description*:
 
 The goal of this puzzle is to introduce the player to number bases and base conversion.
 The puzzle contains a visual representation of numbers with different bases called a lightbox:
 one column per digit, with the least significant digit on the left, and one lit light per column.
-The player must write the base-16 lightbox as digits, in the same order (so the answer is the hex number written backwards).
+The lit light's height in a column is that column's digit, and a digit of 0 (the bottom row) is lit red instead of green.
+The player must work out the number the base-19 lightbox stands for and write it in decimal (so the answer is a number between 6859 and 130320).
 
 *RNG*:
 - the digits (the last one is never 0)
@@ -469,7 +519,7 @@ Once they have figured it out, they must decrypt the password.
 #### Based Rematch
 
 *Adjustable Variables*:
-- `ROWS` (**must modify the table in `.desc.txt` to match**)
+- `ROWS` (**must modify the table in `.desc.html` to match**)
 
 *Description*:
 
@@ -581,8 +631,10 @@ The utilities are declared, with comments, in `puzzle-code/src/include/utils.h`.
 - `utils_derive_seed(seed, name)`: a separate seed for each puzzle, so puzzles don't share random numbers.
 - `utils_token(seed)`: the token for a puzzle page (see [Tokens](#tokens)). It takes the seed by value, so
   `utils_token(utils_derive_seed(seed, "token"))` leaves the puzzle's own rolls alone.
-- `utils_html_printf(title, desc_filepath, args, token, extra_head)`: builds a puzzle page, replacing each `%DELIM` with
-  the next argument and adding the token block unless `token` is empty.
+- `utils_html_printf(desc_filepath, args, token, inventory)`: builds a puzzle page from the description's `%TITLE`
+  line and body, replacing each `%PARAM` with the next argument and adding the [sidebar](#sidebar) unless `token` is
+  empty (an empty `inventory` only leaves the inventory out of it).
+- `inventory_html(name)` (in `src/inventory.h`): the items awarded by the puzzles before `name` (see [Inventory](#inventory)).
 - `utils_generate_file`, `utils_mkdir`, `utils_remove_all`: write files; they do nothing when the `ANS_ONLY` flag (`./main -a`) is set.
 - `utils_walkdir`, `utils_zip_entries`, `utils_zip_files`: list a puzzle's files and zip them.
 
@@ -600,8 +652,12 @@ into an SVG with one square per pixel, each with the class `"<row>.<column>"` so
 ### Description
 
 The main goals of the webpage are puzzle download, user registration, and user tracking.
-New users register on `index.php`. Registered users can log in (`login.php`) to return to the download page,
-where they can also submit tokens and see how far they have come (see [Progress and the event log](#progress-and-the-event-log)).
+`index.php` is the front door and the only way in: an email nobody has used registers a new player, and an email that is
+already registered signs that player back in. There is no separate login page. First and last name are optional, and are
+stored only at registration — the players file is append-only, so names typed on a later visit are ignored.
+The form also takes an optional **token**, so a returning player can report progress in the same step (see
+[Progress and the event log](#progress-and-the-event-log)); it is recorded on the way through, and `download.php` shows
+the result. Either way the player lands on `download.php`, where they can download, submit tokens, and see how far they have come.
 All pages share `includes/header.php`, `includes/footer.php`, and `includes/styles.css`.
 They start their session through `includes/session.php`, which names the cookie `pointless` (HttpOnly, SameSite=Lax)
 so it can't collide with other PHP apps on the same host (see [Deployment](#deployment)).
@@ -615,11 +671,12 @@ Names are stored as typed, except that a name starting with `=`, `+`, `-`, `@`, 
 so a spreadsheet opening the file shows it as text instead of running it as a formula (`pointless_safe_name()`).
 
 **Security decisions** (2026-09-19):
-- **Logging in needs only an email.** Anyone who knows a registered email can download that player's puzzle. This is
-  acceptable: the puzzle isn't secret, and the site stores nothing else about the player.
+- **Signing in needs only an email.** Anyone who knows a registered email can download that player's puzzle. This is
+  acceptable: the puzzle isn't secret, and the site stores nothing else about the player. It is also why registering and
+  signing in are the same form: with no password to check, a duplicate email is not an error, it is a returning player.
 - **No CSRF tokens.** The forms have none. The worst a forged form can do is log someone into another player's download page,
   which the first decision already allows.
-- **Levels are not worth cheating for.** Because logging in needs only an email, anyone who knows a player's email can submit
+- **Levels are not worth cheating for.** Because signing in needs only an email, anyone who knows a player's email can submit
   on their behalf — though they would still need that player's own seed-specific tokens. **If levels ever carry prizes,
   revisit the login decision first.**
 
@@ -639,8 +696,8 @@ download fails. `make production` fixes it; `test_generate_real_generator` in th
 
 #### Progress and the event log
 
-`download.php` also takes a player's [tokens](#tokens) and shows how far they have come
-(`web-server/includes/events.php`). A submission is compared against the tokens in that player's stored `<seed>.json`,
+`download.php` (and `index.php`, through its optional token field) takes a player's [tokens](#tokens) and shows how far
+they have come (`web-server/includes/events.php`). A submission is compared against the tokens in that player's stored `<seed>.json`,
 which is the only record of them: **they are never recomputed.** A stored game keeps the tokens its pages were generated
 with, so recomputing them after any change to the generator would disagree with the zip the player already has, and every
 submission would start failing. Comparison ignores case, spaces, and hyphens.
@@ -657,7 +714,8 @@ tokens are not columns in `data/contact-data.csv` — they are created at first 
 them there would mean updating a row after the fact, and would tie the roster's shape to the puzzle count.
 
 Rejected tokens are logged too: they are what a brute-force attempt looks like, and both kinds are participation data.
-A session may submit at most one token every 5 seconds (`POINTLESS_TOKEN_INTERVAL`), which is a different job from the
+A session may submit at most one token every 5 seconds (`POINTLESS_TOKEN_INTERVAL`, applied by
+`pointless_submit_token_throttled()`, which both pages that take a token call), which is a different job from the
 download throttle: that one protects the generator from repeated runs, this one protects the record.
 
 ### How to Start
@@ -695,7 +753,7 @@ The web-server tests are plain PHP (only `php-cli` is needed) and live in `web-s
 
 ```bash
 php web-server/tests/run.php          # all tests
-php web-server/tests/run.php login    # only tests whose names contain "login"
+php web-server/tests/run.php index    # only tests whose names contain "index"
 ```
 
 `run.php` starts its own `php -S` on a free port, so no server needs to be running (and one already on port 8000 is not affected).
@@ -710,7 +768,7 @@ and keeps the temporary directory (including `server.log` and `php-errors.log`);
 | `players-test.php` | `includes/players.php`, called directly |
 | `generate-test.php` | `includes/generate.php`, called directly, using the fake generator; `test_generate_real_generator` runs the real one |
 | `events-test.php` | `includes/events.php`, called directly: the event log, levels, and token submission |
-| `index-test.php`, `login-test.php`, `download-test.php` | The pages, over HTTP |
+| `index-test.php`, `download-test.php` | The pages, over HTTP |
 
 The fake generator is a small script written by `fake_generator($mode)`. It records its arguments and working directory,
 prints `Seed: <seed>` and a password line like the real one (or, with `-j`, a JSON game of `FAKE_PUZZLES` layers whose
@@ -842,9 +900,9 @@ From a review of the puzzle pages on 2026-09-19 (the wording fixes are in
   (one bit), but the password is every result in order (15 bits). It also says to repeat "until the queue is empty,"
   while the puzzle stops when one circle is left, and it never says that the queue starts at the right, or that
   red is 0 and green is 1.
-- **The maze colors don't match their descriptions.** *Maze* calls the start "golden" and the exit "purple," but they
-  are drawn yellow and magenta (`MAZE_START`, `MAZE_END`). *Maze Rematch* calls its magenta start tile "Purple"
-  (`TILE_START`).
+- **The *Maze Rematch* colors don't match their descriptions.** It calls its magenta start tile "Purple"
+  (`TILE_START`), and its exit is yellow rather than gold (`TILE_EXIT`). *Maze* now uses Lipscomb's gold
+  (`#F4AA00`) and purple (`#331E54`).
 - **The *Maze Rematch* page assumes the player can find the browser console.** Nothing on the page says how to open
   it, and the players are pre-college students.
 - **The *Based Rematch* rules are hard to follow.** The three overlapping bases (0-20 in base-20, 21-42 in base-31,

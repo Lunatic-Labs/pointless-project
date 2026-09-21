@@ -8,6 +8,7 @@
  *   The password is the hex color code.
  */
 
+#include "./include/inventory.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
@@ -18,7 +19,8 @@ Puzzle color_puzzle_create(seed_t seed)
   std::string color_name = rand ? "Purple" : "Gold";
 
   const std::string token = utils_token(utils_derive_seed(seed, "token"));
-  std::string html = utils_html_printf("Color Puzzle", "../resources/files-color/.desc.txt", {color_hex, color_name}, token);
+  std::string html = utils_html_printf("../resources/files-color/.desc.html", {color_hex, color_name}, token,
+                                       inventory_html("color"));
   utils_generate_file("../resources/files-color/instructions.html", html);
   return {"../resources/files-color", html, color_hex, token, {}};
 }

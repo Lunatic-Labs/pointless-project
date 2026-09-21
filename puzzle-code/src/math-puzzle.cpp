@@ -7,6 +7,7 @@
  *   with the password being the sum of the two numbers.
  */
 
+#include "./include/inventory.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
@@ -22,8 +23,9 @@ Puzzle math_puzzle_create(seed_t seed)
   int s = a+b;
 
   const std::string token = utils_token(utils_derive_seed(seed, "token"));
-  std::string html_content = utils_html_printf("Hello Pointless", "../resources/files-math/.desc.txt",
-                                                {std::to_string(a), std::to_string(b)}, token);
+  std::string html_content = utils_html_printf("../resources/files-math/.desc.html",
+                                                {std::to_string(a), std::to_string(b)}, token,
+                                                inventory_html("math"));
   utils_generate_file("../resources/files-math/instructions.html", html_content);
   return {"../resources/files-math", html_content, std::to_string(s), token, {}};
 }

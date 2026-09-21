@@ -1,3 +1,11 @@
+%TITLE Maze Rematch Puzzle
+<!-- TODO(game.md "Cast" / "Continuity nits"): the Oracle here is the game's only mentor
+     figure; promote it to the Old Person Who Hands You Things who awards every useless item
+     with the same line ("It may help you on your quest"). Also worth a wink: the key found
+     here is one of only two items in the game that actually does something --
+     "An item that is genuinely required. Savor it." The rematch sub-puzzles award no points
+     and no token; a one-line acknowledgement ("Rematches are unscored. So is everything
+     else.") would keep the voice unbroken. -->
 <p>
   Welcome, weary traveler! You've stumbled upon a digital labyrinth waiting to challenge your wit and cunning. <br/>
   This maze holds secrets known only to the ancient Oracle—a timeless, mysterious force that dwells within the <i><u><b>console</b></u></i> itself.<br/>
@@ -17,15 +25,15 @@
     .div_maze svg {display: block;}
 </style>
 <div id="maze1" class="div_maze">
-  %DELIM
+  %PARAM
 </div>
 
 <div id="maze2" class="div_maze">
-    %DELIM
+    %PARAM
 </div>
 
 <div id="maze3" class="div_maze">
-  %DELIM
+  %PARAM
 </div>
 
 <h1 id="ending"></h1>
@@ -50,16 +58,16 @@
  var __AAAAAAAAAAA2A = "Turner and Zach were here.";
  var __AAAAAAAAA4AAA = "qwerty";
 
- var __maze1 = [%DELIM];
+ var __maze1 = [%PARAM];
 
- var __maze2 = [%DELIM];
+ var __maze2 = [%PARAM];
 
- var __maze3 = [%DELIM];
+ var __maze3 = [%PARAM];
 
  var __mazes = [__maze1, __maze2, __maze3];
 
- var __qwertyuiopasdfhjklzxcvbnm = %DELIM;
- var __qwertyuiopasdfhjklzzcvbnm = %DELIM;
+ var __qwertyuiopasdfhjklzxcvbnm = %PARAM;
+ var __qwertyuiopasdfhjklzzcvbnm = %PARAM;
 
  var pixel_size = 40;
 

@@ -11,14 +11,15 @@
 #include <string>
 
 #include "./include/graphics.h"
+#include "./include/inventory.h"
 #include "./include/maze.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-#define MAZE_SIZE 13 // Must be odd. Also hardcoded into files-maze/.desc.txt
+#define MAZE_SIZE 13 // Must be odd. Also hardcoded into files-maze/.desc.html
 
-static constexpr Pixel MAZE_START{255, 255, 0}; // Gold, bottom left
-static constexpr Pixel MAZE_END{255, 0, 255};   // Purple, top right
+static constexpr Pixel MAZE_START{0xF4, 0xAA, 0x00}; // Gold, bottom left
+static constexpr Pixel MAZE_END{0x33, 0x1E, 0x54};   // Purple, top right
 
 // Appends one letter (u, d, l, or r) per pixel moved on the way from (row, col) to the top-right
 // cell, never stepping back to (from_row, from_col). Returns whether it got there.
@@ -78,7 +79,8 @@ Puzzle maze_puzzle_create(seed_t seed)
 
   std::string svg_html = graphics_gen_svg_from_image(maze, 20, {}).build(false);
   const std::string token = utils_token(utils_derive_seed(seed, "token"));
-  std::string html_body = utils_html_printf("Maze Puzzle", "../resources/files-maze/.desc.txt", {svg_html}, token);
+  std::string html_body = utils_html_printf("../resources/files-maze/.desc.html", {svg_html}, token,
+                                            inventory_html("maze"));
   utils_generate_file("../resources/files-maze/instructions.html", html_body);
   return {"../resources/files-maze", html_body, compress_path(path), token, {}};
 }

@@ -1,3 +1,4 @@
+%TITLE Mysterious Artifact
 <style>
 .number {
     border-collapse: separate;
@@ -25,25 +26,29 @@
 </style>
 
 
-<p>
-    You have beaten the "speedy maze" and been awarded 0 points! However, we are not done yet. Before you lies a light box, a cryptic structure designed to hold hidden meanings. Each light in this box represents part of an encrypted sequence, a cipher waiting to be unlocked.
-</p>
-<p>
-    Today, you’ll be working with this light box. Each light box has rows and columns, with lights in each cell that symbolize encrypted values in a hidden code.
-    The height (number of rows) of a light box is called its <b>base</b>, and the number of columns is called its length.
-    Each column of the box must have exactly one light on. If a light on the bottom row is on, it lights up red, signaling that
-    this column’s value is zero. All other lights light up green, indicating a non-zero encrypted value for their column.
-</p>
-<p>
-    In the first column (on the left), each light from the bottom
-    increases in value by one. The bottom light is equal to 0, the next to 1, the next to 2, etc. With each successive column, the lights
-    increment by the maximum value of the previous column + 1, instead of just 1. This means that with this structure, you can represent every
-    possible integer.
-</p>
-<h4>The following light box of base 3 and length 3 represents the number 7</h4>
+<p>Good job encoding those instructions! You find a map of somewhere else and decide to keep it in your inventory.</p>
 
+<p>A mysterious artifact with blinking lights appears. By a sudden fit of intuition you realize
+exactly one light is lit in each column. A light on the bottom is red and means that column 
+contributes nothing, but the other green lights represent a value, counting up from the bottom.
+For example, the light in the first column below means 2.</p>
+
+<p>You suddenly decide to call the total number of lights (red plus green) in column the <i>base</i>.
+The lights in the second column represent multiples of the base, going up. For example, the second column
+below means 12.</p>
+
+<p>The third column means zero, but if the bottom-most green light were on, it would mean 16.</p>
+
+<p>So, the total value represented by the artifact below is 2 + 12 + 0 = 14. </p>
+
+<div class="figure">
 <table class='number'>
     <tbody>
+        <tr>
+            <td>⦿</td>
+            <td style='color: rgb(141, 255, 141);'>⦿</td>
+            <td>⦿</td>
+        </tr>
         <tr>
             <td style='color: rgb(141, 255, 141);'>⦿</td>
             <td>⦿</td>
@@ -51,7 +56,7 @@
         </tr>
         <tr>
             <td>⦿</td>
-            <td style='color: rgb(141, 255, 141);'>⦿</td>
+            <td>⦿</td>
             <td>⦿</td>
         </tr>
         <tr>
@@ -61,56 +66,19 @@
         </tr>
     </tbody>
 </table>
+</div>
 
-<p>To represent this structure in text form, we can simply pretend it is a number, and that each column is a digit's place. For example,
-    the previous structure could be represented as 210 (notice that the smallest place is on the left). If a light on the light box is too high to represent its value with a single digit number 0-9,
-    you can simply resort to using capital letters of the alphabet starting from "A" for every subsequent number. For example, the 11th light of the first column would be of value 10, 
-    but since 10 can't be represented by a single digit, that column would be represented by the letter "A". You can assume that the light box will never have a base large enough to cause you to run out
-    of letters in the alphabet.
-</p>
+<p>One more example, the artifact below means 5 + 0 + 3&times;49 = 152.</p>
 
-<h4>The following structure of base 11 and length 4 would be represented as A400</h4>
-
+<div class="figure">
 <table class='number'>
     <tbody>
         <tr>
-            <td style='color: rgb(141, 255, 141);'>⦿</td>
             <td>⦿</td>
             <td>⦿</td>
             <td>⦿</td>
         </tr>
         <tr>
-            <td>⦿</td>
-            <td>⦿</td>
-            <td>⦿</td>
-            <td>⦿</td>
-        </tr>
-        <tr>
-            <td>⦿</td>
-            <td>⦿</td>
-            <td>⦿</td>
-            <td>⦿</td>
-        </tr>
-        <tr>
-            <td>⦿</td>
-            <td>⦿</td>
-            <td>⦿</td>
-            <td>⦿</td>
-        </tr>
-        <tr>
-            <td>⦿</td>
-            <td>⦿</td>
-            <td>⦿</td>
-            <td>⦿</td>
-        </tr>
-        <tr>
-            <td>⦿</td>
-            <td>⦿</td>
-            <td>⦿</td>
-            <td>⦿</td>
-        </tr>
-        <tr>
-            <td>⦿</td>
             <td style='color: rgb(141, 255, 141);'>⦿</td>
             <td>⦿</td>
             <td>⦿</td>
@@ -119,31 +87,33 @@
             <td>⦿</td>
             <td>⦿</td>
             <td>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td>⦿</td>
+            <td style='color: rgb(141, 255, 141);'>⦿</td>
+        </tr>
+        <tr>
+            <td>⦿</td>
+            <td>⦿</td>
             <td>⦿</td>
         </tr>
         <tr>
             <td>⦿</td>
             <td>⦿</td>
             <td>⦿</td>
-            <td>⦿</td>
         </tr>
         <tr>
-            <td>⦿</td>
-            <td>⦿</td>
-            <td>⦿</td>
-            <td>⦿</td>
-        </tr>
-        <tr>
-            <td>⦿</td>
             <td>⦿</td>
             <td style='color: rgb(255, 0, 0);'>⦿</td>
-            <td style='color: rgb(255, 0, 0);'>⦿</td>
+            <td>⦿</td>
         </tr>
     </tbody>
 </table>
+</div>
 
-<p class="question">
-    Now, using this encrypted structure, determine the encoded cipher for the following light box with a base of 16 and a length of 8.
-</p>
+<p class="question"> What value does the artifact below convey?</p>
 
-%DELIM
+<div class="figure">
+%PARAM
+</div>

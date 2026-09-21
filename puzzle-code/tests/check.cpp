@@ -36,8 +36,8 @@ seed_t test_big_seed(void)
 void test_puzzle(Puzzle (*create)(seed_t), const std::vector<Expected> &expected, const strvec_t &snippets,
                  const char *file, int line)
 {
-  const std::string header = utils_file_to_str("../resources/templates/header.txt");
-  const std::string footer = utils_file_to_str("../resources/templates/footer.txt");
+  const std::string header = utils_file_to_str("../resources/templates/header.html");
+  const std::string footer = utils_file_to_str("../resources/templates/footer.html");
 
   for (const Expected &e : expected) {
     const Puzzle puzzle = create(e.seed);
@@ -56,7 +56,13 @@ void test_puzzle(Puzzle (*create)(seed_t), const std::vector<Expected> &expected
     if (e.extra_info) {
       test_check_eq(puzzle.extra_info.value_or("(none)"), *e.extra_info, "extra_info for " + seed, file, line);
     }
-    test_check(html.compare(0, header.size(), header) == 0, "page for " + seed + " starts with the header", file, line);
+    // The page starts with the header, with its own title substituted into the <title>. The title is
+    // read back out of the <h2> so this check doesn't repeat every puzzle's title.
+    const size_t h2 = html.find("<h2>") + 4;
+    std::string expected_header = header;
+    expected_header.replace(expected_header.find("%TITLE"), 6, html.substr(h2, html.find("</h2>", h2) - h2));
+    test_check(html.compare(0, expected_header.size(), expected_header) == 0,
+               "page for " + seed + " starts with the header, titled by its <h2>", file, line);
     test_check(html.size() >= footer.size() && html.compare(html.size() - footer.size(), footer.size(), footer) == 0,
                "page for " + seed + " ends with the footer", file, line);
     for (const std::string &snippet : snippets) {

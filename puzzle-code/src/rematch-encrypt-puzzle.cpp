@@ -56,7 +56,7 @@ Puzzle rematch_encrypt_puzzle_create(seed_t seed)
   const std::string table = substitution_table(seed);
   const int key = utils_rng_roll(100, 250, seed);
 
-  std::string html_body = utils_html_printf("Encrypt Rematch Puzzle", "../resources/files-rematch-encrypt/.desc.txt",
+  std::string html_body = utils_html_printf("../resources/files-rematch-encrypt/.desc.html",
                                             {xored_codes(password, key), std::to_string(key), table});
   utils_generate_file("../resources/files-rematch-encrypt/instructions.html", html_body);
   return {"../resources/files-rematch-encrypt", html_body, password, "", {}};

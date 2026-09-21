@@ -127,7 +127,7 @@ function fake_generator(string $mode = 'ok'): void
     remove_tree($gen);
     mkdir("$gen/src/zipfiles", 0700, true);
     mkdir("$gen/resources/files-test", 0700, true);
-    file_put_contents("$gen/resources/files-test/.desc.txt", "resource marker\n");
+    file_put_contents("$gen/resources/files-test/.desc.html", "resource marker\n");
     if ($mode === 'missing') {
         return;
     }
@@ -143,7 +143,7 @@ function fake_generator(string $mode = 'ok'): void
         file_put_contents($log, json_encode([
             'args' => array_slice(\$argv, 1),
             'cwd' => getcwd(),
-            'has_resources' => is_file('../resources/files-test/.desc.txt'),
+            'has_resources' => is_file('../resources/files-test/.desc.html'),
         ]) . "\\n", FILE_APPEND);
         \$args = array_slice(\$argv, 1);
         \$seed = \$args[array_search('-s', \$args, true) + 1];
@@ -341,6 +341,13 @@ final class Response
 function register(Client $client, string $email, string $fname = 'Test', string $lname = 'Player'): Response
 {
     return $client->post('index.php', ['fname' => $fname, 'lname' => $lname, 'email' => $email]);
+}
+
+// Signs an already-registered player back in through index.php, the way a returning
+// player does: their email, no names, and an optional token.
+function sign_in(Client $client, string $email, string $token = ''): Response
+{
+    return $client->post('index.php', ['email' => $email, 'token' => $token]);
 }
 
 // Rows of the players file, including the header; [] if it doesn't exist.

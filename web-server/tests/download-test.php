@@ -47,7 +47,7 @@ function test_download_same_file(): void
     register($first, 'ann@b.com');
     $zip = $first->post('download.php')->body;
     $second = new Client(); // A new session, so the rate limit doesn't apply.
-    $second->post('login.php', ['email' => 'ann@b.com']);
+    sign_in($second, 'ann@b.com');
     check($second->post('download.php')->body === $zip, 'downloading again gives the same file');
     check(count(generator_runs()) === 1, 'the generator runs only for the first download');
     check(is_file(games_path() . '/' . player_seed('ann@b.com') . '.zip'), 'the zip stays on the server');
@@ -107,7 +107,7 @@ function test_download_shows_progress(): void
     $client->post('download.php');
     $seed = player_seed('ann@b.com');
     $page = $client->post('download.php', ['token' => fake_token(3, $seed)]);
-    check($page->contains('Token accepted'), 'a token is accepted');
+    check($page->contains('Proof of progress accepted'), 'a token is accepted');
     check($page->contains('<b>2 of ' . (FAKE_PUZZLES - 1) . '</b>'), "the page shows the new level out of the game's puzzles");
     check($page->header('Content-Type') !== 'application/zip', 'submitting a token does not download the zip');
     check(count(generator_runs()) === 1, 'and does not run the generator again');
@@ -119,7 +119,7 @@ function test_download_bad_token(): void
     register($client, 'ann@b.com');
     $client->post('download.php');
     $page = $client->post('download.php', ['token' => 'NOTATOKEN']);
-    check($page->contains('not one of your tokens'), 'a wrong token is refused');
+    check($page->contains('not one of your proofs of progress'), 'a wrong token is refused');
     check($page->contains('<b>0 of ' . (FAKE_PUZZLES - 1) . '</b>'), 'the level does not move');
     $rows = event_rows();
     check($rows[count($rows) - 1][1] === 'token-bad', 'the attempt is logged');
@@ -131,7 +131,7 @@ function test_download_token_rate_limited(): void
     register($client, 'ann@b.com');
     $client->post('download.php');
     $seed = player_seed('ann@b.com');
-    check($client->post('download.php', ['token' => fake_token(2, $seed)])->contains('Token accepted'), 'the first token works');
+    check($client->post('download.php', ['token' => fake_token(2, $seed)])->contains('Proof of progress accepted'), 'the first token works');
     $page = $client->post('download.php', ['token' => fake_token(3, $seed)]);
     check($page->contains('Please wait'), 'an immediate second token is refused');
     check($page->contains('<b>1 of ' . (FAKE_PUZZLES - 1) . '</b>'), 'the refused token does not count');

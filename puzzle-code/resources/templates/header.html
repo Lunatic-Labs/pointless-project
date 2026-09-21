@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pointless Challenge</title>
+    <title>%TITLE &mdash; Pointless Challenge</title>
     <style>
         #theme-btn {font-size: 1.5rem; cursor: pointer; color: #596AFF;}
         #theme-btn:hover {color: #BB86FC;}
@@ -35,18 +35,29 @@
         /* A figure (a maze, a light box, a table) goes on its own line, left aligned with the text. */
         .container .figure {margin: 1em 0; width: fit-content; max-width: 100%; overflow-x: auto;}
         .container .question {font-weight: bold; margin-top: 1.5em;}
-        /* The token a player types into the website; utils_html_printf() puts one on every puzzle page. */
-        .container .token {
-            width: fit-content;
-            max-width: 100%;
+        /* Every puzzle page is two columns: the puzzle on the left, and on the right the sidebar
+           utils_html_printf() builds (proof of progress, score, inventory). Narrow windows get
+           one column, with the sidebar under the puzzle. */
+        .container .layout {display: flex; align-items: flex-start; gap: 24px;}
+        .container .layout > section {flex: 1 1 auto; min-width: 0;}
+        .container .sidebar {
+            flex: 0 0 13rem;
             box-sizing: border-box;
-            margin-top: 1.5em;
+            margin-top: 0.5em; /* Level with the heading the puzzle starts with. */
             padding: 8px 20px;
             border: 2px dashed #F4AA00;
             border-radius: 8px;
         }
-        .container .token p {margin: 0.35em 0;}
-        .container .token code {font-size: 1.35em; font-weight: bold; letter-spacing: 0.15em;}
+        .container .sidebar p {margin: 0.35em 0;}
+        .container .sidebar .token code {font-size: 1.2em; font-weight: bold; letter-spacing: 0.1em;}
+        .container .sidebar .hint {font-size: 0.85em;}
+        .container .sidebar .points {margin-top: 1.2em; font-weight: bold;}
+        .container .sidebar .inventory {margin-top: 1.2em;}
+        .container .sidebar ul {margin: 0.35em 0; padding-left: 1.2em;}
+        @media (max-width: 60rem) {
+            .container .layout {display: block;}
+            .container .sidebar {width: fit-content; max-width: 100%; margin-top: 1.5em;}
+        }
     </style>
 </head>
 <body>

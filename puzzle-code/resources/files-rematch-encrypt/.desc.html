@@ -1,3 +1,4 @@
+%TITLE Encrypt Rematch Puzzle
 <style>
   .callout ul {margin: 0.5em 0; padding-left: 1.5em;}
   #password {font-family: 'Courier New', Courier, monospace; font-size: 1.4em;}
@@ -17,12 +18,17 @@
 
 </style>
 
+<!-- TODO(game.md "Continuity nits"): this presumes a failure that may not have happened.
+     Trope-ify it instead: "The Oracle has reviewed your performance and is concerned. It would
+     like to give you a freebie." -->
 <p>
   You seemed to struggle on the first encryption puzzle. Because of this, we have decided to give you a freebie:
   the password, with no strings attached and no encryption!
 </p>
 
 <div class="callout">
+<!-- TODO(game.md "Cast"): this slapstick is already Dr. Pepper's voice (files-encrypt) but
+       is unattributed. Attribute it to him so the Mad Scientist recurs. -->
   <b>Unfortunately...</b>
   <ul>
     <li>We <i>accidentally</i> dropped the password into a <b class="gradient-text">goopifying</b> machine.</li>
@@ -47,11 +53,11 @@
 
 <script>
 
-var abcdefghijklmnopqrstuvwxyz = %DELIM;
-var key = %DELIM;
+var abcdefghijklmnopqrstuvwxyz = %PARAM;
+var key = %PARAM;
 
 var tbl = {
-%DELIM
+%PARAM
 };
 
 function convertStrToAscii(str) {

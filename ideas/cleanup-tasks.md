@@ -28,7 +28,7 @@ what a page tells the player, so they are decisions, not cleanups. Each one is d
 - [ ] **Add a worked row to *Based Rematch*,** showing one row converted, summed, and reduced to its least significant bit.
 - [ ] **Even out the pages' tone and titles.** Settle on one shape (congratulations, story, rules, question) and one title
   style; today they range from two lines to several paragraphs, and from "Encrypt" to "Graph Paper Robot PT II".
-- [ ] **Fix the banner title in dark mode.** `.title` is dark purple on the dark background, in `templates/header.txt` and
+- [ ] **Fix the banner title in dark mode.** `.title` is dark purple on the dark background, in `templates/header.html` and
   `web-server/includes/styles.css` both.
 
 ## Web server
@@ -41,4 +41,4 @@ what a page tells the player, so they are decisions, not cleanups. Each one is d
 
 ## Generator
 
-- [ ] **One copy of the bison.** `web-server/includes/bison.svg` and the bison in `templates/header.txt` are separate copies. Low priority: the website and the offline game can't share a file.
+- [ ] **One copy of the bison.** `web-server/includes/bison.svg` and the bison in `templates/header.html` are separate copies. Low priority: the website and the offline game can't share a file.

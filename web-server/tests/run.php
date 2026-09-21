@@ -20,7 +20,6 @@ require_once __DIR__ . '/players-test.php';
 require_once __DIR__ . '/generate-test.php';
 require_once __DIR__ . '/events-test.php';
 require_once __DIR__ . '/index-test.php';
-require_once __DIR__ . '/login-test.php';
 require_once __DIR__ . '/download-test.php';
 
 $tests = [
@@ -59,16 +58,14 @@ $tests = [
     'test_index_session_cookie',
     'test_index_invalid_email',
     'test_index_email_with_apostrophe',
-    'test_index_requires_names',
-    'test_index_duplicate_email',
+    'test_index_names_optional',
     'test_index_normalizes_email',
     'test_index_names_stored_as_typed',
-
-    'test_login_get',
-    'test_login_registered',
-    'test_login_ignores_case',
-    'test_login_unregistered',
-    'test_login_invalid_email',
+    'test_index_returning_player',
+    'test_index_returning_player_ignores_case',
+    'test_index_token',
+    'test_index_bad_token',
+    'test_index_token_rate_limited',
 
     'test_download_requires_session',
     'test_download_zip',

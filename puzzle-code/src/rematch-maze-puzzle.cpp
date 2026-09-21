@@ -14,7 +14,7 @@
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-#define MAZE_SIZE 9 // Must be odd. Also hardcoded into files-rematch-maze/.desc.txt
+#define MAZE_SIZE 9 // Must be odd. Also hardcoded into files-rematch-maze/.desc.html
 
 static constexpr Pixel TILE_START{255, 0, 255};  // Purple: where the player starts
 static constexpr Pixel TILE_EXIT{255, 255, 0};   // Gold
@@ -22,7 +22,7 @@ static constexpr Pixel TILE_DOWN{200, 150, 0};   // Brown: stairs down
 static constexpr Pixel TILE_UP{0, 200, 0};       // Green: stairs up
 static constexpr Pixel TILE_ITEM{250, 150, 150}; // Pink
 
-// The numbers in the mazes' JavaScript arrays. Must match files-rematch-maze/.desc.txt.
+// The numbers in the mazes' JavaScript arrays. Must match files-rematch-maze/.desc.html.
 enum Cell {
   CELL_WALL = 0,
   CELL_EMPTY = 1,
@@ -95,7 +95,7 @@ Puzzle rematch_maze_puzzle_create(seed_t seed)
   }
 
   // The page shows (password ^ password_key) ^ password_key when the player escapes.
-  std::string html_body = utils_html_printf("Maze Rematch Puzzle", "../resources/files-rematch-maze/.desc.txt",
+  std::string html_body = utils_html_printf("../resources/files-rematch-maze/.desc.html",
                                             {svgs[0], svgs[1], svgs[2], arrays[0], arrays[1], arrays[2],
                                              std::to_string(password ^ password_key), std::to_string(password_key)});
   utils_generate_file("../resources/files-rematch-maze/instructions.html", html_body);

@@ -10,6 +10,7 @@
 #include <string>
 
 #include "./include/graphics.h"
+#include "./include/inventory.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
@@ -63,7 +64,8 @@ Puzzle binary_addition_puzzle_create(seed_t seed)
 
   std::string svg_html = graphics_gen_svg_from_image(graph, 20, {}).build(true);
   const std::string token = utils_token(utils_derive_seed(seed, "token"));
-  std::string html_body = utils_html_printf("Graph Paper Robot", "../resources/files-binary-addition/.desc.txt", {svg_html}, token);
+  std::string html_body = utils_html_printf("../resources/files-binary-addition/.desc.html", {svg_html}, token,
+                                            inventory_html("binary-addition"));
   utils_generate_file("../resources/files-binary-addition/instructions.html", html_body);
   return {"../resources/files-binary-addition", html_body, sum, token, {}};
 }

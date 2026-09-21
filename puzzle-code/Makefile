@@ -2,7 +2,7 @@
 #
 # Run make from puzzle-code/. The binaries themselves must run from their own
 # directory (src/ or tests/) because resource paths are relative to it, for
-# example ../resources/files-math/.desc.txt. The run and test targets do that.
+# example ../resources/files-math/.desc.html. The run and test targets do that.
 #
 # `make test T=bst` runs only the tests whose names contain "bst".
 #

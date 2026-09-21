@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "./include/inventory.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
@@ -121,7 +122,8 @@ Puzzle encrypt_puzzle_create(seed_t seed)
   }
 
   const std::string token = utils_token(utils_derive_seed(seed, "token"));
-  std::string html_body = utils_html_printf("Encrypt", "../resources/files-encrypt/.desc.txt", {word, steps}, token);
+  std::string html_body = utils_html_printf("../resources/files-encrypt/.desc.html", {word, steps}, token,
+                                            inventory_html("encrypt"));
   utils_generate_file("../resources/files-encrypt/instructions.html", html_body);
   return {"../resources/files-encrypt", html_body, password, token, {}};
 }

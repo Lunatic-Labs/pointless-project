@@ -7,7 +7,7 @@
 // A maze is a square Image with an odd side. Cells are at even rows and columns; the pixels
 // between cells are either walls or passages joining neighboring cells.
 inline constexpr Pixel MAZE_WALL{0, 0, 0};
-inline constexpr Pixel MAZE_CELL{200, 200, 255}; // Also hardcoded (#C8C8FF) in files-rematch-maze/.desc.txt
+inline constexpr Pixel MAZE_CELL{200, 200, 255}; // Also hardcoded (#C8C8FF) in files-rematch-maze/.desc.html
 inline constexpr Pixel MAZE_PASSAGE{255, 255, 255};
 
 // Returns a `size` by `size` maze with exactly one path between any two cells, carved by a

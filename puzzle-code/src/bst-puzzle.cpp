@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "./include/inventory.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
@@ -158,7 +159,8 @@ Puzzle bst_puzzle_create(seed_t seed)
   build(tree, tree_dir, DEPTH, true);
 
   const std::string token = utils_token(utils_derive_seed(seed, "token"));
-  std::string html_body = utils_html_printf("BST Puzzle", "../resources/files-bst/.desc.txt", {str(tree.x)}, token);
+  std::string html_body = utils_html_printf("../resources/files-bst/.desc.html", {str(tree.x)}, token,
+                                            inventory_html("bst"));
   utils_generate_file("../resources/files-bst/instructions.html", html_body);
   return {"../resources/files-bst", html_body, str(tree.password), token, "Path: " + tree.path};
 }

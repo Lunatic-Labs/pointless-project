@@ -3,20 +3,21 @@
  * Author: Jordan Hasulube
  * Date: 10/2/2024
  * Description:
- *   The user is shown a "light box": a number in base 16 with one column per digit (least
- *   significant on the left) and one lit light per column. The password is the digits written
- *   in the same order, for example 210 for the light box of 7 in base 3.
+ *   The user is shown a "light box": a number in base 19 with one column per digit (least
+ *   significant on the left) and one lit light per column. The password is that number written
+ *   in decimal, for example 14 for the light box whose columns show 2, 3 and 0 in base 4.
  */
 
 #include <sstream>
 #include <string>
 #include <vector>
 
+#include "./include/inventory.h"
 #include "./include/puzzle.h"
 #include "./include/utils.h"
 
-#define BASE 16  // Must match files-based-intro/.desc.txt
-#define LENGTH 8 // Must match files-based-intro/.desc.txt
+#define BASE 19  // Must match files-based-intro/.desc.html
+#define LENGTH 4 // Must match files-based-intro/.desc.html
 
 // Returns a light box table with `base` rows showing `digits` (least significant first).
 static std::string create_table(const std::vector<int> &digits, int base)
@@ -44,19 +45,21 @@ static std::string create_table(const std::vector<int> &digits, int base)
 
 Puzzle based_intro_puzzle_create(seed_t seed)
 {
-  const char *symbols = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   std::vector<int> digits;
-  std::string password;
+  int value = 0;
+  int place = 1;
   for (int i = 0; i < LENGTH; i++) {
     // The last (most significant) digit isn't 0, so every column is needed.
     int digit = utils_rng_roll(i == LENGTH - 1 ? 1 : 0, BASE - 1, seed);
     digits.push_back(digit);
-    password += symbols[digit];
+    value += digit * place;
+    place *= BASE;
   }
+  const std::string password = std::to_string(value);
 
   const std::string token = utils_token(utils_derive_seed(seed, "token"));
-  std::string html_content = utils_html_printf("Base Intro Puzzle", "../resources/files-based-intro/.desc.txt",
-                                               {create_table(digits, BASE)}, token);
+  std::string html_content = utils_html_printf("../resources/files-based-intro/.desc.html",
+                                               {create_table(digits, BASE)}, token, inventory_html("based-intro"));
   utils_generate_file("../resources/files-based-intro/instructions.html", html_content);
   return {"../resources/files-based-intro", html_content, password, token, {}};
 }

@@ -10,5 +10,5 @@ void maze_puzzle_test()
                  {15, "r3u2rdr2ulu2ru2"},
                  {test_big_seed(), "u2r3dldr2u2r2u4"},
                },
-               {"Lou's pixel art", "For every sequence of the same consecutive letter, compress it by using the letter "});
+               {"Eight-bit Lou fades in", "should be replaced by the letter followed by the number"});
 }

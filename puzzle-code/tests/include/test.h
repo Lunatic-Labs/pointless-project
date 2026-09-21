@@ -49,6 +49,7 @@ void test_puzzle(Puzzle (*create)(seed_t), const std::vector<Expected> &expected
 
 // Tests, listed in tests/main.cpp
 void utils_test();
+void inventory_test();
 void math_puzzle_test();
 void color_puzzle_test();
 void pixel_puzzle_test();

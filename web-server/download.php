@@ -6,10 +6,8 @@ require_once __DIR__ . '/includes/events.php';
 // A player's first download runs the puzzle generator, so a session must wait this many seconds between downloads.
 const POINTLESS_DOWNLOAD_INTERVAL = 10;
 
-// Tokens are the only record of how far a player got, so guessing at them has to be slow.
-const POINTLESS_TOKEN_INTERVAL = 5;
-
-// Only registered or logged-in players can download their personalized puzzle.
+// Only signed-in players can download their personalized puzzle. (Tokens are
+// throttled too, by POINTLESS_TOKEN_INTERVAL in includes/events.php.)
 if (!isset($_SESSION["email"])) {
     header("Location: ./index.php");
     exit;
@@ -17,18 +15,24 @@ if (!isset($_SESSION["email"])) {
 
 $error = "";
 $notice = "";
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["token"])) {
-    $wait = ($_SESSION["last_token"] ?? 0) + POINTLESS_TOKEN_INTERVAL - time();
-    if ($wait > 0) {
-        $error = "Please wait $wait more second" . ($wait === 1 ? "" : "s") . " before submitting another token.";
+
+// The result of a token typed on index.php, which redirected here to report it.
+if (isset($_SESSION["token_message"])) {
+    [$accepted, $message] = $_SESSION["token_message"];
+    unset($_SESSION["token_message"]);
+    if ($accepted) {
+        $notice = $message;
     } else {
-        $_SESSION["last_token"] = time();
-        [$accepted, , $message] = pointless_submit_token($_SESSION["email"], $_POST["token"]);
-        if ($accepted) {
-            $notice = $message;
-        } else {
-            $error = $message;
-        }
+        $error = $message;
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["token"])) {
+    [$accepted, $message] = pointless_submit_token_throttled($_SESSION["email"], $_POST["token"]);
+    if ($accepted) {
+        $notice = $message;
+    } else {
+        $error = $message;
     }
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
     $wait = ($_SESSION["last_download"] ?? 0) + POINTLESS_DOWNLOAD_INTERVAL - time();
@@ -80,18 +84,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["token"])) {
     <div class="container">
         <h2>Your Progress</h2>
         <p>
-            Every puzzle page shows a <b>token</b>. Type each one in here as you reach it, so we know how far you have come.
-            A token is eight letters and digits; capitals, spaces, and hyphens don't matter.
+            Every puzzle page shows a <b>proof of progress</b>. Type each one in here as you reach it, so we know how
+            far you have come. A proof of progress is eight letters and digits; capitals, spaces, and hyphens don't matter.
         </p>
+        <?php /* TODO(game.md "Website copy"): this is the web payoff for the points gag --
+           add a second line under "Puzzles solved" reading "Points earned: <b>0</b>", and
+           reframe the blurb above as quest-proof: "proof you were there, which is the
+           only kind of proof this quest issues." */ ?>
         <p class="progress">
             Puzzles solved:
             <b><?php echo $level; ?><?php echo $puzzles ? " of $puzzles" : ""; ?></b>
         </p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="tokenForm">
-            <label for="token">Token:</label>
+            <label for="token">Proof of progress:</label>
             <input type="text" id="token" name="token" autocomplete="off" spellcheck="false" required>
 
-            <button type="submit">Submit Token</button>
+            <button type="submit">Submit Proof</button>
         </form>
     </div>
 <?php require __DIR__ . '/includes/footer.php'; ?>
