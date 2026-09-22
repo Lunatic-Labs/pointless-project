@@ -88,16 +88,16 @@ void game_write_zipfiles(const std::vector<Puzzle> &puzzles, const std::string &
 {
   utils_mkdir(zipdir);
 
-  // Innermost first, since each zip goes inside the one before it.
+  // Innermost first, since each zip goes inside the one before it. The password locks the whole
+  // zip, not the next zip inside it, so every zip extracts with one password (puzzle1.zip with none)
+  // and leaves the next zip, still locked, beside the puzzle's files.
   for (size_t n = puzzles.size(); n >= 1; --n) {
-    const Puzzle &puzzle = puzzles[n - 1];
-    std::vector<ZipEntry> entries = utils_zip_entries(puzzle.contents_fp);
+    std::vector<ZipEntry> entries = utils_zip_entries(puzzles[n - 1].contents_fp);
     if (n < puzzles.size()) {
       const std::string next = "puzzle" + std::to_string(n + 1) + ".zip";
-      // Last, so the puzzle's own files extract before an unzipper (macOS Archive
-      // Utility) asks for the password.
-      entries.push_back(ZipEntry{zipdir + "/" + next, next, true});
+      entries.push_back(ZipEntry{zipdir + "/" + next, next});
     }
-    utils_zip_files(zipdir + "/puzzle" + std::to_string(n) + ".zip", entries, puzzle.password);
+    const std::string password = n == 1 ? "" : puzzles[n - 2].password;
+    utils_zip_files(zipdir + "/puzzle" + std::to_string(n) + ".zip", entries, password);
   }
 }

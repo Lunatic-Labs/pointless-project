@@ -124,7 +124,7 @@ std::vector<ZipEntry> utils_zip_entries(filepath_t dir)
 {
   std::vector<ZipEntry> entries;
   for (const std::string &file : utils_walkdir(dir)) {
-    entries.push_back({file, fs::path(file).lexically_relative(dir).generic_string(), false});
+    entries.push_back({file, fs::path(file).lexically_relative(dir).generic_string()});
   }
   return entries;
 }
@@ -161,7 +161,7 @@ void utils_zip_files(filepath_t out_file_name, const std::vector<ZipEntry> &entr
       zip_source_free(source);
       fail("could not add " + entry.name + " to " + out_file_name);
     }
-    if (entry.encrypted && zip_file_set_encryption(archive, index, ZIP_EM_TRAD_PKWARE, password.c_str()) < 0) {
+    if (!password.empty() && zip_file_set_encryption(archive, index, ZIP_EM_TRAD_PKWARE, password.c_str()) < 0) {
       fail("could not encrypt " + entry.name + " in " + out_file_name);
     }
   }

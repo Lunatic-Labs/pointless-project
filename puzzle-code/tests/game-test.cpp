@@ -39,6 +39,19 @@ zip_t *open_zip(const std::string &data)
   return archive;
 }
 
+// Returns how many of the zip's entries are encrypted.
+zip_int64_t encrypted_entries(zip_t *archive)
+{
+  zip_int64_t count = 0;
+  for (zip_int64_t i = 0; i < zip_get_num_entries(archive, 0); i++) {
+    zip_stat_t stat;
+    if (zip_stat_index(archive, i, 0, &stat) == 0 && stat.encryption_method != ZIP_EM_NONE) {
+      count++;
+    }
+  }
+  return count;
+}
+
 std::set<std::string> entry_names(zip_t *archive)
 {
   std::set<std::string> names;
@@ -241,8 +254,8 @@ void check_bst_layer(zip_t *archive, const std::set<std::string> &names, const P
   CHECK_EQ("Path: " + path, puzzle.extra_info.value_or("(none)"));
 }
 
-// Unlocks each rematch zip with its puzzle's password and checks that the numbers inside, in
-// order, are the rematch password.
+// Unlocks each rematch's password zip with its puzzle's password and checks that the numbers
+// inside, in order, are the rematch password.
 void check_rematch_layer(zip_t *archive, const Puzzle &puzzle)
 {
   const std::string extra_info = puzzle.extra_info.value_or("(none)");
@@ -265,19 +278,29 @@ void check_rematch_layer(zip_t *archive, const Puzzle &puzzle)
       continue;
     }
 
+    const std::string locked = "password" + n + ".zip";
     const std::string piece = "password" + n + ".txt";
+    test_check(encrypted_entries(rematch) == 0, "rematch" + n + ".zip is not encrypted", __FILE__, __LINE__);
     test_check(read_entry(rematch, "instructions.html", nullptr).has_value(),
-               "rematch" + n + ".zip has an unencrypted instructions.html", __FILE__, __LINE__);
-    test_check(!read_entry(rematch, piece, nullptr), piece + " is encrypted", __FILE__, __LINE__);
+               "rematch" + n + ".zip has instructions.html", __FILE__, __LINE__);
+    std::optional<std::string> locked_data = read_entry(rematch, locked, nullptr);
+    zip_discard(rematch);
+    zip_t *number = locked_data ? open_zip(*locked_data) : nullptr;
+    test_check(number != nullptr, "rematch" + n + ".zip has " + locked, __FILE__, __LINE__);
+    if (!number) {
+      continue;
+    }
 
-    std::optional<std::string> text = read_entry(rematch, piece, password.c_str());
+    test_check(encrypted_entries(number) == zip_get_num_entries(number, 0), locked + " is encrypted", __FILE__, __LINE__);
+    test_check(!read_entry(number, piece, nullptr), piece + " can't be read without the password", __FILE__, __LINE__);
+    std::optional<std::string> text = read_entry(number, piece, password.c_str());
     std::smatch m;
     if (text && std::regex_search(*text, m, std::regex("Your number is (\\d{3})\\."))) {
       numbers += m[1];
     } else {
       test_check(false, "rematch " + n + "'s password unlocks " + piece + ", which has a number", __FILE__, __LINE__);
     }
-    zip_discard(rematch);
+    zip_discard(number);
   }
   CHECK_EQ(numbers, puzzle.password);
 }
@@ -285,6 +308,7 @@ void check_rematch_layer(zip_t *archive, const Puzzle &puzzle)
 } // namespace
 
 // Writes a real game (the other tests only compute answers) and unlocks it layer by layer, as a player would.
+// Each zip must be locked as a whole by one password (see utils_zip_files()).
 void game_zipfiles_test()
 {
   const std::string zipdir = "zipfiles";
@@ -313,8 +337,19 @@ void game_zipfiles_test()
     }
     const std::set<std::string> names = entry_names(archive);
 
+    if (n == 1) {
+      test_check(encrypted_entries(archive) == 0, layer + " is not encrypted", __FILE__, __LINE__);
+    } else {
+      test_check(encrypted_entries(archive) == zip_get_num_entries(archive, 0),
+                 "every entry in " + layer + " is encrypted", __FILE__, __LINE__);
+      test_check(!read_entry(archive, "instructions.html", nullptr), layer + " can't be read without a password", __FILE__, __LINE__);
+      test_check(!read_entry(archive, "instructions.html", "wrong password"),
+                 layer + " can't be read with a wrong password", __FILE__, __LINE__);
+      // The previous puzzle's password unlocks this layer; the checks below read it as the default.
+      zip_set_default_password(archive, puzzles[n - 2].password.c_str());
+    }
     test_check(read_entry(archive, "instructions.html", nullptr) == puzzle.contents_html,
-               layer + " has the puzzle's instructions.html, unencrypted", __FILE__, __LINE__);
+               layer + " opens and has the puzzle's instructions.html", __FILE__, __LINE__);
     if (game_puzzle_name(puzzle) == "rematch") {
       check_rematch_layer(archive, puzzle);
     }
@@ -326,10 +361,8 @@ void game_zipfiles_test()
     if (n == puzzles.size()) {
       test_check(names.count(next) == 0, "the last zip has no " + next, __FILE__, __LINE__);
     } else {
-      test_check(!read_entry(archive, next, nullptr), next + " is encrypted", __FILE__, __LINE__);
-      test_check(!read_entry(archive, next, "wrong password"), next + " can't be opened with a wrong password", __FILE__, __LINE__);
-      inner = read_entry(archive, next, puzzle.password.c_str());
-      test_check(inner.has_value(), game_puzzle_name(puzzle) + "'s password unlocks " + next, __FILE__, __LINE__);
+      inner = read_entry(archive, next, nullptr);
+      test_check(inner.has_value(), layer + " has " + next, __FILE__, __LINE__);
     }
     zip_discard(archive);
     if (!inner) {

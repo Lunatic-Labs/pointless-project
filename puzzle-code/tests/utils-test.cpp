@@ -129,7 +129,7 @@ static void files_test(const fs::path &dir)
   }
   std::string names;
   for (const ZipEntry &entry : utils_zip_entries(tree.string())) {
-    names += entry.name + (entry.encrypted ? "(encrypted) " : " ");
+    names += entry.name + " ";
   }
   CHECK_EQ(names, "a.txt b.txt sub/c.txt ");
 

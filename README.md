@@ -78,7 +78,15 @@ The entire game is `zipfiles/puzzle1.zip`, which contains the nested zipfiles `p
 The other puzzles are also generated outside of `puzzle1.zip` to allow easy testing
 without having to go through the entire zipfile structure.
 
-Each `puzzleN.zip` holds puzzle N's files, unencrypted, and `puzzle{N+1}.zip`, encrypted (traditional PKWARE "ZipCrypto", which is weak but opens with the built-in zip tools on Windows and macOS) with puzzle N's password. The encrypted zip is the last entry, so unzippers that extract everything at once (macOS Archive Utility) write the puzzle's files before they ask for the password.
+Each `puzzleN.zip` holds puzzle N's files and (except the last) `puzzle{N+1}.zip`. The password locks the whole zip: every entry in
+`puzzleN.zip` is encrypted (traditional PKWARE "ZipCrypto", which is weak but opens with the built-in zip tools on Windows and macOS)
+with puzzle N-1's password, and `puzzle1.zip` is not encrypted. So extracting a zip needs one password, and gives the puzzle's files
+and the next zip, still locked; the player types an answer when opening the next zip.
+
+A zip never mixes plain and encrypted entries (`utils_zip_files()` takes one password for all of them). Zip encryption is per entry,
+and Windows Explorer and Info-ZIP `unzip` ask for a password per entry, but macOS Archive Utility asks for one password for the whole
+zip before it extracts anything. When each zip held its puzzle's files in the clear and only encrypted the nested zip, opening
+`puzzle1.zip` on macOS asked right away for a password the player could not know yet.
 
 ### Tokens
 
@@ -480,9 +488,9 @@ The player must work out the number the base-19 lightbox stands for and write it
 
 The "rematch" puzzles serve as the point in the project where there is a
 noticeable difficulty spike. It interrupts the linear nested puzzle format
-by having the user solve three harder versions of previous puzzles, each in its own zip (`rematch1.zip` to `rematch3.zip`).
-Each rematch's password unlocks a file with a 3-digit number; the three numbers in order are the password to advance past this
-rematch section.
+by having the user solve three harder versions of previous puzzles, each in its own zip (`rematch1.zip` to `rematch3.zip`), which
+opens without a password. Each rematch's password unlocks the `passwordN.zip` inside it, whose `passwordN.txt` holds a 3-digit
+number; the three numbers in order are the password to advance past this rematch section.
 
 #### Maze Rematch
 
@@ -913,11 +921,11 @@ What this repo must keep true for that to work:
 A backlog of cleanup and improvement tasks is in [ideas/cleanup-tasks.md](ideas/cleanup-tasks.md).
 
 - No support for building on macOS
-- Issues with accessing the zip files on macOS and Linux without file-roller. It immediately
-  prompts for a password even though it should not. It asks for the password of the encrypted
-  `puzzle{N+1}.zip` entry, which the player does not know yet; putting that entry last lets the puzzle's own
-  files extract first, but the prompt remains. Encrypting the inner zip's entries instead of the inner zip
-  would remove it.
+- The zips have not been retested on macOS, or on Linux without file-roller, since each zip became locked as a whole
+  (2026-09-22; see [Structure of Output](#structure-of-output)). Before, opening `puzzle1.zip` there asked at once for a password.
+  Now no zip should ask until the player opens the next one. One thing to watch: if Archive Utility's
+  "Keep expanding if possible" preference opens the nested zip right after extracting, it will ask for that zip's
+  password, which the player can cancel. No zip layout can prevent that.
 - The puzzle difficulty does not scale smoothly. The earlier puzzles should be harder.
 - The *Maze Rematch* puzzle needs a better description.
 - Missing required "witty" quotes on all puzzles.

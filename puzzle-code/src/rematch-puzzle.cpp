@@ -2,8 +2,9 @@
  * File: rematch-puzzle.cpp
  * Description:
  *   The rematch: harder versions of the maze, encrypt, and based puzzles. Each is its own zip,
- *   rematchN.zip, in this puzzle's directory. Rematch N's password unlocks passwordN.txt in its
- *   zip, which holds a 3-digit number. The three numbers in order are this puzzle's password.
+ *   rematchN.zip, in this puzzle's directory. Rematch N's password unlocks passwordN.zip in its
+ *   zip, whose passwordN.txt holds a 3-digit number. The three numbers in order are this puzzle's
+ *   password.
  */
 
 #include <cstdio>
@@ -38,11 +39,14 @@ Puzzle rematch_puzzle_create(seed_t seed)
     password += number;
 
     const std::string number_file = number_dir + "/password" + n + ".txt";
+    const std::string number_zip = number_dir + "/password" + n + ".zip";
     utils_generate_file(number_file, "You solved rematch " + n + " of " + count + "! Your number is " + number + ".\n");
     if (!(FLAGS & ANS_ONLY)) {
+      // The number gets a zip of its own, so rematchN.zip itself needs no password (see utils_zip_files()).
+      utils_zip_files(number_zip, {{number_file, "password" + n + ".txt"}}, rematches[i].password);
       std::vector<ZipEntry> entries = utils_zip_entries(rematches[i].contents_fp);
-      entries.insert(entries.begin(), ZipEntry{number_file, "password" + n + ".txt", true});
-      utils_zip_files(REMATCH_DIR "/rematch" + n + ".zip", entries, rematches[i].password);
+      entries.push_back(ZipEntry{number_zip, "password" + n + ".zip"});
+      utils_zip_files(REMATCH_DIR "/rematch" + n + ".zip", entries, "");
     }
 
     extra_info += (i == 0 ? "(" : ", ") + std::string("rematch") + n + ": " + rematches[i].password;

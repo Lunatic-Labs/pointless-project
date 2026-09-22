@@ -66,17 +66,18 @@ strvec_t utils_walkdir(filepath_t path);
 
 // A file to put in a zip.
 struct ZipEntry {
-  std::string path;       // The file on disk
-  std::string name;       // Its name in the zip
-  bool encrypted = false; // Whether to encrypt it with the zip's password
+  std::string path; // The file on disk
+  std::string name; // Its name in the zip
 };
 
-// Returns an unencrypted entry for each file under `dir` (see utils_walkdir()), named by its path relative to `dir`.
+// Returns an entry for each file under `dir` (see utils_walkdir()), named by its path relative to `dir`.
 std::vector<ZipEntry> utils_zip_entries(filepath_t dir);
 
 // Writes the zip `out_file_name`, replacing any existing file, holding `entries`.
-// Entries marked `encrypted` are encrypted with traditional PKWARE (ZipCrypto) using `password`, which
-// is weak but opens in the zip tools built into Windows and macOS. Throws std::runtime_error on failure.
+// Unless `password` is empty, every entry is encrypted with it, using traditional PKWARE (ZipCrypto), which
+// is weak but opens in the zip tools built into Windows and macOS. A zip has one password or none, never a
+// mix: macOS Archive Utility asks for a single password before extracting anything, so a zip with even
+// one encrypted entry prompts before its plain ones can be read. Throws std::runtime_error on failure.
 void utils_zip_files(filepath_t out_file_name, const std::vector<ZipEntry> &entries, const std::string &password);
 
 // Returns the contents of `filepath`. Throws std::runtime_error if it can't be read.

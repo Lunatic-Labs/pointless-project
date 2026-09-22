@@ -42,7 +42,7 @@ CI (`.github/workflows/test.yml`) runs `make test`, `make production` (in the CI
 
 ## Architecture
 
-**Puzzle pipeline.** `src/main.cpp` parses options and calls `src/game.cpp`: `game_create_puzzles(seed)` builds a `std::vector<Puzzle>` by calling each `<name>_puzzle_create(utils_derive_seed(seed, "<name>"))` in play order, `game_print_passwords` prints them, and `game_write_zipfiles` walks the list in reverse. `zipfiles/puzzleN.zip` contains puzzle N's files (unencrypted) and, except for the last puzzle, `puzzle{N+1}.zip`, encrypted with puzzle N's password. `puzzle1.zip` is the full game; the inner zips are also left on disk for easier testing. Errors are `std::runtime_error`s, caught in `main`.
+**Puzzle pipeline.** `src/main.cpp` parses options and calls `src/game.cpp`: `game_create_puzzles(seed)` builds a `std::vector<Puzzle>` by calling each `<name>_puzzle_create(utils_derive_seed(seed, "<name>"))` in play order, `game_print_passwords` prints them, and `game_write_zipfiles` walks the list in reverse. `zipfiles/puzzleN.zip` contains puzzle N's files and, except for the last puzzle, `puzzle{N+1}.zip`, every entry encrypted with puzzle N-1's password (`puzzle1.zip` is not encrypted). A zip never mixes plain and encrypted entries, since macOS Archive Utility asks for one password per zip before extracting anything; `utils_zip_files` encrypts all entries or none. `puzzle1.zip` is the full game; the inner zips are also left on disk for easier testing. Errors are `std::runtime_error`s, caught in `main`.
 
 **A puzzle** has two parts:
 1. A resource directory `puzzle-code/resources/files-<name>/` containing `.desc.html`, whose first line is `%TITLE <page title>` and whose remaining lines are an HTML/JS body with `%PARAM` placeholders, plus any assets. The whole page, title included, is written here and not in the `.cpp`. Files and directories starting with `.` are excluded from the zip (see `utils_walkdir`), so the leading dot must stay. Resources must not load anything from the internet, because the game is played offline.
@@ -59,7 +59,7 @@ To add a puzzle:
 
 The Makefile uses wildcards, so no build changes are needed. If the puzzle writes new generated files into `resources/`, add them to `clean-generated` in the Makefile and to `.gitignore`.
 
-**Rematch puzzle.** `rematch-puzzle.cpp` is a composite. It creates the maze, encrypt, and based rematch sub-puzzles (each with its own derived seed), zips each into `resources/files-rematch/rematchN.zip` along with an encrypted `passwordN.txt` holding a 3-digit number, and returns the numbers concatenated in order as the password for the next main layer. Its `extra_info` lists the sub-puzzles' passwords.
+**Rematch puzzle.** `rematch-puzzle.cpp` is a composite. It creates the maze, encrypt, and based rematch sub-puzzles (each with its own derived seed), zips each into `resources/files-rematch/rematchN.zip` (not encrypted) along with `passwordN.zip`, which holds `passwordN.txt` (a 3-digit number) encrypted with that sub-puzzle's password, and returns the numbers concatenated in order as the password for the next main layer. Its `extra_info` lists the sub-puzzles' passwords.
 
 **Shared code.** `src/maze.{h,cpp}` generates the mazes for both maze puzzles. `src/graphics.{h,cpp}` provides `Image`/`Pixel` and an `Svg` builder with `Rect`/`Circle` shapes; puzzles embed the SVG strings in their HTML.
 

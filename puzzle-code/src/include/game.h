@@ -22,7 +22,8 @@ void game_print_passwords(const std::vector<Puzzle> &puzzles);
 void game_print_json(seed_t seed, const std::vector<Puzzle> &puzzles);
 
 // Writes `zipdir`/puzzle1.zip through puzzleN.zip. puzzleN.zip holds puzzle N's files and
-// puzzle{N+1}.zip, which is encrypted with puzzle N's password, so puzzle1.zip is the whole game.
+// puzzle{N+1}.zip, all encrypted with puzzle N-1's password (puzzle1.zip is not encrypted), so
+// puzzle1.zip is the whole game.
 // Throws std::runtime_error on failure.
 void game_write_zipfiles(const std::vector<Puzzle> &puzzles, const std::string &zipdir);
 
