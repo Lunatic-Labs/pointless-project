@@ -94,7 +94,9 @@ void game_write_zipfiles(const std::vector<Puzzle> &puzzles, const std::string &
     std::vector<ZipEntry> entries = utils_zip_entries(puzzle.contents_fp);
     if (n < puzzles.size()) {
       const std::string next = "puzzle" + std::to_string(n + 1) + ".zip";
-      entries.insert(entries.begin(), ZipEntry{zipdir + "/" + next, next, true});
+      // Last, so the puzzle's own files extract before an unzipper (macOS Archive
+      // Utility) asks for the password.
+      entries.push_back(ZipEntry{zipdir + "/" + next, next, true});
     }
     utils_zip_files(zipdir + "/puzzle" + std::to_string(n) + ".zip", entries, puzzle.password);
   }

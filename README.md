@@ -78,7 +78,7 @@ The entire game is `zipfiles/puzzle1.zip`, which contains the nested zipfiles `p
 The other puzzles are also generated outside of `puzzle1.zip` to allow easy testing
 without having to go through the entire zipfile structure.
 
-Each `puzzleN.zip` holds puzzle N's files, unencrypted, and `puzzle{N+1}.zip`, encrypted (traditional PKWARE "ZipCrypto", which is weak but opens with the built-in zip tools on Windows and macOS) with puzzle N's password.
+Each `puzzleN.zip` holds puzzle N's files, unencrypted, and `puzzle{N+1}.zip`, encrypted (traditional PKWARE "ZipCrypto", which is weak but opens with the built-in zip tools on Windows and macOS) with puzzle N's password. The encrypted zip is the last entry, so unzippers that extract everything at once (macOS Archive Utility) write the puzzle's files before they ask for the password.
 
 ### Tokens
 
@@ -914,7 +914,10 @@ A backlog of cleanup and improvement tasks is in [ideas/cleanup-tasks.md](ideas/
 
 - No support for building on macOS
 - Issues with accessing the zip files on macOS and Linux without file-roller. It immediately
-  prompts for a password even though it should not.
+  prompts for a password even though it should not. It asks for the password of the encrypted
+  `puzzle{N+1}.zip` entry, which the player does not know yet; putting that entry last lets the puzzle's own
+  files extract first, but the prompt remains. Encrypting the inner zip's entries instead of the inner zip
+  would remove it.
 - The puzzle difficulty does not scale smoothly. The earlier puzzles should be harder.
 - The *Maze Rematch* puzzle needs a better description.
 - Missing required "witty" quotes on all puzzles.
