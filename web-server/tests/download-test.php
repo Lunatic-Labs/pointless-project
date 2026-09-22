@@ -155,6 +155,21 @@ function test_download_logs_events(): void
           'the download is logged with the file served');
 }
 
+// Each event records the platform of the request that caused it, so a player who
+// registers on a phone and plays on a laptop shows both.
+function test_download_logs_platform(): void
+{
+    $phone = new Client(['User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1']);
+    register($phone, 'ann@b.com');
+    $laptop = new Client(['User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15']);
+    sign_in($laptop, 'ann@b.com');
+    $laptop->post('download.php');
+    $laptop->post('download.php', ['token' => fake_token(1, player_seed('ann@b.com'))]);
+    $platforms = array_column(event_rows(), 5);
+    check($platforms === ['iOS', 'macOS', 'macOS'], 'registering, downloading, and a token each record their platform (got '
+          . implode(', ', $platforms) . ')');
+}
+
 function test_download_health_bar(): void
 {
     $client = new Client();

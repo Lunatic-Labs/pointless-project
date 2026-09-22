@@ -238,6 +238,11 @@ final class Client
 {
     private array $cookies = [];
 
+    // $headers are sent with every request, for example ['User-Agent: ...'].
+    public function __construct(private array $headers = [])
+    {
+    }
+
     public function get(string $path): Response
     {
         return $this->request('GET', $path, null);
@@ -258,7 +263,7 @@ final class Client
             throw new TestFailure("POST $path: could not connect: $errstr");
         }
         $headers = array_merge(["POST /$path HTTP/1.1", "Host: $host", 'Content-Length: 0', 'Connection: close'],
-                               $this->cookieHeaders());
+                               $this->headers, $this->cookieHeaders());
         fwrite($socket, implode("\r\n", $headers) . "\r\n\r\n");
         fread($socket, 1024);
         fclose($socket);
@@ -278,7 +283,7 @@ final class Client
 
     private function request(string $method, string $path, ?array $fields): Response
     {
-        $headers = $this->cookieHeaders();
+        $headers = array_merge($this->headers, $this->cookieHeaders());
         $options = ['method' => $method, 'follow_location' => 0, 'ignore_errors' => true, 'timeout' => 30];
         if ($fields !== null) {
             $headers[] = 'Content-Type: application/x-www-form-urlencoded';

@@ -1,7 +1,7 @@
 <?php
 // The event log: what each player has done, appended one line at a time to
 // data/events.csv (next to the players file, so it is outside web-server/ and
-// not in git). Columns: Time, Event, Email, Detail, Level.
+// not in git). Columns: Time, Event, Email, Detail, Level, Platform.
 //
 // Level is the player's level *after* the event, so the newest line for an email
 // gives their level without replaying anything, while the lines underneath still
@@ -34,9 +34,36 @@ function pointless_normalize_token(string $token): string
     return preg_replace('/[^A-Z0-9]/', '', strtoupper($token));
 }
 
+// Returns a guess at the operating system of the browser that sent the request whose
+// headers are in $server (normally $_SERVER): "Windows", "macOS", "Linux", "ChromeOS",
+// "Android", "iOS", or "Other" (which includes a request with no User-Agent at all).
+// Chromium browsers name it in the Sec-CH-UA-Platform client hint; other browsers
+// give it only in the User-Agent. Both are easy to fake, and an iPad's Safari asks
+// for desktop pages as a Mac, so iPads count as macOS.
+function pointless_platform(array $server): string
+{
+    $hints = ['Windows' => 'Windows', 'macOS' => 'macOS', 'Linux' => 'Linux', 'Chrome OS' => 'ChromeOS',
+              'Chromium OS' => 'ChromeOS', 'Android' => 'Android', 'iOS' => 'iOS'];
+    $hint = trim($server['HTTP_SEC_CH_UA_PLATFORM'] ?? '', '" ');
+    if (isset($hints[$hint])) {
+        return $hints[$hint];
+    }
+    // The first match wins, so the order matters: Android agents also say Linux,
+    // ChromeOS agents say X11, and iPhone agents say "like Mac OS X".
+    $agents = ['Android' => 'Android', 'CrOS' => 'ChromeOS', 'iPhone' => 'iOS', 'iPad' => 'iOS', 'iPod' => 'iOS',
+               'Windows' => 'Windows', 'Macintosh' => 'macOS', 'Linux' => 'Linux', 'X11' => 'Linux'];
+    $agent = $server['HTTP_USER_AGENT'] ?? '';
+    foreach ($agents as $word => $platform) {
+        if (str_contains($agent, $word)) {
+            return $platform;
+        }
+    }
+    return 'Other';
+}
+
 // Appends one event, creating the file (and its header) if needed. $event is
 // "register", "download", "token-ok", or "token-bad"; $level is the player's level
-// after it. Returns false on failure.
+// after it. The platform is guessed from the current request. Returns false on failure.
 function pointless_log_event(string $event, string $email, string $detail, int $level): bool
 {
     $path = pointless_events_file();
@@ -49,9 +76,10 @@ function pointless_log_event(string $event, string $email, string $detail, int $
     }
     flock($file, LOCK_EX);
     if (fstat($file)['size'] === 0) {
-        fputcsv($file, ['Time', 'Event', 'Email', 'Detail', 'Level']);
+        fputcsv($file, ['Time', 'Event', 'Email', 'Detail', 'Level', 'Platform']);
     }
-    $row = [date('Y-m-d H:i:s T'), $event, pointless_normalize_email($email), $detail, $level];
+    $row = [date('Y-m-d H:i:s T'), $event, pointless_normalize_email($email), $detail, $level,
+            pointless_platform($_SERVER)];
     $ok = fputcsv($file, $row) !== false;
     fflush($file);
     flock($file, LOCK_UN);

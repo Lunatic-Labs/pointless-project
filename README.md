@@ -697,6 +697,17 @@ as `<seed>.zip`, next to an answer key, `<seed>.json`: the player's name, email,
 It is pretty-printed, because tech support reads it; find the player's seed in the players file and open `games/<seed>.json`.
 Because the stored zips are kept, rebuilding the generator (`make production`) changes only the games of players who haven't downloaded yet.
 To give a player a new game built from the same seed, delete their `<seed>.zip` and `<seed>.json`.
+To do that for every player, for example after a generator fix that players who already downloaded need, empty the games directory;
+each player's next download builds their game with the current generator:
+
+```bash
+rm -rf data/games                                                   # locally, from the repository root
+ssh ubuntu@tools.lipscomb-soc.org sudo -u www-data find /var/lib/pointless/games -type f -delete   # on the server
+```
+
+On the server the directory belongs to `www-data` with mode 0700, so the files are deleted as `www-data` (a shell glob run as `ubuntu` could not list them).
+Until a player downloads again they have no answer key, so their tokens are not accepted, and a player who keeps playing the
+old zip may hold tokens that no longer match their new game.
 The web server never runs `make` and never writes into `puzzle-code/`, and simultaneous downloads don't interfere with each other.
 Each session can download at most once every 10 seconds (`POINTLESS_DOWNLOAD_INTERVAL`).
 
@@ -717,9 +728,13 @@ like any other: level 1 means the player opened the game. The token on the final
 finished.
 
 Events are appended to `data/events.csv` (next to the players file; `POINTLESS_EVENTS_FILE` moves it), with columns
-`Time,Event,Email,Detail,Level`. `Event` is `register`, `download`, `token-ok`, or `token-bad`, and `Level` is the
+`Time,Event,Email,Detail,Level,Platform`. `Event` is `register`, `download`, `token-ok`, or `token-bad`, and `Level` is the
 player's level *after* the event, so the newest line for an email gives their level directly while the lines underneath
-still reconstruct it. Nothing ever rewrites a line: the file is append-only, like the players file. That is also why
+still reconstruct it. `Platform` is a guess at the operating system of the browser that sent that request
+(`pointless_platform()`): `Windows`, `macOS`, `Linux`, `ChromeOS`, `Android`, `iOS`, or `Other`. It comes from the
+`Sec-CH-UA-Platform` client hint (sent by Chromium browsers) or else the User-Agent, so it can be faked, and an iPad's
+Safari reports itself as `macOS`. It is recorded per event, not per player, because a player may register on a phone and
+play on a laptop; a `download` line's platform is the one that has to unzip the game. Nothing ever rewrites a line: the file is append-only, like the players file. That is also why
 tokens are not columns in `data/contact-data.csv` — they are created at first download, not at registration, so storing
 them there would mean updating a row after the fact, and would tie the roster's shape to the puzzle count.
 

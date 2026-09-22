@@ -32,11 +32,44 @@ function test_events_log_and_level(): void
 
     $rows = event_rows();
     check(count($rows) === 3, 'every event is kept (got ' . count($rows) . ')');
-    check(array_slice($rows[0], 1) === ['register', 'ann@b.com', 'Ann Lee', '0'], 'the row holds the event, email, detail, and level');
+    check(file(events_path())[0] === "Time,Event,Email,Detail,Level,Platform\n", 'the file starts with its header');
+    // Called directly, there is no request, so no User-Agent and no platform.
+    check(array_slice($rows[0], 1) === ['register', 'ann@b.com', 'Ann Lee', '0', 'Other'],
+          'the row holds the event, email, detail, level, and platform');
     check($rows[0][0] !== '', 'the row is timed');
     check(pointless_player_level('Ann@b.com ') === 3, "the newest event gives the player's level");
     check(pointless_player_level('bo@b.com') === 7, 'each player has their own level');
     check(pointless_player_level('cy@b.com') === 0, 'a player with no events is at level 0');
+}
+
+function test_events_platform(): void
+{
+    $agents = [
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36' => 'Windows',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:142.0) Gecko/20100101 Firefox/142.0' => 'Windows',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15' => 'macOS',
+        'Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0' => 'Linux',
+        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0' => 'Linux',
+        'Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36' => 'ChromeOS',
+        'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36' => 'Android',
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1' => 'iOS',
+        'Mozilla/5.0 (iPad; CPU OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/140.0.0.0 Mobile/15E148 Safari/604.1' => 'iOS',
+        'curl/8.5.0' => 'Other',
+    ];
+    foreach ($agents as $agent => $platform) {
+        $got = pointless_platform(['HTTP_USER_AGENT' => $agent]);
+        check($got === $platform, "$agent is $platform (got $got)");
+    }
+    check(pointless_platform([]) === 'Other', 'no User-Agent is Other');
+
+    // Chromium's client hint names the platform outright, and wins over the User-Agent,
+    // for example from an Android phone asking for the desktop site.
+    $desktop = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36';
+    check(pointless_platform(['HTTP_SEC_CH_UA_PLATFORM' => '"Android"', 'HTTP_USER_AGENT' => $desktop]) === 'Android',
+          'the client hint wins');
+    check(pointless_platform(['HTTP_SEC_CH_UA_PLATFORM' => '"Chrome OS"']) === 'ChromeOS', 'the hint uses its own names');
+    check(pointless_platform(['HTTP_SEC_CH_UA_PLATFORM' => '"Unknown"', 'HTTP_USER_AGENT' => $desktop]) === 'Linux',
+          'a hint that names no platform falls back to the User-Agent');
 }
 
 function test_events_progress(): void
@@ -62,7 +95,7 @@ function test_events_submit_token(): void
     check(pointless_player_level('ann@b.com') === 3, 'the level is recorded');
     $rows = event_rows();
     check(count($rows) === 2, 'both submissions are logged (got ' . count($rows) . ')');
-    check(array_slice($rows[1], 1) === ['token-ok', 'ann@b.com', fake_token(3, $seed), '3'], 'the row holds the token and the new level');
+    check(array_slice($rows[1], 1) === ['token-ok', 'ann@b.com', fake_token(3, $seed), '3', 'Other'], 'the row holds the token and the new level');
 }
 
 function test_events_submit_token_case_and_spaces(): void
@@ -83,7 +116,7 @@ function test_events_submit_token_rejected(): void
 
     $rows = event_rows();
     check(count($rows) === 2, 'rejections are logged too: they are the brute-force signal');
-    check(array_slice($rows[0], 1) === ['token-bad', 'ann@b.com', 'NOTATOKEN', '0'], 'the rejected token is recorded');
+    check(array_slice($rows[0], 1) === ['token-bad', 'ann@b.com', 'NOTATOKEN', '0', 'Other'], 'the rejected token is recorded');
 
     // Another player's token is no better than a made-up one.
     $bo = player_with_game('bo@b.com');
