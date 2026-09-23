@@ -757,6 +757,43 @@ shows neither the email nor the seed: the share id is 16 hex digits of an HMAC o
 permanent because the seed is, and useless for recovering it. The links always point at the live site
 (`POINTLESS_SITE_URL` in `includes/progress.php`), wherever the page is served from.
 
+#### Staff report
+
+`admin.php` is for staff, not players, and is linked from nowhere. It lists every player with their status, progress, the puzzle
+they are on, and when they registered, last made progress, and were last seen, sorted furthest first
+(`web-server/includes/admin.php`). Tabs pick out the players to act on:
+
+| Tab | Who | What to do |
+|-----|-----|------------|
+| Finished | reached the fin page | congratulate them |
+| Struggling | 3 or more rejected tokens since their last progress, or back a day or more after it without making more | offer help |
+| Stalled | nothing at all for 7 days | encourage them |
+| Not started | registered but never downloaded | nudge them |
+| Active | everyone else | nothing yet |
+
+The *All* tab, furthest first, is the recruiting list, and shows where the players who haven't finished are, by puzzle:
+a puzzle where many are stuck is one to look at. Each tab lists its emails, ready to paste into Bcc, and downloads as a CSV
+(spreadsheet-safe, like the players file). A player's name opens their page: their answer key (passwords and tokens, for
+helping them) and every event, rejected tokens included. The thresholds are constants at the top of `includes/admin.php`.
+Unlike the player pages, this report shows counts (`2 / 12`). Progress counts only the tokens a player submitted, so a
+player who solves puzzles without submitting them is further along than it shows.
+
+It is the only page with passwords, because it is the only one that shows players' names and emails to someone else.
+Admins are listed in `admins.htpasswd` next to the players file (`POINTLESS_ADMINS_FILE` moves it), one `name:hash` per line
+as `htpasswd -B` writes it; there is no page for managing them. Without that file, `admin.php` is a 404. A sign-in lasts until
+the admin signs out, is idle for 2 hours, or is removed from the file. After 10 failed sign-ins within 15 minutes, by anyone,
+sign-in is locked for everyone until they age out. Sign-ins, failures, and sign-outs are logged to `admin-log.csv`, next to the
+players file. The page is sent with `Cache-Control: no-store`, `X-Robots-Tag: noindex`, and `Referrer-Policy: no-referrer`.
+
+To add an admin, or change a password (locally, from the repository root; on the server, see [Deployment](#deployment)):
+
+```bash
+htpasswd -B data/admins.htpasswd dwayne          # -c too, to create the file; apt install apache2-utils
+php -r 'echo "dwayne:", password_hash(trim(fgets(STDIN)), PASSWORD_DEFAULT), "\n";' >> data/admins.htpasswd   # without htpasswd; type the password
+```
+
+To remove one, delete their line.
+
 ### How to Start
 
 A person builds the production generator **for local use**: once, and again whenever the puzzle code or resources
@@ -915,6 +952,7 @@ On the server:
 /var/www/pointless/releases/<time>-<sha>/production/   the `make production` tree  (POINTLESS_GENERATOR_DIR)
 /var/lib/pointless/contact-data.csv                   players; www-data, 0700      (POINTLESS_PLAYERS_FILE)
 /var/lib/pointless/games/                             each player's zip and answer key, created next to the players file
+/var/lib/pointless/admins.htpasswd                    staff who can use admin.php; created by hand, see below
 ```
 
 What this repo must keep true for that to work:
@@ -928,6 +966,10 @@ What this repo must keep true for that to work:
   deploy requests it after switching releases and fails if the answer is anything else, so keep it in step with what
   `includes/` needs from the server, and keep paths out of its output.
 - **Every page link is relative**, because the site is served under `/pointless/`, not at the root.
+- **The staff report's admins are set up by hand**, as `www-data`, since the directory is 0700
+  (see [Staff report](#staff-report)); until then `admin.php` is a 404:
+  `ssh -t ubuntu@tools.lipscomb-soc.org sudo -u www-data htpasswd -B -c /var/lib/pointless/admins.htpasswd dwayne`
+  (drop `-c` once the file exists, or it starts over).
 - **The tests must pass on a clean checkout**, with nothing but `g++`, `libzip-dev`, and `php-cli`, since they are the
   deploy's gate.
 
@@ -968,8 +1010,6 @@ From a review of the puzzle pages on 2026-09-19 (the wording fixes are in
 - Design Graph Paper Robot Puzzle III.
 - Have an automatic emailer that sends emails to Dr. Towell.
 - Recognize players at milestones with more than a number on the download page — an emailer, say. Nothing sends mail today.
-- Report participation: join the roster to each player's level from `data/events.csv` (the log is designed for it;
-  the report is not written). Formerly GitHub issue #3.
 
 ## Contributors
 

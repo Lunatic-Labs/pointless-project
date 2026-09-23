@@ -23,6 +23,7 @@ require_once __DIR__ . '/index-test.php';
 require_once __DIR__ . '/download-test.php';
 require_once __DIR__ . '/share-test.php';
 require_once __DIR__ . '/health-test.php';
+require_once __DIR__ . '/admin-test.php';
 
 $tests = [
     'test_players_file_from_env',
@@ -96,6 +97,14 @@ $tests = [
     'test_health_players_dir_missing',
     'test_health_players_file_unwritable',
     'test_health_generator_missing',
+
+    'test_admin_not_set_up',
+    'test_admin_requires_sign_in',
+    'test_admin_sign_in_and_out',
+    'test_admin_lockout',
+    'test_admin_removed_admin',
+    'test_admin_report_statuses',
+    'test_admin_report_page',
 ];
 
 $filter = $argv[1] ?? '';

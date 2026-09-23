@@ -48,16 +48,20 @@ function pointless_games_dir(): string
 function pointless_player_answers(string $email): ?array
 {
     $player = pointless_find_player($email);
-    if ($player === null) {
-        return null;
-    }
-    $key = @file_get_contents(pointless_games_dir() . "/$player[3].json");
+    return $player === null ? null : pointless_game_puzzles($player[3]);
+}
+
+// Returns the puzzles of the stored answer key for $seed, or null if that game has
+// not been generated.
+function pointless_game_puzzles(string $seed): ?array
+{
+    $key = @file_get_contents(pointless_games_dir() . "/$seed.json");
     if ($key === false) {
         return null;
     }
     $data = json_decode($key, true);
     if (!is_array($data) || !isset($data['puzzles']) || !is_array($data['puzzles'])) {
-        error_log('pointless: unreadable answer key for seed ' . $player[3]);
+        error_log("pointless: unreadable answer key for seed $seed");
         return null;
     }
     return $data['puzzles'];

@@ -152,6 +152,93 @@ form button {
     background: #596AFF;
 }
 
+/* The staff report, admin.php: wider than the player pages, for its tables. */
+.container.admin {
+    max-width: 80rem;
+}
+
+.admin-signout {
+    text-align: right;
+}
+
+.admin-signout button {
+    margin: 0 0 0 8px;
+    padding: 4px 10px;
+}
+
+.admin-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.admin-tabs a {
+    padding: 4px 10px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.admin-tabs a.current {
+    background: #331E54;
+    color: #fff;
+}
+
+.admin-table {
+    overflow-x: auto;
+}
+
+.admin table {
+    border-collapse: collapse;
+}
+
+.admin th,
+.admin td {
+    padding: 4px 10px;
+    border-bottom: 1px solid #8884;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.admin a {
+    color: #596AFF;
+}
+
+.admin-facts th {
+    width: 8rem;
+}
+
+.admin-bar {
+    display: inline-block;
+    height: 0.8em;
+    background: #F4AA00;
+}
+
+.status {
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: #fff;
+    background: #666;
+}
+
+.status-finished { background: #1e8a1e; }
+.status-struggling { background: #c0392b; }
+.status-stalled { background: #b87f00; }
+.status-active { background: #596AFF; }
+
+.admin label {
+    display: block;
+    margin-top: 16px;
+    font-weight: bold;
+}
+
+.admin-emails {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
 .footer {
     text-align: center;
     margin-top: 34.5px;
