@@ -112,6 +112,17 @@ form button {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* The note under the sign-in form that points to privacy.php. */
+.fine-print {
+    margin-top: 16px;
+    font-size: 0.9em;
+}
+
+/* privacy.php: its section headings sit closer to their text than the page's h2. */
+.privacy h3 {
+    margin-bottom: 0.3em;
+}
+
 /* The health bar on download.php and share.php: how full it is, with no count or total. */
 .health-bar {
     max-width: 32rem;

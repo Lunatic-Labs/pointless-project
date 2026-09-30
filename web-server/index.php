@@ -64,5 +64,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <button type="submit">Submit</button>
         </form>
+        <p class="fine-print">
+            We use your email only for the challenge and so the School of Computing can keep in touch. We never sell it
+            or share it outside the School of Computing. For ages 13 and up. See our <a href="privacy.php">privacy policy</a>.
+        </p>
     </div>
 <?php require __DIR__ . '/includes/footer.php'; ?>

@@ -669,7 +669,8 @@ Either way the player lands on `download.php`, where they can download, submit t
 (see [Progress and the event log](#progress-and-the-event-log)).
 All pages share `includes/header.php`, `includes/footer.php`, and `includes/styles.css`.
 They start their session through `includes/session.php`, which names the cookie `pointless` (HttpOnly, SameSite=Lax)
-so it can't collide with other PHP apps on the same host (see [Deployment](#deployment)).
+so it can't collide with other PHP apps on the same host (see [Deployment](#deployment)). The exception is
+`privacy.php`, which needs no session, so reading the [privacy policy](#privacy) sets no cookie.
 
 Players are saved to `data/contact-data.csv` at the repository root (columns `FName,LName,Email,Seed`; see `web-server/includes/players.php`).
 It is outside `web-server/`, so the web server can never serve it, and git ignores it.
@@ -794,6 +795,48 @@ php -r 'echo "dwayne:", password_hash(trim(fgets(STDIN)), PASSWORD_DEFAULT), "\n
 
 To remove one, delete their line.
 
+#### Privacy
+
+`privacy.php` is the privacy policy. The footer links to it on every page, and a note under the sign-in form on
+`index.php` summarizes it (for ages 13 and up, emails never sold or shared outside the School of Computing). In
+plain language, it promises:
+
+- **What is collected:** the email (required) and the name (optional); the events in `events.csv`, including the
+  submitted tokens and the platform (an operating system only, never the whole User-Agent); each player's stored game
+  and answer key; and Apache's standard access log (IP address, User-Agent, time), which the policy says is deleted
+  after about two weeks. Nothing else: no analytics, ads, third-party scripts, or third-party cookies.
+- **How it is used:** to run the challenge, and for School of Computing staff to email players about their progress
+  and about SoC programs and events. Players can ask to stop getting emails.
+- **Who sees it:** SoC staff, through the [staff report](#staff-report), and anyone a player gives their share link to
+  (their name and health bar only). No one outside SoC, unless the law requires it.
+- **Cookies:** only the `pointless` session cookie, and the dark-mode choice in `localStorage`, which is never sent.
+- **Retention and choices:** data is kept while the challenge runs. Players can email to see their data, correct
+  their name, stop getting emails, or have everything deleted.
+- **Security:** it says plainly that signing in needs only an email (see the security decisions above).
+- **Age:** ages 13 and up, because of COPPA. A parent can have a younger child's data deleted.
+- **Changes:** information already collected won't be used in a new way without asking first.
+
+**Keep it true.** Any change that collects something new, uses data in a new way, shows it to someone new, or loads
+anything from another site must update `privacy.php`, and the "Last updated" date at its top, in the same commit.
+An emailer (see [Future Plans](#future-plans)) or a change to Apache's logging on the server would count.
+
+Requests arrive by email and are handled by hand. To **correct a name**, edit the player's row in the players file.
+To **delete a player**, remove their row from the players file, their lines from `events.csv`, and their stored game
+(on the server, as `www-data`, since the directory is 0700):
+
+```bash
+ssh ubuntu@tools.lipscomb-soc.org     # then, on the server:
+D=/var/lib/pointless
+sudo -u www-data grep -F ',ann@b.com,' $D/contact-data.csv $D/events.csv
+sudo -u www-data sed -i '/,ann@b\.com,/d' $D/contact-data.csv $D/events.csv
+sudo -u www-data rm $D/games/<seed>.zip $D/games/<seed>.json
+```
+
+The first command shows the lines the second will remove (check that they are all that player's) and, as the last
+column of the player's row, the seed that names their stored game. The site never rewrites these files, but a line it
+appends while `sed` is running would be lost, so do it when no one is playing. If the player signs in again, they
+register as a new player, with a new seed and a new game.
+
 ### How to Start
 
 A person builds the production generator **for local use**: once, and again whenever the puzzle code or resources
@@ -848,7 +891,7 @@ and keeps the temporary directory (including `server.log` and `php-errors.log`);
 | `players-test.php` | `includes/players.php`, called directly |
 | `generate-test.php` | `includes/generate.php`, called directly, using the fake generator; `test_generate_real_generator` runs the real one |
 | `events-test.php` | `includes/events.php`, called directly: the event log, levels, and token submission |
-| `index-test.php`, `download-test.php` | The pages, over HTTP |
+| `index-test.php`, `download-test.php`, `privacy-test.php` | The pages, over HTTP |
 
 The fake generator is a small script written by `fake_generator($mode)`. It records its arguments and working directory,
 prints `Seed: <seed>` and a password line like the real one (or, with `-j`, a JSON game of `FAKE_PUZZLES` layers whose
@@ -930,7 +973,7 @@ Then declare `void fib_puzzle_test();` in `puzzle-code/tests/include/test.h`, ad
 ## Deployment
 
 The site is live at <https://tools.lipscomb-soc.org/pointless/>. It shares that server with the School of Computing
-tools site and the edna mailer. The server's arrangement (what lives where, and which deploy owns which path) and how to
+tools site. The server's arrangement (what lives where, and which deploy owns which path) and how to
 set it up from scratch are documented in the `dtowell/tools` repo's `readme.md`; read it before changing anything on
 the server.
 
@@ -987,6 +1030,8 @@ A backlog of cleanup and improvement tasks is in [ideas/cleanup-tasks.md](ideas/
 - The *Maze Rematch* puzzle needs a better description.
 - Missing required "witty" quotes on all puzzles.
 - The *Based Rematch* puzzle is easy to brute force: its answer is an 8-bit number.
+- **Email opt-outs are tracked by no one.** The [privacy policy](#privacy) promises that a player can ask to stop
+  getting emails, but the staff report's Bcc lists include every player, so staff must remember who asked.
 
 From a review of the puzzle pages on 2026-09-19 (the wording fixes are in
 [ideas/cleanup-tasks.md](ideas/cleanup-tasks.md)):

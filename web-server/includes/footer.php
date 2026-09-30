@@ -1,6 +1,6 @@
 <?php // Shared page footer. Pair with includes/header.php. ?>
     <footer class="footer">
-        <p>Dr. Towell - dtowell@lipscomb.edu</p>
+        <p>Dr. Towell - dtowell@lipscomb.edu - <a href="privacy.php">Privacy</a></p>
     </footer>
     <script> // Dark mode: follows the system setting until the player chooses with the button.
         const themeBtn = document.getElementById("theme-btn");

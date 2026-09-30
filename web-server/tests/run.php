@@ -22,6 +22,7 @@ require_once __DIR__ . '/events-test.php';
 require_once __DIR__ . '/index-test.php';
 require_once __DIR__ . '/download-test.php';
 require_once __DIR__ . '/share-test.php';
+require_once __DIR__ . '/privacy-test.php';
 require_once __DIR__ . '/health-test.php';
 require_once __DIR__ . '/admin-test.php';
 
@@ -92,6 +93,9 @@ $tests = [
     'test_share_page',
     'test_share_page_unknown',
     'test_share_page_names',
+
+    'test_privacy_page',
+    'test_privacy_linked',
 
     'test_health_ok',
     'test_health_players_dir_missing',
